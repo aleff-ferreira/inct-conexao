@@ -46,23 +46,16 @@ edição manual do JSON por uma interface amigável.
 Para os líderes editarem de qualquer lugar pelo `inct-conexao.com.br/admin`, o
 projeto precisa estar **no GitHub** e o painel precisa de um **login**.
 
-### Passo 1 — Colocar o projeto no GitHub (uma vez)
+### Passo 1 — Colocar o projeto no GitHub ✅ FEITO
 
-1. Crie um repositório vazio no GitHub chamado **`inct-conexao`** na sua conta
-   (**https://github.com/aleff-ferreira**), **privado** de preferência. O caminho
-   será `aleff-ferreira/inct-conexao` (já preenchido no `config.yml`).
-2. O git local já está inicializado e com o primeiro commit. Só falta apontar
-   para o GitHub e enviar:
-   ```
-   cd /home/aleff/inct
-   git remote add origin https://github.com/aleff-ferreira/inct-conexao.git
-   git push -u origin main
-   ```
-   (O `.gitignore` já exclui `node_modules/`, `dist/`, `.tools/`, zips e logs.)
-   Atalho com a CLI do GitHub (cria o repo e envia de uma vez):
-   ```
-   gh repo create aleff-ferreira/inct-conexao --private --source=. --push
-   ```
+O repositório **já existe e já foi enviado**: `aleff-ferreira/inct-conexao`
+(privado). O git local está autenticado por HTTPS (token salvo em
+`~/.git-credentials`), então daqui em diante é só `git pull` / `git push`, sem
+pedir senha.
+
+> Nota técnica: a conexão não aguentava enviar os 5 vídeos (35 MB) de uma vez
+> (erro HTTP 408), então eles foram enviados em commits separados. Isso é só
+> histórico — está tudo lá. Edições futuras são pequenas e enviam normalmente.
 
 ### Passo 2 — Apontar o painel para o seu repositório
 
@@ -164,3 +157,21 @@ os updates — exatamente o objetivo.
   `public/admin/index.html` pela versão do Decap; o `config.yml` é compatível.
 - **Datas:** o painel grava a data com fuso; oriente os líderes a usarem o
   horário de Rondônia (UTC-4). O texto do fuso é o campo "Texto do fuso horário".
+
+---
+
+## Checklist para entrar no ar
+
+- [x] Conteúdo migrado para `src/content/**.json` + painel em `/admin`
+- [x] Projeto enviado ao GitHub (`aleff-ferreira/inct-conexao`)
+- [x] `config.yml` apontando para o repositório
+- [ ] **Login configurado** (Parte B, Passo 3 — DecapBridge ou Cloudflare)
+- [ ] **Build + upload do `dist/` ao Hostinger** para publicar o `/admin`
+      (`npm run build` → `python3 scripts/make-zip.py` → enviar no hPanel)
+- [ ] **Líderes convidados** e com o guia em mãos (`docs/guia-lideres.md`)
+
+> Para usar **só você, agora**, sem login e sem subir nada: `npm run dev` e abra
+> `localhost:5173/admin/` no Chrome → **"Work with Local Repository"**.
+
+O passo a passo para os líderes (em linguagem simples, para encaminhar) está em
+**[`docs/guia-lideres.md`](guia-lideres.md)**.
