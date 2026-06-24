@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" role="img" aria-label="Bandeira do Equador">
+  <rect width="120" height="40" fill="#ffd100"/>
+  <rect y="40" width="120" height="20" fill="#003893"/>
+  <rect y="60" width="120" height="20" fill="#ce1126"/>
+  <circle cx="60" cy="40" r="7" fill="#8b6f2f"/>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" role="img" aria-label="Bandeira de Portugal">
+  <rect width="48" height="80" fill="#006600"/>
+  <rect x="48" width="72" height="80" fill="#ff0000"/>
+  <circle cx="48" cy="40" r="11" fill="#ffcc00"/>
+</svg>

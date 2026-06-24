@@ -1,0 +1,69 @@
+{
+  "slug": "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia",
+  "title": "Clima, eventos extremos e Saúde Única na Amazônia",
+  "subtitle": "Mesa-redonda científica do INCT-CONEXAO sobre os elos entre variabilidade climática, eventos extremos e a saúde de pessoas, animais, plantas e ambientes na Amazônia Legal.",
+  "theme": "Clima e Saúde Única",
+  "summary": "Especialistas debatem como secas, calor extremo e fumaça afetam a saúde amazônica e como antecipar riscos.",
+  "description": "A mesa reúne pesquisadoras e pesquisadores da rede INCT-CONEXAO para discutir como a intensificação de secas, ondas de calor, queimadas e enchentes na Amazônia Legal repercute sobre a saúde humana, animal, vegetal e ambiental. O encontro parte da abordagem de Saúde Única para conectar monitoramento climático, vigilância epidemiológica e resposta dos serviços de saúde nos territórios.\n\nA partir de dados de satélite, modelagem preditiva e experiências de campo, o debate examina caminhos para sistemas de alerta precoce, Saúde Pública de Precisão e políticas públicas informadas por evidências. A transmissão é aberta ao público e voltada à comunidade científica, gestores e estudantes interessados na agenda de clima e saúde na Amazônia.",
+  "startsAt": "2026-08-27T16:00:00-04:00",
+  "endsAt": "2026-08-27T17:30:00-04:00",
+  "timezoneLabel": "Horário de Rondônia (UTC-4)",
+  "heroImage": "clima-saude.jpg",
+  "groupSlug": "conexao-clima-saude-unica",
+  "speakers": [
+    {
+      "name": "Dr. Rafael Tavares",
+      "role": "Pesquisador em Modelagem Climática",
+      "affiliation": "INPE",
+      "affiliationFull": "Instituto Nacional de Pesquisas Espaciais",
+      "bio": "Atua com modelagem numérica de tempo e clima e inteligência artificial aplicada à previsão de eventos extremos na Amazônia. Coordena estudos de monitoramento ambiental voltados a sistemas de alerta precoce."
+    },
+    {
+      "name": "Dra. Beatriz Nogueira",
+      "role": "Pesquisadora em Saúde Única",
+      "affiliation": "FIOCRUZ RO",
+      "affiliationFull": "Fundação Oswaldo Cruz Noroeste — Unidade de Rondônia",
+      "bio": "Investiga as relações entre clima, doenças tropicais e vigilância em saúde em comunidades ribeirinhas. Integra ações de campo que articulam cuidado, escuta territorial e produção de evidências."
+    },
+    {
+      "name": "Dr. Caio Pereira da Silva",
+      "role": "Pesquisador em Saúde Pública de Precisão",
+      "affiliation": "UNIR",
+      "affiliationFull": "Universidade Federal de Rondônia",
+      "bio": "Trabalha com bioinformática e ciência de dados aplicadas à saúde ambiental e ao enfrentamento de riscos climáticos na Amazônia Legal. Desenvolve indicadores para apoiar gestão e políticas públicas."
+    }
+  ],
+  "moderator": {
+    "name": "Dra. Helena Marques",
+    "role": "Coordenadora de Biometeorologia e Saúde Ambiental",
+    "affiliation": "UEMA",
+    "affiliationFull": "Universidade Estadual do Maranhão",
+    "bio": "Pesquisadora em climatologia geográfica e modelagem bioclimática, com foco na vulnerabilidade socioambiental amazônica. Atua na interface entre ciência do clima e tomada de decisão em saúde."
+  },
+  "agenda": [
+    { "time": "16:00", "title": "Abertura e contextualização da agenda Clima e Saúde Única", "speaker": "Dra. Helena Marques" },
+    { "time": "16:10", "title": "Eventos climáticos extremos na Amazônia: o que os dados de satélite revelam", "speaker": "Dr. Rafael Tavares" },
+    { "time": "16:35", "title": "Da fumaça à febre: impactos das queimadas e do calor na saúde ribeirinha", "speaker": "Dra. Beatriz Nogueira" },
+    { "time": "17:00", "title": "Alerta precoce e Saúde Pública de Precisão: caminhos para a decisão", "speaker": "Dr. Caio Pereira da Silva" },
+    { "time": "17:15", "title": "Debate com o público e perguntas da audiência", "speaker": "—" },
+    { "time": "17:25", "title": "Sínteses e encerramento", "speaker": "Dra. Helena Marques" }
+  ],
+  "materials": [
+    { "title": "Ementa e programação da mesa-redonda", "kind": "PDF", "note": "Tema, objetivos, composição da mesa e cronograma detalhado." },
+    { "title": "Apresentações das falas científicas", "kind": "Slides", "note": "Material de apoio das exposições, disponibilizado após o evento." },
+    { "title": "Política de uso de imagem e dados do evento", "kind": "Link", "note": "Orientações sobre gravação, transmissão e uso institucional do conteúdo." }
+  ],
+  "partners": [
+    { "acronym": "FIOCRUZ RO", "name": "Fundação Oswaldo Cruz Noroeste — Rondônia", "logo": "partner-logos/fiocruz-ro.png" },
+    { "acronym": "UNIR", "name": "Universidade Federal de Rondônia", "logo": "institution-logos/unir.png" },
+    { "acronym": "INPE", "name": "Instituto Nacional de Pesquisas Espaciais", "logo": "partner-logos/inpe.png" },
+    { "acronym": "UEMA", "name": "Universidade Estadual do Maranhão", "logo": "partner-logos/uema.png" },
+    { "acronym": "FAPERO", "name": "Fundação Rondônia de Amparo à Pesquisa", "logo": "partner-logos/fapero.png" }
+  ],
+  "seo": {
+    "ogTitle": "Clima, eventos extremos e Saúde Única na Amazônia",
+    "ogDescription": "Mesa-redonda científica do INCT-CONEXAO sobre clima, eventos extremos e Saúde Única na Amazônia: dados, alerta precoce e políticas públicas. Transmissão ao vivo.",
+    "ogImage": "clima-saude.jpg",
+    "keywords": ["clima", "Saúde Única", "Amazônia", "eventos extremos", "alerta precoce", "INCT-CONEXAO", "biometeorologia"]
+  }
+}

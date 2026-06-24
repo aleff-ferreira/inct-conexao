@@ -1,0 +1,231 @@
+# ============================================================================
+#  INCT-CONEXAO · Configuração do painel de conteúdo (Sveltia / Decap CMS)
+# ============================================================================
+#  Os líderes de grupo editam webinars e grupos por aqui. Ao salvar/publicar, o
+#  painel grava os arquivos JSON em src/content/** no repositório do GitHub.
+#  Depois o administrador faz `git pull`, `npm run build` e envia o dist/ ao
+#  Hostinger (ver docs/cms-setup.md).
+#
+#  >>> ANTES DE USAR: troque `repo` abaixo pelo seu repositório do GitHub. <<<
+# ============================================================================
+
+backend:
+  name: github
+  repo: aleff-ferreira/inct-conexao # usuário/repositório do GitHub
+  branch: main
+  # base_url: https://SEU-AUTH.workers.dev   # <-- defina ao configurar o login (ver docs/cms-setup.md)
+
+site_url: https://inct-conexao.com.br
+display_url: https://inct-conexao.com.br
+logo_url: https://inct-conexao.com.br/assets/logo-symbol.png
+
+# Idioma do painel (Sveltia detecta o navegador; mantém português).
+locale: pt
+
+# Uploads (imagens/vídeos) vão para /public/assets no repositório.
+media_folder: public/assets
+public_folder: /assets
+
+# Mensagens de commit amigáveis no histórico do GitHub.
+backend_commit_messages:
+  create: "Cria {{collection}} “{{slug}}” (via painel)"
+  update: "Atualiza {{collection}} “{{slug}}” (via painel)"
+  delete: "Remove {{collection}} “{{slug}}” (via painel)"
+  uploadMedia: "Envia mídia “{{path}}” (via painel)"
+  deleteMedia: "Remove mídia “{{path}}” (via painel)"
+
+collections:
+  # ---------------------------------------------------------------- WEBINARS
+  - name: webinars
+    label: "Webinars / Transmissões"
+    label_singular: "Webinar"
+    description: "Mesas-redondas e transmissões científicas."
+    folder: src/content/webinars
+    create: true
+    delete: true
+    extension: json
+    format: json
+    identifier_field: slug
+    slug: "{{fields.slug}}"
+    summary: "{{title}}"
+    editor:
+      preview: false
+    fields:
+      - label: "Identificador na URL (slug)"
+        name: slug
+        widget: string
+        pattern: ["^[a-z0-9-]+$", "Use apenas letras minúsculas, números e hifens."]
+        hint: "Aparece em #/webinars/<slug>. Não repita o de outro webinar."
+      - { label: "Título", name: title, widget: string }
+      - { label: "Subtítulo", name: subtitle, widget: text, required: false }
+      - { label: "Tema (etiqueta curta)", name: theme, widget: string, required: false }
+      - { label: "Resumo (1 linha, para os cartões)", name: summary, widget: text, required: false }
+      - label: "Descrição completa"
+        name: description
+        widget: text
+        required: false
+        hint: "Separe parágrafos com uma linha em branco."
+      - label: "Grupo responsável"
+        name: groupSlug
+        widget: relation
+        required: false
+        collection: groups
+        value_field: slug
+        search_fields: ["name"]
+        display_fields: ["name"]
+        hint: "Escolha o grupo dono deste webinar."
+      - label: "Início"
+        name: startsAt
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+        hint: "Use o horário de Rondônia (UTC-4)."
+      - label: "Término"
+        name: endsAt
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+      - { label: "Texto do fuso horário", name: timezoneLabel, widget: string, default: "Horário de Rondônia (UTC-4)" }
+      - label: "Forçar status (opcional)"
+        name: status
+        widget: select
+        required: false
+        options:
+          - { label: "Automático (pelas datas)", value: "" }
+          - { label: "Em breve", value: upcoming }
+          - { label: "Ao vivo", value: live }
+          - { label: "Encerrado", value: ended }
+        default: ""
+        hint: "Deixe em Automático para calcular pelas datas."
+      - { label: "Imagem de capa", name: heroImage, widget: image, required: false, choose_url: false }
+      - label: "URL da transmissão ao vivo"
+        name: liveStream
+        widget: string
+        required: false
+        hint: "Cole a URL do YouTube/Vimeo/StreamYard. Zoom/Meet viram botão “Abrir transmissão”."
+      - label: "URL da gravação (replay)"
+        name: replay
+        widget: string
+        required: false
+        hint: "URL do YouTube/Vimeo da gravação. (Ou envie um arquivo abaixo.)"
+      - { label: "Ou envie um arquivo de vídeo (.mp4)", name: replayVideo, widget: file, required: false }
+      - { label: "Imagem do player (pôster)", name: posterImage, widget: image, required: false, choose_url: false }
+      - { label: "Link de inscrição", name: registrationUrl, widget: string, required: false }
+      - { label: "Link para perguntas (Slido/Forms)", name: questionUrl, widget: string, required: false }
+      - label: "Palestrantes"
+        name: speakers
+        label_singular: "Palestrante"
+        widget: list
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "Nome", name: name, widget: string }
+          - { label: "Função / cargo", name: role, widget: string }
+          - { label: "Sigla da instituição", name: affiliation, widget: string }
+          - { label: "Instituição (nome completo)", name: affiliationFull, widget: string, required: false }
+          - { label: "Mini-biografia", name: bio, widget: text, required: false }
+          - { label: "Foto", name: photo, widget: image, required: false, choose_url: false }
+      - label: "Moderação"
+        name: moderator
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Nome", name: name, widget: string }
+          - { label: "Função / cargo", name: role, widget: string }
+          - { label: "Sigla da instituição", name: affiliation, widget: string }
+          - { label: "Instituição (nome completo)", name: affiliationFull, widget: string, required: false }
+          - { label: "Mini-biografia", name: bio, widget: text, required: false }
+          - { label: "Foto", name: photo, widget: image, required: false, choose_url: false }
+      - label: "Programação"
+        name: agenda
+        label_singular: "Item"
+        widget: list
+        required: false
+        summary: "{{fields.time}} — {{fields.title}}"
+        fields:
+          - { label: "Horário (HH:MM)", name: time, widget: string }
+          - { label: "Atividade", name: title, widget: string }
+          - { label: "Responsável", name: speaker, widget: string, required: false, hint: "Use “—” para debate/intervalo." }
+      - label: "Materiais"
+        name: materials
+        label_singular: "Material"
+        widget: list
+        required: false
+        summary: "{{fields.title}}"
+        fields:
+          - { label: "Título", name: title, widget: string }
+          - label: "Tipo"
+            name: kind
+            widget: select
+            options: ["PDF", "Slides", "Link", "Vídeo"]
+          - { label: "Link (opcional)", name: href, widget: string, required: false }
+          - { label: "Observação", name: note, widget: text, required: false }
+      - label: "Parceiros / Apoio"
+        name: partners
+        label_singular: "Parceiro"
+        widget: list
+        required: false
+        summary: "{{fields.acronym}} {{fields.name}}"
+        fields:
+          - { label: "Nome", name: name, widget: string }
+          - { label: "Sigla", name: acronym, widget: string, required: false }
+          - { label: "Logotipo", name: logo, widget: image, required: false, choose_url: false }
+      - label: "SEO / Compartilhamento (opcional)"
+        name: seo
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Título para compartilhamento", name: ogTitle, widget: string, required: false }
+          - { label: "Descrição para compartilhamento", name: ogDescription, widget: text, required: false }
+          - { label: "Imagem para compartilhamento", name: ogImage, widget: image, required: false, choose_url: false }
+          - { label: "Palavras-chave", name: keywords, widget: list, required: false }
+
+  # ------------------------------------------------------------------ GRUPOS
+  - name: groups
+    label: "Grupos de pesquisa"
+    label_singular: "Grupo"
+    description: "Descrição de cada grupo de pesquisa do INCT."
+    folder: src/content/groups
+    create: true
+    delete: true
+    extension: json
+    format: json
+    identifier_field: slug
+    slug: "{{fields.slug}}"
+    summary: "{{name}}"
+    editor:
+      preview: false
+    fields:
+      - label: "Identificador na URL (slug)"
+        name: slug
+        widget: string
+        pattern: ["^[a-z0-9-]+$", "Use apenas letras minúsculas, números e hifens."]
+        hint: "Aparece em #/grupos/<slug>."
+      - { label: "Nome do grupo", name: name, widget: string }
+      - { label: "Sigla / etiqueta curta", name: acronym, widget: string, required: false }
+      - label: "Descrição"
+        name: description
+        widget: text
+        required: false
+        hint: "Separe parágrafos com uma linha em branco."
+      - { label: "Líder do grupo", name: leaderName, widget: string, required: false }
+      - { label: "Instituição", name: institution, widget: string, required: false }
+      - { label: "Imagem de capa", name: coverImage, widget: image, required: false, choose_url: false }
+      - label: "Links"
+        name: links
+        label_singular: "Link"
+        widget: list
+        required: false
+        summary: "{{fields.label}}"
+        fields:
+          - { label: "Texto do link", name: label, widget: string }
+          - { label: "URL", name: href, widget: string }
+      - label: "Publicado (visível no site)"
+        name: published
+        widget: boolean
+        default: true
+        hint: "Desligue para deixar o grupo oculto enquanto edita."

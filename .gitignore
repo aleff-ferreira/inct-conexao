@@ -1,0 +1,17 @@
+node_modules/
+dist/
+screenshots/
+.tools/
+.DS_Store
+*.log
+.env
+.env.local
+*.zip
+dist-test/
+tmp/
+*:Zone.Identifier
+
+# Arquivos avulsos na raiz que não fazem parte do site (mantidos só no disco)
+/CNPq Proposta submetida INCT 2024.pdf
+/5E4C49CD-2E3B-4BE9-B5BD-44222180DED3_L0_001-08_11_2025-15_10_08-1-300x212.png
+/D792A163-4E69-44DC-8330-71660A362D55_L0_001-03_11_2025-17_57_29-2.jpg
