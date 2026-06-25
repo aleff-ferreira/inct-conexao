@@ -60,7 +60,7 @@
     { "acronym": "UNIR", "name": "Universidade Federal de Rondônia", "logo": "institution-logos/unir.png" },
     { "acronym": "UFAM", "name": "Universidade Federal do Amazonas", "logo": "partner-logos/ufam.png" },
     { "acronym": "UFPA", "name": "Universidade Federal do Pará", "logo": "partner-logos/ufpa.png" },
-    { "acronym": "IKIAM", "name": "Universidad Regional Amazónica IKIAM", "logo": "partner-logos/ikiam.svg" }
+    { "acronym": "IKIAM", "name": "Universidad Regional Amazónica IKIAM", "logo": "partner-logos/ikiam.png" }
   ],
   "seo": {
     "ogTitle": "Biodiversidade, bioprospecção e bioeconomia na Amazônia",
