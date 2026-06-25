@@ -33,8 +33,8 @@
  *  5. No painel "Execução / Logs" aparecem dois links:
  *       • "ENVIAR aos líderes"  → o link que você manda para todos os líderes.
  *       • "EDITAR o formulário"  → caso queira ajustar algo à mão depois.
- *  6. (Opcional) Abra o formulário em "Editar", aba "Respostas" → ícone de
- *     planilha → cria a planilha privada que reúne tudo.
+ *  6. A planilha PRIVADA de respostas é criada automaticamente — o link dela
+ *     aparece nos Logs. É nela que você acompanha os envios (só você a vê).
  *
  *  Para mudar metas/grupos depois: edite GRUPOS e rode "criarFormulario" de novo
  *  (gera um formulário novo) — ou ajuste o formulário existente à mão.
@@ -77,6 +77,8 @@ function criarFormulario() {
   var form = FormApp.create(TITULO_FORM);
   form.setDescription(INTRO);
   form.setCollectEmail(false);     // não força login; pedimos nome/e-mail como campos
+  // OBS: NÃO adicione setRequireLogin/setLimitOneResponsePerUser — são recursos
+  // exclusivos do Google Workspace e não têm efeito numa conta @gmail comum.
   form.setProgressBar(true);
   form.setAllowResponseEdits(true); // o líder pode reabrir e corrigir depois
 
@@ -91,7 +93,12 @@ function criarFormulario() {
   var choices = [];
   GRUPOS.forEach(function (g) {
     var pagina = form.addPageBreakItem().setTitle(g.nome);
-    pagina.setGoToPage(FormApp.PageNavigationType.SUBMIT); // após preencher o grupo, vai ao envio
+    // Cada grupo é UMA página/seção. Pelas regras do Forms, este SUBMIT encerra
+    // a seção do grupo ANTERIOR (a escolha do grupo na página inicial tem
+    // prioridade sobre o primeiro page break, e o último grupo encerra no fim do
+    // formulário). Se um grupo passar a ter mais de uma página, mova este SUBMIT
+    // para a ÚLTIMA página do grupo.
+    pagina.setGoToPage(FormApp.PageNavigationType.SUBMIT);
 
     (g.metas || []).forEach(function (m) {
       form.addSectionHeaderItem()
@@ -102,8 +109,9 @@ function criarFormulario() {
         .setRequired(false);
       form.addTextItem()
         .setTitle('Link do relatório em PDF — ' + m.codigo)
-        .setHelpText('Suba o PDF no seu Google Drive, marque "compartilhar com a '
-          + 'coordenação" (ou "qualquer pessoa com o link pode ver") e cole o link aqui.')
+        .setHelpText('Suba o PDF no seu Google Drive, compartilhe (com a '
+          + 'coordenação ou "qualquer pessoa com o link pode ver") e cole o link aqui.')
+        .setValidation(linkValido()) // aceita só links (evita texto colado por engano)
         .setRequired(false);
     });
 
@@ -111,13 +119,25 @@ function criarFormulario() {
   });
   grupoItem.setChoices(choices);
 
+  // Cria automaticamente a planilha PRIVADA de respostas, no seu Drive.
+  var planilha = SpreadsheetApp.create(TITULO_FORM + ' (respostas)');
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, planilha.getId());
+
   Logger.log('Formulário criado com sucesso!');
   Logger.log('--------------------------------------------------');
   Logger.log('Link para ENVIAR aos líderes:');
   Logger.log('  ' + form.getPublishedUrl());
   Logger.log('Link para VOCÊ editar o formulário:');
   Logger.log('  ' + form.getEditUrl());
+  Logger.log('Planilha de respostas (privada, só você vê):');
+  Logger.log('  ' + planilha.getUrl());
   Logger.log('--------------------------------------------------');
-  Logger.log('Dica: abra o formulário em "Editar" → aba "Respostas" → ícone de '
-    + 'planilha, para reunir tudo numa planilha privada.');
+}
+
+/** Validação de campo: exige um link (URL começando com http). */
+function linkValido() {
+  return FormApp.createTextValidation()
+    .setHelpText('Cole um link válido (deve começar com http).')
+    .requireTextIsUrl()
+    .build();
 }

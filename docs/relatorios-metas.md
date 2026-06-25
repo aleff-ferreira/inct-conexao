@@ -40,8 +40,8 @@ Um script monta o formulário inteiro (seções por grupo, metas, campos) para v
 5. No painel **Execução / Logs** aparecem dois links:
    - **ENVIAR aos líderes** → mande este para todos os líderes (é o mesmo para todos).
    - **EDITAR o formulário** → caso queira ajustar algo à mão.
-6. (Opcional, recomendado) Abra o formulário em **Editar → aba Respostas → ícone
-   de planilha** para reunir tudo numa **planilha privada** no seu Drive.
+6. A **planilha privada de respostas** é criada automaticamente (o link aparece
+   nos Logs) — é nela que você acompanha os envios. Só você a vê.
 
 Para mudar metas/grupos depois: edite `GRUPOS` e rode `criarFormulario` de novo
 (gera um formulário novo), ou ajuste o formulário existente à mão.
