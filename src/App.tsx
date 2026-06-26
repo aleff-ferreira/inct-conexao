@@ -2369,7 +2369,7 @@ function App() {
               <div className="funding-logo-grid" aria-label="Agências e instituições de fomento do INCT-CONEXAO">
                 {fundingAgencies.map((agency) => (
                   <a
-                    className={`funding-card ${agency.acronym === "SECTICS/MS" ? "funding-card--wide-logo" : ""}`}
+                    className="funding-card"
                     href={agency.href}
                     target="_blank"
                     rel="noreferrer"
