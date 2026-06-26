@@ -1374,7 +1374,7 @@ const partnerLogos: Record<string, string> = {
   "PUC/PR": partnerLogoPath("pucpr.png"),
   ILMD: partnerLogoPath("ilmd.png"),
   UFSCar: partnerLogoPath("ufscar.png"),
-  USP: partnerLogoPath("usp.svg"),
+  USP: partnerLogoPath("usp.jpg"),
   "FIOCRUZ/CE": partnerLogoPath("fiocruz-ce.jpg"),
   UFT: partnerLogoPath("uft.png"),
   UFMT: partnerLogoPath("ufmt.png"),
