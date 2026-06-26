@@ -138,6 +138,9 @@ export type WebinarEvent = {
   seo?: WebinarSeo;
   /** Snapshot do grupo dono (slug + nome), resolvido a partir de `groupSlug`. */
   group?: { slug: string; name: string };
+  /** false = standby: o webinar fica OCULTO do site (use enquanto a data não
+   *  estiver confirmada). Padrão: true. */
+  published?: boolean;
 };
 
 export type GroupLink = { label: string; href: string };
@@ -192,6 +195,8 @@ type RawWebinar = {
   seo?: WebinarSeo;
   /** Slug do grupo dono (relação escolhida no painel). */
   groupSlug?: string;
+  /** false = standby (oculto). Padrão: true. */
+  published?: boolean;
 };
 type RawGroup = Omit<WebinarGroup, "coverImage"> & { coverImage?: string };
 
@@ -256,6 +261,7 @@ export function normalizeWebinar(raw: RawWebinar, groupName: (slug: string) => s
     partners: (raw.partners ?? []).map((p) => ({ name: p.name, acronym: p.acronym, logo: assetUrl(p.logo) })),
     seo: raw.seo ? { ...raw.seo, ogImage: bareAsset(raw.seo.ogImage) } : undefined,
     group: raw.groupSlug ? { slug: raw.groupSlug, name: groupName(raw.groupSlug) } : undefined,
+    published: raw.published !== false,
   };
 }
 
@@ -283,9 +289,9 @@ export const webinarGroups: WebinarGroup[] = Object.values(groupFiles)
 
 const groupNameBySlug = new Map(webinarGroups.map((group) => [group.slug, group.name]));
 
-export const webinars: WebinarEvent[] = Object.values(webinarFiles).map((mod) =>
-  normalizeWebinar(mod.default, (slug) => groupNameBySlug.get(slug) ?? slug),
-);
+export const webinars: WebinarEvent[] = Object.values(webinarFiles)
+  .map((mod) => normalizeWebinar(mod.default, (slug) => groupNameBySlug.get(slug) ?? slug))
+  .filter((event) => event.published !== false);
 
 // Guarda de desenvolvimento: avisa se dois eventos tiverem o mesmo slug.
 if (import.meta.env.DEV) {

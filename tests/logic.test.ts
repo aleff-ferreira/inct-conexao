@@ -121,10 +121,12 @@ describe("groups", () => {
   it("groupBySlug finds the group", () => {
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("webinarsOfGroup filters by event.group.slug", () => {
-    const slugs = webinarsOfGroup(webinars, "conexao-clima-saude-unica").map((e) => e.slug);
-    expect(slugs).toContain("mesa-redonda-clima-eventos-extremos-saude-unica-amazonia");
+  it("webinarsOfGroup filters by event.group.slug (standby webinars hidden)", () => {
+    const slugs = webinarsOfGroup(webinars, "conexao-bioprospeccao-bioeconomia").map((e) => e.slug);
+    expect(slugs).toContain("mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia");
     expect(webinarsOfGroup(webinars, "inexistente")).toHaveLength(0);
+    // O webinar de clima está em standby (published:false) → some do site.
+    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeUndefined();
   });
 });
 
@@ -216,9 +218,9 @@ describe("content files load through the glob loader", () => {
     expect(webinarGroups.length).toBeGreaterThanOrEqual(2);
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("links the clima webinar to its group via the resolved snapshot", () => {
-    const ev = bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia");
-    expect(ev?.group).toEqual({ slug: "conexao-clima-saude-unica", name: "CONEXAO-Clima & Saúde Única" });
+  it("links a published webinar to its group via the resolved snapshot", () => {
+    const ev = bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia");
+    expect(ev?.group).toEqual({ slug: "conexao-bioprospeccao-bioeconomia", name: "CONEXAO-Bioprospecção e Bioeconomia" });
     expect(ev?.partners[0].logo).toContain("assets/partner-logos/fiocruz-ro.png");
   });
   it("loads the self-hosted replay as an inline file source", () => {

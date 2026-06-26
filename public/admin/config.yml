@@ -99,6 +99,11 @@ collections:
           - { label: "Encerrado", value: ended }
         default: ""
         hint: "Deixe em Automático para calcular pelas datas."
+      - label: "Publicado (visível no site)"
+        name: published
+        widget: boolean
+        default: true
+        hint: "Desligue para deixar em STANDBY: o webinar some do site (sem perder o conteúdo). Útil enquanto não há data confirmada."
       - { label: "Imagem de capa", name: heroImage, widget: image, required: false, choose_url: false }
       - label: "URL da transmissão ao vivo"
         name: liveStream
