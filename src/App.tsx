@@ -1406,7 +1406,7 @@ const partnerLogos: Record<string, string> = {
   FCR: partnerLogoPath("fcr.png"),
   FIMCA: partnerLogoPath("fimca.png"),
   UniSL: partnerLogoPath("unisl.jpg"),
-  "CEPEM/SSER": partnerLogoPath("cepem.jpg"),
+  "CEPEM/SSER": partnerLogoPath("cepem.png"),
   ICMBio: partnerLogoPath("icmbio.png"),
   IFRR: partnerLogoPath("ifrr.png"),
   ECOPORÉ: partnerLogoPath("ecopore.png"),
