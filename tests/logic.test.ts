@@ -121,12 +121,11 @@ describe("groups", () => {
   it("groupBySlug finds the group", () => {
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("webinarsOfGroup filters by event.group.slug (standby webinars hidden)", () => {
-    const slugs = webinarsOfGroup(webinars, "conexao-bioprospeccao-bioeconomia").map((e) => e.slug);
-    expect(slugs).toContain("mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia");
-    expect(webinarsOfGroup(webinars, "inexistente")).toHaveLength(0);
-    // O webinar de clima está em standby (published:false) → some do site.
-    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeUndefined();
+  it("webinarsOfGroup filters by event.group.slug", () => {
+    const a = ev({ slug: "a", group: { slug: "g1", name: "G1" } });
+    const b = ev({ slug: "b", group: { slug: "g2", name: "G2" } });
+    expect(webinarsOfGroup([a, b], "g1").map((e) => e.slug)).toEqual(["a"]);
+    expect(webinarsOfGroup([a, b], "inexistente")).toHaveLength(0);
   });
 });
 
@@ -199,6 +198,10 @@ describe("normalizeWebinar (CMS JSON -> WebinarEvent)", () => {
     expect(e.partners).toEqual([]);
     expect(e.group).toBeUndefined();
   });
+  it("defaults published to true unless explicitly false (standby flag)", () => {
+    expect(normalizeWebinar(base, groupName).published).toBe(true);
+    expect(normalizeWebinar({ ...base, published: false }, groupName).published).toBe(false);
+  });
 });
 
 describe("normalizeGroup (CMS JSON -> WebinarGroup)", () => {
@@ -218,14 +221,10 @@ describe("content files load through the glob loader", () => {
     expect(webinarGroups.length).toBeGreaterThanOrEqual(2);
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("links a published webinar to its group via the resolved snapshot", () => {
-    const ev = bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia");
-    expect(ev?.group).toEqual({ slug: "conexao-bioprospeccao-bioeconomia", name: "CONEXAO-Bioprospecção e Bioeconomia" });
-    expect(ev?.partners[0].logo).toContain("assets/partner-logos/fiocruz-ro.png");
-  });
-  it("loads the self-hosted replay as an inline file source", () => {
-    const ev = bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia");
-    expect(ev?.replay).toEqual({ type: "file", url: webinarAsset("instagram-iniciacao-cientifica.mp4") });
+  it("ships both example webinars in standby (published:false) → none are public yet", () => {
+    // Ainda não houve mesas-redondas; o conteúdo de exemplo fica oculto até haver datas.
+    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeUndefined();
+    expect(bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")).toBeUndefined();
   });
 });
 

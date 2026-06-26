@@ -1915,10 +1915,12 @@ function App() {
               </p>
               <h2>Webinars e mesas-redondas da rede</h2>
               <p>
-                Acompanhe debates científicos do INCT-CONEXAO sobre Saúde Única, clima, biodiversidade e bioeconomia — ao vivo e sob demanda, no nosso centro de transmissões.
+                {featuredWebinar
+                  ? "Acompanhe debates científicos do INCT-CONEXAO sobre Saúde Única, clima, biodiversidade e bioeconomia — ao vivo e sob demanda, no nosso centro de transmissões."
+                  : "Estamos preparando o centro de transmissões científicas do INCT-CONEXAO. Em breve, mesas-redondas e webinars sobre Saúde Única, clima, biodiversidade e bioeconomia na Amazônia — ao vivo e sob demanda."}
               </p>
               <a className="button primary" href={HUB_HREF}>
-                Ver webinars
+                {featuredWebinar ? "Ver webinars" : "Conhecer o centro de transmissões"}
                 <PlayCircle size={18} aria-hidden="true" />
               </a>
             </div>
