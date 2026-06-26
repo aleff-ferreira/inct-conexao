@@ -1406,7 +1406,7 @@ const partnerLogos: Record<string, string> = {
   FCR: partnerLogoPath("fcr.png"),
   FIMCA: partnerLogoPath("fimca.png"),
   UniSL: partnerLogoPath("unisl.jpg"),
-  // "CEPEM/SSER": partnerLogoPath("cepem.png"), // ⚠ desativado: placeholder genérico (idêntico ao de IPEPATRO). Mostra a sigla até receber a arte oficial.
+  "CEPEM/SSER": partnerLogoPath("cepem.jpg"),
   ICMBio: partnerLogoPath("icmbio.png"),
   IFRR: partnerLogoPath("ifrr.png"),
   ECOPORÉ: partnerLogoPath("ecopore.png"),
