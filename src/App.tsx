@@ -233,7 +233,7 @@ const featuredInstitutions = [
     name: "Fundação Oswaldo Cruz Noroeste",
     role: "coordenação executiva",
     location: "Rondônia",
-    logo: assetPath("institution-logos/fiocruz.jpg"),
+    logo: assetPath("partner-logos/fiocruz-ro.png"),
     tone: "forest",
   },
   {
@@ -1394,12 +1394,12 @@ const partnerLogos: Record<string, string> = {
   UFCG: partnerLogoPath("ufcg.png"),
   UFPR: partnerLogoPath("ufpr.png"),
   UFF: partnerLogoPath("uff.png"),
-  IBAMA: partnerLogoPath("ibama.png"),
+  // IBAMA: partnerLogoPath("ibama.png"), // ⚠ desativado: imagem incorreta (favicon genérico, não é o IBAMA). Mostra a sigla até receber a arte oficial.
   "FAAR/IESUR": partnerLogoPath("faar-official.png"),
   FCR: partnerLogoPath("fcr.png"),
   FIMCA: partnerLogoPath("fimca.png"),
   UniSL: partnerLogoPath("unisl.png"),
-  "CEPEM/SSER": partnerLogoPath("cepem.png"),
+  // "CEPEM/SSER": partnerLogoPath("cepem.png"), // ⚠ desativado: placeholder genérico (idêntico ao de IPEPATRO). Mostra a sigla até receber a arte oficial.
   ICMBio: partnerLogoPath("icmbio.png"),
   IFRR: partnerLogoPath("ifrr.png"),
   ECOPORÉ: partnerLogoPath("ecopore.png"),
@@ -1407,12 +1407,12 @@ const partnerLogos: Record<string, string> = {
   PMJP: partnerLogoPath("pmjp.png"),
   "SESAU/RR": partnerLogoPath("sesau-rr.png"),
   PMRILIS: partnerLogoPath("pmrilis.png"),
-  "SEDUC/RO": partnerLogoPath("seduc-ro.png"),
-  IPEPATRO: partnerLogoPath("ipepatro.png"),
+  // "SEDUC/RO": partnerLogoPath("seduc-ro.png"), // ⚠ desativado: brasão genérico do estado (igual ao GOVERNO/RO). Mostra a sigla até receber a arte oficial da Secretaria.
+  // IPEPATRO: partnerLogoPath("ipepatro.png"), // ⚠ desativado: placeholder genérico (idêntico ao de CEPEM). Mostra a sigla até receber a arte oficial.
   "SESAU/RO": partnerLogoPath("sesau-ro.png"),
   PMPV: partnerLogoPath("pmpv.svg"),
   FAPERO: partnerLogoPath("fapero.png"),
-  KARIPUNAS: partnerLogoPath("karipunas.png"),
+  // KARIPUNAS: partnerLogoPath("karipunas.png"), // ⚠ desativado: imagem em branco (27×27). Mostra a sigla até receber a arte oficial.
   "PAITER SURUI": partnerLogoPath("paiter-surui.png"),
   Antigen: partnerLogoPath("antigen.png"),
   Amazonzyme: partnerLogoPath("amazonzyme.png"),
