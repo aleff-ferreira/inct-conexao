@@ -1196,6 +1196,13 @@ const partners: Partner[] = [
     focus: "Parceria em saúde pública, vigilância, capacitação e políticas informadas por evidências.",
   },
   {
+    name: "Secretaria de Estado do Desenvolvimento Ambiental de Rondônia",
+    acronym: "SEDAM/RO",
+    group: "Parceira",
+    location: "RO, Brasil",
+    focus: "Parceria em desenvolvimento ambiental, gestão de recursos naturais e políticas para a Amazônia.",
+  },
+  {
     name: "Prefeitura Municipal de Porto Velho",
     acronym: "PMPV",
     group: "Parceira",
@@ -1398,7 +1405,7 @@ const partnerLogos: Record<string, string> = {
   "FAAR/IESUR": partnerLogoPath("faar-official.png"),
   FCR: partnerLogoPath("fcr.png"),
   FIMCA: partnerLogoPath("fimca.png"),
-  UniSL: partnerLogoPath("unisl.png"),
+  UniSL: partnerLogoPath("unisl.jpg"),
   // "CEPEM/SSER": partnerLogoPath("cepem.png"), // ⚠ desativado: placeholder genérico (idêntico ao de IPEPATRO). Mostra a sigla até receber a arte oficial.
   ICMBio: partnerLogoPath("icmbio.png"),
   IFRR: partnerLogoPath("ifrr.png"),
@@ -1407,9 +1414,10 @@ const partnerLogos: Record<string, string> = {
   PMJP: partnerLogoPath("pmjp.png"),
   "SESAU/RR": partnerLogoPath("sesau-rr.png"),
   PMRILIS: partnerLogoPath("pmrilis.png"),
-  "SEDUC/RO": partnerLogoPath("seduc-ro.png"),
+  "SEDUC/RO": partnerLogoPath("seduc-ro.jpg"),
   // IPEPATRO: partnerLogoPath("ipepatro.png"), // ⚠ desativado: placeholder genérico (idêntico ao de CEPEM). Mostra a sigla até receber a arte oficial.
-  "SESAU/RO": partnerLogoPath("sesau-ro.png"),
+  "SESAU/RO": partnerLogoPath("sesau-ro.jpg"),
+  "SEDAM/RO": partnerLogoPath("sedam-ro.jpg"),
   PMPV: partnerLogoPath("pmpv.svg"),
   FAPERO: partnerLogoPath("fapero.png"),
   // KARIPUNAS: partnerLogoPath("karipunas.png"), // ⚠ desativado: imagem em branco (27×27). Mostra a sigla até receber a arte oficial.
