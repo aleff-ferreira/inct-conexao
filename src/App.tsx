@@ -1368,7 +1368,7 @@ const partnerLogos: Record<string, string> = {
   ILMD: partnerLogoPath("ilmd.png"),
   UFSCar: partnerLogoPath("ufscar.png"),
   USP: partnerLogoPath("usp.svg"),
-  "FIOCRUZ/CE": partnerLogoPath("fiocruz-ce.png"),
+  "FIOCRUZ/CE": partnerLogoPath("fiocruz-ce.jpg"),
   UFT: partnerLogoPath("uft.png"),
   UFMT: partnerLogoPath("ufmt.png"),
   UFSJ: partnerLogoPath("ufsj.png"),
@@ -1388,13 +1388,13 @@ const partnerLogos: Record<string, string> = {
   UFRRJ: partnerLogoPath("ufrrj.png"),
   UnB: partnerLogoPath("unb.gif"),
   "FIOCRUZ/Pantanal": partnerLogoPath("fiocruz-pantanal.png"),
-  UFRN: partnerLogoPath("ufrn.png"),
+  UFRN: partnerLogoPath("ufrn.jpg"),
   INPE: partnerLogoPath("inpe.png"),
   UFJF: partnerLogoPath("ufjf.png"),
   UFCG: partnerLogoPath("ufcg.png"),
   UFPR: partnerLogoPath("ufpr.png"),
   UFF: partnerLogoPath("uff.png"),
-  // IBAMA: partnerLogoPath("ibama.png"), // ⚠ desativado: imagem incorreta (favicon genérico, não é o IBAMA). Mostra a sigla até receber a arte oficial.
+  IBAMA: partnerLogoPath("ibama.png"),
   "FAAR/IESUR": partnerLogoPath("faar-official.png"),
   FCR: partnerLogoPath("fcr.png"),
   FIMCA: partnerLogoPath("fimca.png"),
@@ -1407,7 +1407,7 @@ const partnerLogos: Record<string, string> = {
   PMJP: partnerLogoPath("pmjp.png"),
   "SESAU/RR": partnerLogoPath("sesau-rr.png"),
   PMRILIS: partnerLogoPath("pmrilis.png"),
-  // "SEDUC/RO": partnerLogoPath("seduc-ro.png"), // ⚠ desativado: brasão genérico do estado (igual ao GOVERNO/RO). Mostra a sigla até receber a arte oficial da Secretaria.
+  "SEDUC/RO": partnerLogoPath("seduc-ro.png"),
   // IPEPATRO: partnerLogoPath("ipepatro.png"), // ⚠ desativado: placeholder genérico (idêntico ao de CEPEM). Mostra a sigla até receber a arte oficial.
   "SESAU/RO": partnerLogoPath("sesau-ro.png"),
   PMPV: partnerLogoPath("pmpv.svg"),
