@@ -1722,7 +1722,7 @@ function App() {
           <div className="section-inner strip-grid">
             <div>
               <p className="eyebrow dark">O que é o INCT-CONEXAO</p>
-              <h2>Ciência amazônica organizada para decisão, inovação e cuidado.</h2>
+              <h2>Ciência amazônica organizada para decisão, inovação e cuidado</h2>
             </div>
             <p>
               O instituto atua diante dos desafios regionais ampliados pelas mudanças climáticas e por eventos ambientais extremos. O monitoramento biometeorológico, a pesquisa em biodiversidade e a integração com comunidades permitem compreender riscos à Saúde Única, identificar fragilidades e aproveitar a biodiversidade amazônica de forma sustentável.
@@ -1734,7 +1734,7 @@ function App() {
           <div className="section-inner field-layout">
             <div className="field-intro">
               <p className="eyebrow dark">Ciência em movimento</p>
-              <h2>Campo, dados e biodiversidade como uma única infraestrutura de conhecimento.</h2>
+              <h2>Campo, dados e biodiversidade como uma única infraestrutura de conhecimento</h2>
             </div>
             <div className="field-grid">
               {fieldStories.map((story, index) => {
@@ -1761,7 +1761,7 @@ function App() {
           <div className="section-inner">
             <div className="section-heading">
               <p className="eyebrow dark">Linhas de pesquisa</p>
-              <h2>Três frentes integradas, uma agenda amazônica.</h2>
+              <h2>Três frentes integradas, uma agenda amazônica</h2>
               <p>
                 A pesquisa foi reorganizada para ficar mais clara para públicos científicos, gestores, parceiros e comunidades.
               </p>
@@ -1818,7 +1818,7 @@ function App() {
           <div className="section-inner">
             <div className="section-heading compact">
               <p className="eyebrow dark">Eixos estratégicos transversais</p>
-              <h2>Da coleta de dados à transformação territorial.</h2>
+              <h2>Da coleta de dados à transformação territorial</h2>
             </div>
             <div className="axes-grid">
               {strategicAxes.map((axis) => (
@@ -1865,7 +1865,7 @@ function App() {
           <div className="section-inner action-layout">
             <div className="action-intro">
               <p className="eyebrow dark">No Instagram @inct_conexao</p>
-              <h2>Registros públicos das ações coordenadas pelo INCT.</h2>
+              <h2>Registros públicos das ações coordenadas pelo INCT</h2>
               <p>
                 Seleção de publicações com fotos e artes do próprio Instagram do INCT-CONEXAO, filtradas para mostrar o que acrescenta contexto institucional: campo, formação, dados, parcerias e inovação.
               </p>
@@ -1963,7 +1963,7 @@ function App() {
               <div className="linkedin-profile-head">
                 <Linkedin size={28} aria-hidden="true" />
                 <p className="eyebrow dark">LinkedIn institucional</p>
-                <h2>Presença pública orientada a pesquisa, inovação e articulação institucional.</h2>
+                <h2>Presença pública orientada a pesquisa, inovação e articulação institucional</h2>
                 <p>
                   O perfil público do INCT-CONEXAO apresenta a rede como iniciativa de pesquisa sediada em Porto Velho, articulando biodiversidade, biotecnologia, biometeorologia, toxicologia, educação em Saúde Única, CT&I, empreendedorismo e formação acadêmica.
                 </p>
@@ -2007,7 +2007,7 @@ function App() {
           <div className="section-inner governance-shell">
             <div className="section-heading governance-heading">
               <p className="eyebrow dark">Gestão e governança</p>
-              <h2>Como o INCT-CONEXAO coordena uma rede multicêntrica na Amazônia.</h2>
+              <h2>Como o INCT-CONEXAO coordena uma rede multicêntrica na Amazônia</h2>
               <p>
                 O modelo descrito na proposta CNPq combina coordenação executiva em Rondônia, Comitê Gestor, líderes de laboratórios associados, comitês técnicos e membros de equipe para executar ciência, tecnologia e ações sociais em todos os estados da Amazônia Legal.
               </p>
@@ -2017,7 +2017,7 @@ function App() {
               <aside className="governance-command" aria-label="Estrutura de comando e acompanhamento">
                 <article className="governance-command-card">
                   <span>Gestão compartilhada</span>
-                  <h3>Decisão estratégica, execução territorial e controle técnico no mesmo fluxo.</h3>
+                  <h3>Decisão estratégica, execução territorial e controle técnico no mesmo fluxo</h3>
                   <p>
                     O CGES define prioridades; os LLAs acompanham e executam atividades; os CTs assessoram por área; os membros de equipe conectam academia, governo, empresas e sociedade.
                   </p>
@@ -2073,7 +2073,7 @@ function App() {
               <div className="committee-board-head">
                 <div>
                   <p className="eyebrow dark">Comitês técnicos</p>
-                  <h3>Seis frentes assessoram o CGES e dão suporte aos LLAs.</h3>
+                  <h3>Seis frentes assessoram o CGES e dão suporte aos LLAs</h3>
                 </div>
                 <p>
                   Os comitês deixam explícito quem cuida da logística de campo, da relação clima-território, da qualidade científica, da comunicação, da inovação e da cooperação internacional.
@@ -2110,7 +2110,7 @@ function App() {
           <div className="section-inner">
             <div className="section-heading">
               <p className="eyebrow dark">Ecossistema institucional</p>
-              <h2>Instituições, laboratórios associados e grupos que executam o INCT-CONEXAO.</h2>
+              <h2>Instituições, laboratórios associados e grupos que executam o INCT-CONEXAO</h2>
               <p>
                 Rede extraída da proposta CNPq 2024: sede executora, laboratórios associados, colaboradoras nacionais e estrangeiras, FAP, setor público, empresas e organizações da sociedade.
               </p>
@@ -2205,7 +2205,7 @@ function App() {
               <div className="lab-network-head">
                 <div>
                   <p className="eyebrow dark">Laboratórios e grupos associados</p>
-                  <h3>O trabalho científico é organizado em 8 Etapas Estratégicas Transversais.</h3>
+                  <h3>O trabalho científico é organizado em 8 Etapas Estratégicas Transversais</h3>
                 </div>
                 <p>
                   Cada EET conta com líderes de laboratórios associados e pesquisadores vinculados aos comitês técnicos: Expedições Científicas, Clima e Comunidades Originárias, Técnico-Científico, Divulgação, Políticas Públicas/Inovação e Internacionalização.
@@ -2280,7 +2280,7 @@ function App() {
             <div className="impact-grid">
               <div className="impact-copy">
                 <p className="eyebrow dark">ODS e políticas públicas</p>
-                <h2>Do dado de campo à decisão pública.</h2>
+                <h2>Do dado de campo à decisão pública</h2>
                 <p>
                   O INCT-CONEXAO organiza evidências para apoiar a Política Nacional de Mudança do Clima, o Plano de Ação Nacional de Uma Só Saúde e o Programa Nacional de Plantas Medicinais.
                 </p>
@@ -2313,7 +2313,7 @@ function App() {
             <div className="policy-evidence-panel">
               <div className="policy-evidence-head">
                 <span>Registros públicos</span>
-                <h3>Evidências visuais conectam campo, comunidade, clima e governança.</h3>
+                <h3>Evidências visuais conectam campo, comunidade, clima e governança</h3>
                 <p>Publicações selecionadas do INCT-CONEXAO usadas como provas de execução, mobilização territorial e articulação institucional.</p>
               </div>
               <div className="policy-evidence-grid" aria-label="Registros públicos que sustentam a agenda de impacto">
@@ -2339,7 +2339,7 @@ function App() {
           <div className="section-inner">
             <div className="section-heading">
               <p className="eyebrow dark">Editais e documentos</p>
-              <h2>Acesso rápido a processos seletivos e resultados.</h2>
+              <h2>Acesso rápido a processos seletivos e resultados</h2>
             </div>
             <div className="notice-grid">
               {notices.map((notice) => (
@@ -2364,7 +2364,7 @@ function App() {
           <div className="section-inner funding-grid">
             <div className="funding-copy">
               <p className="eyebrow dark">Fomento</p>
-              <h2>Agências e instituições que sustentam o INCT-CONEXAO.</h2>
+              <h2>Agências e instituições que sustentam o INCT-CONEXAO</h2>
               <p>
                 O INCT-CONEXAO se insere na Chamada MCTI/CNPq/SECTICS/MS/CAPES/FAPs Nº 46/2024, do Programa Institutos Nacionais de Ciência e Tecnologia.
               </p>
@@ -2407,7 +2407,7 @@ function App() {
           <div className="section-inner contact-grid">
             <div>
               <p className="eyebrow">Contato</p>
-              <h2>Conecte sua instituição, comunidade ou pesquisa à rede.</h2>
+              <h2>Conecte sua instituição, comunidade ou pesquisa à rede</h2>
               <p>
                 Para dúvidas sobre chamadas, cooperações, expedições, divulgação científica e parcerias, use os canais oficiais do INCT-CONEXAO.
               </p>
