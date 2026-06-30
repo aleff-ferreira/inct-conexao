@@ -117,8 +117,9 @@ export function EditalIC2026() {
             <ArrowLeft size={16} aria-hidden="true" /> Voltar para Editais
           </a>
           <p className="eyebrow">
-            <Sparkles size={15} aria-hidden="true" /> Edital aberto · Processo Seletivo Simplificado Nº 04/2026
+            <Sparkles size={15} aria-hidden="true" /> Edital aberto
           </p>
+          <p className="edital-kicker">Processo Seletivo Simplificado Nº 04/2026</p>
           <h1>Seleção de Bolsistas de Iniciação Científica (IC/CNPq)</h1>
           <p className="edital-hero-text">
             Seleção de 50 bolsistas de Iniciação Científica para atuar nos grupos de pesquisa e instituições do
