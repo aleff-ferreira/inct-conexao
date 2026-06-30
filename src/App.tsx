@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  ArrowRight,
   Atom,
   BarChart3,
   BookOpen,
@@ -32,7 +33,8 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
-import { useHashRoute, HUB_HREF, GROUPS_HREF, eventHref } from "./webinars/router";
+import { useHashRoute, HUB_HREF, GROUPS_HREF, EDITAL_HREF, eventHref } from "./webinars/router";
+import { EditalIC2026 } from "./EditalIC2026";
 import { WebinarHub } from "./webinars/WebinarHub";
 import { WebinarEvent } from "./webinars/WebinarEvent";
 import { GroupsHub } from "./webinars/GroupsHub";
@@ -634,7 +636,26 @@ const committees = [
   },
 ];
 
-const notices = [
+type Notice = {
+  status: string;
+  title: string;
+  date: string;
+  text: string;
+  href: string;
+  linkLabel?: string;
+  featured?: boolean;
+};
+
+const notices: Notice[] = [
+  {
+    status: "Inscrições abertas · 01–15 jul 2026",
+    title: "Processo Seletivo Simplificado Nº 04/2026 — Bolsas de IC/CNPq",
+    date: "Publicação: 30 jun. 2026",
+    text: "Seleção de 50 bolsistas de Iniciação Científica (R$ 700/mês, por 12 meses) para os grupos e instituições do INCT-CONEXAO, nas regiões da Amazônia Legal, Nordeste e Centro-Oeste.",
+    href: EDITAL_HREF,
+    linkLabel: "Ver edital completo",
+    featured: true,
+  },
   {
     status: "Resultado publicado",
     title: "Resultado do Processo Seletivo Barco Ciência e Saúde 2026.1",
@@ -1675,6 +1696,7 @@ function App() {
       {route.name === "event" ? <WebinarEvent slug={route.slug} /> : null}
       {route.name === "groups" ? <GroupsHub /> : null}
       {route.name === "group" ? <GroupPage slug={route.slug} /> : null}
+      {route.name === "edital" ? <EditalIC2026 /> : null}
 
       {route.name === "home" ? (
       <main id="conteudo" tabIndex={-1}>
@@ -2342,20 +2364,24 @@ function App() {
               <h2>Acesso rápido a processos seletivos e resultados</h2>
             </div>
             <div className="notice-grid">
-              {notices.map((notice) => (
-                <article className="notice-card" key={notice.title}>
-                  <div>
-                    <span className="status-pill">{notice.status}</span>
-                    <p>{notice.date}</p>
-                  </div>
-                  <h3>{notice.title}</h3>
-                  <p>{notice.text}</p>
-                  <a className="notice-link" href={notice.href} target="_blank" rel="noreferrer">
-                    Abrir documento
-                    <Download size={18} aria-hidden="true" />
-                  </a>
-                </article>
-              ))}
+              {notices.map((notice) => {
+                const internal = notice.href.startsWith("#");
+                const linkProps = internal ? {} : { target: "_blank", rel: "noreferrer" };
+                return (
+                  <article className={`notice-card${notice.featured ? " notice-card--featured" : ""}`} key={notice.title}>
+                    <div>
+                      <span className="status-pill">{notice.status}</span>
+                      <p>{notice.date}</p>
+                    </div>
+                    <h3>{notice.title}</h3>
+                    <p>{notice.text}</p>
+                    <a className="notice-link" href={notice.href} {...linkProps}>
+                      {notice.linkLabel ?? "Abrir documento"}
+                      {internal ? <ArrowRight size={18} aria-hidden="true" /> : <Download size={18} aria-hidden="true" />}
+                    </a>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

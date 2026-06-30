@@ -15,10 +15,12 @@ export type Route =
   | { name: "hub" }
   | { name: "event"; slug: string }
   | { name: "groups" }
-  | { name: "group"; slug: string };
+  | { name: "group"; slug: string }
+  | { name: "edital" };
 
 export const HUB_HREF = "#/webinars";
 export const GROUPS_HREF = "#/grupos";
+export const EDITAL_HREF = "#/editais/selecao-ic-2026";
 export const eventHref = (slug: string): string => `#/webinars/${slug}`;
 export const groupHref = (slug: string): string => `#/grupos/${slug}`;
 
@@ -47,6 +49,10 @@ export function parseHash(rawHash: string): Route {
   if (segments[0] === "grupos") {
     if (segments[1]) return { name: "group", slug: decode(segments[1]) };
     return { name: "groups" };
+  }
+
+  if (segments[0] === "editais") {
+    return { name: "edital" };
   }
 
   // Rota desconhecida: volta para a home com segurança.
