@@ -264,6 +264,13 @@ export function EditalIC2026() {
                 </li>
               ))}
             </ul>
+            <p className="edital-note">
+              Aplicam-se, ainda, os requisitos gerais do CNPq para bolsas de Iniciação Científica (Resolução Normativa
+              RN-017/2006): dedicação às atividades de pesquisa do plano aprovado, conta-corrente ativa em nome do(a)
+              próprio(a) bolsista para recebimento da bolsa e não acumulação com outra bolsa de agência de fomento
+              (ressalvados benefícios como PROUNI e FIES). A orientação é conduzida por pesquisador(a) doutor(a) da
+              rede, em plena atividade de pesquisa.
+            </p>
           </div>
         </div>
       </section>
