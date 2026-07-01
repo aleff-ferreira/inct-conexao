@@ -5658,6 +5658,8 @@ select.admin-input {
 .edital-hero {
   position: relative;
   overflow: hidden;
+  /* clears the fixed 111px header, matching the webinar/event heroes */
+  padding-top: 152px;
 }
 .edital-hero-bg {
   position: absolute;
@@ -6080,5 +6082,11 @@ select.admin-input {
   }
   .edital-table td.num {
     text-align: left;
+  }
+}
+
+@media (max-width: 680px) {
+  .edital-hero {
+    padding-top: 116px;
   }
 }
