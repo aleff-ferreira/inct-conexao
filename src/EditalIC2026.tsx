@@ -94,7 +94,7 @@ const perfil = [
   "Estar regularmente matriculado(a) em curso de graduação, do 2º ao antepenúltimo período, em uma das instituições parceiras do INCT-CONEXAO listadas na distribuição das bolsas.",
   "Não possuir vínculo empregatício de qualquer natureza nem acumular a bolsa com outras modalidades de auxílio de agências de fomento.",
   "Possuir currículo cadastrado e atualizado na Plataforma Lattes (CNPq).",
-  "Dedicar-se às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado.",
+  "Ter disponibilidade para dedicação de, no mínimo, 20 horas semanais às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado.",
 ];
 
 export function EditalIC2026() {
@@ -266,10 +266,9 @@ export function EditalIC2026() {
             </ul>
             <p className="edital-note">
               Aplicam-se, ainda, os requisitos gerais do CNPq para bolsas de Iniciação Científica (Resolução Normativa
-              RN-017/2006): dedicação às atividades de pesquisa do plano aprovado, conta-corrente ativa em nome do(a)
-              próprio(a) bolsista para recebimento da bolsa e não acumulação com outra bolsa de agência de fomento
-              (ressalvados benefícios como PROUNI e FIES). A orientação é conduzida por pesquisador(a) doutor(a) da
-              rede, em plena atividade de pesquisa.
+              RN-017/2006): conta-corrente ativa em nome do(a) próprio(a) bolsista para recebimento da bolsa e não
+              acumulação com outra bolsa de agência de fomento (ressalvados benefícios como PROUNI e FIES). A
+              orientação é conduzida por pesquisador(a) doutor(a) da rede, em plena atividade de pesquisa.
             </p>
           </div>
         </div>
