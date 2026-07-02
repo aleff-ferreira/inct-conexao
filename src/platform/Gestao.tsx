@@ -6,28 +6,32 @@ import {
   Download,
   ExternalLink,
   FileText,
+  KeyRound,
   Loader2,
   Lock,
   LogOut,
-  Mail,
   Send,
   ShieldCheck,
+  UserCog,
   Users,
   Video,
 } from "lucide-react";
 import { platformEnabled } from "./supabaseClient";
-import { useAuth } from "./auth";
+import { useAuth, type AuthState } from "./auth";
 import {
   listApplications,
   listEditais,
   listEvaluations,
   listFiles,
+  listProfiles,
   setApplicationStatus,
   setEditalStatus,
+  setProfileRole,
   signedUrl,
   toCsv,
   upsertEvaluation,
 } from "./api";
+import { passwordIssue } from "./validation";
 import {
   aggregateFinal,
   bonusApplies,
@@ -36,9 +40,9 @@ import {
   rankState,
   weightedTotal,
 } from "./scoring";
-import type { Application, ApplicationFile, Edital, Evaluation } from "./types";
+import type { Application, ApplicationFile, Edital, Evaluation, Profile } from "./types";
 
-type Tab = "visao" | "inscricoes" | "classificacao";
+type Tab = "visao" | "inscricoes" | "classificacao" | "equipe";
 
 /** Portal da comissão: dashboard, avaliação e classificação — dentro do site. */
 export default function Gestao() {
@@ -49,8 +53,7 @@ export default function Gestao() {
   const [evals, setEvals] = useState<Evaluation[]>([]);
   const [tab, setTab] = useState<Tab>("visao");
   const [openApp, setOpenApp] = useState<Application | null>(null);
-  const [emailInput, setEmailInput] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -120,41 +123,17 @@ export default function Gestao() {
       </Shell>
     );
   }
+  if (auth.recovery) {
+    return (
+      <Shell email={auth.session?.user.email} onSignOut={auth.signOut}>
+        <PasswordCard title="Definir nova senha" cta="Salvar nova senha" onSubmit={auth.updatePassword} />
+      </Shell>
+    );
+  }
   if (!auth.session) {
     return (
       <Shell>
-        <div className="plat-card plat-login">
-          <Mail size={22} aria-hidden="true" />
-          <h2>Acesso da comissão</h2>
-          <p>Entre com seu e-mail institucional cadastrado para avaliar as inscrições.</p>
-          {auth.otpSentTo ? (
-            <p className="plat-ok">
-              <CheckCircle2 size={17} aria-hidden="true" /> Link enviado para <strong>{auth.otpSentTo}</strong>.
-            </p>
-          ) : (
-            <form
-              className="plat-inline-form"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                const { error } = await auth.signIn(emailInput);
-                setErrorMsg(error ?? "");
-              }}
-            >
-              <input
-                type="email"
-                required
-                placeholder="email@instituicao.br"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                aria-label="Seu e-mail"
-              />
-              <button className="button primary" type="submit">
-                Receber link <Send size={16} aria-hidden="true" />
-              </button>
-            </form>
-          )}
-          {errorMsg ? <p className="plat-error">{errorMsg}</p> : null}
-        </div>
+        <LoginCard auth={auth} />
       </Shell>
     );
   }
@@ -176,8 +155,21 @@ export default function Gestao() {
   }
 
   // ------------------------------------------------------------------ UI
+  if (showPw) {
+    return (
+      <Shell email={auth.session.user.email} onSignOut={auth.signOut}>
+        <div className="plat-eval">
+          <button className="plat-back plat-back-btn" onClick={() => setShowPw(false)}>
+            <ArrowLeft size={15} aria-hidden="true" /> Voltar ao painel
+          </button>
+          <PasswordCard title="Trocar minha senha" cta="Salvar nova senha" onSubmit={auth.updatePassword} />
+        </div>
+      </Shell>
+    );
+  }
+
   return (
-    <Shell email={auth.session.user.email} onSignOut={auth.signOut}>
+    <Shell email={auth.session.user.email} onSignOut={auth.signOut} onChangePassword={() => setShowPw(true)}>
       <div className="plat-toolbar">
         <label>
           Edital
@@ -199,10 +191,17 @@ export default function Gestao() {
           <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
             <ShieldCheck size={15} aria-hidden="true" /> Classificação
           </button>
+          {isAdmin ? (
+            <button className={tab === "equipe" ? "active" : ""} onClick={() => setTab("equipe")}>
+              <UserCog size={15} aria-hidden="true" /> Equipe
+            </button>
+          ) : null}
         </nav>
       </div>
 
-      {!edital ? (
+      {tab === "equipe" && isAdmin ? (
+        <EquipeView myId={auth.session.user.id} />
+      ) : !edital ? (
         <div className="plat-loading">
           <Loader2 size={22} aria-hidden="true" /> Carregando edital…
         </div>
@@ -675,15 +674,298 @@ function RankingView({
   );
 }
 
+// ------------------------------------------------------------------ login --
+function LoginCard({ auth }: { auth: AuthState }) {
+  const [mode, setMode] = useState<"login" | "reset" | "reset-sent">("login");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  if (mode === "reset-sent") {
+    return (
+      <div className="plat-card plat-login">
+        <CheckCircle2 size={22} aria-hidden="true" />
+        <h2>Link de redefinição enviado</h2>
+        <p>
+          Enviamos um link para <strong>{email}</strong>. Abra o e-mail <strong>neste mesmo navegador</strong> e
+          clique no link para definir a nova senha.
+        </p>
+        <button className="plat-linkbtn" onClick={() => setMode("login")}>
+          Voltar ao login
+        </button>
+      </div>
+    );
+  }
+
+  if (mode === "reset") {
+    return (
+      <div className="plat-card plat-login">
+        <KeyRound size={22} aria-hidden="true" />
+        <h2>Redefinir senha</h2>
+        <p>Informe o e-mail da sua conta da comissão; enviaremos um link para definir uma nova senha.</p>
+        <form
+          className="plat-inline-form"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setBusy(true);
+            const { error } = await auth.resetPassword(email);
+            setBusy(false);
+            if (error) setMsg(error);
+            else {
+              setMsg("");
+              setMode("reset-sent");
+            }
+          }}
+        >
+          <input
+            type="email"
+            required
+            placeholder="email@instituicao.br"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-label="Seu e-mail"
+          />
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? "Enviando…" : "Enviar link"} <Send size={16} aria-hidden="true" />
+          </button>
+        </form>
+        {msg ? <p className="plat-error">{msg}</p> : null}
+        <button className="plat-linkbtn" onClick={() => setMode("login")}>
+          Voltar ao login
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="plat-card plat-login">
+      <Lock size={22} aria-hidden="true" />
+      <h2>Acesso da comissão</h2>
+      <p>Entre com o e-mail e a senha da sua conta de avaliador(a).</p>
+      <form
+        className="plat-fields"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setBusy(true);
+          const { error } = await auth.signInWithPassword(email, senha);
+          setBusy(false);
+          setMsg(error ?? "");
+        }}
+      >
+        <label>
+          E-mail
+          <input
+            type="email"
+            required
+            placeholder="email@instituicao.br"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
+          />
+        </label>
+        <label>
+          Senha
+          <input
+            type="password"
+            required
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            autoComplete="current-password"
+          />
+        </label>
+        {msg ? <p className="plat-error">{msg}</p> : null}
+        <div className="plat-nav">
+          <button type="button" className="plat-linkbtn" onClick={() => setMode("reset")}>
+            Esqueci a senha
+          </button>
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? "Entrando…" : "Entrar"} <Lock size={15} aria-hidden="true" />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+// ----------------------------------------------------- definir/trocar senha --
+function PasswordCard({
+  title,
+  cta,
+  onSubmit,
+}: {
+  title: string;
+  cta: string;
+  onSubmit: (password: string) => Promise<{ error?: string }>;
+}) {
+  const [senha, setSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
+  const [msg, setMsg] = useState("");
+  const [ok, setOk] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <div className="plat-card plat-login">
+      <KeyRound size={22} aria-hidden="true" />
+      <h2>{title}</h2>
+      <form
+        className="plat-fields"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const issue = passwordIssue(senha, confirmar);
+          if (issue) {
+            setMsg(issue);
+            return;
+          }
+          setBusy(true);
+          const { error } = await onSubmit(senha);
+          setBusy(false);
+          if (error) setMsg(error);
+          else {
+            setMsg("");
+            setOk(true);
+            setSenha("");
+            setConfirmar("");
+          }
+        }}
+      >
+        <label>
+          Nova senha
+          <input
+            type="password"
+            required
+            minLength={10}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            autoComplete="new-password"
+          />
+          <small>Mínimo de 10 caracteres.</small>
+        </label>
+        <label>
+          Confirmar a nova senha
+          <input
+            type="password"
+            required
+            value={confirmar}
+            onChange={(e) => setConfirmar(e.target.value)}
+            autoComplete="new-password"
+          />
+        </label>
+        {msg ? <p className="plat-error">{msg}</p> : null}
+        {ok ? (
+          <p className="plat-ok">
+            <CheckCircle2 size={16} aria-hidden="true" /> Senha definida com sucesso — já vale no próximo login.
+          </p>
+        ) : null}
+        <div className="plat-nav">
+          <span />
+          <button className="button primary" type="submit" disabled={busy}>
+            {busy ? "Salvando…" : cta} <KeyRound size={15} aria-hidden="true" />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------- equipe --
+const ROLE_LABEL: Record<Profile["role"], string> = {
+  admin: "Administrador(a)",
+  avaliador: "Avaliador(a)",
+  candidato: "Candidato(a)",
+};
+
+function EquipeView({ myId }: { myId: string }) {
+  const [profiles, setProfiles] = useState<Profile[] | null>(null);
+  const [q, setQ] = useState("");
+  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    listProfiles().then(setProfiles).catch((e) => setMsg(e instanceof Error ? e.message : "Falha ao carregar."));
+  }, []);
+
+  const rows = (profiles ?? []).filter(
+    (p) => !q || `${p.email} ${p.full_name ?? ""}`.toLowerCase().includes(q.toLowerCase()),
+  );
+
+  return (
+    <div className="plat-card">
+      <h3>Equipe e papéis</h3>
+      <p className="plat-hint">
+        Para criar a conta de um(a) avaliador(a): no painel do Supabase, <em>Authentication → Users → Add user</em>
+        {" "}(e-mail + senha temporária, com <em>auto-confirm</em>), envie a senha por um canal seguro e promova o
+        papel aqui. A pessoa troca a senha no primeiro acesso (botão “Trocar senha”).
+      </p>
+      <div className="plat-filters">
+        <input placeholder="Buscar por e-mail ou nome…" value={q} onChange={(e) => setQ(e.target.value)} />
+      </div>
+      {msg ? <p className="plat-error">{msg}</p> : null}
+      {profiles === null ? (
+        <p className="plat-empty">Carregando…</p>
+      ) : rows.length === 0 ? (
+        <p className="plat-empty">Nenhum perfil encontrado.</p>
+      ) : (
+        <div className="edital-table-wrap">
+          <table className="edital-table">
+            <thead>
+              <tr>
+                <th>E-mail</th>
+                <th>Nome</th>
+                <th>Papel</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((p) => (
+                <tr key={p.id}>
+                  <td data-label="E-mail">{p.email}</td>
+                  <td data-label="Nome">{p.full_name || "—"}</td>
+                  <td data-label="Papel">
+                    {p.id === myId ? (
+                      <span title="Você não pode alterar o próprio papel.">{ROLE_LABEL[p.role]} (você)</span>
+                    ) : (
+                      <select
+                        className="plat-role-select"
+                        value={p.role}
+                        onChange={async (e) => {
+                          const role = e.target.value as Profile["role"];
+                          try {
+                            await setProfileRole(p.id, role);
+                            setProfiles((prev) => prev?.map((x) => (x.id === p.id ? { ...x, role } : x)) ?? null);
+                            setMsg("");
+                          } catch (err) {
+                            setMsg(err instanceof Error ? err.message : "Falha ao salvar o papel.");
+                          }
+                        }}
+                      >
+                        {(Object.keys(ROLE_LABEL) as Profile["role"][]).map((r) => (
+                          <option key={r} value={r}>
+                            {ROLE_LABEL[r]}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ------------------------------------------------------------------ shell --
 function Shell({
   children,
   email,
   onSignOut,
+  onChangePassword,
 }: {
   children: React.ReactNode;
   email?: string | undefined;
   onSignOut?: () => void;
+  onChangePassword?: () => void;
 }) {
   return (
     <main className="plat-page" id="conteudo" tabIndex={-1}>
@@ -694,6 +976,11 @@ function Shell({
           {email ? (
             <p className="plat-session">
               Conectado como <strong>{email}</strong>
+              {onChangePassword ? (
+                <button className="plat-signout" onClick={onChangePassword}>
+                  <KeyRound size={14} aria-hidden="true" /> Trocar senha
+                </button>
+              ) : null}
               {onSignOut ? (
                 <button className="plat-signout" onClick={onSignOut}>
                   <LogOut size={14} aria-hidden="true" /> Sair

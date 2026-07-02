@@ -6630,6 +6630,26 @@ select.admin-input {
 .plat-row-aprovada td {
   background: rgba(95, 143, 69, 0.09);
 }
+.plat-linkbtn {
+  width: fit-content;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--river-ink);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.plat-role-select {
+  min-height: 38px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+}
 
 @media (max-width: 880px) {
   .plat-eval-grid {

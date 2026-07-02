@@ -8,11 +8,11 @@ plataforma em ~10 minutos.
 
 ## As rotas
 
-| Rota | Quem usa | O quê |
-|---|---|---|
-| `#/inscricao/selecao-ic-2026` | Candidatos | Wizard de inscrição (login por link mágico, 4 PDFs, vídeo, LGPD, protocolo) |
-| `#/minha-inscricao` | Candidatos | Acompanhar/editar a inscrição até o fim do prazo |
-| `#/gestao` | Comissão | Dashboard, avaliação (notas 60/20/10/10 + bônus), classificação, CSV, homologação |
+| Rota | Quem usa | Login | O quê |
+|---|---|---|---|
+| `#/inscricao/selecao-ic-2026` | Candidatos | Link mágico (sem senha) | Wizard de inscrição (4 PDFs, vídeo, LGPD, protocolo) |
+| `#/minha-inscricao` | Candidatos | Link mágico | Acompanhar/editar a inscrição até o fim do prazo |
+| `#/gestao` | Comissão | **E-mail + senha** | Dashboard, avaliação, classificação, CSV, homologação e gestão da equipe |
 
 ## Ativação (faça uma única vez)
 
@@ -71,11 +71,30 @@ plataforma em ~10 minutos.
    ```
 3. Recarregue o `#/gestao` — o portal completo aparece.
 
-### Adicionar avaliadores (quando quiser)
-Peça para cada avaliador(a) entrar UMA vez em `#/gestao` (cria o perfil) e rode:
-```sql
-update public.profiles set role = 'avaliador' where email = 'email@instituicao.br';
-```
+### 6. Política de senhas (~1 min, uma vez)
+**Authentication → Passwords** (ou *Sign In / Up → Passwords*): defina o
+mínimo de **10 caracteres** e ligue a **proteção contra senhas vazadas**
+(leaked-password protection). O site já valida 10+ no formulário.
+
+### Definir a SUA senha (primeiro acesso do admin)
+Sua conta foi criada via link mágico; para passar a entrar com senha:
+`#/gestao` → **"Esqueci a senha"** → informe seu e-mail → abra o link
+(no MESMO navegador) → defina a senha. Pronto: dali em diante o login da
+gestão é e-mail + senha (sem depender de e-mail para entrar).
+
+### Adicionar avaliadores (sem SQL!)
+1. No painel do Supabase: **Authentication → Users → Add user →
+   Create new user** — e-mail do(a) avaliador(a) + uma senha temporária
+   forte; marque **Auto Confirm User**.
+2. Envie a senha temporária por um canal seguro (WhatsApp etc.).
+3. No site, `#/gestao` → aba **Equipe** → mude o papel da pessoa para
+   **Avaliador(a)** (ou Administrador(a)).
+4. A pessoa entra com e-mail + senha temporária e clica **"Trocar senha"**
+   no topo do painel.
+
+Observação: ninguém consegue alterar o próprio papel na aba Equipe (nem
+mesmo o admin) — isso evita perda de acesso acidental; o papel dos outros
+só é editável por administradores (política RLS no banco).
 
 ## Operação
 

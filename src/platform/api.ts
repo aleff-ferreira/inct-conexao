@@ -178,6 +178,19 @@ export async function listStaff(): Promise<Profile[]> {
   return (data as Profile[]) ?? [];
 }
 
+/** Todos os perfis (RLS: apenas admin enxerga além do próprio). */
+export async function listProfiles(): Promise<Profile[]> {
+  const { data, error } = await supabase().from("profiles").select("*").order("email");
+  if (error) throw new Error(error.message);
+  return (data as Profile[]) ?? [];
+}
+
+/** Define o papel de um perfil (RLS: apenas admin). */
+export async function setProfileRole(id: string, role: Profile["role"]): Promise<void> {
+  const { error } = await supabase().from("profiles").update({ role }).eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
 /** Exporta o ranking como CSV (para a ata da comissão). */
 export function toCsv(rows: Array<Record<string, string | number | null>>): string {
   if (!rows.length) return "";

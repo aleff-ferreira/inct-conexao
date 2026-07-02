@@ -57,3 +57,14 @@ export function docMaxLabel(kind: string): string {
   const bytes = DOC_MAX_BYTES[kind] ?? 1024 * 1024;
   return `${Math.round(bytes / 1024 / 1024)} MB`;
 }
+
+/**
+ * Regra mínima de senha da comissão (alinhe com Authentication → Passwords
+ * no painel do Supabase: mínimo 10 + proteção contra senhas vazadas).
+ * Retorna a mensagem do problema, ou "" se a senha está ok.
+ */
+export function passwordIssue(password: string, confirm?: string): string {
+  if (password.length < 10) return "A senha deve ter pelo menos 10 caracteres.";
+  if (confirm !== undefined && password !== confirm) return "As senhas não conferem.";
+  return "";
+}
