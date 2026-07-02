@@ -18,13 +18,21 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
--- Cria o perfil automaticamente no primeiro login (magic link).
+-- Cria o perfil automaticamente no primeiro login (magic link ou senha).
+-- Bootstrap: os e-mails da lista abaixo já nascem como ADMIN (evita o passo
+-- manual de promover o primeiro administrador via SQL).
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  insert into public.profiles (id, email, full_name)
-  values (new.id, new.email, coalesce(new.raw_user_meta_data ->> 'full_name', ''))
+  insert into public.profiles (id, email, full_name, role)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data ->> 'full_name', ''),
+    case when lower(new.email) in ('labioprot.toxin@gmail.com', 'alefffx@gmail.com')
+         then 'admin' else 'candidato' end
+  )
   on conflict (id) do nothing;
   return new;
 end; $$;
