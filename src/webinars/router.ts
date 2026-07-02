@@ -16,11 +16,15 @@ export type Route =
   | { name: "event"; slug: string }
   | { name: "groups" }
   | { name: "group"; slug: string }
-  | { name: "edital" };
+  | { name: "edital" }
+  | { name: "inscricao"; slug: string }
+  | { name: "minha-inscricao" }
+  | { name: "gestao" };
 
 export const HUB_HREF = "#/webinars";
 export const GROUPS_HREF = "#/grupos";
 export const EDITAL_HREF = "#/editais/selecao-ic-2026";
+export const INSCRICAO_HREF = "#/inscricao/selecao-ic-2026";
 export const eventHref = (slug: string): string => `#/webinars/${slug}`;
 export const groupHref = (slug: string): string => `#/grupos/${slug}`;
 
@@ -53,6 +57,18 @@ export function parseHash(rawHash: string): Route {
 
   if (segments[0] === "editais") {
     return { name: "edital" };
+  }
+
+  if (segments[0] === "inscricao" && segments[1]) {
+    return { name: "inscricao", slug: decode(segments[1]) };
+  }
+
+  if (segments[0] === "minha-inscricao") {
+    return { name: "minha-inscricao" };
+  }
+
+  if (segments[0] === "gestao") {
+    return { name: "gestao" };
   }
 
   // Rota desconhecida: volta para a home com segurança.

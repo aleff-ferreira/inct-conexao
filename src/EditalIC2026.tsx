@@ -139,7 +139,10 @@ export function EditalIC2026() {
             })}
           </div>
           <div className="edital-hero-actions">
-            <a className="button primary" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
+            <a className="button primary" href="#/inscricao/selecao-ic-2026">
+              Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
+            </a>
+            <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
               Baixar edital completo (PDF) <Download size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href={asset("resumo-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
@@ -389,7 +392,10 @@ export function EditalIC2026() {
             do Plano de Atividades e as regras de envio. Em caso de dúvidas, fale com a coordenação do INCT-CONEXAO.
           </p>
           <div className="edital-hero-actions">
-            <a className="button primary" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
+            <a className="button primary" href="#/inscricao/selecao-ic-2026">
+              Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
+            </a>
+            <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
               Baixar edital completo (PDF) <Download size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href="mailto:inctconexao@gmail.com">

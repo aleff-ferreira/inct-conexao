@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   Atom,
@@ -35,6 +35,21 @@ import {
 } from "lucide-react";
 import { useHashRoute, HUB_HREF, GROUPS_HREF, EDITAL_HREF, eventHref } from "./webinars/router";
 import { EditalIC2026 } from "./EditalIC2026";
+
+// Plataforma de Seleções: carregada sob demanda para não pesar o site público.
+const Inscricao = lazy(() => import("./platform/Inscricao"));
+const MinhaInscricao = lazy(() => import("./platform/MinhaInscricao"));
+const Gestao = lazy(() => import("./platform/Gestao"));
+
+const PlatformFallback = () => (
+  <main className="plat-page" id="conteudo">
+    <section className="section-band plat-band">
+      <div className="section-inner plat-inner">
+        <div className="plat-loading">Carregando…</div>
+      </div>
+    </section>
+  </main>
+);
 import { WebinarHub } from "./webinars/WebinarHub";
 import { WebinarEvent } from "./webinars/WebinarEvent";
 import { GroupsHub } from "./webinars/GroupsHub";
@@ -1697,6 +1712,21 @@ function App() {
       {route.name === "groups" ? <GroupsHub /> : null}
       {route.name === "group" ? <GroupPage slug={route.slug} /> : null}
       {route.name === "edital" ? <EditalIC2026 /> : null}
+      {route.name === "inscricao" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <Inscricao slug={route.slug} />
+        </Suspense>
+      ) : null}
+      {route.name === "minha-inscricao" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <MinhaInscricao />
+        </Suspense>
+      ) : null}
+      {route.name === "gestao" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <Gestao />
+        </Suspense>
+      ) : null}
 
       {route.name === "home" ? (
       <main id="conteudo" tabIndex={-1}>

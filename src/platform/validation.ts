@@ -1,0 +1,41 @@
+/** Validações puras usadas no wizard de inscrição (testáveis sem UI). */
+
+/** CPF com dígitos verificadores (aceita com ou sem máscara). */
+export function isValidCpf(raw: string): boolean {
+  const cpf = raw.replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+  const digit = (slice: string, factor: number) => {
+    let sum = 0;
+    for (const ch of slice) sum += Number(ch) * factor--;
+    const rest = (sum * 10) % 11;
+    return rest === 10 ? 0 : rest;
+  };
+  return digit(cpf.slice(0, 9), 10) === Number(cpf[9]) && digit(cpf.slice(0, 10), 11) === Number(cpf[10]);
+}
+
+export function formatCpf(raw: string): string {
+  const d = raw.replace(/\D/g, "").slice(0, 11);
+  return d
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d{1,2})$/, ".$1-$2");
+}
+
+/** Link de vídeo aceitável: YouTube, Vimeo, Google Drive ou URL https genérica. */
+export function isValidVideoUrl(raw: string): boolean {
+  const url = raw.trim();
+  if (!/^https:\/\/\S+$/i.test(url)) return false;
+  try {
+    const u = new URL(url);
+    return Boolean(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
+export function isValidEmail(raw: string): boolean {
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(raw.trim());
+}
+
+/** Períodos elegíveis do edital 04/2026: do 2º ao antepenúltimo. */
+export const PERIODOS = ["2º", "3º", "4º", "5º", "6º", "7º", "8º", "9º", "10º"];
