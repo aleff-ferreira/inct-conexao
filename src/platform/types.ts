@@ -9,6 +9,13 @@ export type Profile = {
   role: Role;
 };
 
+/** E-mail pré-autorizado da comissão: a conta nasce com este papel. */
+export type StaffAllowlistEntry = {
+  email: string;
+  role: "admin" | "avaliador";
+  created_at?: string;
+};
+
 export type Criterio = {
   key: string;
   label: string;

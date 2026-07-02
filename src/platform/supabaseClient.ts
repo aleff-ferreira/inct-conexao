@@ -27,7 +27,15 @@ export function supabase(): SupabaseClient {
       throw new Error("Plataforma de Seleções não configurada (defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY).");
     }
     client = createClient(url, anonKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        // PKCE: o retorno do link mágico vem como "?code=..." (query), que não
+        // conflita com o roteamento por hash (#/inscricao/...). No fluxo
+        // implícito os tokens viriam num segundo "#..." e a sessão se perdia.
+        flowType: "pkce",
+      },
     });
   }
   return client;

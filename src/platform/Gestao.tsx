@@ -12,18 +12,23 @@ import {
   LogOut,
   Send,
   ShieldCheck,
+  Trash2,
   UserCog,
+  UserPlus,
   Users,
   Video,
 } from "lucide-react";
 import { platformEnabled } from "./supabaseClient";
 import { useAuth, type AuthState } from "./auth";
 import {
+  addToAllowlist,
+  listAllowlist,
   listApplications,
   listEditais,
   listEvaluations,
   listFiles,
   listProfiles,
+  removeFromAllowlist,
   setApplicationStatus,
   setEditalStatus,
   setProfileRole,
@@ -31,7 +36,7 @@ import {
   toCsv,
   upsertEvaluation,
 } from "./api";
-import { passwordIssue } from "./validation";
+import { parseEmailList, passwordIssue } from "./validation";
 import {
   aggregateFinal,
   bonusApplies,
@@ -40,7 +45,7 @@ import {
   rankState,
   weightedTotal,
 } from "./scoring";
-import type { Application, ApplicationFile, Edital, Evaluation, Profile } from "./types";
+import type { Application, ApplicationFile, Edital, Evaluation, Profile, StaffAllowlistEntry } from "./types";
 
 type Tab = "visao" | "inscricoes" | "classificacao" | "equipe";
 
@@ -676,11 +681,104 @@ function RankingView({
 
 // ------------------------------------------------------------------ login --
 function LoginCard({ auth }: { auth: AuthState }) {
-  const [mode, setMode] = useState<"login" | "reset" | "reset-sent">("login");
+  const [mode, setMode] = useState<"login" | "reset" | "reset-sent" | "signup" | "signup-sent">("login");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
+
+  if (mode === "signup-sent") {
+    return (
+      <div className="plat-card plat-login">
+        <CheckCircle2 size={22} aria-hidden="true" />
+        <h2>Conta criada — confirme seu e-mail</h2>
+        <p>
+          Enviamos um link de confirmação para <strong>{email}</strong>. Abra o e-mail{" "}
+          <strong>neste mesmo navegador</strong> e clique no link; depois é só entrar com sua senha.
+        </p>
+        <button className="plat-linkbtn" onClick={() => setMode("login")}>
+          Voltar ao login
+        </button>
+      </div>
+    );
+  }
+
+  if (mode === "signup") {
+    return (
+      <div className="plat-card plat-login">
+        <KeyRound size={22} aria-hidden="true" />
+        <h2>Primeiro acesso — criar conta</h2>
+        <p>
+          Use o e-mail que a coordenação pré-autorizou para a comissão; sua conta já nasce com o papel de
+          avaliador(a). Você define sua própria senha — nada de senhas temporárias.
+        </p>
+        <form
+          className="plat-fields"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const issue = passwordIssue(senha, confirmar);
+            if (issue) {
+              setMsg(issue);
+              return;
+            }
+            setBusy(true);
+            const { error, needsConfirm } = await auth.signUp(email, senha);
+            setBusy(false);
+            if (error) setMsg(error);
+            else if (needsConfirm) {
+              setMsg("");
+              setMode("signup-sent");
+            }
+            // com sessão imediata, o próprio estado de auth troca a tela
+          }}
+        >
+          <label>
+            E-mail
+            <input
+              type="email"
+              required
+              placeholder="email@instituicao.br"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="username"
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              required
+              minLength={10}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="new-password"
+            />
+            <small>Mínimo de 10 caracteres.</small>
+          </label>
+          <label>
+            Confirmar a senha
+            <input
+              type="password"
+              required
+              value={confirmar}
+              onChange={(e) => setConfirmar(e.target.value)}
+              autoComplete="new-password"
+            />
+          </label>
+          {msg ? <p className="plat-error">{msg}</p> : null}
+          <div className="plat-nav">
+            <button type="button" className="plat-linkbtn" onClick={() => setMode("login")}>
+              Já tenho conta
+            </button>
+            <button className="button primary" type="submit" disabled={busy}>
+              {busy ? "Criando…" : "Criar conta"} <KeyRound size={15} aria-hidden="true" />
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
 
   if (mode === "reset-sent") {
     return (
@@ -784,6 +882,9 @@ function LoginCard({ auth }: { auth: AuthState }) {
           </button>
         </div>
       </form>
+      <button type="button" className="plat-linkbtn" onClick={() => setMode("signup")}>
+        Primeiro acesso? Criar conta
+      </button>
     </div>
   );
 }
@@ -877,24 +978,109 @@ const ROLE_LABEL: Record<Profile["role"], string> = {
 
 function EquipeView({ myId }: { myId: string }) {
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
+  const [allowlist, setAllowlist] = useState<StaffAllowlistEntry[]>([]);
+  const [paste, setPaste] = useState("");
+  const [pasteRole, setPasteRole] = useState<StaffAllowlistEntry["role"]>("avaliador");
+  const [pasteBusy, setPasteBusy] = useState(false);
+  const [pasteMsg, setPasteMsg] = useState("");
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
     listProfiles().then(setProfiles).catch((e) => setMsg(e instanceof Error ? e.message : "Falha ao carregar."));
+    listAllowlist().then(setAllowlist).catch(() => setAllowlist([]));
   }, []);
+
+  const addEmails = async () => {
+    const { valid, invalid } = parseEmailList(paste);
+    if (!valid.length) {
+      setPasteMsg(invalid.length ? `Nenhum e-mail válido — confira: ${invalid.join(", ")}` : "Cole ao menos um e-mail.");
+      return;
+    }
+    setPasteBusy(true);
+    try {
+      const promoted = await addToAllowlist(valid, pasteRole);
+      setAllowlist(await listAllowlist());
+      setProfiles(await listProfiles());
+      setPaste("");
+      setPasteMsg(
+        `${valid.length} e-mail(s) pré-autorizados como ${ROLE_LABEL[pasteRole]}` +
+          (promoted ? `; ${promoted} conta(s) existente(s) promovida(s)` : "") +
+          (invalid.length ? `. Ignorados (inválidos): ${invalid.join(", ")}` : "."),
+      );
+    } catch (e) {
+      setPasteMsg(e instanceof Error ? e.message : "Falha ao salvar a lista.");
+    } finally {
+      setPasteBusy(false);
+    }
+  };
 
   const rows = (profiles ?? []).filter(
     (p) => !q || `${p.email} ${p.full_name ?? ""}`.toLowerCase().includes(q.toLowerCase()),
   );
 
   return (
-    <div className="plat-card">
+    <div className="plat-eval">
+      <div className="plat-card">
+        <h3>
+          <UserPlus size={18} aria-hidden="true" /> Pré-autorizar avaliadores
+        </h3>
+        <p className="plat-hint">
+          Cole os e-mails da comissão (um por linha, ou separados por vírgula). Quem estiver na lista cria a
+          própria conta em <strong>#/gestao → “Primeiro acesso? Criar conta”</strong> e já nasce com o papel
+          escolhido — sem senha temporária e sem painel do Supabase. Quem já tinha conta é promovido na hora.
+        </p>
+        <textarea
+          className="plat-paste"
+          rows={4}
+          placeholder={"avaliadora1@instituicao.br\navaliador2@instituicao.br"}
+          value={paste}
+          onChange={(e) => setPaste(e.target.value)}
+        />
+        <div className="plat-nav">
+          <select
+            className="plat-role-select"
+            value={pasteRole}
+            onChange={(e) => setPasteRole(e.target.value as StaffAllowlistEntry["role"])}
+            aria-label="Papel para os e-mails colados"
+          >
+            <option value="avaliador">Avaliador(a)</option>
+            <option value="admin">Administrador(a)</option>
+          </select>
+          <button className="button primary" onClick={addEmails} disabled={pasteBusy}>
+            {pasteBusy ? "Salvando…" : "Adicionar à lista"} <UserPlus size={15} aria-hidden="true" />
+          </button>
+        </div>
+        {pasteMsg ? <p className="plat-ok">{pasteMsg}</p> : null}
+        {allowlist.length ? (
+          <ul className="plat-allowlist">
+            {allowlist.map((a) => (
+              <li key={a.email}>
+                <span>
+                  {a.email} <small>({ROLE_LABEL[a.role]})</small>
+                </span>
+                <button
+                  className="plat-linkbtn"
+                  title="Remover da lista (não rebaixa quem já criou conta)"
+                  onClick={async () => {
+                    await removeFromAllowlist(a.email);
+                    setAllowlist((prev) => prev.filter((x) => x.email !== a.email));
+                  }}
+                >
+                  <Trash2 size={14} aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="plat-empty">Nenhum e-mail pré-autorizado ainda.</p>
+        )}
+      </div>
+
+      <div className="plat-card">
       <h3>Equipe e papéis</h3>
       <p className="plat-hint">
-        Para criar a conta de um(a) avaliador(a): no painel do Supabase, <em>Authentication → Users → Add user</em>
-        {" "}(e-mail + senha temporária, com <em>auto-confirm</em>), envie a senha por um canal seguro e promova o
-        papel aqui. A pessoa troca a senha no primeiro acesso (botão “Trocar senha”).
+        Contas criadas e seus papéis. Ajustes pontuais podem ser feitos aqui; ninguém altera o próprio papel.
       </p>
       <div className="plat-filters">
         <input placeholder="Buscar por e-mail ou nome…" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -951,6 +1137,7 @@ function EquipeView({ myId }: { myId: string }) {
           </table>
         </div>
       )}
+      </div>
     </div>
   );
 }

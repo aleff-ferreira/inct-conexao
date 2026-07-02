@@ -8,6 +8,7 @@ import type {
   Edital,
   Evaluation,
   Profile,
+  StaffAllowlistEntry,
 } from "./types";
 
 /** Camada de dados da plataforma. Toda a autorização real está nas políticas RLS. */
@@ -188,6 +189,40 @@ export async function listProfiles(): Promise<Profile[]> {
 /** Define o papel de um perfil (RLS: apenas admin). */
 export async function setProfileRole(id: string, role: Profile["role"]): Promise<void> {
   const { error } = await supabase().from("profiles").update({ role }).eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
+// ------------------------------------------------- allowlist da comissão ---
+export async function listAllowlist(): Promise<StaffAllowlistEntry[]> {
+  const { data, error } = await supabase().from("staff_allowlist").select("*").order("email");
+  if (error) throw new Error(error.message);
+  return (data as StaffAllowlistEntry[]) ?? [];
+}
+
+/**
+ * Pré-autoriza e-mails da comissão (contas novas nascem com o papel dado) e
+ * PROMOVE retroativamente quem já tem conta como candidato.
+ * Retorna quantos perfis existentes foram promovidos.
+ */
+export async function addToAllowlist(emails: string[], role: StaffAllowlistEntry["role"]): Promise<number> {
+  if (!emails.length) return 0;
+  const sb = supabase();
+  const rows = emails.map((email) => ({ email, role }));
+  const { error } = await sb.from("staff_allowlist").upsert(rows, { onConflict: "email" });
+  if (error) throw new Error(error.message);
+  const { data, error: pErr } = await sb
+    .from("profiles")
+    .update({ role })
+    .in("email", emails)
+    .eq("role", "candidato")
+    .select("id");
+  if (pErr) throw new Error(pErr.message);
+  return data?.length ?? 0;
+}
+
+/** Remove um e-mail da lista (não rebaixa quem já criou conta — use a tabela de papéis). */
+export async function removeFromAllowlist(email: string): Promise<void> {
+  const { error } = await supabase().from("staff_allowlist").delete().eq("email", email);
   if (error) throw new Error(error.message);
 }
 

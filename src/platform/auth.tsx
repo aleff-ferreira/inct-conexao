@@ -16,6 +16,12 @@ export type AuthState = {
   signIn: (email: string) => Promise<{ error?: string }>;
   /** Comissão: login com e-mail + senha (não depende de e-mail para entrar). */
   signInWithPassword: (email: string, password: string) => Promise<{ error?: string }>;
+  /**
+   * Comissão: primeiro acesso — cria a própria conta com senha.
+   * O papel vem do banco (allowlist de avaliadores); retorna needsConfirm
+   * quando o projeto exige confirmação do e-mail antes do primeiro login.
+   */
+  signUp: (email: string, password: string) => Promise<{ error?: string; needsConfirm?: boolean }>;
   /** Envia o link de redefinição de senha (abre no MESMO navegador). */
   resetPassword: (email: string) => Promise<{ error?: string }>;
   /** Define/troca a senha do usuário logado (ou em recuperação). */
@@ -106,6 +112,24 @@ export function useAuth(): AuthState {
     return {};
   }, []);
 
+  const signUp = useCallback(async (email: string, password: string) => {
+    const clean = email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(clean)) return { error: "Informe um e-mail válido." };
+    const { data, error } = await supabase().auth.signUp({
+      email: clean,
+      password,
+      options: { emailRedirectTo: window.location.href },
+    });
+    if (error) {
+      const m = error.message.toLowerCase();
+      if (m.includes("already registered"))
+        return { error: "Já existe conta com este e-mail — use “Entrar” ou “Esqueci a senha”." };
+      return { error: ptError(error.message) };
+    }
+    // Sem sessão = o projeto exige confirmação do e-mail (um clique no link).
+    return { needsConfirm: !data.session };
+  }, []);
+
   const resetPassword = useCallback(async (email: string) => {
     const clean = email.trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(clean)) return { error: "Informe um e-mail válido." };
@@ -138,6 +162,7 @@ export function useAuth(): AuthState {
     recovery,
     signIn,
     signInWithPassword,
+    signUp,
     resetPassword,
     updatePassword,
     signOut,

@@ -4,6 +4,7 @@ import {
   formatCpf,
   isValidVideoUrl,
   isValidEmail,
+  parseEmailList,
   passwordIssue,
 } from "../src/platform/validation";
 
@@ -54,5 +55,26 @@ describe("isValidEmail", () => {
     expect(isValidEmail("pessoa@exemplo.com.br")).toBe(true);
     expect(isValidEmail("sem-arroba")).toBe(false);
     expect(isValidEmail("a@b")).toBe(false);
+  });
+});
+
+describe("parseEmailList (allowlist da comissão)", () => {
+  it("aceita quebras de linha, vírgulas, ponto-e-vírgula e espaços", () => {
+    const { valid, invalid } = parseEmailList("a@x.br\nb@y.br, c@z.br; d@w.br e@v.br");
+    expect(valid).toEqual(["a@x.br", "b@y.br", "c@z.br", "d@w.br", "e@v.br"]);
+    expect(invalid).toEqual([]);
+  });
+  it("normaliza para minúsculas e remove duplicados", () => {
+    const { valid } = parseEmailList("Ana@X.BR\nana@x.br\nANA@x.Br");
+    expect(valid).toEqual(["ana@x.br"]);
+  });
+  it("separa tokens inválidos sem descartar os válidos", () => {
+    const { valid, invalid } = parseEmailList("ok@x.br\nsem-arroba\noutro@y.br");
+    expect(valid).toEqual(["ok@x.br", "outro@y.br"]);
+    expect(invalid).toEqual(["sem-arroba"]);
+  });
+  it("lista vazia/só lixo", () => {
+    expect(parseEmailList("").valid).toEqual([]);
+    expect(parseEmailList("   \n , ; ").valid).toEqual([]);
   });
 });

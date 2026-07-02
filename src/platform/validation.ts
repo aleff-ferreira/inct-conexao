@@ -68,3 +68,24 @@ export function passwordIssue(password: string, confirm?: string): string {
   if (confirm !== undefined && password !== confirm) return "As senhas não conferem.";
   return "";
 }
+
+/**
+ * Interpreta uma lista colada de e-mails (separados por quebra de linha,
+ * vírgula, ponto-e-vírgula ou espaço): normaliza para minúsculas, remove
+ * duplicados e separa os inválidos.
+ */
+export function parseEmailList(raw: string): { valid: string[]; invalid: string[] } {
+  const tokens = raw
+    .split(/[\s,;]+/)
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
+  const seen = new Set<string>();
+  const valid: string[] = [];
+  const invalid: string[] = [];
+  for (const t of tokens) {
+    if (seen.has(t)) continue;
+    seen.add(t);
+    (isValidEmail(t) ? valid : invalid).push(t);
+  }
+  return { valid, invalid };
+}

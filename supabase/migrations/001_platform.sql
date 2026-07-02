@@ -18,20 +18,39 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
--- Cria o perfil automaticamente no primeiro login (magic link ou senha).
--- Bootstrap: os e-mails da lista abaixo já nascem como ADMIN (evita o passo
--- manual de promover o primeiro administrador via SQL).
+-- E-mails pré-autorizados da comissão: contas novas já nascem com o papel
+-- indicado. Gerida pela aba Equipe do portal (#/gestao) — RLS: só admin.
+create table if not exists public.staff_allowlist (
+  email      text primary key check (email = lower(email)),
+  role       text not null default 'avaliador' check (role in ('admin', 'avaliador')),
+  created_at timestamptz not null default now()
+);
+alter table public.staff_allowlist enable row level security;
+drop policy if exists allowlist_admin_all on public.staff_allowlist;
+create policy allowlist_admin_all on public.staff_allowlist
+  for all using (public.is_admin()) with check (public.is_admin());
+
+-- Bootstrap: administradores iniciais.
+insert into public.staff_allowlist (email, role) values
+  ('labioprot.toxin@gmail.com', 'admin'),
+  ('alefffx@gmail.com', 'admin')
+on conflict (email) do nothing;
+
+-- Cria o perfil automaticamente no primeiro acesso (link mágico ou senha).
+-- O papel vem da allowlist; fora dela, nasce candidato.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql security definer set search_path = public as $$
+declare
+  allowed text;
 begin
+  select role into allowed from public.staff_allowlist where email = lower(new.email);
   insert into public.profiles (id, email, full_name, role)
   values (
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
-    case when lower(new.email) in ('labioprot.toxin@gmail.com', 'alefffx@gmail.com')
-         then 'admin' else 'candidato' end
+    coalesce(allowed, 'candidato')
   )
   on conflict (id) do nothing;
   return new;
