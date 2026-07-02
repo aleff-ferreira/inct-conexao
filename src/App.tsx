@@ -41,6 +41,58 @@ const Inscricao = lazy(() => import("./platform/Inscricao"));
 const MinhaInscricao = lazy(() => import("./platform/MinhaInscricao"));
 const Gestao = lazy(() => import("./platform/Gestao"));
 
+/**
+ * Fundo do hero em vídeo (montagem leve das expedições, ~26s em loop).
+ * - poster instantâneo (LCP) + vídeo por cima quando pronto;
+ * - arquivo menor em telas pequenas; imagem estática se `prefers-reduced-motion`
+ *   ou se o vídeo falhar; pausa quando o hero sai da tela (bateria).
+ */
+function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [failed, setFailed] = useState(false);
+  const reduced = useMemo(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
+  const src = useMemo(() => {
+    const small = typeof window !== "undefined" && window.matchMedia("(max-width: 680px)").matches;
+    return assetPath(small ? "hero/hero-montage-mobile.mp4" : "hero/hero-montage.mp4");
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => setFailed(true));
+        else video.pause();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(video);
+    return () => io.disconnect();
+  }, []);
+
+  if (reduced || failed) {
+    return <img className="hero-image" src={assetPath("hero/hero-poster.jpg")} alt="" aria-hidden="true" />;
+  }
+  return (
+    <video
+      ref={videoRef}
+      className="hero-image hero-video"
+      src={src}
+      poster={assetPath("hero/hero-poster.jpg")}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden="true"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
 const PlatformFallback = () => (
   <main className="plat-page" id="conteudo">
     <section className="section-band plat-band">
@@ -1731,7 +1783,7 @@ function App() {
       {route.name === "home" ? (
       <main id="conteudo" tabIndex={-1}>
         <section className="hero section-band dark-band" id="inicio">
-          <img className="hero-image" src={assetPath("hero-forest.jpg")} alt="Paisagem amazônica vista do alto ao pôr do sol" />
+          <HeroVideo />
           <div className="hero-overlay" />
           <div className="section-inner hero-grid">
             <div className="hero-copy">
