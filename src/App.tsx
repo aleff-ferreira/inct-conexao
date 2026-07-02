@@ -23,6 +23,7 @@ import {
   Menu,
   Microscope,
   Network,
+  Pause,
   Phone,
   Play,
   PlayCircle,
@@ -42,18 +43,19 @@ const MinhaInscricao = lazy(() => import("./platform/MinhaInscricao"));
 const Gestao = lazy(() => import("./platform/Gestao"));
 
 /**
- * Fundo do hero em vídeo (montagem leve das expedições, ~26s em loop).
+ * Fundo do hero em vídeo (montagem leve das expedições, ~27s em loop).
  * - poster instantâneo (LCP) + vídeo por cima quando pronto;
- * - arquivo menor em telas pequenas; imagem estática se `prefers-reduced-motion`
- *   ou se o vídeo falhar; pausa quando o hero sai da tela (bateria).
+ * - arquivo menor em telas pequenas; imagem estática só se o vídeo FALHAR;
+ * - sempre reproduz (mudo/decorativo) e oferece botão de pausa — padrão
+ *   acessível (WCAG 2.2.2) que não some com o vídeo por causa da config de
+ *   animações do Windows (prefers-reduced-motion);
+ * - pausa quando o hero sai da tela (bateria), sem atropelar a pausa manual.
  */
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const userPausedRef = useRef(false);
   const [failed, setFailed] = useState(false);
-  const reduced = useMemo(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    [],
-  );
+  const [paused, setPaused] = useState(false);
   const src = useMemo(() => {
     const small = typeof window !== "undefined" && window.matchMedia("(max-width: 680px)").matches;
     return assetPath(small ? "hero/hero-montage-mobile.mp4" : "hero/hero-montage.mp4");
@@ -62,34 +64,69 @@ function HeroVideo() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    // React define a propriedade `muted`, mas não o ATRIBUTO — alguns webviews
+    // só liberam autoplay com o atributo presente.
+    video.muted = true;
+    video.setAttribute("muted", "");
+    const tryPlay = () => {
+      if (!userPausedRef.current && video.paused) video.play().catch(() => setPaused(true));
+    };
+    tryPlay(); // primeira tentativa (pode falhar enquanto o arquivo carrega)
+    video.addEventListener("canplay", tryPlay); // retenta assim que houver dados
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => setFailed(true));
+        if (entry.isIntersecting) tryPlay();
         else video.pause();
       },
       { threshold: 0.05 },
     );
     io.observe(video);
-    return () => io.disconnect();
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+      io.disconnect();
+    };
   }, []);
 
-  if (reduced || failed) {
+  if (failed) {
     return <img className="hero-image" src={assetPath("hero/hero-poster.jpg")} alt="" aria-hidden="true" />;
   }
   return (
-    <video
-      ref={videoRef}
-      className="hero-image hero-video"
-      src={src}
-      poster={assetPath("hero/hero-poster.jpg")}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      onError={() => setFailed(true)}
-    />
+    <>
+      <video
+        ref={videoRef}
+        className="hero-image hero-video"
+        src={src}
+        poster={assetPath("hero/hero-poster.jpg")}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        onError={() => setFailed(true)}
+        onPlay={() => setPaused(false)}
+        onPause={() => setPaused(true)}
+      />
+      <button
+        type="button"
+        className="hero-video-toggle"
+        aria-label={paused ? "Reproduzir o vídeo de fundo" : "Pausar o vídeo de fundo"}
+        title={paused ? "Reproduzir vídeo" : "Pausar vídeo"}
+        onClick={() => {
+          const video = videoRef.current;
+          if (!video) return;
+          if (video.paused) {
+            userPausedRef.current = false;
+            video.play().catch(() => setPaused(true));
+          } else {
+            userPausedRef.current = true;
+            video.pause();
+          }
+        }}
+      >
+        {paused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
+      </button>
+    </>
   );
 }
 
