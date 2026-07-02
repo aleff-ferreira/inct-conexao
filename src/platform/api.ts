@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient";
+import { DOC_MAX_BYTES, docMaxLabel } from "./validation";
 import type {
   Application,
   ApplicationFile,
@@ -78,7 +79,8 @@ export async function uploadDocument(
   file: File,
 ): Promise<ApplicationFile> {
   if (file.type !== "application/pdf") throw new Error("Envie o documento em PDF.");
-  if (file.size > 2 * 1024 * 1024) throw new Error("O PDF deve ter no máximo 2 MB.");
+  const maxBytes = DOC_MAX_BYTES[kind] ?? 1024 * 1024;
+  if (file.size > maxBytes) throw new Error(`O PDF deve ter no máximo ${docMaxLabel(kind)}.`);
 
   const sb = supabase();
   const path = `${userId}/${editalSlug}/${kind}.pdf`;

@@ -23,7 +23,7 @@ import {
   uploadDocument,
 } from "./api";
 import type { Application, ApplicationFile, DocKind, Edital, Sexo } from "./types";
-import { PERIODOS, formatCpf, isValidCpf, isValidVideoUrl } from "./validation";
+import { DOC_MAX_BYTES, PERIODOS, docMaxLabel, formatCpf, isValidCpf, isValidVideoUrl } from "./validation";
 
 const EDITAL_HREF = "#/editais/selecao-ic-2026";
 
@@ -474,14 +474,14 @@ export default function Inscricao({ slug }: { slug: string }) {
 
             {step === 3 ? (
               <fieldset className="plat-fields">
-                <legend>Documentos (PDF, até 2 MB cada) e vídeo</legend>
+                <legend>Documentos (PDF) e vídeo</legend>
                 {documentos.map((d) => {
                   const chosen = docs[d.kind];
                   const already = existingFiles.find((f) => f.kind === d.kind);
                   return (
                     <label key={d.kind} className="plat-file">
                       <span className="plat-file-label">
-                        <FileText size={16} aria-hidden="true" /> {d.label}
+                        <FileText size={16} aria-hidden="true" /> {d.label} <small>(até {docMaxLabel(d.kind)})</small>
                       </span>
                       <input
                         type="file"
@@ -493,8 +493,10 @@ export default function Inscricao({ slug }: { slug: string }) {
                             setErrorMsg("Envie o documento em PDF.");
                             return;
                           }
-                          if (file.size > 2 * 1024 * 1024) {
-                            setErrorMsg("O PDF deve ter no máximo 2 MB.");
+                          if (file.size > (DOC_MAX_BYTES[d.kind] ?? 1024 * 1024)) {
+                            setErrorMsg(
+                              `O PDF de "${d.label.split(" (")[0]}" deve ter no máximo ${docMaxLabel(d.kind)} — comprima o arquivo (ex.: ilovepdf.com/compress_pdf) e tente de novo.`,
+                            );
                             return;
                           }
                           setErrorMsg("");

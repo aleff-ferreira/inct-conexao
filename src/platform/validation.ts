@@ -39,3 +39,21 @@ export function isValidEmail(raw: string): boolean {
 
 /** Períodos elegíveis do edital 04/2026: do 2º ao antepenúltimo. */
 export const PERIODOS = ["2º", "3º", "4º", "5º", "6º", "7º", "8º", "9º", "10º"];
+
+/**
+ * Limite de tamanho por documento. Carta/plano/Lattes são PDFs gerados
+ * digitalmente (pequenos); só o histórico costuma ser digitalizado.
+ * Mantém o pior caso do processo (~200 inscrições) dentro do 1 GB do
+ * plano gratuito do Supabase.
+ */
+export const DOC_MAX_BYTES: Record<string, number> = {
+  carta: 1 * 1024 * 1024,
+  plano: 1 * 1024 * 1024,
+  historico: 2 * 1024 * 1024,
+  lattes: 1 * 1024 * 1024,
+};
+
+export function docMaxLabel(kind: string): string {
+  const bytes = DOC_MAX_BYTES[kind] ?? 1024 * 1024;
+  return `${Math.round(bytes / 1024 / 1024)} MB`;
+}

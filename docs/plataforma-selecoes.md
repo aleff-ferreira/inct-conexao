@@ -29,16 +29,27 @@ plataforma em ~10 minutos.
    privado `inscricoes` e já **semeia o edital 04/2026** (com a janela
    01–15/jul e os orientadores por estado).
 
-### 3. Configurar a autenticação (~2 min)
+### 3. Configurar a autenticação (~2 min) + SMTP (OBRIGATÓRIO, ~1 h)
 1. **Authentication → URL Configuration**:
    - *Site URL*: `https://inct-conexao.com.br`
    - *Redirect URLs*: adicione `https://inct-conexao.com.br/**` e, para testes,
      `http://localhost:4173/**`
 2. **Authentication → Sign In / Up → Email**: deixe habilitado (padrão). O login
-   é por **link mágico** (sem senha). O e-mail padrão do Supabase tem limite de
-   ~4 envios/hora por conta — suficiente para testes; para o período real de
-   inscrições, conecte um SMTP (ex.: [Resend](https://resend.com), gratuito) em
-   **Authentication → Emails → SMTP Settings**.
+   é por **link mágico** (sem senha).
+3. ⚠️ **SMTP próprio é OBRIGATÓRIO antes de abrir as inscrições.** O e-mail
+   embutido do Supabase entrega **somente para os endereços da própria equipe
+   do projeto** (e a 2 msgs/hora) — candidatos reais **não receberiam o link
+   de login**. Configure um provedor gratuito em
+   **Authentication → Emails → SMTP Settings**:
+   - [Resend](https://resend.com) (3.000 e-mails/mês grátis) ou
+     [Brevo](https://brevo.com) (300/dia grátis);
+   - verifique o domínio `inct-conexao.com.br` no provedor (registros
+     DKIM/SPF no hPanel → DNS);
+   - em **Authentication → Rate Limits**, suba o limite de e-mails de
+     autenticação (padrão 30/hora) para ≥120/hora, pensando no pico do
+     último dia de inscrições;
+   - **teste de aceitação**: envie um link mágico para um e-mail de FORA da
+     equipe e confirme que chega (fora do spam).
 
 ### 4. Conectar o site (~2 min)
 1. No painel: **Settings → API** → copie a *Project URL* e a *anon public key*.
@@ -85,6 +96,28 @@ Lançar um novo edital = inserir uma linha em `editais` (SQL Editor), copiando o
 JSON de `config` do 04/2026 e ajustando critérios/estados/vagas/datas. A rota
 `#/inscricao/<novo-slug>` passa a funcionar imediatamente.
 
+## Disciplina operacional do plano gratuito (importante)
+
+O plano gratuito do Supabase tem três regras que importam para um uso sazonal
+(~2 seleções/ano). Nenhuma é grave — desde que viren rotina:
+
+1. **Pausa por inatividade**: projetos gratuitos pausam após ~7 dias sem
+   atividade no banco e, se ficarem pausados por mais de 90 dias, podem ser
+   **excluídos**. Rotina: enquanto houver dados que precisam ficar on-line,
+   mantenha um ping semanal (um `SELECT` via GitHub Actions cron, gratuito —
+   ou simplesmente abra o painel 1×/semana). **Restaure/verifique o projeto
+   pelo menos 1 semana ANTES de abrir a próxima seleção**, nunca no dia.
+2. **Sem backups no plano gratuito**: após o fim de cada seleção, exporte e
+   guarde localmente: Dashboard → Database → *Backups/Export* (ou `pg_dump`)
+   + download da pasta do bucket `inscricoes`. Durante a janela, exporte o
+   CSV da classificação a cada sessão de avaliação.
+3. **Tetos de armazenamento/tráfego**: 1 GB de arquivos e 5 GB de egress/mês.
+   Os limites por PDF (carta/plano/Lattes 1 MB; histórico 2 MB) mantêm o pior
+   caso dentro do teto. Acompanhe em **Settings → Usage**; se a seleção
+   crescer ou a comissão baixar os PDFs muitas vezes, ative o **Pro
+   (US$ 25/mês) apenas nos meses da seleção** — ganha 100 GB de arquivos,
+   250 GB de egress e backups diários.
+
 ## Segurança e LGPD
 
 - RLS: candidato só vê a própria inscrição; avaliadores/admin veem tudo;
@@ -93,4 +126,9 @@ JSON de `config` do 04/2026 e ajustando critérios/estados/vagas/datas. A rota
 - O wizard exige o aceite LGPD com finalidade específica. Para atender a um
   pedido de exclusão: delete a linha de `applications` (os arquivos e
   avaliações caem em cascata) e os objetos da pasta do usuário no bucket.
-- Backup: **Database → Backups** (diário automático no plano gratuito por 7 dias).
+- **Backups: o plano gratuito NÃO tem backup automático** — siga a rotina de
+  exportação da seção "Disciplina operacional" acima (Pro tem backup diário).
+- LGPD: crie o projeto na região **São Paulo (sa-east-1)** — os dados ficam
+  fisicamente no Brasil; aceite o DPA padrão do Supabase (Settings → Legal) e
+  mencione no aviso de privacidade do edital a residência dos dados em São
+  Paulo e o uso de operador internacional com salvaguardas (LGPD, art. 33).
