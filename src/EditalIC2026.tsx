@@ -146,9 +146,6 @@ export function EditalIC2026() {
             <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
               Baixar edital completo (PDF) <Download size={18} aria-hidden="true" />
             </a>
-            <a className="button ghost-light" href={asset("resumo-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
-              Resumo ilustrativo <FileText size={18} aria-hidden="true" />
-            </a>
           </div>
         </div>
       </section>
