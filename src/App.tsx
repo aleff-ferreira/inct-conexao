@@ -247,7 +247,7 @@ const navItems: NavItem[] = [
   { label: "Pesquisa", href: "#pesquisa", icon: Microscope },
   { label: "Governança", href: "#governanca", icon: BarChart3 },
   { label: "Rede", href: "#rede", icon: Globe2 },
-  { label: "Editais", href: "#editais", icon: Download },
+  { label: "Oportunidades", href: "#editais", icon: Download },
   { label: "Webinars", href: HUB_HREF, icon: Radio, routes: ["hub", "event"] },
   { label: "Grupos", href: GROUPS_HREF, icon: UsersRound, routes: ["groups", "group"] },
   { label: "Contato", href: "#contato", icon: Mail },
