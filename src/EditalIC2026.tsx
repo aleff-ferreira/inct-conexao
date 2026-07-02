@@ -95,7 +95,7 @@ const perfil = [
   "Estar regularmente matriculado(a) em curso de graduação, do 2º ao antepenúltimo período, em uma das instituições parceiras do INCT-CONEXAO listadas na distribuição das bolsas.",
   "Não possuir vínculo empregatício de qualquer natureza nem acumular a bolsa com outras modalidades de auxílio de agências de fomento.",
   "Possuir currículo cadastrado e atualizado na Plataforma Lattes (CNPq).",
-  "Dedicar-se às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado.",
+  "Dedicar-se às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado (até 20h semanais).",
 ];
 
 export function EditalIC2026() {
