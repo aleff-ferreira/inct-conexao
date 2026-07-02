@@ -27,7 +27,7 @@ plataforma em ~10 minutos.
 2. Cole o conteúdo INTEIRO de [`supabase/migrations/001_platform.sql`](../supabase/migrations/001_platform.sql) → **Run**.
 3. Deve terminar sem erros. Isso cria as tabelas, políticas RLS, o bucket
    privado `inscricoes` e já **semeia o edital 04/2026** (com a janela
-   01–15/jul e os orientadores por estado).
+   06–19/jul e os orientadores por estado, conforme a versão final do edital).
 
 ### 3. Configurar a autenticação (~2 min) + SMTP (OBRIGATÓRIO, ~1 h)
 1. **Authentication → URL Configuration**:

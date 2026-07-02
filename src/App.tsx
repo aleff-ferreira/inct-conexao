@@ -663,9 +663,9 @@ type Notice = {
 
 const notices: Notice[] = [
   {
-    status: "Inscrições abertas · 01–15 jul 2026",
+    status: "Inscrições: 06–19 jul 2026",
     title: "Processo Seletivo Simplificado Nº 04/2026 — Bolsas de IC/CNPq",
-    date: "Publicação: 30 jun. 2026",
+    date: "Divulgação: 02 jul. 2026",
     text: "Seleção de 50 bolsistas de Iniciação Científica (R$ 700/mês, por 12 meses) para os grupos e instituições do INCT-CONEXAO, nas regiões da Amazônia Legal, Nordeste e Centro-Oeste.",
     href: EDITAL_HREF,
     linkLabel: "Ver edital completo",

@@ -23,7 +23,7 @@ const keyFacts = [
   { icon: Award, label: "Bolsas de IC/CNPq", value: "50" },
   { icon: Coins, label: "Valor mensal", value: "R$ 700" },
   { icon: CalendarClock, label: "Vigência", value: "12 meses" },
-  { icon: FileText, label: "Inscrições", value: "01–15 jul 2026" },
+  { icon: FileText, label: "Inscrições", value: "06–19 jul 2026" },
 ];
 
 /** Eixos Estratégicos Transversais (EET) — linhas de pesquisa do processo. */
@@ -38,14 +38,14 @@ const eets = [
   { code: "EET-8", title: "Políticas informadas por evidências e educação", text: "Educação ambiental, científica e em saúde junto às comunidades originárias e à sociedade amazônica." },
 ];
 
-/** Distribuição das 50 bolsas (item 3 do edital). */
+/** Distribuição das 50 bolsas (item 3 do edital — versão final, 02/07/2026). */
 const amazoniaLegal = [
-  { uf: "Rondônia (RO)", vagas: 17, inst: "FIOCRUZ RO, UNIR, IFRO, Afya São Lucas, IESPRO, FIMCA, FAAr, FCR, ECOPORÉ, CEPEM, CEMETRON, CCIPWP" },
+  { uf: "Rondônia (RO)", vagas: 15, inst: "FIOCRUZ RO, UNIR, IFRO, Afya São Lucas, IESPRO, FIMCA, FAAr, FCR, ECOPORÉ, CEPEM, CEMETRON, CCIPWP" },
+  { uf: "Amazonas (AM)", vagas: 5, inst: "UFAM, FIOCRUZ AM, IFAM, INPA" },
   { uf: "Pará (PA)", vagas: 4, inst: "UFPA, UFOPA" },
-  { uf: "Roraima (RR)", vagas: 3, inst: "UFRR" },
-  { uf: "Amazonas (AM)", vagas: 3, inst: "UFAM, FIOCRUZ AM, IFAM" },
-  { uf: "Maranhão (MA)", vagas: 3, inst: "UFMA, UEMA" },
   { uf: "Amapá (AP)", vagas: 3, inst: "UNIFAP" },
+  { uf: "Roraima (RR)", vagas: 2, inst: "UFRR" },
+  { uf: "Maranhão (MA)", vagas: 2, inst: "UFMA, UEMA" },
   { uf: "Mato Grosso (MT)", vagas: 2, inst: "UFMT" },
   { uf: "Tocantins (TO)", vagas: 1, inst: "UFT" },
 ];
@@ -53,40 +53,41 @@ const amazoniaLegal = [
 const nordesteCentroOeste = [
   { uf: "Ceará (CE)", vagas: 3, inst: "UFC, FIOCRUZ CE" },
   { uf: "Alagoas (AL)", vagas: 2, inst: "UFAL" },
+  { uf: "Rio Grande do Norte (RN)", vagas: 2, inst: "UFRN" },
   { uf: "Mato Grosso do Sul (MS)", vagas: 2, inst: "UFGD" },
   { uf: "Distrito Federal (DF)", vagas: 2, inst: "UnB, FIOCRUZ BSB" },
   { uf: "Paraíba (PB)", vagas: 1, inst: "UEPB" },
   { uf: "Pernambuco (PE)", vagas: 1, inst: "FIOCRUZ PE" },
+  { uf: "Piauí (PI)", vagas: 1, inst: "FIOCRUZ PI" },
   { uf: "Sergipe (SE)", vagas: 1, inst: "UFS" },
-  { uf: "Rio Grande do Norte (RN)", vagas: 1, inst: "UFRN" },
   { uf: "Goiás (GO)", vagas: 1, inst: "UFJ" },
 ];
 
-/** Critérios de avaliação (item 5). */
+/** Critérios de avaliação (item 5 — versão final: cinco critérios). */
 const criterios = [
-  { criterio: "Coerência do Plano de Trabalho com os EET e objetivos do INCT-CONEXAO", peso: "6", pontos: "60" },
-  { criterio: "Histórico Escolar (Coeficiente de Rendimento Acadêmico)", peso: "2", pontos: "20" },
-  { criterio: "Produção Acadêmica e Currículo Lattes", peso: "1", pontos: "10" },
-  { criterio: "Vídeo de Apresentação/Intenção", peso: "1", pontos: "10" },
+  { criterio: "Adequação e coerência do Plano de Trabalho com os EET e objetivos específicos do INCT-CONEXAO", peso: "6", pontos: "60" },
+  { criterio: "Alinhamento do Plano de Atividades à linha de pesquisa e ao(à) orientador(a) pretendido(a)", peso: "1", pontos: "10" },
+  { criterio: "Histórico Escolar (Coeficiente de Rendimento Acadêmico)", peso: "1", pontos: "10" },
+  { criterio: "Currículo Lattes", peso: "1", pontos: "10" },
+  { criterio: "Vídeo de Apresentação/Carta de Intenção direcionada ao(à) orientador(a) pretendido(a)", peso: "1", pontos: "10" },
 ];
 
-/** Documentos para inscrição (item 5.1). */
+/** Documentos para inscrição (item 5.1 — versão final). */
 const documentos = [
-  { icon: FileText, title: "Carta de intenção", text: "Até 3.500 caracteres (com espaços), em PDF — experiência na graduação, habilidades, motivação e indicação clara da região e do(a) orientador(a) pretendido(a)." },
-  { icon: ScrollText, title: "Plano de Atividades", text: "Até 4.500 caracteres (com espaços), em PDF — Objetivo, Justificativa, Metodologia e Cronograma de Execução (modelo em anexo ao edital)." },
+  { icon: FileText, title: "Carta de intenção", text: "Até 4.000 caracteres (com espaços), em PDF — experiência na graduação, habilidades, motivação para participar do projeto junto ao(à) orientador(a) pretendido(a) e indicação clara da região e do(a) orientador(a)." },
+  { icon: ScrollText, title: "Plano de Atividades", text: "Até 6.000 caracteres (com espaços), em PDF, de acordo com a linha de atuação — Objetivo, Justificativa, Metodologia e Cronograma de Execução." },
   { icon: GraduationCap, title: "Histórico escolar e matrícula", text: "Histórico escolar e comprovante de matrícula atualizados, em PDF." },
   { icon: Users, title: "Currículo Lattes", text: "Currículo Lattes atualizado nos últimos 30 dias, em PDF." },
-  { icon: Video, title: "Vídeo de apresentação", text: "Vídeo de Apresentação/Intenção de 1 a 3 minutos (arquivo MPEG); enviar o link de acesso." },
+  { icon: Video, title: "Vídeo de apresentação", text: "Vídeo de apresentação direto ao(à) orientador(a), com a motivação para participar do projeto, de 1 a 3 minutos (arquivo MPEG); enviar o link de acesso." },
 ];
 
-/** Cronograma (item 7). */
+/** Cronograma (item 7 — versão final). */
 const cronograma = [
-  { etapa: "Publicação do edital", data: "30 de junho de 2026" },
-  { etapa: "Inscrições on-line", data: "01 a 15 de julho de 2026" },
-  { etapa: "Análise dos planos de trabalho e documentos", data: "16 a 25 de julho de 2026" },
-  { etapa: "Divulgação do resultado preliminar", data: "27 de julho de 2026" },
-  { etapa: "Homologação do resultado final", data: "31 de julho de 2026" },
-  { etapa: "Implementação das bolsas", data: "Agosto de 2026" },
+  { etapa: "Divulgação do edital", data: "02 de julho de 2026" },
+  { etapa: "Inscrições on-line", data: "06 a 19 de julho de 2026" },
+  { etapa: "Análise dos planos de trabalho e documentos", data: "20 a 28 de julho de 2026" },
+  { etapa: "Divulgação do resultado", data: "A partir de 29 de julho de 2026" },
+  { etapa: "Implementação das bolsas", data: "A partir de 1º de agosto de 2026" },
 ];
 
 /** Perfil do candidato (item 4). */
@@ -94,7 +95,7 @@ const perfil = [
   "Estar regularmente matriculado(a) em curso de graduação, do 2º ao antepenúltimo período, em uma das instituições parceiras do INCT-CONEXAO listadas na distribuição das bolsas.",
   "Não possuir vínculo empregatício de qualquer natureza nem acumular a bolsa com outras modalidades de auxílio de agências de fomento.",
   "Possuir currículo cadastrado e atualizado na Plataforma Lattes (CNPq).",
-  "Ter disponibilidade para dedicação de, no mínimo, 20 horas semanais às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado.",
+  "Dedicar-se às atividades acadêmicas e de pesquisa previstas no Plano de Trabalho aprovado.",
 ];
 
 export function EditalIC2026() {
@@ -201,7 +202,7 @@ export function EditalIC2026() {
 
             <div className="edital-dist-head">
               <MapPin size={18} aria-hidden="true" />
-              <h3>Amazônia Legal — 36 bolsas</h3>
+              <h3>Amazônia Legal — 34 bolsas</h3>
             </div>
             <div className="edital-table-wrap">
               <table className="edital-table">
@@ -226,7 +227,7 @@ export function EditalIC2026() {
 
             <div className="edital-dist-head">
               <MapPin size={18} aria-hidden="true" />
-              <h3>Nordeste e Centro-Oeste — 14 bolsas</h3>
+              <h3>Nordeste e Centro-Oeste — 16 bolsas</h3>
             </div>
             <div className="edital-table-wrap">
               <table className="edital-table">
@@ -375,8 +376,9 @@ export function EditalIC2026() {
               </div>
             </div>
             <p className="edital-note">
-              A vigência da bolsa pressupõe a entrega de relatórios anuais e dos produtos sob responsabilidade do(a)
-              bolsista, conforme as diretrizes do CNPq para Iniciação Científica.
+              O(A) bolsista deve entregar relatórios mensais de acompanhamento e o relatório final, participar das
+              atividades pactuadas com o(a) orientador(a) e desenvolver as metas/objetivos delegados até o fim da
+              vigência, conforme as diretrizes do CNPq para Iniciação Científica.
             </p>
           </div>
         </div>
@@ -388,8 +390,8 @@ export function EditalIC2026() {
           <p className="eyebrow">Como se inscrever</p>
           <h2>Leia o edital, prepare seus documentos e participe</h2>
           <p className="edital-cta-text">
-            As inscrições ocorrem de 01 a 15 de julho de 2026. Consulte o edital completo para o passo a passo, o modelo
-            do Plano de Atividades e as regras de envio. Em caso de dúvidas, fale com a coordenação do INCT-CONEXAO.
+            As inscrições ocorrem de 06 a 19 de julho de 2026. Consulte o edital completo para o passo a passo e as
+            regras de envio. Em caso de dúvidas, fale com a coordenação do INCT-CONEXAO.
           </p>
           <div className="edital-hero-actions">
             <a className="button primary" href="#/inscricao/selecao-ic-2026">

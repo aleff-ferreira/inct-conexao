@@ -9,10 +9,11 @@ import {
 } from "../src/platform/scoring";
 import type { Application, Criterio, Evaluation } from "../src/platform/types";
 
-/** Critérios do edital 04/2026: Plano 60 · Histórico 20 · Lattes 10 · Vídeo 10. */
+/** Critérios do edital 04/2026 (versão final): Plano 60 · Alinhamento 10 · Histórico 10 · Lattes 10 · Vídeo 10. */
 const CRITERIOS: Criterio[] = [
   { key: "plano", label: "Plano", peso: 6, max: 60 },
-  { key: "historico", label: "Histórico", peso: 2, max: 20 },
+  { key: "alinhamento", label: "Alinhamento", peso: 1, max: 10 },
+  { key: "historico", label: "Histórico", peso: 1, max: 10 },
   { key: "lattes", label: "Lattes", peso: 1, max: 10 },
   { key: "video", label: "Vídeo", peso: 1, max: 10 },
 ];
@@ -58,17 +59,20 @@ const evaluation = (over: Partial<Evaluation>): Evaluation => ({
 
 describe("clampScores + weightedTotal", () => {
   it("soma pontos por critério (máx. 100)", () => {
-    expect(weightedTotal({ plano: 55, historico: 18, lattes: 8, video: 9 }, CRITERIOS)).toBe(90);
-    expect(weightedTotal({ plano: 60, historico: 20, lattes: 10, video: 10 }, CRITERIOS)).toBe(100);
+    expect(weightedTotal({ plano: 55, alinhamento: 8, historico: 9, lattes: 8, video: 9 }, CRITERIOS)).toBe(89);
+    expect(weightedTotal({ plano: 60, alinhamento: 10, historico: 10, lattes: 10, video: 10 }, CRITERIOS)).toBe(100);
   });
   it("limita cada nota ao máximo do critério e trata lixo como 0", () => {
     expect(clampScores({ plano: 75, historico: -3, lattes: NaN, video: 5 }, CRITERIOS)).toEqual({
       plano: 60,
+      alinhamento: 0,
       historico: 0,
       lattes: 0,
       video: 5,
     });
-    expect(weightedTotal({ plano: 999, historico: 999, lattes: 999, video: 999 }, CRITERIOS)).toBe(100);
+    expect(
+      weightedTotal({ plano: 999, alinhamento: 999, historico: 999, lattes: 999, video: 999 }, CRITERIOS),
+    ).toBe(100);
   });
   it("ignora chaves desconhecidas (não infla o total)", () => {
     expect(weightedTotal({ plano: 10, hacker: 500 } as Record<string, number>, CRITERIOS)).toBe(10);
