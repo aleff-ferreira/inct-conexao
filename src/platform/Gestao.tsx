@@ -177,7 +177,7 @@ export default function Gestao() {
     <Shell email={auth.session.user.email} onSignOut={auth.signOut} onChangePassword={() => setShowPw(true)}>
       <div className="plat-toolbar">
         <label>
-          Edital
+          Processo seletivo
           <select value={editalId} onChange={(e) => setEditalId(e.target.value)}>
             {(editais ?? []).map((e) => (
               <option key={e.id} value={e.id}>
@@ -208,7 +208,7 @@ export default function Gestao() {
         <EquipeView myId={auth.session.user.id} />
       ) : !edital ? (
         <div className="plat-loading">
-          <Loader2 size={22} aria-hidden="true" /> Carregando edital…
+          <Loader2 size={22} aria-hidden="true" /> Carregando processo seletivo…
         </div>
       ) : openApp ? (
         <AvaliacaoView

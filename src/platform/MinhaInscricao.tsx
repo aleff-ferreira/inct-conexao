@@ -40,7 +40,7 @@ export default function MinhaInscricao() {
       <section className="section-band plat-band">
         <div className="section-inner plat-inner">
           <a className="plat-back" href="#/editais/selecao-ic-2026">
-            <ArrowLeft size={15} aria-hidden="true" /> Edital
+            <ArrowLeft size={15} aria-hidden="true" /> Processo seletivo
           </a>
           <p className="eyebrow dark">Área do candidato</p>
           <h1>Minha inscrição</h1>
@@ -98,7 +98,7 @@ export default function MinhaInscricao() {
               <div>
                 <strong>Nenhuma inscrição encontrada para {auth.session.user.email}</strong>
                 <p>
-                  Se o edital está aberto, <a href="#/inscricao/selecao-ic-2026">inscreva-se aqui</a>.
+                  Se as inscrições estão abertas, <a href="#/inscricao/selecao-ic-2026">inscreva-se aqui</a>.
                 </p>
               </div>
             </div>

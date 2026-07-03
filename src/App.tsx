@@ -757,7 +757,7 @@ const notices: Notice[] = [
     date: "Divulgação: 02 jul. 2026",
     text: "Seleção de 50 bolsistas de Iniciação Científica (R$ 700/mês, por 12 meses) para os grupos e instituições do INCT-CONEXAO, nas regiões da Amazônia Legal, Nordeste e Centro-Oeste.",
     href: EDITAL_HREF,
-    linkLabel: "Ver edital completo",
+    linkLabel: "Ver processo seletivo",
     featured: true,
   },
   {
@@ -2479,7 +2479,7 @@ function App() {
         <section className="section-band notices-section" id="editais">
           <div className="section-inner">
             <div className="section-heading">
-              <p className="eyebrow dark">Editais e documentos</p>
+              <p className="eyebrow dark">Oportunidades e documentos</p>
               <h2>Acesso rápido a processos seletivos e resultados</h2>
             </div>
             <div className="notice-grid">
@@ -2613,7 +2613,7 @@ function App() {
             </a>
             <a href="#editais">
               <Download size={18} aria-hidden="true" />
-              Editais
+              Oportunidades
             </a>
             <a href={HUB_HREF}>
               <Radio size={18} aria-hidden="true" />

@@ -212,7 +212,7 @@ export default function Inscricao({ slug }: { slug: string }) {
             <strong>Sistema de inscrição em preparação</strong>
             <p>
               As inscrições on-line serão habilitadas em breve. Consulte o{" "}
-              <a href={EDITAL_HREF}>edital completo</a> para o cronograma e os documentos exigidos.
+              <a href={EDITAL_HREF}>processo seletivo</a> para o cronograma e os documentos exigidos.
             </p>
           </div>
         </div>
@@ -236,9 +236,9 @@ export default function Inscricao({ slug }: { slug: string }) {
         <div className="plat-card plat-notice">
           <CalendarX2 size={22} aria-hidden="true" />
           <div>
-            <strong>Edital não encontrado</strong>
+            <strong>Processo seletivo não encontrado</strong>
             <p>
-              Verifique o endereço ou volte para a página de <a href={EDITAL_HREF}>editais</a>.
+              Verifique o endereço ou volte para a página de <a href={EDITAL_HREF}>oportunidades</a>.
             </p>
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function Inscricao({ slug }: { slug: string }) {
             <strong>Inscrições fora do período</strong>
             <p>
               A janela de inscrição vai de {fmtData(edital.abre_em)} a {fmtData(edital.fecha_em)}. Consulte o{" "}
-              <a href={EDITAL_HREF}>edital</a> para detalhes.
+              <a href={EDITAL_HREF}>processo seletivo</a> para detalhes.
             </p>
           </div>
         </div>
@@ -319,7 +319,7 @@ export default function Inscricao({ slug }: { slug: string }) {
           <p>
             Você pode revisar ou corrigir sua inscrição até {fmtData(edital.fecha_em)} — basta voltar a esta página
             com o mesmo e-mail. O resultado preliminar será divulgado conforme o cronograma do{" "}
-            <a href={EDITAL_HREF}>edital</a>.
+            <a href={EDITAL_HREF}>processo seletivo</a>.
           </p>
           <a className="button primary" href="#/minha-inscricao">
             Acompanhar minha inscrição <ArrowRight size={17} aria-hidden="true" />
@@ -337,7 +337,7 @@ export default function Inscricao({ slug }: { slug: string }) {
           <ShieldCheck size={20} aria-hidden="true" />
           <div>
             <strong>Inscrição recebida — protocolo {existing.protocolo}</strong>
-            <p>O período de edição encerrou; acompanhe o resultado pelo cronograma do edital.</p>
+            <p>O período de edição encerrou; acompanhe o resultado pelo cronograma do processo seletivo.</p>
           </div>
         </div>
       ) : (
@@ -387,7 +387,7 @@ export default function Inscricao({ slug }: { slug: string }) {
                   </select>
                   <small>
                     Usado para a ação afirmativa “Ciência Delas” (bonificação de 10% para candidatas), conforme o
-                    edital.
+                    processo seletivo.
                   </small>
                 </label>
               </fieldset>
@@ -567,7 +567,7 @@ export default function Inscricao({ slug }: { slug: string }) {
                 <label className="plat-consent">
                   <input type="checkbox" checked={form.lgpd} onChange={(e) => set("lgpd", e.target.checked)} />
                   <span>
-                    Declaro que li o <a href={EDITAL_HREF}>edital</a> e <strong>autorizo o tratamento dos meus
+                    Declaro que li o <a href={EDITAL_HREF}>processo seletivo</a> e <strong>autorizo o tratamento dos meus
                     dados pessoais</strong> (LGPD, Lei 13.709/2018) exclusivamente para este processo seletivo do
                     INCT-CONEXAO, pelo período necessário à sua conclusão.
                   </span>
@@ -628,7 +628,7 @@ function Shell({
       <section className="section-band plat-band">
         <div className="section-inner plat-inner">
           <a className="plat-back" href={EDITAL_HREF}>
-            <ArrowLeft size={15} aria-hidden="true" /> Edital
+            <ArrowLeft size={15} aria-hidden="true" /> Processo seletivo
           </a>
           <p className="eyebrow dark">Inscrição on-line{numero ? ` · Processo Seletivo ${numero}` : ""}</p>
           <h1>{titulo ?? "Inscrição"}</h1>

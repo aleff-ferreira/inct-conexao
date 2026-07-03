@@ -83,7 +83,7 @@ const documentos = [
 
 /** Cronograma (item 7 — versão final). */
 const cronograma = [
-  { etapa: "Divulgação do edital", data: "02 de julho de 2026" },
+  { etapa: "Divulgação do processo seletivo", data: "02 de julho de 2026" },
   { etapa: "Inscrições on-line", data: "06 a 19 de julho de 2026" },
   { etapa: "Análise dos planos de trabalho e documentos", data: "20 a 28 de julho de 2026" },
   { etapa: "Divulgação do resultado", data: "A partir de 29 de julho de 2026" },
@@ -115,10 +115,10 @@ export function EditalIC2026() {
         <div className="edital-hero-overlay" aria-hidden="true" />
         <div className="section-inner edital-hero-inner">
           <a className="edital-back" href="#editais">
-            <ArrowLeft size={16} aria-hidden="true" /> Voltar para Editais
+            <ArrowLeft size={16} aria-hidden="true" /> Voltar para Oportunidades
           </a>
           <p className="eyebrow">
-            <Sparkles size={15} aria-hidden="true" /> Edital aberto
+            <Sparkles size={15} aria-hidden="true" /> Chamada aberta
           </p>
           <p className="edital-kicker">Processo Seletivo Simplificado Nº 04/2026</p>
           <h1>Seleção de Bolsistas de Iniciação Científica (IC/CNPq)</h1>
@@ -144,7 +144,7 @@ export function EditalIC2026() {
               Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
-              Baixar edital completo (PDF) <Download size={18} aria-hidden="true" />
+              Baixar o documento oficial (PDF) <Download size={18} aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -385,9 +385,9 @@ export function EditalIC2026() {
       <section className="section-band dark-band edital-cta">
         <div className="section-inner edital-cta-inner">
           <p className="eyebrow">Como se inscrever</p>
-          <h2>Leia o edital, prepare seus documentos e participe</h2>
+          <h2>Conheça o processo seletivo, prepare seus documentos e participe</h2>
           <p className="edital-cta-text">
-            As inscrições ocorrem de 06 a 19 de julho de 2026. Consulte o edital completo para o passo a passo e as
+            As inscrições ocorrem de 06 a 19 de julho de 2026. Consulte o documento oficial para o passo a passo e as
             regras de envio. Em caso de dúvidas, fale com a coordenação do INCT-CONEXAO.
           </p>
           <div className="edital-hero-actions">
@@ -395,7 +395,7 @@ export function EditalIC2026() {
               Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
-              Baixar edital completo (PDF) <Download size={18} aria-hidden="true" />
+              Baixar o documento oficial (PDF) <Download size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href="mailto:inctconexao@gmail.com">
               inctconexao@gmail.com <Mail size={18} aria-hidden="true" />
