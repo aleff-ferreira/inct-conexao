@@ -56,6 +56,19 @@ GitHub o expõe em **"Cite this repository"**, no menu lateral.
 | **Editorial** | Matérias de campo, webinars, grupos de pesquisa — todos editáveis por CMS |
 | **Rede** | Catálogo de instituições parceiras, com números derivados do próprio catálogo |
 
+### Uma figura gerada pela plataforma
+
+O gráfico abaixo **não é uma captura de tela**: é o arquivo que o site publica,
+gerado por `npm run figuras` a partir da série do INPE e servido também a quem
+navega sem JavaScript. Tem 3 kB, carrega fonte, período e licença dentro do
+próprio SVG, e acompanha um CSV com a mesma procedência no cabeçalho.
+
+![Focos de calor na Amazônia Legal, 2003–2024](public/figuras/focos-amazonia-legal.svg)
+
+A série contraria a intuição corrente: **2004 é o pico**, não 2019. É o tipo de
+leitura que só um gráfico de linha entrega — e a razão pela qual a plataforma
+ingere séries temporais em vez de publicar números soltos.
+
 ---
 
 ## Decisões de arquitetura
@@ -143,7 +156,12 @@ Requer **Node 20.19+** (Vite 8). Scripts de ingestão de dados usam Python 3.
 python3 scripts/build-focos.py   # série de focos do INPE
 node scripts/build-geodata.mjs   # malhas do IBGE
 npm run figuras                  # gera SVG e CSV das figuras
+node scripts/shot-readme.cjs     # regenera as capturas deste README
 ```
+
+As capturas de tela são **geradas, não desenhadas**: se a interface mudar, um
+comando as atualiza. README ilustrado com uma versão que não existe mais é pior
+que README sem imagem.
 
 ---
 
