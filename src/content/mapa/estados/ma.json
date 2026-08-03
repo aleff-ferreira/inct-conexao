@@ -1,0 +1,137 @@
+{
+  "uf": "MA",
+  "publicado": true,
+  "demonstracao": false,
+  "resumo": "O Maranhão integra parcialmente a Amazônia Legal e faz a transição entre a floresta amazônica, o Cerrado e a Caatinga. Tem litoral extenso, baixadas alagáveis e grande população rural e ribeirinha. Dengue e zika estão entre os agravos de maior notificação, ao lado da febre de chikungunya e da leishmaniose tegumentar americana.",
+  "destaque": "Transição Amazônia, Cerrado e Caatinga · Amazônia Legal parcial",
+  "revisadoPor": "Conteúdo de prevenção, reconhecimento e cuidado transcrito do documento de referência da coordenação (fontes citadas em cada doença). Pendente de revisão científica editorial.",
+  "revisadoEm": "2026-07-28",
+  "doencas": [
+    {
+      "nome": "Dengue",
+      "agente": "Vírus da dengue (DENV 1 a 4)",
+      "transmissao": "Picada do mosquito Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti (também transmite zika e chikungunya).",
+      "notificacoes": {
+        "valor": 52419,
+        "periodo": "acumulado a partir de 2016",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": { "titulo": "Doenças de notificação compulsória (SINAN) via TabNet", "publicador": "DataSUS · Ministério da Saúde", "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/" }
+      },
+      "prevencao": [
+        "Eliminar água parada, onde o mosquito deposita seus ovos: tampar caixas d'água e reservatórios, esvaziar pratos de vasos de plantas ou pôr areia até a borda, descartar pneus, garrafas, latas e outros recipientes que acumulem água.",
+        "Evitar picadas: usar repelente, roupas de mangas compridas e calças, principalmente durante o dia, instalar telas em portas e janelas e usar mosquiteiro quando possível.",
+        "Manter o ambiente limpo: fechar bem as lixeiras, limpar quintais e terrenos e evitar o acúmulo de objetos que retenham água da chuva.",
+        "Seguir as orientações da vigilância local sobre vacinação: no SUS, a vacina da dengue é dirigida a públicos específicos (não à população em geral)."
+      ],
+      "comoReconhecer": "Nos quadros mais leves: febre alta (38,5 a 40 °C) de início súbito, dor de cabeça intensa, dor atrás dos olhos (dor retro-orbitária), dores musculares e nas articulações intensas, cansaço e fraqueza, náuseas e vômitos, manchas vermelhas na pele (exantema), que às vezes coçam, e perda do apetite.",
+      "sinaisAlerta": [
+        "Dor abdominal intensa e contínua, vômitos persistentes, sangramento pelo nariz ou pelas gengivas e presença de sangue nas fezes ou no vômito.",
+        "Sonolência excessiva, irritabilidade ou confusão, dificuldade para respirar, pele fria, pálida ou úmida, tontura ou desmaio e diminuição da quantidade de urina.",
+        "Esses sinais indicam risco de dengue grave, costumam aparecer quando a febre começa a diminuir e exigem atendimento médico imediato."
+      ],
+      "tratamento": [
+        "Em São Luís, procurar o Hospital Presidente Vargas; em outras cidades, procurar uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água.",
+        "Manter-se em repouso."
+      ],
+      "manejoServicos": "O manejo baseia-se em hidratação e acompanhamento clínico; não há medicamento específico. A avaliação precoce reduz complicações.",
+      "fontes": [
+        { "titulo": "Dengue: atividades médicas", "publicador": "Médicos Sem Fronteiras (MSF Brasil)", "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/", "data": "2026-07-20" },
+        { "titulo": "Dengue: sintomas, causas, tratamento e prevenção", "publicador": "Prefeitura de Potim (SP)", "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/", "data": "2026-07-20" }
+      ]
+    },
+    {
+      "nome": "Febre de chikungunya",
+      "agente": "Vírus chikungunya (CHIKV)",
+      "transmissao": "Picada de mosquitos do gênero Aedes, principalmente o Aedes aegypti, que se reproduz em água parada em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti, o mesmo que transmite dengue e zika; o Aedes albopictus também participa da transmissão em algumas áreas.",
+      "prevencao": [
+        "Eliminar a água parada em vasos, pneus e garrafas, para impedir a reprodução dos mosquitos Aedes.",
+        "Usar repelente nas áreas expostas da pele.",
+        "Vestir roupas compridas que cubram braços e pernas, para reduzir o contato com os insetos."
+      ],
+      "comoReconhecer": "Febre alta que começa de repente, dores intensas e incapacitantes nas articulações (juntas) de mãos, pés, tornozelos e pulsos, manchas vermelhas pelo corpo, dor de cabeça e dores nos músculos.",
+      "tratamento": [
+        "Em São Luís, procurar o Hospital Presidente Vargas; em outras cidades, procurar uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muito líquido (água e sucos) para evitar a desidratação.",
+        "Fazer repouso absoluto durante a fase mais aguda.",
+        "Não se automedicar com anti-inflamatórios ou aspirina (AAS) na fase inicial, porque podem causar complicações graves."
+      ],
+      "manejoServicos": "Não há medicamento específico contra o vírus: o cuidado é de suporte, com hidratação, repouso e controle da dor definidos pela equipe de saúde.",
+      "fontes": [
+        { "titulo": "Chikungunya (glossário de saúde)", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude/chikungunya", "data": "2026-07-25" }
+      ]
+    },
+    {
+      "nome": "Leishmaniose tegumentar americana (LTA)",
+      "agente": "Protozoários do gênero Leishmania",
+      "transmissao": "Picada de fêmeas de flebotomíneos (mosquito-palha), mais ativas ao amanhecer e ao entardecer, sobretudo em áreas de mata.",
+      "vetoresReservatorios": "Vetor: flebotomíneos (Lutzomyia). Animais silvestres funcionam como reservatórios do parasita.",
+      "prevencao": [
+        "Proteção individual: usar repelente na pele ao frequentar áreas de mata ou rurais e preferir camisa de manga comprida, calça comprida e calçado fechado.",
+        "Barreiras físicas: instalar telas de malha fina em portas e janelas e usar mosquiteiro ao dormir.",
+        "Cuidados nos horários de pico: evitar atividades ao ar livre, como banhos de rio ou incursões na mata, ao amanhecer e ao entardecer, quando o mosquito-palha é mais ativo.",
+        "Manejo ambiental: manter quintais e arredores das residências limpos.",
+        "Destino do lixo: descartar corretamente o lixo orgânico, para não atrair animais silvestres que servem de reservatório para o parasita."
+      ],
+      "comoReconhecer": "Ferida na pele que geralmente não dói e cicatriza com dificuldade, úlcera com bordas elevadas e fundo avermelhado ou granuloso, uma ou mais lesões na pele e ínguas (gânglios aumentados) próximas à lesão. Quando atinge as mucosas, causa obstrução nasal, sangramentos pelo nariz e feridas na boca ou no nariz.",
+      "tratamento": [
+        "Em São Luís, procurar o Hospital Presidente Vargas; em outras cidades, procurar uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água.",
+        "Manter-se em repouso."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são feitos na rede pública, com acompanhamento especializado. Procure avaliação diante de ferida que não cicatriza.",
+      "fontes": [
+        { "titulo": "Leishmaniose (glossário de saúde)", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose", "data": "2026-07-20" }
+      ]
+    },
+    {
+      "nome": "Zika",
+      "agente": "Vírus Zika (ZIKV)",
+      "transmissao": "Picada do Aedes aegypti; também pode ser transmitido por via sexual e da gestante para o bebê.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti. Na gestação, associa-se a malformações no bebê.",
+      "notificacoes": {
+        "valor": 8105,
+        "periodo": "acumulado a partir de 2016",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": { "titulo": "Doenças de notificação compulsória (SINAN) via TabNet", "publicador": "DataSUS · Ministério da Saúde", "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/" }
+      },
+      "prevencao": [
+        "Proteção individual contra picadas: usar repelente e roupas adequadas, como calças e blusas de mangas compridas, além de barreiras físicas, como telas de proteção em portas e janelas, mosquiteiro sobre a cama ou ambientes com ar-condicionado.",
+        "Eliminação dos criadouros do mosquito: manter caixas d'água, tonéis e barris completamente tampados, manter as lixeiras sempre fechadas, guardar potes virados para baixo para que não acumulem água e guardar pneus velhos em locais cobertos ou entregá-los ao serviço de limpeza urbana.",
+        "Prevenção da transmissão sexual: o vírus também pode ser transmitido em relações sexuais e permanece no sêmen por várias semanas após a infecção; o preservativo é a forma mais segura de evitar essa via."
+      ],
+      "comoReconhecer": "Febre baixa (geralmente abaixo de 38,5 °C), manchas vermelhas na pele que coçam muito, dores nas articulações (principalmente nas mãos e nos pés), olhos vermelhos (conjuntivite sem secreção), dor de cabeça e dores musculares. Os sintomas costumam durar de 2 a 7 dias e muitas pessoas infectadas não apresentam nenhum sinal da doença.",
+      "tratamento": [
+        "Em São Luís, procurar o Hospital Presidente Vargas; em outras cidades, procurar uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água e alimentar-se bem.",
+        "Repousar.",
+        "Não se automedicar."
+      ],
+      "manejoServicos": "Não há tratamento específico; o cuidado é de suporte. Gestantes com suspeita devem ter acompanhamento pré-natal reforçado.",
+      "fontes": [
+        { "titulo": "Zika vírus: o que é, causas, sintomas", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/z/zika-virus", "data": "2026-07-20" }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": ["Amazônia", "Cerrado", "Caatinga"],
+    "hidrografia": "Rios Mearim, Pindaré, Itapecuru e Gurupi, com o Parnaíba na divisa com o Piauí e o Tocantins a oeste; a Baixada Maranhense reúne extensas áreas alagáveis e o litoral é recortado por manguezais e pelo Golfão Maranhense.",
+    "clima": "Tropical quente e úmido no norte e no oeste, com chuvas concentradas no primeiro semestre, e transição para clima mais seco no leste e no sudeste do estado.",
+    "resumo": "O Maranhão é uma zona de encontro entre a Amazônia, o Cerrado e a Caatinga; as áreas alagáveis da Baixada e a urbanização do Golfão Maranhense favorecem a circulação de mosquitos vetores de arboviroses.",
+    "fontes": [
+      { "titulo": "Biomas e mapas do Brasil", "publicador": "IBGE", "url": "https://www.ibge.gov.br/geociencias" }
+    ]
+  },
+  "servicos": [
+    { "nome": "Secretaria de Estado da Saúde do Maranhão (SES-MA)", "contato": "Consultar a Secretaria de Estado da Saúde do Maranhão", "nota": "notificação de agravos e orientação epidemiológica" },
+    { "nome": "Hospital Presidente Vargas (São Luís)", "contato": "Procurar o hospital em São Luís; em outras cidades, procurar a UBS ou a UPA mais próxima", "nota": "referência de atendimento indicada para os agravos desta ficha" }
+  ],
+  "fontes": [
+    { "titulo": "Doenças de notificação compulsória (SINAN) via TabNet", "publicador": "DataSUS · Ministério da Saúde", "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/" },
+    { "titulo": "Dengue: atividades médicas", "publicador": "Médicos Sem Fronteiras (MSF Brasil)", "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/", "data": "2026-07-20" },
+    { "titulo": "Glossário de saúde: chikungunya e leishmaniose", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude", "data": "2026-07-25" },
+    { "titulo": "Zika vírus: o que é, causas, sintomas", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/z/zika-virus", "data": "2026-07-20" }
+  ]
+}

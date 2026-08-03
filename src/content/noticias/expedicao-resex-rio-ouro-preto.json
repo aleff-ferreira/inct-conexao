@@ -1,0 +1,388 @@
+{
+  "slug": "expedicao-resex-rio-ouro-preto",
+  "titulo": "Expedição científica detecta contaminação generalizada da água em reserva de Rondônia",
+  "chapeu": "Expedição científica · Rondônia",
+  "resumo": "Cerca de 30 pesquisadores passaram dez dias na Reserva Extrativista do Rio Ouro Preto, em Rondônia, atendendo famílias e coletando amostras. O perfil de adoecimento observado nas consultas não era o que a equipe esperava para a região.",
+  "data": "2026-07-19",
+  "local": "Guajará-Mirim e Nova Mamoré (RO)",
+  "autores": [
+    {
+      "nome": "Aleff Ferreira",
+      "papel": "Texto",
+      "lattes": "http://lattes.cnpq.br/6740177714494876",
+      "linkedin": "https://www.linkedin.com/in/aleff-ferreira"
+    }
+  ],
+  "imagem": {
+    "arquivo": "hero-rio-ouro-preto.webp",
+    "alt": "Sol nascendo sobre o Rio Ouro Preto, com floresta amazônica nas duas margens, em Rondônia"
+  },
+  "imagemCredito": "II Expedição Científica RESEX Rio Ouro Preto. Foto: acervo da expedição",
+  "videoHero": {
+    "arquivo": "hero-sobrevoo.mp4",
+    "arquivoMobile": "hero-sobrevoo-mobile.mp4",
+    "poster": "hero-sobrevoo-poster.webp"
+  },
+  "numeros": [
+    {
+      "rotulo": "Equipe",
+      "valor": "~30 pessoas"
+    },
+    {
+      "rotulo": "Campo",
+      "valor": "~10 dias"
+    },
+    {
+      "rotulo": "Amostras de água",
+      "valor": "100% contaminadas"
+    },
+    {
+      "rotulo": "Atendimentos (balanço preliminar)",
+      "valor": "~60% crônicos"
+    },
+    {
+      "rotulo": "Saneamento (protótipo)",
+      "valor": "~R$ 2 mil"
+    }
+  ],
+  "tags": [
+    "Saúde Única",
+    "Amazônia",
+    "Rondônia",
+    "zoonoses",
+    "saneamento rural",
+    "tecnologia social",
+    "expedição científica"
+  ],
+  "blocos": [
+    {
+      "tipo": "destaque",
+      "titulo": "Em 30 segundos",
+      "itens": [
+        "Coliformes fecais em **todas** as amostras da água de consumo da comunidade.",
+        "No balanço preliminar, cerca de **60%** dos casos que a equipe encontrou eram doenças crônicas, como **hipertensão** (pressão alta) e **dislipidemia** (colesterol alterado).",
+        "As infecciosas não sumiram: duas pessoas com **malária**, uma com **tuberculose pulmonar** e uma com **hepatite C**.",
+        "Um achado que a equipe classificou como inusitado: entre **30% e 40%** da população com sinais de **doença renal crônica**, numa comunidade onde fazer hemodiálise é inviável.",
+        "Os biólogos capturam morcegos, recolhem os **ectoparasitos** (parasitas que sugam seu sangue) e soltam os animais. Nesses parasitas, buscam microrganismos de **potencial zoonótico**, capazes de passar do animal para as pessoas.",
+        "Um protótipo de saneamento de cerca de **R$ 2 mil**, erguido com material e gente da região."
+      ]
+    },
+    {
+      "tipo": "texto",
+      "texto": "São 7h08 quando o barco sai, com o sol ainda baixo, a caminho do atendimento domiciliar. É assim, pelo rio, que a **II Expedição Científica RESEX Rio Ouro Preto** chegou às famílias da reserva, entre os municípios de Guajará-Mirim e Nova Mamoré, em Rondônia. Criada em 13 de março de 1990, a Reserva Extrativista do Rio Ouro Preto integra o grupo das quatro primeiras reservas extrativistas federais do Brasil. O modelo nasceu da mobilização dos seringueiros, articulada nacionalmente desde 1985, e foi formalizado como política ambiental federal em 1990, após o assassinato de Chico Mendes, embora iniciativas precursoras já existissem desde 1987."
+    },
+    {
+      "tipo": "texto",
+      "texto": "São cerca de 30 pesquisadores e dez dias de campo, entre médicos, biólogos, biomédicos, farmacêuticos, uma arquiteta e 15 estudantes de iniciação científica de medicina, farmácia e biologia, que se formam em campo enquanto o trabalho acontece. Numa mesma comunidade, encontraram um perfil de adoecimento semelhante ao das áreas urbanas e contaminação em todas as amostras de água analisadas. À noite, outra frente da equipe saía atrás de morcegos. Pessoas, água e animais silvestres entram na mesma investigação, e essa abordagem integrada é o que se chama **Saúde Única** (_One Health_)."
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "Atendimento primeiro, pesquisa depois"
+    },
+    {
+      "tipo": "texto",
+      "texto": "A equipe chega oferecendo consulta, exame e procedimento. As famílias, por sua vez, autorizam a coleta de informações e de material biológico, dentro de protocolos aprovados por um comitê de ética em pesquisa (CEP) e, no caso dos animais, por uma comissão de ética no uso de animais (CEUA)."
+    },
+    {
+      "tipo": "citacao",
+      "texto": "Por mais que a gente esteja aqui como pesquisador, a gente não pode virar as costas para as necessidades da população.",
+      "autor": "Luís Marcelo Aranha Camargo · coordenação da expedição"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Na prática, foram eletrocardiogramas (exame que registra a atividade elétrica do coração) feitos em maca improvisada, atendimentos casa a casa e uma biópsia por _punch_ (a retirada de um fragmento de pele para exame laboratorial) de uma lesão suspeita de melanoma, realizada por uma estudante de Medicina, com um médico da equipe ao lado."
+    },
+    {
+      "tipo": "galeria",
+      "imagens": [
+        {
+          "arquivo": "eletrocardiograma-comunidade.webp",
+          "alt": "Eletrocardiograma sendo realizado em morador da comunidade ribeirinha"
+        },
+        {
+          "arquivo": "biopsia-punch-procedimento.webp",
+          "alt": "Estudante de Medicina retira um fragmento de pele do dorso de um paciente enquanto um médico da equipe acompanha ao lado"
+        }
+      ],
+      "legenda": "Os eletrodos no peito de um morador, com o aparelho sobre a mesa, e a retirada de um fragmento de pele do dorso de um paciente, acompanhada por um médico da equipe.",
+      "credito": "Fotos: acervo da expedição"
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "O que apareceu nas consultas"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Cerca de 60% dos casos registrados eram doenças crônicas não transmissíveis, como pressão alta e colesterol elevado, segundo o balanço preliminar da equipe. São condições que exigem acompanhamento contínuo. Também apareceram dois casos de malária, um de tuberculose pulmonar e um de hepatite C, doenças que continuam circulando por ali.\n\nO que a equipe descreve é uma transição: as doenças transmissíveis que dominavam a região há três ou quatro décadas convivem agora com as crônicas, as mesmas das cidades. Foram mais de 700 exames laboratoriais feitos ali mesmo, numa população de cerca de 180 moradores, entre hemograma, glicemia, perfil lipídico, creatinina e testes rápidos para infecções sexualmente transmissíveis.\n\nMas acompanhamento contínuo é justamente o que falta ali: o serviço de saúde mais próximo fica a horas de barco. Foi por isso que a equipe subiu o rio e foi de casa em casa, em vez de esperar que as famílias viajassem até ela."
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "O rim, o achado inusitado"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Entre 30% e 40% dos moradores apresentaram sinais de doença renal crônica, uma proporção que a própria equipe classifica como inusitada e que ainda será estimada com precisão quando os dados forem tabulados. São em geral pessoas idosas, nas quais as doenças crônicas que já carregam aceleram a perda de função dos rins.\n\nDuas delas estão com cerca de 20% da filtração glomerular preservada, a medida de quanto o rim ainda consegue filtrar. Abaixo de 15% entra a indicação de hemodiálise, um procedimento que exige três sessões por semana numa máquina de hospital."
+    },
+    {
+      "tipo": "citacao",
+      "texto": "Como é que uma pessoa que mora na floresta vai fazer hemodiálise? Essa é a situação que a gente encontrou.",
+      "autor": "Luís Marcelo Aranha Camargo · coordenação da expedição"
+    },
+    {
+      "tipo": "texto",
+      "texto": "A resposta que a equipe montou para o intervalo entre uma expedição e outra é a telemedicina. Toda quinta-feira são oito consultas a distância para pacientes que já foram vistos presencialmente, acompanhando a evolução de quem tem diabetes, hipertensão, doença renal crônica, alteração de colesterol, tuberculose ou malária."
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "A saúde que não se vê no exame de sangue"
+    },
+    {
+      "tipo": "texto",
+      "texto": "A professora Marcia Scazufca, do Instituto de Psiquiatria da Universidade de São Paulo, acompanhou a expedição para avaliar a saúde mental de toda a população idosa da localidade, um levantamento que raramente chega a comunidades desse tamanho e desse isolamento.\n\nOutra frente foi ginecológica. O médico Dionísio Chiaratto Filho, que se voluntariou para o trabalho, passou os dez dias em campo e realizou 32 exames preventivos de câncer de colo do útero, além de consultas para queixas como corrimento e dores abdominais. A necessidade tinha ficado evidente na primeira expedição, em fevereiro: mais de 60% das mulheres estavam com o preventivo atrasado havia mais de dois anos. Um optometrista também integrou a equipe, com exames de refração, fundo de olho e retinografia."
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "As noites de captura de morcegos"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Quando escurece, o trabalho muda. Redes de neblina, de malha muito fina, são armadas entre as árvores, e os biólogos seguem à luz das lanternas. Cada morcego capturado é medido, pesado e examinado em busca de ectoparasitos, os parasitas que vivem sobre o corpo do animal. Recolhidas as amostras, ele é solto. Foram cerca de 23 morcegos nesta expedição, e a contagem dos ectoparasitos ainda está em andamento. O levantamento faz parte de um projeto de bioprospecção de microrganismos e ectoparasitos com potencial zoonótico na reserva."
+    },
+    {
+      "tipo": "galeria",
+      "imagens": [
+        {
+          "arquivo": "morcego-rede-de-neblina.webp",
+          "alt": "Morcego preso em rede de neblina armada na mata amazônica à noite"
+        },
+        {
+          "arquivo": "retirada-morcego-da-rede.webp",
+          "alt": "Mãos com luvas de raspa de couro retiram um morcego da rede de neblina à luz de lanterna"
+        }
+      ],
+      "legenda": "As capturas são feitas à noite, quando os animais saem para se alimentar. Cada morcego é retirado da malha à mão, com luva, e levado para a bancada.",
+      "credito": "Fotos: acervo da expedição"
+    },
+    {
+      "tipo": "citacao",
+      "texto": "A nossa ideia, basicamente, é fazer o levantamento aqui de morcegos, dos quais a gente não tem registro dessa região, e a gente busca também ectoparasitos, que se alimentam do sangue dos morcegos. Através desses ectoparasitos a gente faz uma análise molecular e tenta descobrir quais tipos de patógenos, como bactérias, fungos, protozoários.",
+      "autor": "Biólogo responsável pela captura"
+    },
+    {
+      "tipo": "galeria",
+      "imagens": [
+        {
+          "arquivo": "morcego-detalhe.webp",
+          "alt": "Detalhe da cabeça de um morcego de pelagem escura capturado durante a expedição"
+        },
+        {
+          "arquivo": "morcego-retrato-perfil.webp",
+          "alt": "Morcego de pelagem clara fotografado de perfil, com as orelhas amareladas contra fundo azul"
+        },
+        {
+          "arquivo": "morcego-retrato-orelhas.webp",
+          "alt": "Morcego de orelhas grandes e arredondadas, com o focinho em primeiro plano"
+        },
+        {
+          "arquivo": "morcego-retrato-boca.webp",
+          "alt": "Morcego de pelagem dourada com a boca aberta, mostrando os dentes"
+        }
+      ],
+      "legenda": "Quatro dos animais que passaram pela bancada. A identificação das espécies é feita depois, em laboratório.",
+      "credito": "Fotos: acervo da expedição"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Dois alvos da análise molecular são as bactérias dos gêneros _Bartonella_ e _Rickettsia_. O grupo já as encontrou em morcegos em outros trabalhos, e agora quer saber se elas circulam também por esta área remota e pouco estudada da Amazônia Ocidental, e de que maneira."
+    },
+    {
+      "tipo": "galeria",
+      "imagens": [
+        {
+          "arquivo": "morcego-asas-abertas.webp",
+          "alt": "Morcego com as asas abertas, mostrando a membrana esticada entre os dedos"
+        },
+        {
+          "arquivo": "coleta-sangue-morcego.webp",
+          "alt": "Coleta de sangue na asa de um morcego com seringa de insulina, feita por mãos com luvas azuis"
+        }
+      ],
+      "legenda": "A asa aberta para o exame e a coleta de sangue, com seringa de insulina. É esse material que segue para a análise molecular.",
+      "credito": "Fotos: acervo da expedição"
+    },
+    {
+      "tipo": "texto",
+      "texto": "O risco que a equipe investiga tem nome: _spillover_, o momento em que um patógeno da fauna silvestre passa para as pessoas. A degradação do ambiente, as mudanças climáticas, a perda de biodiversidade e a compressão dos ecossistemas empurram os animais silvestres para perto das casas, e esse contato representa risco para a saúde pública. Como voam longe e carregam ectoparasitos consigo, os morcegos são um bom ponto de partida para acompanhar esse movimento."
+    },
+    {
+      "tipo": "imagem",
+      "imagem": {
+        "arquivo": "bancada-de-campo-barraca.webp",
+        "alt": "Pesquisador processando amostras em bancada improvisada dentro de barraca de campo"
+      },
+      "legenda": "Bancada montada na barraca, com balança, paquímetro e ficha técnica.",
+      "credito": "Foto: acervo da expedição"
+    },
+    {
+      "tipo": "subtitulo",
+      "texto": "A água que as famílias bebem"
+    },
+    {
+      "tipo": "texto",
+      "texto": "Nas análises de água, o resultado se repetiu em todas as amostras: coliformes fecais na água de consumo da localidade, indicadores de contaminação por fezes de origem humana e não humana. A equipe investiga agora o papel dos reservatórios domésticos.\n\nA arquiteta Jaqueline Araújo adaptou à realidade ribeirinha um sistema de saneamento de baixo custo, concebido como tecnologia social e feito com o que existe no lugar. O protótipo custou cerca de R$ 2 mil, com mão de obra local e areia da própria região. Só a brita veio de fora, e o morador levantou a estrutura de madeira e o banheiro."
+    },
+    {
+      "tipo": "etapas",
+      "titulo": "Como o sistema funciona",
+      "itens": [
+        {
+          "titulo": "Recebe.",
+          "texto": "O esgoto do banheiro vai para bombonas enterradas e vedadas, sem contato com o ar."
+        },
+        {
+          "titulo": "Fermenta.",
+          "texto": "Sem oxigênio, o pH cai, bactérias e protozoários morrem e os vírus são inativados."
+        },
+        {
+          "titulo": "Filtra.",
+          "texto": "O que resta passa para um segundo compartimento, revestido de lona e preenchido com brita e areia."
+        },
+        {
+          "titulo": "Devolve.",
+          "texto": "Coberto de terra, esse compartimento recebe mudas de bananeira e açaí, que absorvem a água tratada sem contaminar o lençol freático."
+        }
+      ]
+    },
+    {
+      "tipo": "galeria",
+      "imagens": [
+        {
+          "arquivo": "instalacao-bombona-saneamento.webp",
+          "alt": "Arquiteta instalando tubulação em bombona enterrada do sistema de saneamento"
+        },
+        {
+          "arquivo": "prototipo-saneamento-banheiro.webp",
+          "alt": "Banheiro de madeira construído sobre sistema de saneamento com bombonas enterradas"
+        }
+      ],
+      "legenda": "Da bombona enterrada ao banheiro construído pelo próprio morador.",
+      "credito": "Fotos: acervo da expedição"
+    },
+    {
+      "tipo": "tabela",
+      "titulo": "O que vem agora",
+      "linhas": [
+        {
+          "rotulo": "Concluído",
+          "valor": "Construção do protótipo na comunidade",
+          "estado": "feito"
+        },
+        {
+          "rotulo": "Em andamento",
+          "valor": "Teste do sistema com água bruta captada no rio Ouro Preto"
+        },
+        {
+          "rotulo": "Próxima etapa",
+          "valor": "Tornar a água potável"
+        },
+        {
+          "rotulo": "No laboratório",
+          "valor": "Análise molecular das amostras de morcegos e ectoparasitos"
+        },
+        {
+          "rotulo": "Em tabulação",
+          "valor": "Relatório final da expedição, com um segundo relatório dedicado à doença renal crônica"
+        }
+      ]
+    },
+    {
+      "tipo": "texto",
+      "texto": "Choveu muito naqueles dias e as estradas ficaram ruins, intempéries que o coordenador resume como parte do trabalho na Amazônia. Ninguém passou mal e a comunidade foi atendida. As amostras vão agora para o laboratório, e o protótipo de saneamento permanece instalado na comunidade, à espera dos testes."
+    },
+    {
+      "tipo": "faq",
+      "titulo": "Perguntas frequentes",
+      "itens": [
+        {
+          "pergunta": "O que é a RESEX Rio Ouro Preto?",
+          "resposta": "É uma reserva extrativista, categoria de área protegida em que moram e trabalham famílias que vivem do extrativismo, da agricultura de subsistência e da pesca artesanal. Foi uma das quatro primeiras do país."
+        },
+        {
+          "pergunta": "O que é Saúde Única (One Health)?",
+          "resposta": "É a abordagem que trata a saúde humana, a saúde animal e a saúde ambiental como partes de um mesmo sistema. Na prática, significa que não é possível cuidar das pessoas sem olhar para os animais e para o ambiente em que elas vivem."
+        },
+        {
+          "pergunta": "Por que estudar morcegos na Amazônia?",
+          "resposta": "Porque eles se deslocam por grandes distâncias e carregam ectoparasitos que podem abrigar bactérias, fungos e protozoários. Isso faz do morcego um bom sentinela: o que circula nele hoje pode chegar às pessoas depois."
+        },
+        {
+          "pergunta": "O que é o protótipo de saneamento construído na expedição?",
+          "resposta": "Uma solução de baixo custo pensada para a realidade ribeirinha, cerca de R$ 2 mil por unidade. A areia é da região e a mão de obra é local; só a brita foi trazida de fora. O teste com água do rio está em andamento."
+        }
+      ]
+    }
+  ],
+  "equipe": [
+    {
+      "nome": "Sergio de Almeida Basano",
+      "instituicao": "Médico infectologista · CEMETRON"
+    },
+    {
+      "nome": "Leormando Fortunato Dornelas Jr.",
+      "instituicao": "Biólogo, doutor em Biologia da Interação Patógeno-Hospedeiro · ICB5 / USP e INCT-CONEXAO"
+    },
+    {
+      "nome": "Luís Marcelo Aranha Camargo",
+      "instituicao": "Professor doutor em Parasitologia · ICB5 / USP, CEMETRON e INCT-CONEXAO · coordenação da expedição"
+    },
+    {
+      "nome": "Marcia Scazufca",
+      "instituicao": "Professora doutora · Instituto de Psiquiatria da Faculdade de Medicina da USP · saúde mental da população idosa"
+    },
+    {
+      "nome": "Dionísio Chiaratto Filho",
+      "instituicao": "Médico ginecologista e obstetra · voluntário na expedição"
+    },
+    {
+      "nome": "Jaqueline Araújo",
+      "instituicao": "Arquiteta, mestre pela Universidade de Londres · protótipo de saneamento"
+    },
+    {
+      "nome": "Silvana Sirley Eugênio",
+      "instituicao": "ICB5 / USP"
+    },
+    {
+      "nome": "Tallita Beatriz de Oliveira Zamarchi",
+      "instituicao": "INCT-CONEXAO"
+    },
+    {
+      "nome": "Hayslla Mikaella do Couto Araújo",
+      "instituicao": "Farmacêutica · INCT-CONEXAO"
+    },
+    {
+      "nome": "Deborah Rejane Filgueiras",
+      "instituicao": "INCT-CONEXAO"
+    }
+  ],
+  "creditos": "**Fomento:** INCT-CONEXAO, CNPq/MCTI e FAPERO. **Apoio e parceria:** CEMETRON, Instituto de Saúde, Humanidade e Pesquisa, do Rio de Janeiro, que colaborou com o abastecimento da expedição, e a ONG Saúde Infinita, parceira na captação de recursos. Republicação livre mediante crédito ao INCT-CONEXAO e link para a matéria original.",
+  "resumoIngles": "Contaminated water, bats and a low-cost sanitation prototype: findings from a scientific expedition in the Brazilian Amazon. About 30 researchers travelled up the Ouro Preto River, in Rondônia, for the II Scientific Expedition to the Rio Ouro Preto Extractive Reserve. The mission combined primary healthcare, wildlife pathogen surveillance and sanitation engineering under a One Health approach. Every drinking water sample analysed in the community was contaminated with faecal coliforms. Around 60% of the clinical cases were chronic non-communicable diseases; two malaria cases and one of pulmonary tuberculosis were also recorded. A preliminary estimate, pending data tabulation, put between 30% and 40% of the population with signs of chronic kidney disease, in a community where haemodialysis is out of reach. More than 700 laboratory tests were run on site for a population of about 180 residents. At night, the team mist netted bats to collect biological samples and ectoparasites such as bat flies, ticks and mites, screening them by molecular analysis for zoonotic pathogens including Bartonella, in a region with no previous bat records. A low-cost anaerobic sanitation prototype, built with local labour and materials for roughly R$ 2,000, was completed during the expedition.",
+  "seo": {
+    "ogTitle": "Expedição científica detecta contaminação generalizada da água em reserva de Rondônia",
+    "ogDescription": "Expedição científica atendeu famílias ribeirinhas e coletou amostras na reserva, em Rondônia. O perfil de adoecimento observado nas consultas não era o esperado para a região.",
+    "ogImage": "og-expedicao-resex.jpg",
+    "keywords": [
+      "Saúde Única",
+      "One Health",
+      "Amazônia",
+      "Rondônia",
+      "RESEX Rio Ouro Preto",
+      "comunidade ribeirinha",
+      "morcegos",
+      "zoonoses",
+      "spillover",
+      "saneamento rural",
+      "INCT-CONEXAO"
+    ]
+  },
+  "publicado": true
+}

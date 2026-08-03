@@ -18,29 +18,45 @@ import {
   Instagram,
   Leaf,
   Linkedin,
+  Loader2,
   Mail,
   Map,
   Menu,
   Microscope,
   Network,
+  Newspaper,
   Pause,
   Phone,
   Play,
   PlayCircle,
   Radio,
   Search,
+  ShieldCheck,
   Ship,
   Sprout,
   UsersRound,
   X,
 } from "lucide-react";
-import { useHashRoute, HUB_HREF, GROUPS_HREF, EDITAL_HREF, eventHref } from "./webinars/router";
+import { partners, REDE, paisesEstrangeiros, type Partner } from "./content/rede";
+import { NumeroQueConta } from "./ui/NumeroQueConta";
+import { useHashRoute, HUB_HREF, GROUPS_HREF, EDITAL_HREF, RESULTADO_IC_HREF, MAPA_HREF, NOTICIAS_HREF, eventHref } from "./webinars/router";
 import { EditalIC2026 } from "./EditalIC2026";
 
 // Plataforma de Seleções: carregada sob demanda para não pesar o site público.
 const Inscricao = lazy(() => import("./platform/Inscricao"));
 const MinhaInscricao = lazy(() => import("./platform/MinhaInscricao"));
 const Gestao = lazy(() => import("./platform/Gestao"));
+// Mapa Interativo: chunk próprio (geometria IBGE + conteúdo), fora do bundle eager.
+const MapaPage = lazy(() => import("./mapa/MapaPage"));
+/* Lazy: a lista dos 50 selecionados só interessa a quem vai até ela, e não
+   pode pesar na home de quem nunca ouviu falar do processo seletivo. */
+const ResultadoIC2026 = lazy(() => import("./editais/ResultadoIC2026"));
+// Notícias: hub, matéria e a chamada da home ficam num chunk próprio, para que o
+// bundle inicial NÃO cresça a cada nova matéria publicada.
+const NoticiasHub = lazy(() => import("./noticias/NoticiasHub"));
+const NoticiaPage = lazy(() => import("./noticias/NoticiaPage"));
+const NoticiasTeaser = lazy(() => import("./noticias/NoticiasTeaser"));
+const MapaTeaser = lazy(() => import("./mapa/MapaTeaser"));
 
 /**
  * Fundo do hero em vídeo (montagem leve das expedições, ~27s em loop).
@@ -155,25 +171,11 @@ type ResearchProgram = {
   description: string;
   outcomes: string[];
   image: string;
+  /** object-position do recorte (cover) — preserva o foco de cada foto. */
+  focal?: string;
   icon: typeof CloudSun;
 };
 
-type Partner = {
-  name: string;
-  acronym?: string;
-  group:
-    | "Executora/Sede"
-    | "Laboratório Associado"
-    | "Colaboradora Nacional"
-    | "Colaboradora"
-    | "Parceira"
-    | "FAP"
-    | "Sociedade"
-    | "Empresa"
-    | "Colaboradora Estrangeira";
-  location: string;
-  focus: string;
-};
 
 type InstagramHighlight = {
   label: string;
@@ -195,25 +197,33 @@ type InstagramHighlight = {
 const assetPath = (fileName: string) => `${import.meta.env.BASE_URL}assets/${fileName}`;
 const partnerLogoPath = (fileName: string) => assetPath(`partner-logos/${fileName}`);
 
+/**
+ * Vídeo dos destaques do Instagram.
+ *
+ * `preload="none"` é a decisão mais importante deste componente. Os cinco
+ * arquivos desta seção somam 34,9 MB e ela fica abaixo da dobra: com
+ * `preload="auto"` o navegador baixava tudo sem ninguém pedir, disputando banda
+ * com o vídeo do topo. Como o pôster já é uma imagem própria (20 a 56 KB), o
+ * preload não comprava nada visualmente. Em conexão móvel medida, eram dez
+ * minutos de download que o visitante paga e não usa.
+ *
+ * Em troca, o play deixa de ser instantâneo, então o botão precisa dizer que
+ * está carregando. Sem isso, em 3G o clique parece não ter funcionado.
+ */
 function ActionVideo({ highlight }: { highlight: InstagramHighlight }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [carregando, setCarregando] = useState(false);
 
   const playVideo = () => {
     const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
+    if (!video) return;
+    setCarregando(true);
     void video
       .play()
-      .then(() => {
-        setIsPlaying(true);
-      })
-      .catch(() => {
-        setIsPlaying(false);
-      });
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false))
+      .finally(() => setCarregando(false));
   };
 
   return (
@@ -223,18 +233,25 @@ function ActionVideo({ highlight }: { highlight: InstagramHighlight }) {
         className="action-video"
         controls
         playsInline
-        preload="auto"
+        preload="none"
         poster={highlight.image}
         aria-label={`Vídeo: ${highlight.title}`}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
+        onWaiting={() => setCarregando(true)}
+        onPlaying={() => setCarregando(false)}
       >
         <source src={highlight.video} type="video/mp4" />
       </video>
       {!isPlaying ? (
-        <button className="action-video-trigger" type="button" onClick={playVideo} aria-label={`Reproduzir vídeo: ${highlight.title}`}>
-          <Play size={30} fill="currentColor" aria-hidden="true" />
+        <button
+          className={`action-video-trigger${carregando ? " is-carregando" : ""}`}
+          type="button"
+          onClick={playVideo}
+          aria-label={carregando ? `Carregando vídeo: ${highlight.title}` : `Reproduzir vídeo: ${highlight.title}`}
+        >
+          {carregando ? <Loader2 size={30} aria-hidden="true" /> : <Play size={30} fill="currentColor" aria-hidden="true" />}
         </button>
       ) : null}
     </div>
@@ -247,17 +264,27 @@ const navItems: NavItem[] = [
   { label: "Pesquisa", href: "#pesquisa", icon: Microscope },
   { label: "Governança", href: "#governanca", icon: BarChart3 },
   { label: "Rede", href: "#rede", icon: Globe2 },
+  { label: "Mapa", href: MAPA_HREF, icon: Map, routes: ["mapa"] },
+  { label: "Notícias", href: NOTICIAS_HREF, icon: Newspaper, routes: ["noticias", "noticia"] },
   { label: "Oportunidades", href: "#editais", icon: Download },
   { label: "Webinars", href: HUB_HREF, icon: Radio, routes: ["hub", "event"] },
   { label: "Grupos", href: GROUPS_HREF, icon: UsersRound, routes: ["groups", "group"] },
   { label: "Contato", href: "#contato", icon: Mail },
+  { label: "Gestão", href: "#/gestao", icon: ShieldCheck, routes: ["gestao"] },
 ];
 
+/**
+ * Indicadores da primeira tela. Cada um LEVA à seção que o comprova: o
+ * visitante lê "86 instituições" e pode pedir para ver as 86, em vez de só
+ * acreditar. Antes desta mudança a primeira tela inteira tinha dois controles
+ * (o botão de pausa do vídeo e um link), e os quatro números eram inertes.
+ * `prova` é o texto que explica o destino a quem navega por leitor de tela.
+ */
 const heroMetrics = [
-  { label: "Rede formal", value: "86 instituições" },
-  { label: "Território", value: "Amazônia Legal" },
-  { label: "Método", value: "Saúde Única" },
-  { label: "Impacto", value: "ODS 3/4/8/11/13" },
+  { label: "Rede formal", value: `${REDE.naProposta} instituições`, href: "#rede", prova: "ver o diretório da rede" },
+  { label: "Território", value: "Amazônia Legal", href: MAPA_HREF, prova: "abrir o mapa interativo" },
+  { label: "Método", value: "Saúde Única", href: "#pesquisa", prova: "ver os programas de pesquisa" },
+  { label: "Impacto", value: "ODS 3/4/8/11/13", href: "#impacto", prova: "ver as aplicações em política pública" },
 ];
 
 const fieldStories = [
@@ -295,8 +322,8 @@ const networkOverview = [
   },
   {
     label: "Base amazônica",
-    value: "35 instituições",
-    text: "Presença formal na Amazônia Legal, com 21 instituições em Rondônia e vínculos nos demais estados amazônicos.",
+    value: `${REDE.amazoniaLegal} instituições`,
+    text: `Presença formal na Amazônia Legal, com ${REDE.rondonia} instituições em Rondônia e vínculos em ${REDE.ufsAmazoniaLegal} das 9 unidades da região.`,
   },
   {
     label: "Governança técnica",
@@ -305,21 +332,21 @@ const networkOverview = [
   },
   {
     label: "Cooperação",
-    value: "16 países",
-    text: "Colaborações nacionais e estrangeiras conectam Saúde Única, clima, biodiversidade e bioeconomia.",
+    value: `${REDE.paises} países`,
+    text: `${REDE.estrangeiras} instituições estrangeiras em ${REDE.paises} países conectam Saúde Única, clima, biodiversidade e bioeconomia.`,
   },
 ];
 
 const networkFacts = [
   {
-    value: "86",
-    label: "instituições formais",
-    text: "Rede indicada na proposta submetida ao CNPq, distribuída entre Amazônia Legal, demais regiões do Brasil e exterior.",
+    value: String(REDE.naProposta),
+    label: "instituições na proposta",
+    text: `Rede indicada na proposta submetida ao CNPq em 2024. Deste total, ${REDE.catalogadas} já estão detalhadas no diretório abaixo, que é a fonte de todos os números desta seção.`,
   },
   {
-    value: "35",
+    value: String(REDE.amazoniaLegal),
     label: "instituições da Amazônia Legal",
-    text: "Inclui instituições dos 9 estados amazônicos; 21 estão em Rondônia, sede executora da rede.",
+    text: `Registradas em ${REDE.ufsAmazoniaLegal} das 9 unidades da região; ${REDE.rondonia} estão em Rondônia, sede executora da rede.`,
   },
   {
     value: "190",
@@ -401,7 +428,7 @@ const featuredInstitutions = [
 ];
 
 const amazonStateHighlights = [
-  { code: "RO", label: "Rondônia", detail: "sede + 21 instituições" },
+  { code: "RO", label: "Rondônia", detail: `sede + ${REDE.rondonia} instituições` },
   { code: "AM", label: "Amazonas", detail: "FIOCRUZ Amazônia, UFAM e empresas" },
   { code: "AP", label: "Amapá", detail: "UNIFAP" },
   { code: "PA", label: "Pará", detail: "UFPA e UFOPA" },
@@ -553,7 +580,8 @@ const researchPrograms: ResearchProgram[] = [
       "Sistemas de alerta precoce para eventos extremos",
       "Subsídios para a Saúde Pública de Precisão",
     ],
-    image: assetPath("clima-amazonia.jpg"),
+    image: assetPath("river-monitoring.png"),
+    focal: "50% 50%",
     icon: CloudSun,
   },
   {
@@ -567,7 +595,8 @@ const researchPrograms: ResearchProgram[] = [
       "Caracterização química e biológica de compostos ativos",
       "Rotas de inovação voltadas à saúde, ao SUS e à bioeconomia",
     ],
-    image: assetPath("bioprospec.jpg"),
+    image: assetPath("field-bioprospecting.png"),
+    focal: "50% 72%",
     icon: Dna,
   },
   {
@@ -581,7 +610,8 @@ const researchPrograms: ResearchProgram[] = [
       "Políticas públicas informadas por evidências",
       "Empreendedorismo e inovação social na Amazônia",
     ],
-    image: assetPath("barco-ciencia-real.jpg"),
+    image: assetPath("riverside-community.png"),
+    focal: "50% 45%",
     icon: UsersRound,
   },
 ];
@@ -752,13 +782,21 @@ type Notice = {
 
 const notices: Notice[] = [
   {
-    status: "Inscrições: 06–19 jul 2026",
-    title: "Processo Seletivo Simplificado Nº 04/2026 — Bolsas de IC/CNPq",
+    status: "Resultado publicado",
+    title: "Resultado do Processo Seletivo Simplificado Nº 04/2026, Bolsas de IC/CNPq",
+    date: "Publicado em 30 jul. 2026",
+    text: "Lista dos 50 estudantes selecionados e respectivos orientadores, em 10 unidades da federação. A página permite buscar pelo nome.",
+    href: RESULTADO_IC_HREF,
+    linkLabel: "Ver a lista de selecionados",
+    featured: true,
+  },
+  {
+    status: "Inscrições encerradas: 06 a 19 jul 2026",
+    title: "Processo Seletivo Simplificado Nº 04/2026, Bolsas de IC/CNPq",
     date: "Divulgação: 02 jul. 2026",
     text: "Seleção de 50 bolsistas de Iniciação Científica (R$ 700/mês, por 12 meses) para os grupos e instituições do INCT-CONEXAO, nas regiões da Amazônia Legal, Nordeste e Centro-Oeste.",
     href: EDITAL_HREF,
-    linkLabel: "Ver processo seletivo",
-    featured: true,
+    linkLabel: "Ver o edital",
   },
   {
     status: "Resultado publicado",
@@ -913,575 +951,6 @@ const instagramHighlights: InstagramHighlight[] = [
   },
 ];
 
-const partners: Partner[] = [
-  {
-    name: "Fundação Oswaldo Cruz Noroeste - Unidade de Rondônia",
-    acronym: "FIOCRUZ/RO",
-    group: "Executora/Sede",
-    location: "RO, Brasil",
-    focus: "Instituição executora; coordenação geral, Saúde Única, biotecnologia, toxinologia e articulação da rede.",
-  },
-  {
-    name: "Instituto Aggeu Magalhães",
-    acronym: "IAM",
-    group: "Laboratório Associado",
-    location: "PE, Brasil",
-    focus: "Laboratório associado em saúde, imunogenética, biologia molecular e doenças infecciosas.",
-  },
-  {
-    name: "Universidade Estadual Paulista Júlio de Mesquita Filho",
-    acronym: "UNESP",
-    group: "Laboratório Associado",
-    location: "SP, Brasil",
-    focus: "Laboratório associado em climatologia geográfica, saúde ambiental, medicina veterinária e pesquisa translacional.",
-  },
-  {
-    name: "Universidade Federal do Amapá",
-    acronym: "UNIFAP",
-    group: "Laboratório Associado",
-    location: "AP, Brasil",
-    focus: "Laboratório associado da Amazônia Legal; biodiversidade, ecologia, saúde e biotecnologia.",
-  },
-  {
-    name: "Universidade Estadual da Paraíba",
-    acronym: "UEPB",
-    group: "Laboratório Associado",
-    location: "PB, Brasil",
-    focus: "Laboratório associado em bioensaios, educação científica e saúde.",
-  },
-  {
-    name: "Universidade Federal de Uberlândia",
-    acronym: "UFU",
-    group: "Laboratório Associado",
-    location: "MG, Brasil",
-    focus: "Laboratório associado em farmacologia, toxinologia, dor, analgesia e fisiopatologia de venenos animais.",
-  },
-  {
-    name: "Universidade Federal de São Paulo",
-    acronym: "UNIFESP",
-    group: "Laboratório Associado",
-    location: "SP, Brasil",
-    focus: "Laboratório associado em biologia estrutural, química medicinal e saúde.",
-  },
-  {
-    name: "Instituto Federal de Educação, Ciência e Tecnologia de Rondônia",
-    acronym: "IFRO",
-    group: "Laboratório Associado",
-    location: "RO, Brasil",
-    focus: "Laboratório associado em sensoriamento remoto, clima urbano, formação técnica e educação científica.",
-  },
-  {
-    name: "Universidade Federal do Amazonas",
-    acronym: "UFAM",
-    group: "Laboratório Associado",
-    location: "AM, Brasil",
-    focus: "Laboratório associado da Amazônia Legal; saúde, biodiversidade, ambiente e formação regional.",
-  },
-  {
-    name: "Universidade Federal do Oeste do Pará",
-    acronym: "UFOPA",
-    group: "Laboratório Associado",
-    location: "PA, Brasil",
-    focus: "Laboratório associado da Amazônia Legal; território, biodiversidade, comunidades e ambiente.",
-  },
-  {
-    name: "Universidade Federal de Minas Gerais",
-    acronym: "UFMG",
-    group: "Laboratório Associado",
-    location: "MG, Brasil",
-    focus: "Laboratório associado em bioquímica, biologia molecular, farmacologia e toxicologia.",
-  },
-  {
-    name: "Universidade Federal da Grande Dourados",
-    acronym: "UFGD",
-    group: "Laboratório Associado",
-    location: "MS, Brasil",
-    focus: "Laboratório associado em geografia, vulnerabilidade climática, geoprocessamento e ciências ambientais.",
-  },
-  {
-    name: "Pontifícia Universidade Católica do Paraná",
-    acronym: "PUC/PR",
-    group: "Laboratório Associado",
-    location: "PR, Brasil",
-    focus: "Laboratório associado em saúde, dados, modelagem e inovação aplicada.",
-  },
-  {
-    name: "Instituto Leônidas e Maria Deane",
-    acronym: "ILMD",
-    group: "Laboratório Associado",
-    location: "AM, Brasil",
-    focus: "Laboratório associado da FIOCRUZ Amazônia em biologia molecular, imunologia e produtos naturais.",
-  },
-  {
-    name: "Universidade Federal de São Carlos",
-    acronym: "UFSCar",
-    group: "Laboratório Associado",
-    location: "SP, Brasil",
-    focus: "Laboratório associado em biotecnologia, química medicinal, bioensaios e formação científica.",
-  },
-  {
-    name: "Universidade de São Paulo",
-    acronym: "USP",
-    group: "Laboratório Associado",
-    location: "SP, Brasil",
-    focus: "Laboratório associado em geografia, ambiente, paisagem, modelagem e saúde.",
-  },
-  {
-    name: "Fundação Oswaldo Cruz - Ceará",
-    acronym: "FIOCRUZ/CE",
-    group: "Laboratório Associado",
-    location: "CE, Brasil",
-    focus: "Laboratório associado em saúde pública, biotecnologia e doenças negligenciadas.",
-  },
-  {
-    name: "Universidade Federal do Tocantins",
-    acronym: "UFT",
-    group: "Laboratório Associado",
-    location: "TO, Brasil",
-    focus: "Laboratório associado em biodiversidade, ambiente, saúde e bioeconomia.",
-  },
-  {
-    name: "Universidade Federal de Mato Grosso",
-    acronym: "UFMT",
-    group: "Laboratório Associado",
-    location: "MT, Brasil",
-    focus: "Laboratório associado em ambiente, território, saúde e bioprospecção.",
-  },
-  {
-    name: "Universidade Federal de São João Del-Rei",
-    acronym: "UFSJ",
-    group: "Laboratório Associado",
-    location: "MG, Brasil",
-    focus: "Laboratório associado em biomateriais, bioengenharia, microbiologia e popularização da ciência.",
-  },
-  {
-    name: "Universidade Federal do Pará",
-    acronym: "UFPA",
-    group: "Laboratório Associado",
-    location: "PA, Brasil",
-    focus: "Laboratório associado da Amazônia Legal; biodiversidade, comunidades e saúde ambiental.",
-  },
-  {
-    name: "Universidade Federal de Roraima",
-    acronym: "UFRR",
-    group: "Laboratório Associado",
-    location: "RR, Brasil",
-    focus: "Laboratório associado em plantas medicinais, saúde coletiva, biotecnologia e educação científica.",
-  },
-  {
-    name: "Faculdade Santa Casa BH",
-    acronym: "FSCBH",
-    group: "Laboratório Associado",
-    location: "MG, Brasil",
-    focus: "Laboratório associado em saúde, assistência, formação e pesquisa clínica.",
-  },
-  {
-    name: "Fundação Universidade Federal de Ciências da Saúde de Porto Alegre",
-    acronym: "UFCSPA",
-    group: "Laboratório Associado",
-    location: "RS, Brasil",
-    focus: "Laboratório associado em ciências da saúde, biologia molecular e formação.",
-  },
-  {
-    name: "Universidade Estadual do Maranhão",
-    acronym: "UEMA",
-    group: "Laboratório Associado",
-    location: "MA, Brasil",
-    focus: "Laboratório associado em geografia física, climatologia, saúde ambiental e modelagem bioclimática.",
-  },
-  {
-    name: "Universidade Federal de Rondônia",
-    acronym: "UNIR",
-    group: "Laboratório Associado",
-    location: "RO, Brasil",
-    focus: "Vice-coordenação; sede física no LABOGEOPA/UNIR, biodiversidade, geografia, ecologia e comunidades.",
-  },
-  {
-    name: "Universidade Federal de Sergipe",
-    acronym: "UFS",
-    group: "Laboratório Associado",
-    location: "SE, Brasil",
-    focus: "Laboratório associado em biodiversidade, biotecnologia, saúde e formação.",
-  },
-  {
-    name: "Universidade Federal do Maranhão",
-    acronym: "UFMA",
-    group: "Laboratório Associado",
-    location: "MA, Brasil",
-    focus: "Laboratório associado em ambiente, saúde, biodiversidade e educação científica.",
-  },
-  {
-    name: "Instituto Butantan",
-    acronym: "IBU",
-    group: "Colaboradora Nacional",
-    location: "SP, Brasil",
-    focus: "Colaboração em toxinologia, imunobiológicos, venenos e saúde pública.",
-  },
-  {
-    name: "Fundação Oswaldo Cruz",
-    acronym: "FIOCRUZ",
-    group: "Colaboradora Nacional",
-    location: "RJ, Brasil",
-    focus: "Colaboração nacional em saúde pública, biotecnologia e rede FIOCRUZ.",
-  },
-  {
-    name: "Universidade Federal do Ceará",
-    acronym: "UFC",
-    group: "Colaboradora Nacional",
-    location: "CE, Brasil",
-    focus: "Colaboração em biotecnologia, saúde, produtos naturais e formação.",
-  },
-  {
-    name: "Fundação CECIERJ",
-    acronym: "CECIERJ",
-    group: "Colaboradora Nacional",
-    location: "RJ, Brasil",
-    focus: "Colaboração em educação, divulgação científica e formação a distância.",
-  },
-  {
-    name: "Universidade Federal de Alagoas",
-    acronym: "UFAL",
-    group: "Colaboradora Nacional",
-    location: "AL, Brasil",
-    focus: "Colaboração em biotecnologia, química, saúde e formação científica.",
-  },
-  {
-    name: "Universidade Federal Rural do Rio de Janeiro",
-    acronym: "UFRRJ",
-    group: "Colaboradora Nacional",
-    location: "RJ, Brasil",
-    focus: "Colaboração em produtos naturais, plantas medicinais, fitoterápicos e Saúde Única.",
-  },
-  {
-    name: "Universidade de Brasília",
-    acronym: "UnB",
-    group: "Colaboradora Nacional",
-    location: "DF, Brasil",
-    focus: "Colaboração em políticas públicas, saúde, ambiente e formação.",
-  },
-  {
-    name: "Fundação Oswaldo Cruz Pantanal",
-    acronym: "FIOCRUZ/Pantanal",
-    group: "Colaboradora Nacional",
-    location: "MS, Brasil",
-    focus: "Colaboração em saúde, ambiente, Pantanal e integração centro-oeste/Amazônia.",
-  },
-  {
-    name: "Universidade Federal do Rio Grande do Norte",
-    acronym: "UFRN",
-    group: "Colaboradora Nacional",
-    location: "RN, Brasil",
-    focus: "Colaboração em modelagem atmosférica, previsão de tempo e ciência de dados.",
-  },
-  {
-    name: "Instituto Nacional de Pesquisas Espaciais",
-    acronym: "INPE",
-    group: "Colaboradora Nacional",
-    location: "SP, Brasil",
-    focus: "Modelagem numérica de tempo e clima, IA, previsão climática, SIMBAM e dados ambientais.",
-  },
-  {
-    name: "Universidade Federal de Juiz de Fora",
-    acronym: "UFJF",
-    group: "Colaboradora Nacional",
-    location: "MG, Brasil",
-    focus: "Colaboração em saúde, ambiente, educação e análise de dados.",
-  },
-  {
-    name: "Universidade Federal de Campina Grande",
-    acronym: "UFCG",
-    group: "Colaboradora Nacional",
-    location: "PB, Brasil",
-    focus: "Colaboração em meteorologia, clima, modelagem e dados ambientais.",
-  },
-  {
-    name: "Universidade Federal do Paraná",
-    acronym: "UFPR",
-    group: "Colaboradora Nacional",
-    location: "PR, Brasil",
-    focus: "Colaboração em saúde, biodiversidade, biotecnologia e formação.",
-  },
-  {
-    name: "Universidade Federal Fluminense",
-    acronym: "UFF",
-    group: "Colaboradora Nacional",
-    location: "RJ, Brasil",
-    focus: "Colaboração em saúde, ciências ambientais, educação e pesquisa aplicada.",
-  },
-  {
-    name: "Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis",
-    acronym: "IBAMA",
-    group: "Colaboradora",
-    location: "DF, Brasil",
-    focus: "Colaboração ambiental, licenciamento, conservação e políticas públicas.",
-  },
-  {
-    name: "Faculdades Associadas de Ariquemes",
-    acronym: "FAAR/IESUR",
-    group: "Colaboradora",
-    location: "RO, Brasil",
-    focus: "Colaboração regional em formação, pesquisa aplicada e extensão.",
-  },
-  {
-    name: "Faculdade Católica de Rondônia",
-    acronym: "FCR",
-    group: "Colaboradora",
-    location: "RO, Brasil",
-    focus: "Colaboração regional em formação, direito, políticas públicas e extensão.",
-  },
-  {
-    name: "Faculdades Integradas Aparício Carvalho",
-    acronym: "FIMCA",
-    group: "Colaboradora",
-    location: "RO, Brasil",
-    focus: "Colaboração regional em saúde, formação profissional e ações de extensão.",
-  },
-  {
-    name: "Centro Universitário São Lucas",
-    acronym: "UniSL",
-    group: "Colaboradora",
-    location: "RO, Brasil",
-    focus: "Colaboração em saúde, farmácia, biotecnologia, educação científica e projetos.",
-  },
-  {
-    name: "Centro de Pesquisa em Medicina Tropical de Rondônia",
-    acronym: "CEPEM/SSER",
-    group: "Colaboradora",
-    location: "RO, Brasil",
-    focus: "Colaboração em helmintologia, protozoologia, epidemiologia, medicina preventiva e saúde pública.",
-  },
-  {
-    name: "Instituto Chico Mendes de Conservação da Biodiversidade",
-    acronym: "ICMBio",
-    group: "Colaboradora",
-    location: "DF, Brasil",
-    focus: "Colaboração em conservação, expedições científicas, biodiversidade e licenças ambientais.",
-  },
-  {
-    name: "Instituto Federal de Roraima",
-    acronym: "IFRR",
-    group: "Colaboradora",
-    location: "RR, Brasil",
-    focus: "Colaboração em formação técnica, educação científica e ações regionais em Roraima.",
-  },
-  {
-    name: "Ação Ecológica Guaporé",
-    acronym: "ECOPORÉ",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceira em campo, comunidades, ciência cidadã, restauração ecológica e educação ambiental.",
-  },
-  {
-    name: "Governo do Estado de Rondônia",
-    acronym: "GOVERNO/RO",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Apoio institucional por SEDAM, SESAU, SEDEC e SEDUC para execução e políticas públicas.",
-  },
-  {
-    name: "Prefeitura Municipal de Ji-Paraná",
-    acronym: "PMJP",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria municipal para ações territoriais, saúde, educação e CT&I.",
-  },
-  {
-    name: "Secretaria de Estado da Saúde de Roraima",
-    acronym: "SESAU/RR",
-    group: "Parceira",
-    location: "RR, Brasil",
-    focus: "Parceria estadual em saúde pública, dados epidemiológicos e ações territoriais.",
-  },
-  {
-    name: "Prefeitura Municipal de Rorainópolis",
-    acronym: "PMRILIS",
-    group: "Parceira",
-    location: "RR, Brasil",
-    focus: "Parceria municipal para ações territoriais em Roraima.",
-  },
-  {
-    name: "Secretaria de Educação do Estado de Rondônia",
-    acronym: "SEDUC/RO",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria em educação científica, escolas, clubes de ciência e formação.",
-  },
-  {
-    name: "Instituto de Pesquisas em Patologias Tropicais de Rondônia",
-    acronym: "IPEPATRO",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria em patologias tropicais, diagnóstico, epidemiologia e saúde pública.",
-  },
-  {
-    name: "Secretaria de Estado da Saúde de Rondônia",
-    acronym: "SESAU/RO",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria em saúde pública, vigilância, capacitação e políticas informadas por evidências.",
-  },
-  {
-    name: "Secretaria de Estado do Desenvolvimento Ambiental de Rondônia",
-    acronym: "SEDAM/RO",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria em desenvolvimento ambiental, gestão de recursos naturais e políticas para a Amazônia.",
-  },
-  {
-    name: "Prefeitura Municipal de Porto Velho",
-    acronym: "PMPV",
-    group: "Parceira",
-    location: "RO, Brasil",
-    focus: "Parceria municipal para ações de saúde, educação, ambiente e comunidades.",
-  },
-  {
-    name: "Fundação Rondônia de Amparo ao Desenvolvimento das Ações Científicas e Tecnológicas e à Pesquisa",
-    acronym: "FAPERO",
-    group: "FAP",
-    location: "RO, Brasil",
-    focus: "Fundação de amparo parceira, com apoio institucional à proposta e ao ecossistema de CT&I.",
-  },
-  {
-    name: "Karipunas Associação Ecológica da Amazônia",
-    acronym: "KARIPUNAS",
-    group: "Sociedade",
-    location: "RO, Brasil",
-    focus: "Organização da sociedade civil e comunidades originárias para diálogo territorial e saberes tradicionais.",
-  },
-  {
-    name: "Associação Gabgir do Povo Indígena Paiter Surui",
-    acronym: "PAITER SURUI",
-    group: "Sociedade",
-    location: "RO, Brasil",
-    focus: "Organização indígena parceira; apoio humano e material para execução junto ao território Paiter Surui.",
-  },
-  {
-    name: "Antigen Desenvolvimento de Tecnologias de Vacinas e Serviços LTDA",
-    acronym: "Antigen",
-    group: "Empresa",
-    location: "TO, Brasil",
-    focus: "Empresa parceira em tecnologias de vacinas, diagnóstico, inovação e transferência de conhecimento.",
-  },
-  {
-    name: "Amazonzyme Pesquisa e Desenvolvimento de Produtos Biotecnológicos LTDA",
-    acronym: "Amazonzyme",
-    group: "Empresa",
-    location: "AM, Brasil",
-    focus: "Empresa parceira em produtos biotecnológicos, bioinsumos e inovação em biodiversidade.",
-  },
-  {
-    name: "Université Paris-Cité",
-    acronym: "UPCité",
-    group: "Colaboradora Estrangeira",
-    location: "França",
-    focus: "Colaboração internacional em saúde, biotecnologia, biodiversidade e formação.",
-  },
-  {
-    name: "Harvard University",
-    acronym: "HARVARD",
-    group: "Colaboradora Estrangeira",
-    location: "Estados Unidos",
-    focus: "Colaboração internacional em pesquisa, saúde, ambiente e ciência de dados.",
-  },
-  {
-    name: "San Diego State University",
-    acronym: "SDSU",
-    group: "Colaboradora Estrangeira",
-    location: "Estados Unidos",
-    focus: "Colaboração internacional em ambiente, clima, saúde e formação.",
-  },
-  {
-    name: "European Centre for Medium-Range Weather Forecasts",
-    acronym: "ECMWF",
-    group: "Colaboradora Estrangeira",
-    location: "Inglaterra",
-    focus: "Colaboração internacional em previsão de tempo, clima, dados e modelagem.",
-  },
-  {
-    name: "Universidad Autónoma del Estado de México",
-    acronym: "UAEM",
-    group: "Colaboradora Estrangeira",
-    location: "México",
-    focus: "Colaboração internacional em biodiversidade, ambiente e saúde.",
-  },
-  {
-    name: "Universidad Nacional Mayor de San Marcos",
-    acronym: "UNMSM",
-    group: "Colaboradora Estrangeira",
-    location: "Peru",
-    focus: "Colaboração internacional em biodiversidade amazônica, saúde e formação.",
-  },
-  {
-    name: "Universidad Regional Amazónica IKIAM",
-    acronym: "IKIAM",
-    group: "Colaboradora Estrangeira",
-    location: "Equador",
-    focus: "Colaboração internacional amazônica em biodiversidade, território e biotecnologia.",
-  },
-  {
-    name: "Universidad Nacional del Nordeste",
-    acronym: "UNNE",
-    group: "Colaboradora Estrangeira",
-    location: "Argentina",
-    focus: "Colaboração internacional em biotecnologia, saúde e toxinologia.",
-  },
-  {
-    name: "Universidade do Porto",
-    acronym: "U.PORTO",
-    group: "Colaboradora Estrangeira",
-    location: "Portugal",
-    focus: "Colaboração internacional em biotecnologia, toxinologia e redes Brasil-Portugal.",
-  },
-  {
-    name: "Imperial College London - Silwood Park Campus",
-    acronym: "Silwood Park",
-    group: "Colaboradora Estrangeira",
-    location: "Inglaterra",
-    focus: "Colaboração internacional em ecologia, biodiversidade, ambiente e modelagem.",
-  },
-  {
-    name: "Centro para el Desarrollo de la Investigación Científica",
-    acronym: "CEDIC",
-    group: "Colaboradora Estrangeira",
-    location: "Paraguai",
-    focus: "Colaboração internacional em pesquisa científica, biotecnologia e saúde.",
-  },
-  {
-    name: "Centre National de la Recherche Scientifique",
-    acronym: "CNRS",
-    group: "Colaboradora Estrangeira",
-    location: "França",
-    focus: "Colaboração internacional em pesquisa científica, biodiversidade, biologia e biotecnologia.",
-  },
-  {
-    name: "Universidad Nacional Costa Rica",
-    acronym: "UNA",
-    group: "Colaboradora Estrangeira",
-    location: "Costa Rica",
-    focus: "Colaboração internacional em ambiente, saúde e biodiversidade tropical.",
-  },
-  {
-    name: "Universidad de Costa Rica",
-    acronym: "UCR",
-    group: "Colaboradora Estrangeira",
-    location: "Costa Rica",
-    focus: "Colaboração internacional em biodiversidade, saúde, ambiente e formação.",
-  },
-  {
-    name: "Universidad de Panama",
-    acronym: "U.PANAMA",
-    group: "Colaboradora Estrangeira",
-    location: "Panamá",
-    focus: "Colaboração internacional em biotecnologia, toxinologia, biodiversidade e saúde.",
-  },
-  {
-    name: "Universidad Autónoma de Occidente de Cali",
-    acronym: "UAO",
-    group: "Colaboradora Estrangeira",
-    location: "Colômbia",
-    focus: "Colaboração internacional em inovação, território, ambiente e pesquisa aplicada.",
-  },
-];
 
 const partnerLogos: Record<string, string> = {
   "FIOCRUZ/RO": partnerLogoPath("fiocruz-ro.png"),
@@ -1801,6 +1270,11 @@ function App() {
       {route.name === "groups" ? <GroupsHub /> : null}
       {route.name === "group" ? <GroupPage slug={route.slug} /> : null}
       {route.name === "edital" ? <EditalIC2026 /> : null}
+      {route.name === "resultado-ic" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <ResultadoIC2026 />
+        </Suspense>
+      ) : null}
       {route.name === "inscricao" ? (
         <Suspense fallback={<PlatformFallback />}>
           <Inscricao slug={route.slug} />
@@ -1814,6 +1288,21 @@ function App() {
       {route.name === "gestao" ? (
         <Suspense fallback={<PlatformFallback />}>
           <Gestao />
+        </Suspense>
+      ) : null}
+      {route.name === "mapa" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <MapaPage />
+        </Suspense>
+      ) : null}
+      {route.name === "noticias" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <NoticiasHub />
+        </Suspense>
+      ) : null}
+      {route.name === "noticia" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <NoticiaPage slug={route.slug} />
         </Suspense>
       ) : null}
 
@@ -1851,10 +1340,13 @@ function App() {
           </div>
           <div className="section-inner hero-metrics" aria-label="Síntese do instituto">
             {heroMetrics.map((metric) => (
-              <div key={metric.label}>
+              <a key={metric.label} href={metric.href} className="hero-metric">
                 <span>{metric.label}</span>
                 <strong>{metric.value}</strong>
-              </div>
+                <em>
+                  {metric.prova} <ArrowRight size={13} aria-hidden="true" />
+                </em>
+              </a>
             ))}
           </div>
         </section>
@@ -1935,7 +1427,7 @@ function App() {
 
               <article className="research-detail">
                 <div className="research-media" aria-hidden="true">
-                  <img src={selectedResearch.image} alt="" />
+                  <img src={selectedResearch.image} alt="" style={{ objectPosition: selectedResearch.focal }} />
                 </div>
                 <div className="research-copy">
                   <p className="eyebrow dark">{selectedResearch.eyebrow}</p>
@@ -2056,6 +1548,19 @@ function App() {
           </div>
         </section>
 
+        {/* Mapa jogável na própria home: é o componente real do Mapa Interativo,
+            não uma imagem. Sob demanda, para o relevo e a malha do IBGE ficarem
+            fora do bundle inicial. */}
+        <Suspense fallback={null}>
+          <MapaTeaser />
+        </Suspense>
+
+        {/* Últimas matérias. Carregada sob demanda: o conteúdo das notícias fica
+            fora do bundle inicial, então publicar novas matérias não pesa a home. */}
+        <Suspense fallback={null}>
+          <NoticiasTeaser />
+        </Suspense>
+
         <section className="section-band webinar-teaser-section">
           <div className="section-inner webinar-teaser">
             <div className="webinar-teaser-copy">
@@ -2065,8 +1570,8 @@ function App() {
               <h2>Webinars e mesas-redondas da rede</h2>
               <p>
                 {featuredWebinar
-                  ? "Acompanhe debates científicos do INCT-CONEXAO sobre Saúde Única, clima, biodiversidade e bioeconomia — ao vivo e sob demanda, no nosso centro de transmissões."
-                  : "Estamos preparando o centro de transmissões científicas do INCT-CONEXAO. Em breve, mesas-redondas e webinars sobre Saúde Única, clima, biodiversidade e bioeconomia na Amazônia — ao vivo e sob demanda."}
+                  ? "Acompanhe debates científicos do INCT-CONEXAO sobre Saúde Única, clima, biodiversidade e bioeconomia, ao vivo e sob demanda, no nosso centro de transmissões."
+                  : "Estamos preparando o centro de transmissões científicas do INCT-CONEXAO. Em breve, mesas-redondas e webinars sobre Saúde Única, clima, biodiversidade e bioeconomia na Amazônia, ao vivo e sob demanda."}
               </p>
               <a className="button primary" href={HUB_HREF}>
                 {featuredWebinar ? "Ver webinars" : "Conhecer o centro de transmissões"}
@@ -2118,7 +1623,7 @@ function App() {
                 {linkedInProfileFacts.map((fact) => (
                   <div key={fact.label}>
                     <span>{fact.label}</span>
-                    <strong>{fact.value}</strong>
+                    <strong><NumeroQueConta valor={fact.value} /></strong>
                   </div>
                 ))}
               </div>
@@ -2261,7 +1766,7 @@ function App() {
               {networkOverview.map((item) => (
                 <article key={item.label}>
                   <span>{item.label}</span>
-                  <strong>{item.value}</strong>
+                  <strong><NumeroQueConta valor={item.value} /></strong>
                   <p>{item.text}</p>
                 </article>
               ))}
@@ -2270,7 +1775,7 @@ function App() {
             <div className="network-facts" aria-label="Síntese institucional do INCT-CONEXAO">
               {networkFacts.map((fact) => (
                 <article key={fact.label}>
-                  <strong>{fact.value}</strong>
+                  <strong><NumeroQueConta valor={fact.value} /></strong>
                   <span>{fact.label}</span>
                   <p>{fact.text}</p>
                 </article>
@@ -2399,7 +1904,12 @@ function App() {
                 return (
                   <article className="partner-card" key={`${partner.name}-${partner.location}-${partner.group}`}>
                     <span className={`partner-acronym ${partnerLogo ? "has-logo" : ""}`}>
-                      {partnerLogo ? <img src={partnerLogo} alt={`Logotipo ${partner.name}`} loading="eager" decoding="async" /> : partnerLabel}
+                      {/* `lazy`, não `eager`: são 81 logotipos numa pasta de 5,8 MB, no
+                          fim de uma seção que fica longe da dobra. Com eager, quem só
+                          queria ler o parágrafo de abertura da rede pagava por todos.
+                          O contêiner tem 84x62 fixos no CSS, então não há salto de
+                          layout ao carregarem. */}
+                      {partnerLogo ? <img src={partnerLogo} alt={`Logotipo ${partner.name}`} loading="lazy" decoding="async" /> : partnerLabel}
                     </span>
                     <div>
                       <h3>{partner.name}</h3>

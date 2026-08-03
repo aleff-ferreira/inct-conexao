@@ -23,7 +23,7 @@
       "name": "Dra. Beatriz Nogueira",
       "role": "Pesquisadora em Saúde Única",
       "affiliation": "FIOCRUZ RO",
-      "affiliationFull": "Fundação Oswaldo Cruz Noroeste — Unidade de Rondônia",
+      "affiliationFull": "Fundação Oswaldo Cruz Noroeste: Unidade de Rondônia",
       "bio": "Investiga as relações entre clima, doenças tropicais e vigilância em saúde em comunidades ribeirinhas. Integra ações de campo que articulam cuidado, escuta territorial e produção de evidências."
     },
     {
@@ -46,7 +46,7 @@
     { "time": "16:10", "title": "Eventos climáticos extremos na Amazônia: o que os dados de satélite revelam", "speaker": "Dr. Rafael Tavares" },
     { "time": "16:35", "title": "Da fumaça à febre: impactos das queimadas e do calor na saúde ribeirinha", "speaker": "Dra. Beatriz Nogueira" },
     { "time": "17:00", "title": "Alerta precoce e Saúde Pública de Precisão: caminhos para a decisão", "speaker": "Dr. Caio Pereira da Silva" },
-    { "time": "17:15", "title": "Debate com o público e perguntas da audiência", "speaker": "—" },
+    { "time": "17:15", "title": "Debate com o público e perguntas da audiência", "speaker": "" },
     { "time": "17:25", "title": "Sínteses e encerramento", "speaker": "Dra. Helena Marques" }
   ],
   "materials": [
@@ -55,7 +55,7 @@
     { "title": "Política de uso de imagem e dados do evento", "kind": "Link", "note": "Orientações sobre gravação, transmissão e uso institucional do conteúdo." }
   ],
   "partners": [
-    { "acronym": "FIOCRUZ RO", "name": "Fundação Oswaldo Cruz Noroeste — Rondônia", "logo": "partner-logos/fiocruz-ro.png" },
+    { "acronym": "FIOCRUZ RO", "name": "Fundação Oswaldo Cruz Noroeste: Rondônia", "logo": "partner-logos/fiocruz-ro.png" },
     { "acronym": "UNIR", "name": "Universidade Federal de Rondônia", "logo": "institution-logos/unir.png" },
     { "acronym": "INPE", "name": "Instituto Nacional de Pesquisas Espaciais", "logo": "partner-logos/inpe.png" },
     { "acronym": "UEMA", "name": "Universidade Estadual do Maranhão", "logo": "partner-logos/uema.png" },

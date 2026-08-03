@@ -22,34 +22,65 @@ plataforma em ~10 minutos.
 2. *New project* → nome `inct-conexao` → região **South America (São Paulo)** →
    defina uma senha forte do banco (guarde-a) → *Create*.
 
-### 2. Rodar a migração (~2 min)
+### 2. Rodar as migrações (~3 min)
 1. No painel do projeto: **SQL Editor** → *New query*.
 2. Cole o conteúdo INTEIRO de [`supabase/migrations/001_platform.sql`](../supabase/migrations/001_platform.sql) → **Run**.
 3. Deve terminar sem erros. Isso cria as tabelas, políticas RLS, o bucket
    privado `inscricoes` e já **semeia o edital 04/2026** (com a janela
    06–19/jul e os orientadores por estado, conforme a versão final do edital).
+4. Rode também [`002_staff_allowlist.sql`](../supabase/migrations/002_staff_allowlist.sql)
+   (allowlist da comissão), [`003_protocolo_atomico.sql`](../supabase/migrations/003_protocolo_atomico.sql)
+   (**obrigatório antes da abertura** — gera o protocolo de forma atômica no
+   servidor; sem ele, submissões simultâneas no pico podem duplicar o protocolo
+   e a segunda inscrição falha) e [`004_evaluation_audit_log.sql`](../supabase/migrations/004_evaluation_audit_log.sql)
+   (log append-only das avaliações, para a auditoria de justiça — pode ser rodado
+   antes da fase de avaliação). Rode 001 → 002 → 003 → 004, nessa ordem,
+   **cada arquivo inteiro de uma vez**.
 
-### 3. Configurar a autenticação (~2 min) + SMTP (OBRIGATÓRIO, ~1 h)
-1. **Authentication → URL Configuration**:
+> **Se você já rodou uma versão anterior da 004 (escopo por estado, `evaluator_states`),**
+> reverta antes com: `drop table if exists public.evaluator_states cascade;
+> drop function if exists public.can_eval_app(uuid);` e recrie as políticas
+> `eval_insert`/`eval_update` do 001. O modelo agora é **aberto** (todo avaliador
+> pontua qualquer inscrição) — a integridade é verificada pela auditoria, não por restrição.
+
+### Auditoria de justiça das avaliações (#/gestao → Auditoria)
+A avaliação é **aberta**: qualquer avaliador pontua qualquer inscrição (avaliadores
+são escassos). A integridade é verificada **depois**, na aba **Auditoria** (só admin),
+que baixa dois arquivos gerados no navegador:
+- **`auditoria-interna-<slug>.csv`** — identificado (nome, CPF, pareceres). É a ata
+  da comissão: **dado pessoal, não compartilhe**.
+- **`auditoria-analise-<slug>.json`** — **pseudonimizado** (candidatos = C001…, avaliadores
+  = AV01…; sem CPF/nome/e-mail; nomes removidos dos pareceres), com um **roteiro de
+  investigação embutido**. É o arquivo de análise: o administrador pode examiná-lo
+  como preferir — inclusive colando numa ferramenta de IA de sua confiança (a UI não
+  menciona IA; o uso é decisão da coordenação). Atenção: pseudonimização **não é
+  anonimização** — em estados de 1 vaga pode reidentificar; trate como dado pessoal.
+
+O log `evaluation_events` (migração 004) garante que a auditoria enxergue o
+**histórico** de cada nota (edições, mudança após outra avaliação) — não só o valor
+atual. Os sinais (conflito de interesse, outlier, decisão por avaliador único, nota
+extrema sem parecer) são **pistas para revisão humana**, nunca acusação; com poucos
+avaliadores, muitas inscrições têm só uma nota — a ausência de sinal **não é prova de justiça**.
+
+### 3. Configurar a autenticação (~2 min) — LOGIN POR SENHA (sem link mágico)
+Candidatos **e** comissão entram com **e-mail + senha** (a conta é criada em
+“Primeiro acesso? Criar conta”). Nada precisa ser entregue ou clicado no e-mail
+para entrar — então o login **não depende de SMTP** nem sofre com scanners de
+e-mail institucional (que “clicam” e queimam links mágicos de uso único).
+1. **Authentication → Sign In / Providers → Email**:
+   - deixe **Email** habilitado;
+   - **DESLIGUE “Confirm email”** (Confirmar e-mail). Assim o cadastro cria a
+     sessão na hora, sem e-mail de confirmação. Os papéis são controlados pela
+     allowlist (migração 002), então isto é seguro.
+2. **Authentication → URL Configuration**:
    - *Site URL*: `https://inct-conexao.com.br`
-   - *Redirect URLs*: adicione `https://inct-conexao.com.br/**` e, para testes,
-     `http://localhost:4173/**`
-2. **Authentication → Sign In / Up → Email**: deixe habilitado (padrão). O login
-   é por **link mágico** (sem senha).
-3. ⚠️ **SMTP próprio é OBRIGATÓRIO antes de abrir as inscrições.** O e-mail
-   embutido do Supabase entrega **somente para os endereços da própria equipe
-   do projeto** (e a 2 msgs/hora) — candidatos reais **não receberiam o link
-   de login**. Configure um provedor gratuito em
-   **Authentication → Emails → SMTP Settings**:
-   - [Resend](https://resend.com) (3.000 e-mails/mês grátis) ou
-     [Brevo](https://brevo.com) (300/dia grátis);
-   - verifique o domínio `inct-conexao.com.br` no provedor (registros
-     DKIM/SPF no hPanel → DNS);
-   - em **Authentication → Rate Limits**, suba o limite de e-mails de
-     autenticação (padrão 30/hora) para ≥120/hora, pensando no pico do
-     último dia de inscrições;
-   - **teste de aceitação**: envie um link mágico para um e-mail de FORA da
-     equipe e confirme que chega (fora do spam).
+   - *Redirect URLs*: `https://inct-conexao.com.br/**` e, para testes locais,
+     `http://localhost:5173/**` e `http://localhost:4173/**`.
+3. **SMTP é OPCIONAL agora.** Só é usado por **“Esqueci a senha”** (redefinição,
+   caso raro). Se quiser habilitar o reset por e-mail, configure um provedor em
+   **Authentication → Emails → SMTP** (Brevo/Resend) com o domínio verificado
+   **e DESLIGUE o rastreamento de cliques** do provedor — senão scanners de
+   e-mail queimam o link de redefinição (mesmo problema do link mágico).
 
 ### 4. Conectar o site (~2 min)
 1. No painel: **Settings → API** → copie a *Project URL* e a *anon public key*.
@@ -62,9 +93,9 @@ plataforma em ~10 minutos.
    A anon key é pública por design — a segurança vem das políticas RLS.
 
 ### 5. Promover o administrador (~1 min)
-1. Abra `https://inct-conexao.com.br/#/gestao`, entre com o SEU e-mail
-   (você receberá o link mágico). No primeiro acesso, seu perfil nasce como
-   `candidato`.
+1. Abra `https://inct-conexao.com.br/#/gestao` → “Primeiro acesso? Criar conta”
+   com o SEU e-mail + senha. Se o e-mail estiver na allowlist (migração 002),
+   seu perfil já nasce como `admin`; fora dela, nasce `candidato`.
 2. No **SQL Editor**, rode:
    ```sql
    update public.profiles set role = 'admin' where email = 'labioprot.toxin@gmail.com';

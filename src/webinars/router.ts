@@ -17,19 +17,30 @@ export type Route =
   | { name: "groups" }
   | { name: "group"; slug: string }
   | { name: "edital" }
+  | { name: "resultado-ic" }
   | { name: "inscricao"; slug: string }
   | { name: "minha-inscricao" }
-  | { name: "gestao" };
+  | { name: "gestao" }
+  | { name: "mapa" }
+  | { name: "noticias" }
+  | { name: "noticia"; slug: string };
 
 export const HUB_HREF = "#/webinars";
 export const GROUPS_HREF = "#/grupos";
 export const EDITAL_HREF = "#/editais/selecao-ic-2026";
+export const RESULTADO_IC_HREF = "#/editais/selecao-ic-2026/resultado";
 export const INSCRICAO_HREF = "#/inscricao/selecao-ic-2026";
+export const MAPA_HREF = "#/mapa";
+export const NOTICIAS_HREF = "#/noticias";
 export const eventHref = (slug: string): string => `#/webinars/${slug}`;
 export const groupHref = (slug: string): string => `#/grupos/${slug}`;
+export const noticiaHref = (slug: string): string => `#/noticias/${slug}`;
 
 export function parseHash(rawHash: string): Route {
-  const hash = rawHash.replace(/^#/, "");
+  // Remove o "#" e descarta a query string (ex.: "#/mapa?modo=explorador").
+  // Rotas que usam parâmetros (o mapa) leem a hash completa por conta própria;
+  // aqui só interessa o caminho para escolher a rota.
+  const hash = rawHash.replace(/^#/, "").split("?")[0];
 
   if (!hash.startsWith("/")) {
     return { name: "home", anchor: hash || undefined };
@@ -55,7 +66,18 @@ export function parseHash(rawHash: string): Route {
     return { name: "groups" };
   }
 
+  if (segments[0] === "noticias") {
+    if (segments[1]) return { name: "noticia", slug: decode(segments[1]) };
+    return { name: "noticias" };
+  }
+
   if (segments[0] === "editais") {
+    // O resultado tem endereço próprio, e não âncora dentro do edital: é o
+    // documento que candidato, orientador e instituição vão compartilhar por
+    // link, e link de resultado precisa continuar resolvendo daqui a anos.
+    if (segments[1] === "selecao-ic-2026" && segments[2] === "resultado") {
+      return { name: "resultado-ic" };
+    }
     return { name: "edital" };
   }
 
@@ -69,6 +91,12 @@ export function parseHash(rawHash: string): Route {
 
   if (segments[0] === "gestao") {
     return { name: "gestao" };
+  }
+
+  if (segments[0] === "mapa") {
+    // O sub-estado (uf, modo, camada…) é lido da própria hash pelo módulo do
+    // mapa (src/mapa/url.ts); aqui basta reconhecer a rota.
+    return { name: "mapa" };
   }
 
   // Rota desconhecida: volta para a home com segurança.

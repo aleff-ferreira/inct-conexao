@@ -1,0 +1,210 @@
+{
+  "uf": "RO",
+  "publicado": true,
+  "demonstracao": false,
+  "resumo": "Rondônia integra a Amazônia Legal e sedia a coordenação do INCT-CONEXAO (Fiocruz Rondônia e UNIR, em Porto Velho). É cortada pelo rio Madeira, um dos maiores afluentes do Amazonas, e está no chamado arco do desmatamento, o que aproxima os temas de clima, ambiente e saúde única. Dengue, chikungunya, zika, leishmanioses e malária estão entre os agravos de maior peso; a malária é acompanhada em sistema próprio, o SIVEP-Malária.",
+  "destaque": "Sede da rede · rio Madeira · arco do desmatamento",
+  "revisadoPor": "Conteúdo de prevenção, reconhecimento e cuidado transcrito do documento de referência da coordenação (fontes citadas em cada doença). Pendente de revisão científica editorial.",
+  "revisadoEm": "2026-07-28",
+  "doencas": [
+    {
+      "nome": "Dengue",
+      "agente": "Vírus da dengue (DENV 1 a 4)",
+      "transmissao": "Picada do mosquito Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti (também transmite zika e chikungunya).",
+      "prevencao": [
+        "Eliminar água parada, onde o mosquito deposita os ovos: tampar caixas d'água e reservatórios, esvaziar pratos de vasos de plantas ou pôr areia até a borda, descartar pneus, garrafas, latas e outros recipientes que acumulem água.",
+        "Evitar picadas: usar repelente, roupas de mangas compridas e calças, sobretudo durante o dia, instalar telas em portas e janelas e usar mosquiteiro quando possível.",
+        "Manter o ambiente limpo: fechar bem as lixeiras, limpar quintais e terrenos e evitar o acúmulo de objetos que retenham água da chuva.",
+        "Seguir as orientações da vigilância local sobre vacinação: no SUS, a vacina da dengue é dirigida a públicos específicos (não à população em geral)."
+      ],
+      "comoReconhecer": "Nos quadros mais leves: febre alta (38,5 a 40 °C) de início súbito, dor de cabeça intensa, dor atrás dos olhos (dor retro-orbitária), dores musculares e nas articulações intensas, cansaço e fraqueza, náuseas e vômitos, manchas vermelhas na pele que às vezes coçam e perda do apetite.",
+      "sinaisAlerta": [
+        "Dor abdominal intensa e contínua, vômitos persistentes, sangramento pelo nariz ou pelas gengivas e presença de sangue nas fezes ou no vômito.",
+        "Sonolência excessiva, irritabilidade ou confusão, dificuldade para respirar, pele fria, pálida ou úmida, tontura ou desmaio e diminuição da quantidade de urina.",
+        "Esses sinais indicam risco de dengue grave, costumam surgir quando a febre começa a diminuir e exigem atendimento imediato."
+      ],
+      "tratamento": [
+        "Em Porto Velho, procurar o CEMETRON, uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água e manter-se em repouso."
+      ],
+      "manejoServicos": "O manejo baseia-se em hidratação e acompanhamento clínico; não há medicamento específico. A avaliação precoce reduz complicações.",
+      "fontes": [
+        {
+          "titulo": "Dengue: atividades médicas",
+          "publicador": "Médicos Sem Fronteiras (MSF Brasil)",
+          "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/",
+          "data": "2026-07-20"
+        },
+        {
+          "titulo": "Dengue: sintomas, causas, tratamento e prevenção",
+          "publicador": "Prefeitura Municipal de Potim (SP)",
+          "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Febre de chikungunya",
+      "agente": "Vírus chikungunya (CHIKV)",
+      "transmissao": "Picada de mosquitos do gênero Aedes infectados, principalmente o Aedes aegypti, que se reproduz em água parada em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti, o mesmo mosquito da dengue e da zika.",
+      "prevencao": [
+        "Eliminar água parada em vasos, pneus e garrafas, para impedir a reprodução dos mosquitos Aedes.",
+        "Usar repelente nas áreas expostas da pele.",
+        "Vestir roupas compridas que cubram braços e pernas, para reduzir o contato com os insetos."
+      ],
+      "comoReconhecer": "Febre alta que começa de repente, dores intensas e incapacitantes nas articulações de mãos, pés, tornozelos e pulsos, manchas vermelhas pelo corpo, dor de cabeça e dores nos músculos.",
+      "tratamento": [
+        "Em Porto Velho, procurar o CEMETRON, uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muito líquido (água e sucos) para evitar a desidratação.",
+        "Fazer repouso absoluto durante a fase mais aguda.",
+        "Não se automedicar com anti-inflamatórios ou aspirina (AAS) na fase inicial: podem causar complicações graves."
+      ],
+      "manejoServicos": "Não há medicamento específico contra o vírus. O cuidado é de suporte, com hidratação, repouso e alívio dos sintomas conforme a avaliação da equipe de saúde.",
+      "fontes": [
+        {
+          "titulo": "Chikungunya (glossário de saúde)",
+          "publicador": "Hospital Israelita Albert Einstein",
+          "url": "https://www.einstein.br/n/glossario-de-saude/chikungunya",
+          "data": "2026-07-25"
+        }
+      ]
+    },
+    {
+      "nome": "Leishmanioses (tegumentar e visceral)",
+      "agente": "Protozoários do gênero Leishmania",
+      "transmissao": "Picada de fêmeas de flebotomíneos (mosquito-palha), mais ativas ao entardecer e à noite.",
+      "vetoresReservatorios": "Vetor: flebotomíneos (Lutzomyia). Cães são importantes reservatórios da forma visceral no ambiente peridomiciliar.",
+      "prevencao": [
+        "Evitar a picada do mosquito-palha: usar repelente na pele exposta, sobretudo ao entardecer e à noite, quando o inseto é mais ativo, e vestir mangas compridas, calças e meias em áreas de risco.",
+        "Dormir sob mosquiteiro, especialmente em regiões endêmicas, e instalar telas em portas e janelas para impedir a entrada do inseto.",
+        "Manter o ambiente limpo, evitar acúmulo de lixo orgânico e podar a vegetação muito densa junto à casa.",
+        "Proteger os cães, que são importantes reservatórios da leishmaniose visceral em áreas urbanas: coleira impregnada com inseticida específico para leishmaniose, consultas veterinárias regulares e vacinação quando indicada pelo médico-veterinário e disponível na região.",
+        "Redobrar a atenção em áreas de risco: quem vive ou trabalha em zona rural ou de mata, como trabalhadores rurais, militares, ecoturistas e pesquisadores de campo, deve evitar permanecer na mata ao anoitecer e reforçar o repelente em atividades ao ar livre."
+      ],
+      "comoReconhecer": "Na forma tegumentar: ferida na pele que geralmente não dói e cicatriza com dificuldade, com bordas elevadas e fundo avermelhado ou granuloso, uma ou mais lesões e ínguas (gânglios aumentados) próximas à lesão; quando atinge as mucosas, causa obstrução nasal, sangramentos pelo nariz e feridas na boca ou no nariz. Na forma visceral: febre prolongada (em geral por mais de duas semanas), cansaço intenso e fraqueza, perda de peso, falta de apetite, palidez por anemia, aumento do baço (abdômen inchado) e do fígado, infecções frequentes e, em casos avançados, sangramentos pelo nariz ou pelas gengivas.",
+      "tratamento": [
+        "Em Porto Velho, procurar o CEMETRON, uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Cuidar da ferida, mantendo-a seca e sem coçar.",
+        "Cuidar do corpo: beber muita água, alimentar-se bem e acompanhar a evolução dos sintomas."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são feitos na rede pública, com acompanhamento especializado. Procure avaliação diante de ferida que não cicatriza ou febre prolongada.",
+      "fontes": [
+        {
+          "titulo": "Leishmaniose (glossário de saúde)",
+          "publicador": "Hospital Israelita Albert Einstein",
+          "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Malária",
+      "agente": "Protozoários do gênero Plasmodium (P. vivax e P. falciparum)",
+      "transmissao": "Picada da fêmea do mosquito Anopheles (conhecido como carapanã ou muriçoca), com maior atividade do fim da tarde ao amanhecer, próximo a rios, igarapés e áreas de mata.",
+      "vetoresReservatorios": "Vetor: Anopheles darlingi, entre outros. A Amazônia concentra a maioria dos casos do país.",
+      "prevencao": [
+        "Usar barreiras físicas: instalar telas em portas e janelas e dormir sempre com mosquiteiro ou cortinado.",
+        "Proteger a pele: usar calças compridas e camisas de manga longa, de preferência claras, e passar repelente nas áreas expostas.",
+        "Ter cuidado nos horários de pico: evitar áreas de mata ou beira de rio sem proteção do fim da tarde até o amanhecer."
+      ],
+      "comoReconhecer": "Sintomas iniciais: febre alta repentina, calafrios fortes, dor de cabeça e dores pelo corpo. Costumam vir acompanhados de fraqueza, náuseas, vômitos e suor intenso. Ao apresentar esses sinais, vá a um posto de saúde para fazer o teste de sangue (gota espessa), que confirma a doença.",
+      "tratamento": [
+        "Em Porto Velho, procurar o CEMETRON, uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber água para manter-se hidratado e permanecer em repouso."
+      ],
+      "manejoServicos": "O diagnóstico é confirmado pelo exame de sangue (gota espessa), feito em posto de saúde, e o tratamento é definido pela equipe de saúde. Na Amazônia, os casos de malária são acompanhados pelo SIVEP-Malária, sistema próprio, e não pelo SINAN.",
+      "fontes": [
+        {
+          "titulo": "Malária: o que é, sintomas, prevenção",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/malaria"
+        }
+      ]
+    },
+    {
+      "nome": "Zika",
+      "agente": "Vírus Zika (ZIKV)",
+      "transmissao": "Picada do Aedes aegypti; também pode ser transmitido por via sexual e da gestante para o bebê.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti. Na gestação, associa-se a malformações no bebê.",
+      "prevencao": [
+        "Proteção individual contra picadas: usar repelente e roupas adequadas, como calças e blusas de mangas compridas, instalar telas de proteção em portas e janelas e usar mosquiteiro sobre a cama ou ambientes com ar-condicionado.",
+        "Eliminar criadouros do mosquito: manter caixas d'água, tonéis e barris completamente tampados, manter as lixeiras fechadas, guardar potes virados para baixo para não acumular água e deixar pneus velhos em locais cobertos ou entregá-los aos serviços de limpeza urbana.",
+        "Prevenir a transmissão sexual: o vírus permanece no sêmen por várias semanas após a infecção, e o preservativo é a forma mais segura de evitar essa via."
+      ],
+      "comoReconhecer": "Febre baixa (geralmente abaixo de 38,5 °C), manchas vermelhas na pele que coçam muito, dores nas articulações (principalmente mãos e pés), olhos vermelhos (conjuntivite sem secreção), dor de cabeça e dores musculares. Os sintomas costumam durar de 2 a 7 dias e muitas pessoas infectadas não apresentam sinal algum.",
+      "tratamento": [
+        "Em Porto Velho, procurar o CEMETRON, uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água, alimentar-se bem e repousar.",
+        "Não se automedicar."
+      ],
+      "manejoServicos": "Não há tratamento específico; o cuidado é de suporte. Gestantes com suspeita devem ter acompanhamento pré-natal reforçado.",
+      "fontes": [
+        {
+          "titulo": "Zika vírus: o que é, causas, sintomas",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/z/zika-virus",
+          "data": "2026-07-20"
+        }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": [
+      "Amazônia",
+      "Cerrado (sudeste do estado)"
+    ],
+    "hidrografia": "Bacia do rio Madeira, um dos maiores tributários do rio Amazonas, com forte transporte de sedimentos andinos e as usinas hidrelétricas de Santo Antônio e Jirau.",
+    "clima": "Equatorial quente e úmido, com estação chuvosa marcada e sujeito a eventos extremos (secas e cheias) que afetam o transporte fluvial e o acesso aos serviços.",
+    "resumo": "Rondônia está no arco do desmatamento amazônico, onde a mudança do uso da terra pressiona biodiversidade e clima e aproxima os temas de ambiente e saúde nas cidades e nas comunidades ribeirinhas.",
+    "fontes": [
+      {
+        "titulo": "Biomas e mapas: Amazônia",
+        "publicador": "IBGE",
+        "url": "https://www.ibge.gov.br/geociencias"
+      },
+      {
+        "titulo": "Monitoramento do desmatamento (PRODES/DETER)",
+        "publicador": "INPE",
+        "url": "https://www.gov.br/inpe"
+      }
+    ]
+  },
+  "servicos": [
+    {
+      "nome": "CEMETRON (Porto Velho)",
+      "contato": "Procurar a unidade em caso de febre alta; UBS e UPA também são portas de entrada",
+      "nota": "referência citada no documento da coordenação para atendimento em caso de febre alta e doenças tropicais"
+    },
+    {
+      "nome": "Secretaria de Estado da Saúde de Rondônia (SESAU-RO)",
+      "contato": "Consultar a Secretaria de Estado da Saúde de Rondônia",
+      "nota": "notificação de agravos e orientação epidemiológica"
+    }
+  ],
+  "fontes": [
+    {
+      "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+      "publicador": "DataSUS · Ministério da Saúde",
+      "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+    },
+    {
+      "titulo": "Saúde de A a Z: dengue, zika e malária",
+      "publicador": "Ministério da Saúde",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z"
+    },
+    {
+      "titulo": "Glossário de saúde: chikungunya e leishmaniose",
+      "publicador": "Hospital Israelita Albert Einstein",
+      "url": "https://www.einstein.br/n/glossario-de-saude",
+      "data": "2026-07-25"
+    },
+    {
+      "titulo": "Dengue: atividades médicas",
+      "publicador": "Médicos Sem Fronteiras (MSF Brasil)",
+      "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/",
+      "data": "2026-07-20"
+    }
+  ]
+}

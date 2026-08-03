@@ -120,5 +120,20 @@ export type Evaluation = {
   final_score: number;
   parecer: string;
   submitted: boolean;
+  created_at?: string;
   updated_at?: string;
+};
+
+/** Um evento do log append-only de avaliações (retenção para auditoria). */
+export type EvaluationEvent = {
+  id: string;
+  application_id: string;
+  evaluator_id: string;
+  action: "insert" | "update";
+  scores: Record<string, number>;
+  total: number;
+  bonus_pct: number;
+  final_score: number;
+  submitted: boolean;
+  at: string;
 };

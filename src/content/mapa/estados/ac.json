@@ -1,0 +1,222 @@
+{
+  "uf": "AC",
+  "publicado": true,
+  "demonstracao": false,
+  "resumo": "O Acre integra a Amazônia Legal, no extremo oeste do país, com fronteiras com o Peru e a Bolívia. Combina floresta de terra firme, seringais históricos e cidades ribeirinhas. As arboviroses (dengue e zika) e a leishmaniose estão entre os agravos de maior notificação no estado.",
+  "destaque": "Amazônia Ocidental · fronteira Peru/Bolívia",
+  "revisadoPor": "Conteúdo de prevenção, reconhecimento e cuidado transcrito do documento de referência da coordenação (fontes citadas em cada doença). Números de notificação preservados de levantamento anterior em SINAN (TabNet DataSUS) e boletins do Observatório de Saúde do Acre. Pendente de revisão científica editorial.",
+  "revisadoEm": "2026-07-28",
+  "doencas": [
+    {
+      "nome": "Dengue",
+      "agente": "Vírus da dengue (DENV 1 a 4)",
+      "transmissao": "Picada do mosquito Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti (também transmite zika e chikungunya).",
+      "notificacoes": {
+        "valor": 66962,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS / Observatório de Saúde do Acre",
+        "fonte": {
+          "titulo": "Boletins epidemiológicos do Acre",
+          "publicador": "SESACRE",
+          "url": "https://observatorio.saude.ac.gov.br/boletins/"
+        }
+      },
+      "prevencao": [
+        "Eliminar água parada, que é onde o mosquito deposita os ovos: tampar caixas d'água e reservatórios, esvaziar pratos de vasos de plantas ou pôr areia até a borda, descartar pneus, garrafas, latas e outros recipientes que acumulem água.",
+        "Evitar picadas: usar repelente, roupas de mangas compridas e calças (sobretudo durante o dia), instalar telas em portas e janelas e usar mosquiteiros quando possível.",
+        "Manter o ambiente limpo: fechar bem as lixeiras, limpar quintais e terrenos e evitar o acúmulo de objetos que retenham água da chuva.",
+        "Seguir as orientações da vigilância local sobre vacinação: no SUS, a vacina da dengue é dirigida a públicos específicos (não à população em geral)."
+      ],
+      "comoReconhecer": "Nos quadros mais leves: febre alta (38,5 a 40 °C) de início súbito, dor de cabeça intensa, dor atrás dos olhos (dor retro-orbitária), dores musculares e nas articulações, cansaço e fraqueza, náuseas e vômitos, perda do apetite e manchas vermelhas na pele (exantema), que às vezes coçam.",
+      "sinaisAlerta": [
+        "Dor abdominal intensa e contínua, vômitos persistentes, sangramento pelo nariz ou pelas gengivas, sangue nas fezes ou no vômito.",
+        "Sonolência excessiva, irritabilidade ou confusão, dificuldade para respirar, pele fria, pálida ou úmida, tontura ou desmaio, diminuição da quantidade de urina.",
+        "Esses sinais indicam risco de dengue grave, costumam surgir quando a febre começa a diminuir e exigem atendimento imediato."
+      ],
+      "tratamento": [
+        "Procurar uma UBS (unidade básica de saúde), uma URAP (unidade de referência em atenção primária) ou uma UPA (unidade de pronto atendimento) em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber bastante água e manter-se em repouso."
+      ],
+      "manejoServicos": "O manejo baseia-se em hidratação e acompanhamento clínico; não há medicamento específico. A avaliação precoce reduz complicações.",
+      "fontes": [
+        {
+          "titulo": "Dengue: sintomas, prevenção e tratamento",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue"
+        },
+        {
+          "titulo": "Dengue: atividades médicas",
+          "publicador": "Médicos Sem Fronteiras (MSF Brasil)",
+          "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/",
+          "data": "2026-07-20"
+        },
+        {
+          "titulo": "Dengue: sintomas, causas, tratamento e prevenção",
+          "publicador": "Prefeitura Municipal de Potim (SP)",
+          "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Leishmanioses (tegumentar e visceral)",
+      "agente": "Protozoários do gênero Leishmania",
+      "transmissao": "Picada de fêmeas de flebotomíneos (mosquito-palha), mais ativas ao entardecer e à noite.",
+      "vetoresReservatorios": "Vetor: flebotomíneos (Lutzomyia). Cães são importantes reservatórios da forma visceral no ambiente peridomiciliar.",
+      "notificacoes": {
+        "valor": 6633,
+        "periodo": "acumulado desde 2018 (formas tegumentar e visceral somadas)",
+        "sistema": "SINAN · TabNet DataSUS / Observatório de Saúde do Acre",
+        "fonte": {
+          "titulo": "Boletins epidemiológicos do Acre",
+          "publicador": "SESACRE",
+          "url": "https://observatorio.saude.ac.gov.br/boletins/"
+        }
+      },
+      "prevencao": [
+        "Evitar a picada do mosquito-palha: usar repelente na pele exposta, principalmente ao entardecer e à noite, quando o inseto é mais ativo, e vestir roupas de mangas compridas, calças e meias ao permanecer em áreas de risco.",
+        "Dormir sob mosquiteiro, sobretudo em regiões endêmicas, e instalar telas em portas e janelas para impedir a entrada do inseto.",
+        "Manter o ambiente limpo, evitar o acúmulo de lixo orgânico e podar a vegetação muito densa junto à casa.",
+        "Proteger os cães, que são importantes reservatórios da leishmaniose visceral em áreas urbanas: coleira impregnada com inseticida específico para leishmaniose, consultas veterinárias regulares e vacinação quando indicada pelo médico-veterinário e disponível na região.",
+        "Redobrar o cuidado em áreas de risco: evitar permanecer em áreas de mata ao anoitecer e reforçar o uso de repelente durante atividades ao ar livre. O risco é maior para quem vive ou trabalha em áreas rurais e de mata, para moradores de regiões endêmicas e para trabalhadores rurais, militares, ecoturistas e pesquisadores de campo."
+      ],
+      "comoReconhecer": "Na forma tegumentar: ferida na pele que costuma não doer e cicatriza com dificuldade, úlcera de bordas elevadas e fundo avermelhado ou granuloso, uma ou mais lesões e ínguas (gânglios aumentados) próximas à lesão; quando atinge as mucosas, pode haver obstrução nasal, sangramento pelo nariz e feridas na boca ou no nariz. Na forma visceral: febre prolongada (em geral por mais de duas semanas), cansaço intenso e fraqueza, perda de peso, falta de apetite, palidez por anemia, aumento do baço (abdômen inchado) e do fígado, infecções frequentes e, em casos avançados, sangramento pelo nariz ou pelas gengivas.",
+      "tratamento": [
+        "Procurar uma UBS, uma URAP ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Cuidar da ferida: mantê-la limpa e seca, sem coçar.",
+        "Cuidar do corpo: beber bastante água, alimentar-se bem e acompanhar a evolução dos sintomas."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são feitos na rede pública, com acompanhamento especializado. Procure avaliação diante de ferida que não cicatriza ou febre prolongada.",
+      "fontes": [
+        {
+          "titulo": "Leishmaniose tegumentar / visceral: informações",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z"
+        },
+        {
+          "titulo": "Leishmaniose (glossário de saúde)",
+          "publicador": "Hospital Israelita Albert Einstein",
+          "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Zika",
+      "agente": "Vírus Zika (ZIKV)",
+      "transmissao": "Picada do Aedes aegypti; também pode ser transmitido por via sexual e da gestante para o bebê.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti. Na gestação, associa-se a malformações no bebê.",
+      "notificacoes": {
+        "valor": 4616,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS / Observatório de Saúde do Acre",
+        "fonte": {
+          "titulo": "Boletins epidemiológicos do Acre",
+          "publicador": "SESACRE",
+          "url": "https://observatorio.saude.ac.gov.br/boletins/"
+        }
+      },
+      "prevencao": [
+        "Proteção individual contra picadas: repelente, roupas adequadas (calças e blusas de mangas compridas) e barreiras físicas, como telas em portas e janelas, mosquiteiro sobre a cama ou ambientes com ar-condicionado.",
+        "Eliminar criadouros do mosquito: manter caixas d'água, tonéis e barris completamente tampados, lixeiras sempre fechadas, potes guardados virados para baixo e pneus velhos em locais cobertos ou entregues ao serviço de limpeza urbana.",
+        "Prevenir a transmissão sexual: o vírus também pode ser transmitido em relações sexuais e permanece no sêmen por várias semanas após a infecção; o preservativo é a forma mais segura de evitar essa via."
+      ],
+      "comoReconhecer": "Febre baixa (geralmente abaixo de 38,5 °C), manchas vermelhas na pele que coçam muito, dores nas articulações (principalmente mãos e pés), olhos vermelhos (conjuntivite sem secreção), dor de cabeça e dores musculares. Os sintomas costumam durar de 2 a 7 dias e muitas pessoas infectadas não apresentam sinal algum.",
+      "tratamento": [
+        "Procurar uma UBS, uma URAP ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber bastante água, alimentar-se bem e repousar.",
+        "Não se automedicar."
+      ],
+      "manejoServicos": "Não há tratamento específico; o cuidado é de suporte. Gestantes com suspeita devem ter acompanhamento pré-natal reforçado.",
+      "fontes": [
+        {
+          "titulo": "Zika vírus: o que é, causas, sintomas",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/z/zika-virus",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Leptospirose",
+      "agente": "Bactéria do gênero Leptospira",
+      "transmissao": "Contato da pele (sobretudo com feridas) ou mucosas com água e lama contaminadas pela urina de animais infectados, principalmente ratos, comum em enchentes.",
+      "vetoresReservatorios": "Reservatórios: roedores e outros animais. O risco aumenta em enchentes e em ambientes com esgoto exposto.",
+      "notificacoes": {
+        "valor": 1113,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS / Observatório de Saúde do Acre",
+        "fonte": {
+          "titulo": "Boletins epidemiológicos do Acre",
+          "publicador": "SESACRE",
+          "url": "https://observatorio.saude.ac.gov.br/boletins/"
+        }
+      },
+      "prevencao": [
+        "Evitar andar descalço em áreas alagadas ou com lama e usar botas e luvas ao limpar enchentes, esgotos ou terrenos úmidos.",
+        "Guardar alimentos e água em recipientes fechados, eliminar a presença de ratos dentro de casa e controlá-la nos arredores, descartar o lixo corretamente e manter os quintais limpos.",
+        "Tampar caixas d'água e manter o saneamento adequado; após contato com água de enchente, lavar bem o corpo com água e sabão."
+      ],
+      "comoReconhecer": "Após exposição a enchentes ou locais contaminados, procure atendimento se surgirem: febre alta, dor de cabeça, dores musculares (principalmente nas panturrilhas), náuseas ou vômitos, olhos avermelhados e pele ou olhos amarelados (icterícia).",
+      "tratamento": [
+        "Procurar uma UBS, uma URAP ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber água e repousar.",
+        "Evitar anti-inflamatórios por conta própria."
+      ],
+      "manejoServicos": "O tratamento é definido pela equipe de saúde e é mais eficaz quando iniciado cedo. Informe sobre contato recente com enchente ou lama.",
+      "fontes": [
+        {
+          "titulo": "Leptospirose: sintomas, prevenção e tratamento",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leptospirose",
+          "data": "2026-07-20"
+        }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": ["Amazônia"],
+    "hidrografia": "Bacia do rio Acre e afluentes do rio Purus, sujeitos a cheias sazonais que afetam cidades como Rio Branco.",
+    "clima": "Equatorial quente e úmido, com estação chuvosa marcada e friagens ocasionais (massas de ar frio vindas do sul).",
+    "resumo": "Enchentes periódicas dos rios da bacia do Purus influenciam a circulação de doenças como a leptospirose, conectando clima, ambiente e saúde.",
+    "fontes": [
+      {
+        "titulo": "Biomas e mapas: Amazônia",
+        "publicador": "IBGE",
+        "url": "https://www.ibge.gov.br/geociencias"
+      }
+    ]
+  },
+  "servicos": [
+    {
+      "nome": "Vigilância em Saúde do Acre (SESACRE)",
+      "contato": "Consultar a Secretaria de Estado de Saúde do Acre",
+      "nota": "notificação de agravos e orientação epidemiológica",
+      "url": "https://saude.ac.gov.br/"
+    },
+    {
+      "nome": "Rede de atenção do SUS no Acre (UBS, URAP e UPA)",
+      "contato": "Procurar a unidade mais próxima; a UPA é a porta de entrada em caso de febre alta",
+      "nota": "a URAP é a unidade de referência em atenção primária do estado"
+    }
+  ],
+  "fontes": [
+    {
+      "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+      "publicador": "DataSUS · Ministério da Saúde",
+      "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+    },
+    {
+      "titulo": "Observatório de Saúde do Acre: boletins epidemiológicos",
+      "publicador": "SESACRE",
+      "url": "https://observatorio.saude.ac.gov.br/boletins/"
+    },
+    {
+      "titulo": "Saúde de A a Z: dengue, zika, leishmanioses e leptospirose",
+      "publicador": "Ministério da Saúde",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z",
+      "data": "2026-07-20"
+    }
+  ]
+}

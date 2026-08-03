@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, LogOut, Mail, Send } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, LogOut } from "lucide-react";
 import { platformEnabled, supabase } from "./supabaseClient";
 import { useAuth } from "./auth";
+import AuthCard from "./AuthCard";
+import PasswordCard from "./PasswordCard";
 import type { Application, Edital } from "./types";
 
 const STATUS_LABEL: Record<Application["status"], string> = {
@@ -18,8 +20,6 @@ const STATUS_LABEL: Record<Application["status"], string> = {
 export default function MinhaInscricao() {
   const auth = useAuth();
   const [rows, setRows] = useState<Array<Application & { edital?: Edital }> | null>(null);
-  const [emailInput, setEmailInput] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     document.title = "Minha inscrição | INCT-CONEXAO";
@@ -56,39 +56,10 @@ export default function MinhaInscricao() {
             <div className="plat-loading">
               <Loader2 size={22} aria-hidden="true" /> Carregando…
             </div>
+          ) : auth.recovery ? (
+            <PasswordCard title="Definir nova senha" cta="Salvar nova senha" onSubmit={auth.updatePassword} />
           ) : !auth.session ? (
-            <div className="plat-card plat-login">
-              <Mail size={22} aria-hidden="true" />
-              <h2>Entre com o e-mail usado na inscrição</h2>
-              {auth.otpSentTo ? (
-                <p className="plat-ok">
-                  <CheckCircle2 size={17} aria-hidden="true" /> Link enviado para{" "}
-                  <strong>{auth.otpSentTo}</strong>. Abra seu e-mail e clique no link.
-                </p>
-              ) : (
-                <form
-                  className="plat-inline-form"
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    const { error } = await auth.signIn(emailInput);
-                    setErrorMsg(error ?? "");
-                  }}
-                >
-                  <input
-                    type="email"
-                    required
-                    placeholder="seuemail@exemplo.com"
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    aria-label="Seu e-mail"
-                  />
-                  <button className="button primary" type="submit">
-                    Receber link <Send size={16} aria-hidden="true" />
-                  </button>
-                </form>
-              )}
-              {errorMsg ? <p className="plat-error">{errorMsg}</p> : null}
-            </div>
+            <AuthCard auth={auth} role="candidate" />
           ) : rows === null ? (
             <div className="plat-loading">
               <Loader2 size={22} aria-hidden="true" /> Carregando…

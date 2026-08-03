@@ -2,6 +2,24 @@ node_modules/
 dist/
 screenshots/
 .tools/
+
+# Pastas de upload: são cópias do dist/, geradas a cada deploy. Versionar uma
+# delas significa somar ~82 MB ao repositório a cada build, para sempre — o git
+# guarda todas as versões. `inct_deploy/` sozinha traria 45 MB de vídeo que já
+# está em public/assets/.
+inct_deploy/
+inct_atualizacao/
+inct_upload/
+
+# Material de ORIGEM, não o site: entra no processo de edição e sai como
+# arquivo otimizado em public/assets/. O git guarda cada versão para sempre, e
+# um .pptx de 72 MB pesa no clone de todo mundo, para sempre, mesmo depois de
+# apagado. Se precisar de cópia de segurança destes, use armazenamento de
+# arquivos — não o histórico de código.
+# Para versionar mesmo assim, comente as três linhas abaixo.
+/logos/
+/expedicao-resex-rio-ouro-preto/img/*.mp4
+/images/
 .DS_Store
 *.log
 .env
@@ -10,6 +28,21 @@ screenshots/
 dist-test/
 tmp/
 *:Zone.Identifier
+
+# ---------------------------------------------------------------------------
+# DADOS PESSOAIS DO PROCESSO SELETIVO — NUNCA VERSIONAR
+# ---------------------------------------------------------------------------
+# candidates_evaluations.json traz 83 candidatos com nome, orientador, quatro
+# notas, classificação e três pareceres escritos. Estava fora do git E fora
+# deste arquivo, ou seja, aparecia como não rastreado: um `git add -A` teria
+# publicado tudo. Os HTML são painéis gerados da mesma base.
+# Se um dia esses dados virarem figura pública, o caminho é agregação a partir
+# do Supabase, com supressão de células pequenas, e não um arquivo solto aqui.
+/candidates_evaluations.json
+/avaliacoes_ic.html
+/index_evaluations_ic.html
+/index.html.candidatos.bak
+/ICs/
 
 # Arquivos avulsos na raiz que não fazem parte do site (mantidos só no disco)
 /CNPq Proposta submetida INCT 2024.pdf

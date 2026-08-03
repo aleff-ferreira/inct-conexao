@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import {
   ArrowLeft,
+  ArrowRight,
   Award,
   CalendarClock,
   CheckCircle2,
@@ -15,6 +16,7 @@ import {
   Users,
   Video,
 } from "lucide-react";
+import { RESULTADO_IC_HREF } from "./webinars/router";
 
 const asset = (fileName: string) => `${import.meta.env.BASE_URL}assets/${fileName}`;
 
@@ -23,7 +25,7 @@ const keyFacts = [
   { icon: Award, label: "Bolsas de IC/CNPq", value: "50" },
   { icon: Coins, label: "Valor mensal", value: "R$ 700" },
   { icon: CalendarClock, label: "Vigência", value: "12 meses" },
-  { icon: FileText, label: "Inscrições", value: "06–19 jul 2026" },
+  { icon: FileText, label: "Inscrições", value: "06 a 19 jul 2026" },
 ];
 
 /** Eixos Estratégicos Transversais (EET) — linhas de pesquisa do processo. */
@@ -74,8 +76,8 @@ const criterios = [
 
 /** Documentos para inscrição (item 5.1 — versão final). */
 const documentos = [
-  { icon: FileText, title: "Carta de intenção", text: "Até 4.000 caracteres (com espaços), em PDF — experiência na graduação, habilidades, motivação para participar do projeto junto ao(à) orientador(a) pretendido(a) e indicação clara da região e do(a) orientador(a)." },
-  { icon: ScrollText, title: "Plano de Atividades", text: "Até 6.000 caracteres (com espaços), em PDF, de acordo com a linha de atuação — Objetivo, Justificativa, Metodologia e Cronograma de Execução." },
+  { icon: FileText, title: "Carta de intenção", text: "Até 4.000 caracteres (com espaços), em PDF, experiência na graduação, habilidades, motivação para participar do projeto junto ao(à) orientador(a) pretendido(a) e indicação clara da região e do(a) orientador(a)." },
+  { icon: ScrollText, title: "Plano de Atividades", text: "Até 6.000 caracteres (com espaços), em PDF, de acordo com a linha de atuação, Objetivo, Justificativa, Metodologia e Cronograma de Execução." },
   { icon: GraduationCap, title: "Histórico escolar e matrícula", text: "Histórico escolar e comprovante de matrícula atualizados, em PDF." },
   { icon: Users, title: "Currículo Lattes", text: "Currículo Lattes atualizado nos últimos 30 dias, em PDF." },
   { icon: Video, title: "Vídeo de apresentação", text: "Vídeo de apresentação direto ao(à) orientador(a), com a motivação para participar do projeto, de 1 a 3 minutos (arquivo MPEG); enviar o link de acesso." },
@@ -101,7 +103,7 @@ const perfil = [
 export function EditalIC2026() {
   useEffect(() => {
     const previous = document.title;
-    document.title = "Processo Seletivo Simplificado Nº 04/2026 — Bolsas de IC/CNPq | INCT-CONEXAO";
+    document.title = "Processo Seletivo Simplificado Nº 04/2026, Bolsas de IC/CNPq | INCT-CONEXAO";
     return () => {
       document.title = previous;
     };
@@ -117,8 +119,11 @@ export function EditalIC2026() {
           <a className="edital-back" href="#editais">
             <ArrowLeft size={16} aria-hidden="true" /> Voltar para Oportunidades
           </a>
+          {/* O selo acompanha a fase real do processo. Com o resultado no ar,
+              "Chamada aberta" mandaria o candidato para um formulário que já
+              não recebe inscrição. */}
           <p className="eyebrow">
-            <Sparkles size={15} aria-hidden="true" /> Chamada aberta
+            <Sparkles size={15} aria-hidden="true" /> Resultado publicado
           </p>
           <p className="edital-kicker">Processo Seletivo Simplificado Nº 04/2026</p>
           <h1>Seleção de Bolsistas de Iniciação Científica (IC/CNPq)</h1>
@@ -140,8 +145,8 @@ export function EditalIC2026() {
             })}
           </div>
           <div className="edital-hero-actions">
-            <a className="button primary" href="#/inscricao/selecao-ic-2026">
-              Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
+            <a className="button primary" href={RESULTADO_IC_HREF}>
+              Ver a lista de selecionados <ArrowRight size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
               Baixar o documento oficial (PDF) <Download size={18} aria-hidden="true" />
@@ -199,7 +204,7 @@ export function EditalIC2026() {
 
             <div className="edital-dist-head">
               <MapPin size={18} aria-hidden="true" />
-              <h3>Amazônia Legal — 34 bolsas</h3>
+              <h3>Amazônia Legal: 34 bolsas</h3>
             </div>
             <div className="edital-table-wrap">
               <table className="edital-table">
@@ -224,7 +229,7 @@ export function EditalIC2026() {
 
             <div className="edital-dist-head">
               <MapPin size={18} aria-hidden="true" />
-              <h3>Nordeste e Centro-Oeste — 16 bolsas</h3>
+              <h3>Nordeste e Centro-Oeste: 16 bolsas</h3>
             </div>
             <div className="edital-table-wrap">
               <table className="edital-table">
@@ -369,7 +374,7 @@ export function EditalIC2026() {
               <Award size={22} aria-hidden="true" />
               <div>
                 <strong>Investimento total de R$ 420.000,00</strong>
-                <span>Programa IC/CNPq para o ciclo 2026–2027.</span>
+                <span>Programa IC/CNPq para o ciclo 2026 a 2027.</span>
               </div>
             </div>
             <p className="edital-note">
@@ -391,8 +396,8 @@ export function EditalIC2026() {
             regras de envio. Em caso de dúvidas, fale com a coordenação do INCT-CONEXAO.
           </p>
           <div className="edital-hero-actions">
-            <a className="button primary" href="#/inscricao/selecao-ic-2026">
-              Inscreva-se on-line <Sparkles size={18} aria-hidden="true" />
+            <a className="button primary" href={RESULTADO_IC_HREF}>
+              Ver a lista de selecionados <ArrowRight size={18} aria-hidden="true" />
             </a>
             <a className="button ghost-light" href={asset("edital-selecao-ic-2026.pdf")} target="_blank" rel="noreferrer">
               Baixar o documento oficial (PDF) <Download size={18} aria-hidden="true" />

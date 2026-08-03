@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 320" width="360" height="320" role="img" aria-labelledby="t-titulo t-desc" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<title id="t-titulo">Focos de queimada nos estados que mais queimam</title>
+<desc id="t-desc">Detecções anuais do satélite de referência do INPE Fonte: Instituto Nacional de Pesquisas Espaciais (INPE) · 2003 a 2024 · Dados públicos, uso livre com citação da fonte (INPE)</desc>
+<rect width="360" height="320" fill="#ffffff"/>
+<line x1="62" y1="258.0" x2="340" y2="258.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="262.0" font-size="11" fill="#6b7f90" text-anchor="end">0</text>
+<line x1="62" y1="210.8" x2="340" y2="210.8" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="214.8" font-size="11" fill="#6b7f90" text-anchor="end">20.000</text>
+<line x1="62" y1="163.6" x2="340" y2="163.6" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="167.6" font-size="11" fill="#6b7f90" text-anchor="end">40.000</text>
+<line x1="62" y1="116.4" x2="340" y2="116.4" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="120.4" font-size="11" fill="#6b7f90" text-anchor="end">60.000</text>
+<line x1="62" y1="69.2" x2="340" y2="69.2" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="73.2" font-size="11" fill="#6b7f90" text-anchor="end">80.000</text>
+<line x1="62" y1="22.0" x2="340" y2="22.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="26.0" font-size="11" fill="#6b7f90" text-anchor="end">100.000</text>
+<text x="62.0" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2003</text>
+<text x="101.7" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2006</text>
+<text x="141.4" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2009</text>
+<text x="181.1" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2012</text>
+<text x="220.9" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2015</text>
+<text x="260.6" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2018</text>
+<text x="300.3" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2021</text>
+<text x="340.0" y="278" font-size="11" fill="#6b7f90" text-anchor="middle">2024</text>
+<line x1="62" y1="258" x2="340" y2="258" stroke="#9fb2c0" stroke-width="1"/>
+<path d="M62.0 132.8 L75.2 82.9 L88.5 89.3 L101.7 126.2 L115.0 96.4 L128.2 143.7 L141.4 159.7 L154.7 123.0 L167.9 195.3 L181.1 170.2 L194.4 201.3 L207.6 174.2 L220.9 156.1 L234.1 187.9 L247.3 140.5 L260.6 205.9 L273.8 186.8 L287.0 166.9 L300.3 204.0 L313.5 160.2 L326.8 159.6 L340.0 125.7" fill="none" stroke="#c2410c" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M62.0 91.5 L75.2 29.1 L88.5 87.8 L101.7 155.4 L115.0 69.3 L128.2 188.5 L141.4 222.5 L154.7 118.7 L167.9 217.0 L181.1 192.0 L194.4 214.2 L207.6 199.1 L220.9 192.5 L234.1 193.6 L247.3 185.1 L260.6 215.4 L273.8 184.4 L287.0 145.4 L300.3 204.9 L313.5 189.5 L326.8 206.7 L340.0 138.7" fill="none" stroke="#0f766e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M62.0 176.5 L75.2 178.7 L88.5 178.5 L101.7 203.0 L115.0 152.4 L128.2 205.8 L141.4 212.8 L154.7 172.4 L167.9 212.4 L181.1 177.1 L194.4 216.8 L207.6 199.8 L220.9 190.9 L234.1 206.6 L247.3 197.6 L260.6 225.2 L273.8 214.3 L287.0 218.3 L300.3 220.1 L313.5 210.3 L326.8 208.2 L340.0 204.0" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M62.0 185.9 L75.2 161.5 L88.5 159.7 L101.7 159.7 L115.0 193.1 L128.2 230.7 L141.4 245.3 L154.7 218.0 L167.9 243.7 L181.1 238.4 L194.4 247.1 L207.6 240.7 L220.9 227.1 L234.1 227.1 L247.3 231.3 L260.6 233.8 L273.8 231.5 L287.0 231.7 L300.3 234.3 L313.5 228.6 L326.8 240.5 L340.0 232.8" fill="none" stroke="#b45309" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="62" y="290" width="11" height="11" rx="2" fill="#c2410c"/>
+<text x="78" y="300" font-size="11.5" fill="#4b6478">PA</text>
+<rect x="97.2" y="290" width="11" height="11" rx="2" fill="#0f766e"/>
+<text x="113.2" y="300" font-size="11.5" fill="#4b6478">MT</text>
+<rect x="132.4" y="290" width="11" height="11" rx="2" fill="#7c3aed"/>
+<text x="148.4" y="300" font-size="11.5" fill="#4b6478">MA</text>
+<rect x="167.60000000000002" y="290" width="11" height="11" rx="2" fill="#b45309"/>
+<text x="183.60000000000002" y="300" font-size="11.5" fill="#4b6478">RO</text>
+</svg>

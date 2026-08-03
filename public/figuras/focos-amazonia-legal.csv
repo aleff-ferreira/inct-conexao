@@ -1,0 +1,37 @@
+﻿# Focos de queimada na Amazônia Legal
+# Detecções anuais do satélite de referência do INPE, somadas nos nove estados da Amazônia Legal
+#
+# Fonte: Focos de queimada por unidade federativa e ano — Instituto Nacional de Pesquisas Espaciais (INPE) (2003 a 2024)
+# URL: https://terrabrasilis.dpi.inpe.br/queimadas/portal/dados-abertos/
+# Licença: Dados públicos, uso livre com citação da fonte (INPE)
+# Nota: Contagem de focos detectados pelo satélite de referência do INPE, a série indicada pelo próprio instituto para comparação entre anos, por manter o mesmo sensor e o mesmo horário de passagem. Foco de calor não é o mesmo que área queimada nem que incêndio confirmado: é uma detecção de anomalia térmica, e um incêndio grande pode gerar vários focos.
+#
+# Colunas:
+#   ano — Ano civil da detecção, conforme a data de passagem do satélite
+#   focos — Número de anomalias térmicas detectadas pelo satélite de referência nos nove estados da Amazônia Legal. Não é área queimada nem incêndio confirmado (focos)
+#
+# Compilado por INCT-CONEXAO · https://inct-conexao.com.br/#/figura/focos-amazonia-legal
+#
+ano;focos
+2003;228046
+2004;281827
+2005;270253
+2006;196318
+2007;270683
+2008;138835
+2009;105290
+2010;222274
+2011;91056
+2012;144557
+2013;89019
+2014;124337
+2015;152745
+2016;131747
+2017;154734
+2018;93953
+2019;130249
+2020;154968
+2021;106851
+2022;150559
+2023;132983
+2024;198972

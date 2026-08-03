@@ -1,0 +1,10 @@
+{
+  "id": "rede",
+  "ordem": 1,
+  "titulo": "Uma rede que conecta campo, clima e saúde",
+  "texto": "O INCT-CONEXAO é uma rede de ciência que integra saúde humana, animal, vegetal e ambiental (a abordagem de Saúde Única) para responder a riscos climáticos e biológicos na Amazônia e no Brasil.\n\nEste mapa organiza evidências por território: onde estão as instituições, quais riscos e temas aparecem em cada estado e como a formação de novos cientistas se distribui pelo país.\n\nComece pela Amazônia Legal, avance até Rondônia (sede da rede) e depois explore livremente qualquer estado.",
+  "camada": "amazonia-legal",
+  "fontes": [
+    { "titulo": "Proposta da rede INCT-CONEXAO (CNPq 2024)", "publicador": "INCT-CONEXAO" }
+  ]
+}

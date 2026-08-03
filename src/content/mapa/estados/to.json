@@ -1,0 +1,129 @@
+{
+  "uf": "TO",
+  "publicado": true,
+  "demonstracao": false,
+  "resumo": "O Tocantins integra a Amazônia Legal no extremo sudeste da região, onde o Cerrado encontra a floresta amazônica. É cortado pelos rios Araguaia e Tocantins e abriga a Ilha do Bananal, a maior ilha fluvial do mundo. A dengue, a febre de chikungunya, as leishmanioses e a zika estão entre os agravos de maior notificação no estado.",
+  "destaque": "Transição Cerrado e Amazônia · rios Araguaia e Tocantins",
+  "revisadoPor": "Conteúdo de prevenção, reconhecimento e cuidado transcrito do documento de referência da coordenação (fontes citadas em cada doença). Pendente de revisão científica editorial.",
+  "revisadoEm": "2026-07-28",
+  "doencas": [
+    {
+      "nome": "Dengue",
+      "agente": "Vírus da dengue (DENV 1 a 4)",
+      "transmissao": "Picada do mosquito Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti (também transmite zika e chikungunya).",
+      "notificacoes": {
+        "valor": 88065,
+        "periodo": "acumulado a partir de 2016",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": { "titulo": "Doenças de notificação compulsória (SINAN) via TabNet", "publicador": "DataSUS · Ministério da Saúde", "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/" }
+      },
+      "prevencao": [
+        "Eliminar água parada, onde o mosquito deposita seus ovos: tampar caixas d'água e reservatórios, esvaziar pratos de vasos de plantas ou pôr areia até a borda, descartar pneus, garrafas e latas que possam acumular água.",
+        "Evitar picadas: usar repelente, roupas de mangas compridas e calças (sobretudo durante o dia), telas em portas e janelas e mosquiteiros quando possível.",
+        "Manter o ambiente limpo: fechar bem lixeiras, limpar quintais e terrenos e evitar o acúmulo de objetos que retenham água da chuva.",
+        "Seguir as orientações da vigilância local sobre vacinação: no SUS, a vacina da dengue é dirigida a públicos específicos (não à população em geral)."
+      ],
+      "comoReconhecer": "Nas formas mais leves: febre alta (38,5 a 40 °C) de início súbito, dor de cabeça intensa, dor atrás dos olhos, dores musculares e nas articulações, cansaço e fraqueza, náuseas e vômitos, perda do apetite e manchas vermelhas na pele, que às vezes coçam.",
+      "sinaisAlerta": [
+        "Dor abdominal intensa e contínua, vômitos persistentes, sangramento pelo nariz ou pelas gengivas e presença de sangue nas fezes ou no vômito.",
+        "Sonolência excessiva, irritabilidade ou confusão, dificuldade para respirar, pele fria, pálida ou úmida, tontura ou desmaio e diminuição da quantidade de urina.",
+        "Esses sinais indicam risco de dengue grave, costumam surgir quando a febre começa a diminuir e exigem atendimento imediato."
+      ],
+      "tratamento": [
+        "Procurar uma UBS (unidade básica de saúde) ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água e manter-se em repouso."
+      ],
+      "manejoServicos": "O manejo baseia-se em hidratação e acompanhamento clínico; não há medicamento específico contra o vírus. A avaliação precoce reduz complicações.",
+      "fontes": [
+        { "titulo": "Dengue: atividades médicas", "publicador": "Médicos Sem Fronteiras (MSF Brasil)", "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/", "data": "2026-07-20" },
+        { "titulo": "Dengue: sintomas, causas, tratamento e prevenção", "publicador": "Prefeitura de Potim (SP)", "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/", "data": "2026-07-20" }
+      ]
+    },
+    {
+      "nome": "Febre de chikungunya",
+      "agente": "Vírus chikungunya (CHIKV)",
+      "transmissao": "Picada de mosquitos do gênero Aedes, principalmente o Aedes aegypti, que se reproduz em água parada em recipientes domésticos.",
+      "vetoresReservatorios": "Vetores: Aedes aegypti e Aedes albopictus, os mesmos mosquitos que transmitem a dengue e a zika.",
+      "prevencao": [
+        "Eliminar água parada em vasos de plantas, pneus e garrafas, para impedir a reprodução dos mosquitos Aedes.",
+        "Usar repelente nas áreas expostas da pele.",
+        "Vestir roupas compridas que cubram braços e pernas, para reduzir o contato com os insetos."
+      ],
+      "comoReconhecer": "Febre alta que começa de repente, dores intensas e incapacitantes nas articulações de mãos, pés, tornozelos e pulsos, manchas vermelhas pelo corpo, dor de cabeça e dores nos músculos.",
+      "tratamento": [
+        "Procurar uma UBS ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muito líquido (água e sucos) para evitar a desidratação.",
+        "Fazer repouso absoluto durante a fase mais aguda.",
+        "Não se automedicar com anti-inflamatórios ou aspirina (AAS) na fase inicial, porque podem causar complicações graves."
+      ],
+      "manejoServicos": "Não há medicamento específico contra o vírus; o cuidado é de suporte, com hidratação, repouso e avaliação clínica. O acompanhamento na atenção primária orienta o alívio da dor nas articulações com segurança.",
+      "fontes": [
+        { "titulo": "Chikungunya: glossário de saúde", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude/chikungunya", "data": "2026-07-25" }
+      ]
+    },
+    {
+      "nome": "Leishmanioses (tegumentar e visceral)",
+      "agente": "Protozoários do gênero Leishmania",
+      "transmissao": "Picada de fêmeas de flebotomíneos (mosquito-palha), mais ativas ao entardecer e à noite.",
+      "vetoresReservatorios": "Vetor: flebotomíneos (Lutzomyia). Cães são importantes reservatórios da forma visceral no ambiente peridomiciliar.",
+      "prevencao": [
+        "Evitar a picada do mosquito-palha: usar repelente na pele exposta, sobretudo ao entardecer e à noite, quando o inseto é mais ativo, e vestir mangas compridas, calças e meias ao permanecer em áreas de risco.",
+        "Dormir sob mosquiteiro, especialmente em regiões endêmicas, e instalar telas em portas e janelas para impedir a entrada do inseto.",
+        "Manter o ambiente limpo, evitar o acúmulo de lixo orgânico e podar a vegetação muito densa junto à casa.",
+        "Proteger os cães, que são importantes reservatórios da leishmaniose visceral em áreas urbanas: coleira impregnada com inseticida específico para leishmaniose, consultas veterinárias regulares e vacinação quando indicada pelo médico-veterinário e disponível na região.",
+        "Ter cuidado redobrado em áreas de risco: evitar permanecer em áreas de mata ao anoitecer e reforçar o uso de repelente em atividades ao ar livre. O risco é maior para quem vive ou trabalha em áreas rurais e de mata, como trabalhadores rurais, militares, ecoturistas e pesquisadores de campo."
+      ],
+      "comoReconhecer": "Forma tegumentar: ferida na pele que geralmente não dói e cicatriza com dificuldade, com bordas elevadas e fundo avermelhado ou granuloso; podem surgir uma ou mais lesões e ínguas próximas à ferida. Quando atinge as mucosas, causa obstrução nasal, sangramentos pelo nariz e feridas na boca ou no nariz. Forma visceral: febre prolongada (em geral por mais de duas semanas), cansaço intenso e fraqueza, perda de peso, falta de apetite, palidez por anemia, aumento do baço (abdômen inchado) e do fígado, infecções frequentes e, em casos avançados, sangramentos pelo nariz ou pelas gengivas.",
+      "tratamento": [
+        "Procurar uma UBS ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Cuidar da ferida, mantendo-a seca e evitando coçar.",
+        "Cuidar do corpo: beber muita água, alimentar-se bem e acompanhar a evolução dos sintomas."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são feitos na rede pública, com acompanhamento especializado. Procure avaliação diante de ferida que não cicatriza ou de febre prolongada.",
+      "fontes": [
+        { "titulo": "Leishmaniose: glossário de saúde", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose", "data": "2026-07-20" }
+      ]
+    },
+    {
+      "nome": "Zika",
+      "agente": "Vírus Zika (ZIKV)",
+      "transmissao": "Picada do Aedes aegypti; também pode ser transmitido por via sexual e da gestante para o bebê.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti. Na gestação, associa-se a malformações no bebê.",
+      "prevencao": [
+        "Proteção individual contra picadas: usar repelente e roupas adequadas, como calças e blusas de mangas compridas, e criar barreiras físicas, como telas de proteção em portas e janelas e mosquiteiro sobre a cama ou ambientes com ar-condicionado.",
+        "Eliminar criadouros do mosquito: manter caixas d'água, tonéis e barris completamente tampados, manter as lixeiras sempre fechadas, guardar potes virados para baixo para não acumular água e guardar pneus velhos em local coberto ou entregá-los aos serviços de limpeza urbana.",
+        "Prevenir a transmissão sexual: o vírus também é transmitido em relações sexuais e permanece no sêmen por várias semanas após a infecção; o preservativo é a forma mais segura de evitar essa via."
+      ],
+      "comoReconhecer": "Febre baixa (geralmente abaixo de 38,5 °C), manchas vermelhas na pele que coçam muito, dores nas articulações (principalmente nas mãos e nos pés), olhos vermelhos (conjuntivite sem secreção), dor de cabeça e dores musculares. Os sintomas costumam durar de 2 a 7 dias e muitas pessoas infectadas não apresentam sinal algum.",
+      "tratamento": [
+        "Procurar uma UBS ou uma UPA em caso de febre alta, e seguir a orientação do profissional de saúde.",
+        "Beber muita água, alimentar-se bem e repousar.",
+        "Não se automedicar."
+      ],
+      "manejoServicos": "Não há tratamento específico; o cuidado é de suporte. Gestantes com suspeita devem ter acompanhamento pré-natal reforçado.",
+      "fontes": [
+        { "titulo": "Zika vírus: o que é, causas, sintomas, tratamento e prevenção", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/z/zika-virus", "data": "2026-07-20" }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": ["Cerrado", "Amazônia"],
+    "hidrografia": "Situado entre as bacias dos rios Araguaia e Tocantins, com extensas planícies alagáveis, como a do entorno da Ilha do Bananal, e grandes reservatórios de hidrelétricas ao longo do rio Tocantins.",
+    "clima": "Tropical quente, com estação chuvosa concentrada do fim do ano ao início do outono e período seco bem marcado no meio do ano.",
+    "resumo": "É o estado de transição entre o Cerrado e a Amazônia: a alternância entre cheias e secas nas planícies do Araguaia e do Tocantins influencia a presença de vetores e conecta clima, ambiente e saúde.",
+    "fontes": [
+      { "titulo": "Biomas e mapas: Cerrado e Amazônia", "publicador": "IBGE", "url": "https://www.ibge.gov.br/geociencias" }
+    ]
+  },
+  "servicos": [
+    { "nome": "Vigilância em Saúde do Tocantins (SES-TO)", "contato": "Consultar a Secretaria de Estado da Saúde do Tocantins", "nota": "notificação de agravos e orientação epidemiológica" },
+    { "nome": "Unidades básicas de saúde (UBS) e UPAs do município", "contato": "Procurar a unidade mais próxima; a UPA é a porta de entrada em caso de febre alta", "nota": "porta de entrada para avaliação de febre e das doenças desta ficha" }
+  ],
+  "fontes": [
+    { "titulo": "Doenças de notificação compulsória (SINAN) via TabNet", "publicador": "DataSUS · Ministério da Saúde", "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/" },
+    { "titulo": "Saúde de A a Z", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z", "data": "2026-07-20" },
+    { "titulo": "Glossário de saúde", "publicador": "Hospital Israelita Albert Einstein", "url": "https://www.einstein.br/n/glossario-de-saude", "data": "2026-07-25" },
+    { "titulo": "Dengue: atividades médicas", "publicador": "Médicos Sem Fronteiras (MSF Brasil)", "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/", "data": "2026-07-20" }
+  ]
+}

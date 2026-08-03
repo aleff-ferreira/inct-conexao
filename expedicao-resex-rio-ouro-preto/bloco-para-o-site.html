@@ -1,0 +1,270 @@
+<!--
+  ============================================================================
+  BLOCO PARA O SITE - II Expedição Científica RESEX Rio Ouro Preto
+  ----------------------------------------------------------------------------
+  Segue a identidade do inct-conexao.com.br: faixa clara em bege, títulos em
+  verde escuro, rótulos em caixa alta, cartões brancos com canto de 10px,
+  detalhes em verde-limão e datas em âmbar.
+
+  COMO USAR
+  1. Envie as imagens da pasta "imagens-materia" para a biblioteca de mídia.
+  2. Cole este código em um bloco de HTML personalizado no editor do post.
+  3. Substitua o endereço base das imagens,
+       https://inct-conexao.com.br/assets/materia-resex/
+     pelo caminho real gerado pelo site.
+  4. Defina "hero-rio-ouro-preto.jpg" como imagem destacada.
+  5. Campos de SEO:
+       Título: Expedição na RESEX Rio Ouro Preto: água, morcegos e Saúde Única
+       Descrição: Cerca de 30 pesquisadores passaram dez dias no Rio Ouro Preto
+                  (RO) atendendo famílias ribeirinhas, capturando morcegos e
+                  construindo um saneamento de R$ 2 mil.
+       Slug: expedicao-cientifica-resex-rio-ouro-preto-saude-unica
+  6. Troque as URLs de compartilhamento pelo endereço final do post.
+  Os estilos estão isolados em ".inct-post" e não afetam o resto do site.
+  ============================================================================
+-->
+
+<div class="inct-post">
+<style>
+.inct-post{--verde-900:#08201a;--verde-800:#0d302b;--verde-700:#14453c;--bone:#f3f3ee;--branco:#fff;--sage:#e0eae2;--lima:#c8f24c;--lima-2:#a9e02f;--ambar:#e8a33d;--tinta:#22302a;--tinta-2:#55625b;--tinta-3:#7c8781;--linha:#e2e2d8;--sans:'Figtree','Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,Arial,sans-serif;--mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,monospace;max-width:760px;margin:0 auto;font-family:var(--sans);font-size:17.5px;line-height:1.68;color:var(--tinta)}
+.inct-post *{box-sizing:border-box}
+.inct-post img{max-width:100%;height:auto;display:block;border-radius:10px}
+.inct-post a{color:var(--verde-700)}
+.inct-post p{margin:0 0 1.3rem}
+.inct-post h2{font-size:clamp(1.6rem,3.4vw,2.15rem);line-height:1.12;font-weight:800;letter-spacing:-.02em;color:var(--verde-800);margin:3.4rem 0 1.1rem;max-width:20ch}
+.inct-post h3{font-size:1.18rem;font-weight:700;color:var(--verde-800);margin:2.4rem 0 .7rem}
+.inct-post .dek{font-size:1.12rem;line-height:1.55;font-weight:600;color:var(--verde-700);margin:0 0 1.4rem}
+.inct-post .pill{display:inline-block;background:var(--sage);color:var(--verde-700);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.42rem .85rem;border-radius:8px;margin:0 0 1rem}
+.inct-post .rotulo{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lima-2);margin:0 0 .35rem}
+.inct-post .assinatura{font-family:var(--mono);font-size:11.5px;color:var(--tinta-3);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);padding:.85rem 0;margin:0 0 2.2rem}
+.inct-post .barra-dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));background:var(--verde-800);border-radius:10px;overflow:hidden;margin:0 0 2.4rem}
+.inct-post .barra-dados div{padding:1.1rem 1.2rem;border-right:1px solid rgba(255,255,255,.12)}
+.inct-post .barra-dados div:last-child{border-right:0}
+.inct-post .barra-dados b{font-size:1.05rem;font-weight:700;color:#fff}
+.inct-post .cartao{background:var(--branco);border:1px solid var(--linha);border-radius:10px;padding:1.6rem 1.7rem;margin:0 0 2.2rem}
+.inct-post .cartao ul{margin:0;padding-left:1.15rem}
+.inct-post .cartao li{margin-bottom:.6rem;font-size:.98rem;line-height:1.55}
+.inct-post .cartao li:last-child{margin-bottom:0}
+.inct-post figure{margin:2.6rem 0}
+.inct-post figcaption{font-size:.84rem;color:var(--tinta-3);line-height:1.5;margin-top:.65rem}
+.inct-post .duo{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-items:start}
+.inct-post .duo img{height:100%;object-fit:cover}
+.inct-post .duo figcaption{grid-column:1/-1}
+.inct-post .citacao{background:var(--branco);border:1px solid var(--linha);border-left:3px solid var(--lima-2);border-radius:0 10px 10px 0;padding:1.5rem 1.7rem;margin:2.4rem 0}
+.inct-post .citacao p{font-size:1.14rem;line-height:1.5;font-weight:600;color:var(--verde-800);margin:0 0 .8rem}
+.inct-post .citacao span{font-family:var(--mono);font-size:11.5px;color:var(--tinta-3)}
+.inct-post .etapas{list-style:none;counter-reset:e;padding:0;margin:1.5rem 0 2.4rem;border-top:1px solid var(--linha)}
+.inct-post .etapas li{counter-increment:e;display:flex;gap:1.1rem;padding:1.05rem 0;border-bottom:1px solid var(--linha);font-size:.99rem;line-height:1.55}
+.inct-post .etapas li::before{content:counter(e);flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--verde-800);color:var(--lima);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.15rem}
+.inct-post .etapas b{color:var(--verde-800)}
+.inct-post .agenda{background:var(--verde-800);border-radius:10px;padding:1.5rem 1.7rem;margin:2.4rem 0;color:#fff}
+.inct-post .agenda h3{color:#fff;margin:0 0 1rem;font-size:1.02rem}
+.inct-post .agenda table{width:100%;border-collapse:collapse;font-size:.94rem}
+.inct-post .agenda td{padding:.5rem 0;vertical-align:top;border:0}
+.inct-post .agenda td:first-child{width:34%;color:var(--ambar);font-weight:700;font-family:var(--mono);font-size:.84rem;padding-right:1rem}
+.inct-post .agenda td:last-child{color:rgba(255,255,255,.9);font-weight:600}
+.inct-post details{border-bottom:1px solid var(--linha);padding:1rem 0}
+.inct-post details:first-of-type{border-top:1px solid var(--linha)}
+.inct-post summary{font-weight:700;color:var(--verde-800);cursor:pointer;font-size:1.02rem;list-style:none;display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.inct-post summary::-webkit-details-marker{display:none}
+.inct-post summary::after{content:"+";color:var(--lima-2);font-size:1.35rem;line-height:1}
+.inct-post details[open] summary::after{content:"–"}
+.inct-post details p{margin:.85rem 0 0;font-size:.97rem;color:var(--tinta-2)}
+.inct-post .equipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:1.4rem 0 2rem;border-top:1px solid var(--linha)}
+.inct-post .equipe div{padding:.9rem 1rem .9rem 0;border-bottom:1px solid var(--linha);font-size:.95rem;font-weight:600;color:var(--verde-800)}
+.inct-post .equipe small{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--tinta-3);margin-top:.15rem}
+.inct-post .creditos{font-size:.9rem;color:var(--tinta-2);background:var(--branco);border:1px solid var(--linha);border-radius:10px;padding:1.1rem 1.3rem}
+.inct-post .cta{background:var(--verde-800);background-image:radial-gradient(120% 90% at 85% 20%,#1c5a4b 0%,#0d302b 60%);border-radius:10px;padding:2.2rem 1.9rem;margin:3rem 0 2rem;color:#fff}
+.inct-post .cta h2{color:#fff;margin:0 0 .8rem;font-size:1.6rem;max-width:18ch}
+.inct-post .cta p{color:rgba(255,255,255,.8);margin:0 0 1.6rem}
+.inct-post .botoes{display:flex;gap:.7rem;flex-wrap:wrap}
+.inct-post .btn{display:inline-block;font-size:.94rem;font-weight:700;padding:.8rem 1.4rem;border-radius:8px;text-decoration:none}
+.inct-post .btn-lima{background:var(--lima);color:var(--verde-900)}
+.inct-post .btn-vazado{border:1px solid rgba(255,255,255,.45);color:#fff}
+.inct-post .compartilhar{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;font-size:.87rem;color:var(--tinta-3);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);padding:1.15rem 0;margin:2.8rem 0 0}
+.inct-post .compartilhar a{font-size:.87rem;font-weight:600;text-decoration:none;color:var(--verde-800);background:var(--branco);border:1px solid var(--linha);border-radius:8px;padding:.45rem .9rem}
+.inct-post .compartilhar a:hover{background:var(--verde-800);color:#fff}
+.inct-post .ingles{border:1px solid var(--linha);border-radius:10px;background:var(--branco);padding:1.6rem 1.7rem;margin:3rem 0 0}
+.inct-post .ingles h2{font-size:1.05rem;margin:0 0 .8rem;max-width:none}
+.inct-post .ingles p{font-size:.95rem;color:var(--tinta-2);margin:0}
+@media(max-width:640px){.inct-post .duo{grid-template-columns:1fr}.inct-post .duo img{height:auto}}
+</style>
+
+<p class="dek">Cerca de 30 pesquisadores subiram o Rio Ouro Preto, em Rondônia, para atender famílias ribeirinhas, investigar patógenos em morcegos e construir um protótipo de saneamento com material da própria comunidade. O que apareceu nas consultas não era o que a equipe esperava encontrar.</p>
+
+<p class="assinatura">II Expedição Científica RESEX Rio Ouro Preto · Guajará-Mirim e Nova Mamoré (RO) · leitura de 6 min</p>
+
+<div class="barra-dados">
+  <div><p class="rotulo">Equipe</p><b>~30 pessoas</b></div>
+  <div><p class="rotulo">Campo</p><b>~10 dias</b></div>
+  <div><p class="rotulo">Água analisada</p><b>100% contaminada</b></div>
+  <div><p class="rotulo">Atendimentos</p><b>~90% crônicos</b></div>
+  <div><p class="rotulo">Saneamento</p><b>R$ 2 mil</b></div>
+</div>
+
+<div class="cartao">
+  <p class="pill">Em 30 segundos</p>
+  <ul>
+    <li>Toda a água de consumo analisada na comunidade estava contaminada por coliformes fecais.</li>
+    <li>Cerca de 90% dos casos atendidos eram doenças crônicas, como hipertensão e dislipidemia.</li>
+    <li>Não houve nenhum caso de malária ou leishmaniose entre as pessoas atendidas.</li>
+    <li>À noite, a equipe capturou morcegos para procurar patógenos neles e nos ectoparasitos que vivem sobre eles.</li>
+    <li>Um sistema de saneamento de R$ 2 mil foi construído com mão de obra e material da região.</li>
+  </ul>
+</div>
+
+<p>O registro da foto marca 7h08. O barco sai com o sol ainda baixo, a caminho do atendimento domiciliar. É assim, pelo rio, que a <strong>II Expedição Científica RESEX Rio Ouro Preto</strong> chegou às famílias da Reserva Extrativista do Rio Ouro Preto, entre os municípios de Guajará-Mirim e Nova Mamoré, em Rondônia. A reserva foi criada em 12 de março de 1990 e está entre as quatro primeiras do país.</p>
+
+<figure>
+  <img src="https://inct-conexao.com.br/assets/materia-resex/barco-atendimento-domiciliar.jpg" loading="lazy" alt="Barco da expedição navegando ao amanhecer para atendimento domiciliar na RESEX Rio Ouro Preto">
+  <figcaption>Saída às 7h08 para o atendimento domiciliar, às margens do Rio Ouro Preto. Foto: acervo da expedição</figcaption>
+</figure>
+
+<p>A expedição é realizada pela <strong>ONG Saúde Infinita</strong>, com apoio do <strong>INCT-CONEXAO</strong>, do <strong>CNPq/Ministério da Ciência, Tecnologia e Inovação</strong>, do <strong>Governo Federal</strong>, da <strong>FAPERO</strong> e da <strong>Secretaria de Estado da Saúde de Rondônia</strong>. Viagens como essa levam cerca de dez dias e reúnem médicos, biólogos, biomédicos, farmacêuticos, estudantes e uma arquiteta.</p>
+
+<h2>Atendimento primeiro, pesquisa depois</h2>
+
+<p>A equipe chega oferecendo consulta, exame e procedimento. As famílias, em troca, autorizam a coleta de informações e de material biológico, dentro de protocolos aprovados por Comitê de Ética em Pesquisa e, no caso dos animais, por Comissão de Ética no Uso de Animais (CEUA).</p>
+
+<div class="citacao">
+  <p>"Por mais que a gente esteja aqui como pesquisador, a gente não pode virar as costas para as necessidades da população."</p>
+  <span>Coordenação da expedição</span>
+</div>
+
+<p>Na prática, foram eletrocardiogramas feitos em maca improvisada, atendimentos casa a casa e uma biópsia por <em>punch</em> para análise histopatológica de uma lesão suspeita de melanoma, feita por uma acadêmica de Medicina com um médico da equipe ao lado.</p>
+
+<figure class="duo">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/eletrocardiograma-comunidade.jpg" loading="lazy" alt="Eletrocardiograma sendo realizado em morador da comunidade ribeirinha">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/biopsia-punch-melanoma.jpg" loading="lazy" alt="Biópsia por punch realizada por acadêmica de Medicina acompanhada por médico da equipe">
+  <figcaption>Exame cardiológico em maca improvisada e a retirada de material por <em>punch</em> para análise histopatológica. Fotos: acervo da expedição</figcaption>
+</figure>
+
+<h2>O que apareceu nas consultas</h2>
+
+<p>Entre as pessoas atendidas não houve caso de malária nem de leishmaniose, as duas doenças que costumam vir à cabeça quando se fala em Amazônia. A sorologia apontou um caso de hepatite C. A equipe também registrou um caso de tuberculose.</p>
+
+<p>O grosso do atendimento foi outro. Segundo o balanço preliminar da equipe, cerca de 90% dos casos eram doenças crônicas não transmissíveis, como hipertensão e dislipidemia. É o mesmo perfil de quem vive nas cidades, só que a horas de barco do hospital mais próximo. Foi para esse ponto que a expedição passou a dirigir seus esforços.</p>
+
+<h2>As noites de captura de morcegos</h2>
+
+<p>Quando escurece, o trabalho muda. Redes de neblina são armadas na mata e os biólogos passam a trabalhar de lanterna na cabeça, fazendo biometria, pesagem, coleta de amostras com seringa de insulina e a procura pelos ectoparasitos. O estudo faz parte do projeto de bioprospecção de microrganismos e ectoparasitos com potencial zoonótico na RESEX Rio Ouro Preto.</p>
+
+<figure class="duo">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/morcego-rede-de-neblina.jpg" loading="lazy" alt="Morcego preso em rede de neblina armada na mata amazônica à noite">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/ectoparasito-mosca-de-morcego.jpg" loading="lazy" alt="Mosca ectoparasita de morcego segurada com pinça durante a coleta">
+  <figcaption>A rede de neblina armada na mata e o alvo do estudo: ectoparasitos como as moscas hematófagas exclusivas de morcegos. Fotos: acervo da expedição</figcaption>
+</figure>
+
+<div class="citacao">
+  <p>"A nossa ideia é fazer o levantamento de morcegos, dos quais a gente não tem registro para essa região, e buscar também os ectoparasitos, que se alimentam do sangue dos morcegos. Podem ser moscas exclusivas de morcegos, carrapatos, ácaros. Através desses ectoparasitos a gente faz uma análise molecular e tenta descobrir quais tipos de patógeno: bactérias, fungos, protozoários."</p>
+  <span>Biólogos responsáveis pela captura</span>
+</div>
+
+<p>Um dos alvos da análise molecular é a bactéria <em>Bartonella</em>. A equipe quer saber se esses microrganismos circulam por uma área remota e pouco amostrada da Amazônia Ocidental, e de que maneira.</p>
+
+<figure>
+  <img src="https://inct-conexao.com.br/assets/materia-resex/morcego-detalhe.jpg" loading="lazy" alt="Detalhe da cabeça de um morcego capturado durante a expedição científica na Amazônia">
+  <figcaption>Morcego capturado na RESEX Rio Ouro Preto: biometria, pesagem e coleta antes da soltura. Foto: acervo da expedição</figcaption>
+</figure>
+
+<p>A preocupação de fundo tem nome: <em>spillover</em>, o momento em que um patógeno da fauna silvestre passa para as pessoas. A degradação do ambiente, as mudanças climáticas, a perda de biodiversidade e a compressão dos ecossistemas empurram os animais silvestres para perto das casas, e esse contato pode custar caro à saúde pública. Os morcegos voam longe e carregam ectoparasitos consigo, o que faz deles um bom ponto de partida. Esse olhar conjunto para pessoas, animais e ambiente é o que a área chama de <strong>Saúde Única</strong>.</p>
+
+<figure>
+  <img src="https://inct-conexao.com.br/assets/materia-resex/bancada-de-campo-barraca.jpg" loading="lazy" alt="Pesquisador processando amostras em bancada improvisada dentro de barraca de campo">
+  <figcaption>Bancada montada na barraca, com balança, paquímetro e ficha técnica. Foto: acervo da expedição</figcaption>
+</figure>
+
+<h2>A água que a comunidade bebe</h2>
+
+<p>O achado mais duro veio da água. Toda a água de consumo analisada na localidade estava contaminada por coliformes fecais, de origem humana e não humana, segundo o levantamento da equipe, que também investiga o papel dos reservatórios domésticos nessa contaminação.</p>
+
+<p>A arquiteta da equipe desenvolveu um protótipo de saneamento pensado para a realidade ribeirinha. Custou cerca de R$ 2 mil, com mão de obra local e areia da própria região. Só a brita veio de fora. O morador levantou a estrutura de madeira e o banheiro.</p>
+
+<h3>Como o sistema funciona</h3>
+
+<ol class="etapas">
+  <li><span><b>Recebe.</b> O esgoto do banheiro vai para bombonas enterradas e vedadas do ar.</span></li>
+  <li><span><b>Fermenta.</b> Sem oxigênio, o pH cai, bactérias e protozoários morrem e os vírus são inativados.</span></li>
+  <li><span><b>Filtra.</b> O que resta passa para um compartimento revestido de brita e areia.</span></li>
+  <li><span><b>Devolve.</b> Coberto de terra, esse compartimento recebe mudas de bananeira e açaí, que absorvem o efluente já tratado sem contaminar o solo.</span></li>
+</ol>
+
+<figure class="duo">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/instalacao-bombona-saneamento.jpg" loading="lazy" alt="Arquiteta instalando tubulação em bombona enterrada do sistema de saneamento">
+  <img src="https://inct-conexao.com.br/assets/materia-resex/prototipo-saneamento-banheiro.jpg" loading="lazy" alt="Banheiro de madeira construído sobre sistema de saneamento com bombonas enterradas">
+  <figcaption>Da bombona enterrada ao banheiro erguido pelo próprio morador. Fotos: acervo da expedição</figcaption>
+</figure>
+
+<div class="agenda">
+  <h3>O que vem agora</h3>
+  <table>
+    <tr><td>Concluído</td><td>Construção do protótipo na comunidade</td></tr>
+    <tr><td>Em andamento</td><td>Teste do sistema com água bruta captada no rio Ouro Preto</td></tr>
+    <tr><td>Próxima etapa</td><td>Tornar a água potável</td></tr>
+    <tr><td>No laboratório</td><td>Análise molecular das amostras de morcegos e de seus ectoparasitos</td></tr>
+  </table>
+</div>
+
+<figure>
+  <img src="https://inct-conexao.com.br/assets/materia-resex/drone-rio-ouro-preto.jpg" loading="lazy" alt="Vista aérea do Rio Ouro Preto cercado por floresta amazônica em Rondônia">
+  <figcaption>O Rio Ouro Preto visto do alto, principal via de acesso às famílias. Foto: acervo da expedição</figcaption>
+</figure>
+
+<h2>Perguntas frequentes</h2>
+
+<details open>
+  <summary>O que é a RESEX Rio Ouro Preto?</summary>
+  <p>É a Reserva Extrativista do Rio Ouro Preto, criada em 12 de março de 1990 entre os municípios de Guajará-Mirim e Nova Mamoré, em Rondônia. Foi uma das quatro primeiras reservas extrativistas do Brasil e abriga famílias que vivem do extrativismo, da agricultura de subsistência e da pesca artesanal.</p>
+</details>
+<details>
+  <summary>O que é Saúde Única (One Health)?</summary>
+  <p>É a abordagem que trata a saúde humana, a saúde animal e a saúde ambiental como partes de um mesmo sistema. Na prática, significa que não dá para cuidar das pessoas sem olhar para os animais e para o ambiente em que elas vivem.</p>
+</details>
+<details>
+  <summary>Por que estudar morcegos na Amazônia?</summary>
+  <p>Morcegos se deslocam por grandes distâncias e carregam ectoparasitos que podem abrigar bactérias, fungos e protozoários. Estudá-los ajuda a perceber o risco de <em>spillover</em>, a passagem de patógenos da fauna silvestre para as pessoas, antes que ele vire surto.</p>
+</details>
+<details>
+  <summary>Quanto custa o sistema de saneamento desenvolvido pela equipe?</summary>
+  <p>Cerca de R$ 2 mil por unidade, com mão de obra e areia locais. Só a brita foi trazida de fora, e o próprio morador construiu a estrutura de madeira e o banheiro.</p>
+</details>
+
+<h2>Quem esteve em campo</h2>
+
+<div class="equipe">
+  <div>Sergio de Almeida Basano<small>CEMETRON</small></div>
+  <div>Leormando Fortunato Dornelas Jr.<small>INCT-CONEXAO</small></div>
+  <div>Luís Marcelo Aranha Camargo<small>ICB5 / USP</small></div>
+  <div>Silvana Sirley Eugênio<small>INCT-CONEXAO</small></div>
+  <div>Tallita Beatriz de Oliveira Zamarchi<small>INCT-CONEXAO</small></div>
+  <div>Hayslla Mikaella do Couto Araújo<small>INCT-CONEXAO</small></div>
+  <div>Deborah Rejane Filgueiras<small>INCT-CONEXAO</small></div>
+</div>
+
+<p class="creditos"><strong>Realização:</strong> ONG Saúde Infinita. <strong>Apoio:</strong> INCT-CONEXAO, CNPq/MCTI, Governo Federal, FAPERO e Secretaria de Estado da Saúde de Rondônia.</p>
+
+<p style="margin-top:2rem">Choveu muito nos últimos dias, as estradas alagaram e a equipe dormiu de rede. Ninguém passou mal e a comunidade foi atendida. As amostras vão agora para o laboratório, e o protótipo de saneamento segue de pé, esperando os testes.</p>
+
+<div class="cta">
+  <p class="rotulo">Acompanhe o INCT-CONEXAO</p>
+  <h2>As próximas expedições saem daqui</h2>
+  <p>Ciência, saúde e cidadania em comunidades ribeirinhas da Amazônia. No Instagram saem os bastidores em tempo real; no site ficam as chamadas abertas, as bolsas de iniciação científica e o Barco Ciência e Saúde.</p>
+  <div class="botoes">
+    <a class="btn btn-lima" href="https://www.instagram.com/inct_conexao/" target="_blank" rel="noopener">Seguir @inct_conexao</a>
+    <a class="btn btn-vazado" href="https://inct-conexao.com.br/">Ver projetos e chamadas</a>
+  </div>
+</div>
+
+<div class="compartilhar">
+  <span>Compartilhe:</span>
+  <a href="https://api.whatsapp.com/send?text=Água%20contaminada%2C%20morcegos%20e%20um%20banheiro%20de%20R%24%202%20mil%3A%20o%20que%20a%20ciência%20encontrou%20na%20RESEX%20Rio%20Ouro%20Preto%20https%3A%2F%2Finct-conexao.com.br%2Fexpedicao-cientifica-resex-rio-ouro-preto-saude-unica%2F" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Finct-conexao.com.br%2Fexpedicao-cientifica-resex-rio-ouro-preto-saude-unica%2F" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Finct-conexao.com.br%2Fexpedicao-cientifica-resex-rio-ouro-preto-saude-unica%2F" target="_blank" rel="noopener">Facebook</a>
+</div>
+
+<section class="ingles" lang="en">
+  <h2>In English</h2>
+  <p><strong>Contaminated water, bats and a low-cost toilet: findings from a scientific expedition in the Brazilian Amazon.</strong> About 30 researchers travelled up the Ouro Preto River, in Rondônia, for the II Scientific Expedition to the Rio Ouro Preto Extractive Reserve. The mission combined primary healthcare, wildlife pathogen surveillance and sanitation engineering under a One Health approach. Every drinking water sample analysed in the community was contaminated with faecal coliforms. Around 90% of the clinical cases were chronic non-communicable diseases, and no malaria or leishmaniasis was found among those treated. At night, the team mist netted bats to collect biological samples and ectoparasites such as bat flies, ticks and mites, screening them by molecular analysis for zoonotic pathogens including <em>Bartonella</em>, in a region with no previous records. A low cost anaerobic sanitation prototype, built for roughly R$ 2,000 with local labour and materials, was completed during the expedition.</p>
+</section>
+
+</div>

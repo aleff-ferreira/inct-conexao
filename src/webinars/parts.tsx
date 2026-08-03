@@ -235,7 +235,7 @@ export function StreamStage({ event, status }: { event: WebinarEvent; status: We
 
   if (status === "live") {
     inner = live ? (
-      <StreamPlayer resolved={live} title={`Transmissão ao vivo — ${event.title}`} poster={poster} />
+      <StreamPlayer resolved={live} title={`Transmissão ao vivo, ${event.title}`} poster={poster} />
     ) : (
       <StreamFallback poster={poster} icon={Radio} eyebrow="Ao vivo em instantes" title="Estamos entrando no ar. A transmissão aparecerá aqui automaticamente.">
         <p className="webinar-stage-note">Atualize a página caso o vídeo não inicie nos próximos minutos.</p>
@@ -249,7 +249,7 @@ export function StreamStage({ event, status }: { event: WebinarEvent; status: We
     );
   } else {
     inner = replay ? (
-      <StreamPlayer resolved={replay} title={`Gravação — ${event.title}`} poster={poster} />
+      <StreamPlayer resolved={replay} title={`Gravação, ${event.title}`} poster={poster} />
     ) : (
       <StreamFallback poster={poster} icon={Video} eyebrow="Encerrado" title="A gravação será publicada em breve.">
         <p className="webinar-stage-note">Assim que a edição for concluída, o replay aparecerá nesta página.</p>
@@ -315,7 +315,7 @@ export function AgendaTimeline({ items }: { items: AgendaItem[] }) {
           </span>
           <div className="webinar-agenda-body">
             <p className="webinar-agenda-title">{item.title}</p>
-            {item.speaker && item.speaker !== "—" ? <span className="webinar-agenda-speaker">{item.speaker}</span> : null}
+            {item.speaker ? <span className="webinar-agenda-speaker">{item.speaker}</span> : null}
           </div>
         </li>
       ))}

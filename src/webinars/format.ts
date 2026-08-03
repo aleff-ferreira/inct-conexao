@@ -38,7 +38,7 @@ export const formatEventTime = (iso: string): string =>
 export const formatEventTimeRange = (startIso: string, endIso: string): string => {
   const start = formatEventTime(startIso);
   const end = formatEventTime(endIso);
-  return end ? `${start} – ${end}` : start;
+  return end ? `${start} às ${end}` : start;
 };
 
 /** ISO 8601 para máquina (usado em <time datetime>). */

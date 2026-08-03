@@ -1,0 +1,12 @@
+{
+  "id": "amazonia-legal",
+  "ordem": 2,
+  "titulo": "A Amazônia Legal, do recorte ao território",
+  "texto": "A Amazônia Legal é um recorte político-administrativo definido em lei (Lei Complementar nº 124/2007) para orientar o planejamento regional. Reúne oito estados integralmente (Acre, Amapá, Amazonas, Mato Grosso, Pará, Rondônia, Roraima e Tocantins) e a porção oeste do Maranhão.\n\nÉ nesse território que se concentram a maior floresta tropical do planeta, uma sociobiodiversidade única e desafios de clima e saúde que a rede acompanha de perto.\n\nNo mapa, os estados em verde compõem a Amazônia Legal; o Maranhão aparece destacado por entrar apenas parcialmente.",
+  "camada": "amazonia-legal",
+  "enquadrar": "amazonia-legal",
+  "destaques": ["MA"],
+  "fontes": [
+    { "titulo": "Amazônia Legal: mapas e definição (LC nº 124/2007)", "publicador": "IBGE", "url": "https://www.ibge.gov.br/geociencias/cartas-e-mapas/mapas-regionais/15819-amazonia-legal.html" }
+  ]
+}

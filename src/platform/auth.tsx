@@ -33,11 +33,11 @@ export type AuthState = {
 function ptError(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login credentials")) return "E-mail ou senha incorretos.";
-  if (m.includes("rate limit")) return "Muitas tentativas — aguarde alguns minutos e tente novamente.";
+  if (m.includes("rate limit")) return "Muitas tentativas, aguarde alguns minutos e tente novamente.";
   if (m.includes("password should be") || m.includes("password is too weak"))
     return "A senha não atende aos requisitos mínimos (10+ caracteres).";
   if (m.includes("same password")) return "A nova senha precisa ser diferente da atual.";
-  if (m.includes("email not confirmed")) return "E-mail ainda não confirmado — verifique sua caixa de entrada.";
+  if (m.includes("email not confirmed")) return "E-mail ainda não confirmado, verifique sua caixa de entrada.";
   return message;
 }
 
@@ -123,7 +123,7 @@ export function useAuth(): AuthState {
     if (error) {
       const m = error.message.toLowerCase();
       if (m.includes("already registered"))
-        return { error: "Já existe conta com este e-mail — use “Entrar” ou “Esqueci a senha”." };
+        return { error: "Já existe conta com este e-mail: use “Entrar” ou “Esqueci a senha”." };
       return { error: ptError(error.message) };
     }
     // Sem sessão = o projeto exige confirmação do e-mail (um clique no link).

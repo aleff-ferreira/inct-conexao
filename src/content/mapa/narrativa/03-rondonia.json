@@ -1,0 +1,11 @@
+{
+  "id": "rondonia",
+  "ordem": 3,
+  "titulo": "Rondônia: a sede, o rio e a saúde única",
+  "texto": "Em Porto Velho, às margens do rio Madeira, fica a sede da rede, na Fiocruz Rondônia, em cooperação com a UNIR. É daqui que se articulam pesquisas que conectam ambiente, clima e saúde.\n\nO estado está no arco do desmatamento e convive com malária, acidentes por animais peçonhentos e eventos climáticos extremos, temas que a ficha de Rondônia detalha, com prevenção e fontes.\n\nAbra a ficha do estado para ver animais peçonhentos, doenças, ambiente e as atividades do INCT no território.",
+  "foco": "RO",
+  "camada": "conteudo",
+  "fontes": [
+    { "titulo": "Composição da rede: sede em Rondônia", "publicador": "INCT-CONEXAO" }
+  ]
+}

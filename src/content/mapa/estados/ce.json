@@ -1,0 +1,157 @@
+{
+  "uf": "CE",
+  "publicado": true,
+  "demonstracao": true,
+  "resumo": "O Ceará fica fora da Amazônia Legal e serve de contraponto: predomina a Caatinga (bioma exclusivamente brasileiro) no sertão semiárido, além de faixa litorânea. Fortaleza reúne instituições parceiras como a UFC e a Fiocruz Ceará. Aqui os desafios de saúde única se ligam à seca, ao calor e às arboviroses urbanas.",
+  "destaque": "Caatinga · semiárido · fora da Amazônia Legal",
+  "revisadoPor": "Conteúdo de demonstração: pendente de revisão científica",
+  "revisadoEm": "2026-07-13",
+  "animais": [
+    {
+      "nomeComum": "Cascavel",
+      "nomeCientifico": "Crotalus durissus",
+      "grupo": "Serpente peçonhenta (Viperidae)",
+      "ocorrencia": "confirmado",
+      "distribuicao": "Áreas abertas e secas do sertão e da Caatinga",
+      "identificacao": "Possui o guizo (chocalho) na ponta da cauda, que produz som característico ao se sentir ameaçada. Acidentes podem ser graves e exigem soro específico.",
+      "prevencao": [
+        "Usar botas e perneiras no trabalho rural e ao caminhar na Caatinga.",
+        "Atenção ao som do guizo; afastar-se sem tentar manejar o animal."
+      ],
+      "primeirosSocorros": [
+        "Repouso, imobilização do membro e transporte imediato ao serviço de saúde para soro anticrotálico.",
+        "Manter a pessoa calma e hidratada."
+      ],
+      "naoFazer": [
+        "Não fazer torniquete, corte ou sucção.",
+        "Não aplicar substâncias caseiras na ferida."
+      ],
+      "fontes": [
+        { "titulo": "Acidentes por cascavéis", "publicador": "Instituto Butantan", "url": "https://butantan.gov.br/" },
+        { "titulo": "Guia de vigilância: acidentes por serpentes", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br" }
+      ]
+    },
+    {
+      "nomeComum": "Jararaca-da-seca",
+      "nomeCientifico": "Bothrops erythromelas",
+      "grupo": "Serpente peçonhenta (Viperidae)",
+      "ocorrencia": "confirmado",
+      "distribuicao": "Endêmica da Caatinga no Nordeste",
+      "identificacao": "Jararaca de pequeno porte adaptada ao semiárido, com fosseta loreal; causa acidentes botrópicos.",
+      "prevencao": [
+        "Calçado fechado e atenção ao lidar com lenha, pedras e vegetação seca.",
+        "Não pôr mãos em frestas e tocas sem visualizar."
+      ],
+      "primeirosSocorros": [
+        "Repouso, imobilização e transporte rápido ao serviço de saúde.",
+        "Lavar o local com água e sabão."
+      ],
+      "naoFazer": [
+        "Não fazer torniquete nem cortes.",
+        "Não usar substâncias caseiras."
+      ],
+      "fontes": [
+        { "titulo": "Serpentes da Caatinga de importância médica", "publicador": "Instituto Butantan", "url": "https://butantan.gov.br/" }
+      ]
+    },
+    {
+      "nomeComum": "Escorpião-amarelo-do-nordeste",
+      "nomeCientifico": "Tityus stigmurus",
+      "grupo": "Escorpião",
+      "ocorrencia": "confirmado",
+      "distribuicao": "Amplamente distribuído no Nordeste, inclusive em áreas urbanas",
+      "identificacao": "Escorpião amarelado com faixa/mancha escura no dorso; principal causador de acidentes escorpiônicos no Nordeste, favorecido por ambientes urbanos.",
+      "prevencao": [
+        "Sacudir roupas, calçados e roupa de cama antes de usar.",
+        "Vedar frestas e ralos; afastar entulho das paredes; controlar baratas.",
+        "Manter quintais limpos e usar telas."
+      ],
+      "primeirosSocorros": [
+        "Lavar o local e procurar atendimento, com prioridade para crianças e idosos.",
+        "Observar vômitos, sudorese intensa e agitação (sinais de gravidade) e buscar serviço de referência."
+      ],
+      "naoFazer": [
+        "Não amarrar o membro nem cortar o local da picada."
+      ],
+      "fontes": [
+        { "titulo": "Escorpionismo no Nordeste: Tityus stigmurus", "publicador": "Fiocruz", "url": "https://portal.fiocruz.br/" },
+        { "titulo": "Vigilância de acidentes por escorpiões", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br" }
+      ]
+    }
+  ],
+  "doencas": [
+    {
+      "nome": "Leishmaniose visceral (calazar)",
+      "agente": "Leishmania infantum (protozoário)",
+      "transmissao": "Picada de fêmeas do flebotomíneo (mosquito-palha); o cão é o principal reservatório no ciclo urbano.",
+      "vetoresReservatorios": "Vetor: Lutzomyia longipalpis. Reservatório urbano: cães domésticos.",
+      "prevencao": [
+        "Uso de coleiras repelentes em cães e telas; manejo ambiental para reduzir o vetor.",
+        "Evitar acúmulo de matéria orgânica (favorece o mosquito-palha)."
+      ],
+      "sinaisAlerta": [
+        "Febre prolongada, emagrecimento, palidez e aumento do abdome (baço/fígado).",
+        "Quadro arrastado que exige avaliação, pode ser grave se não tratado."
+      ],
+      "manejoServicos": "Diagnóstico e tratamento são feitos na rede pública; a procura precoce diante de febre prolongada melhora o prognóstico.",
+      "fontes": [
+        { "titulo": "Leishmaniose visceral", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leishmaniose-visceral" }
+      ]
+    },
+    {
+      "nome": "Dengue, zika e chikungunya",
+      "agente": "Arbovírus (DENV, ZIKV, CHIKV)",
+      "transmissao": "Picada do Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor comum: Aedes aegypti, favorecido pela irregularidade de abastecimento de água e armazenamento em reservatórios.",
+      "prevencao": [
+        "Eliminar criadouros: tampar caixas d'água, não acumular água em pneus, pratos de vaso e calhas.",
+        "Repelente e telas nos períodos de maior circulação."
+      ],
+      "sinaisAlerta": [
+        "Febre com dor no corpo e nas articulações, manchas na pele.",
+        "Sinais de alarme (dengue): dor abdominal intensa, vômitos, sangramentos, atendimento imediato."
+      ],
+      "manejoServicos": "O cuidado é de suporte (hidratação e acompanhamento); não há antiviral específico de uso rotineiro. A avaliação precoce reduz complicações.",
+      "fontes": [
+        { "titulo": "Arboviroses: dengue, zika e chikungunya", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/arboviroses" }
+      ]
+    },
+    {
+      "nome": "Doença de Chagas",
+      "agente": "Trypanosoma cruzi (protozoário)",
+      "transmissao": "Principalmente pelas fezes do inseto triatomíneo (barbeiro) em contato com a picada ou mucosas; também por via oral (alimentos contaminados).",
+      "vetoresReservatorios": "Vetor: triatomíneos (barbeiro), associados a casas de pau-a-pique na zona rural.",
+      "prevencao": [
+        "Melhorar habitações (reboco, telas) e afastar o barbeiro do domicílio.",
+        "Cuidados com higiene no preparo de alimentos como caldo de cana e açaí."
+      ],
+      "sinaisAlerta": [
+        "Fase aguda pode ter febre, inchaço no local da picada e no rosto; muitas vezes é silenciosa.",
+        "Sintomas cardíacos ou digestivos tardios exigem acompanhamento."
+      ],
+      "manejoServicos": "Diagnóstico por exames de sangue e acompanhamento na rede pública; o tratamento é definido pela equipe conforme a fase.",
+      "fontes": [
+        { "titulo": "Doença de Chagas", "publicador": "Ministério da Saúde", "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/doenca-de-chagas" }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": ["Caatinga", "Mata Atlântica (faixa litorânea)"],
+    "hidrografia": "Rios majoritariamente intermitentes no semiárido; açudes têm papel central no abastecimento.",
+    "clima": "Semiárido quente, com chuvas concentradas e irregulares e episódios de seca; o litoral é mais úmido.",
+    "resumo": "A Caatinga é o único bioma exclusivamente brasileiro e abriga alta biodiversidade adaptada à seca. Calor, estiagem e urbanização condicionam os desafios de saúde única no estado, um contraste útil frente aos estados amazônicos.",
+    "fontes": [
+      { "titulo": "Biomas: Caatinga", "publicador": "IBGE", "url": "https://www.ibge.gov.br/geociencias" }
+    ]
+  },
+  "servicos": [
+    { "nome": "Secretaria da Saúde do Ceará (SESA)", "contato": "Vigilância em saúde e rede de referência", "url": "https://www.saude.ce.gov.br/" }
+  ],
+  "atividadesInct": [
+    { "titulo": "Universidade Federal do Ceará (UFC)", "tipo": "instituição", "detalhe": "Instituição parceira da rede, com grupos em saúde e ambiente.", "confianca": "confirmado", "url": "https://www.ufc.br/" },
+    { "titulo": "Fiocruz Ceará", "tipo": "instituição", "detalhe": "Unidade da Fiocruz no estado, parceira da rede INCT-CONEXAO.", "confianca": "confirmado", "url": "https://www.fiocruz.br/ceara" }
+  ],
+  "fontes": [
+    { "titulo": "Composição da rede INCT-CONEXAO (CNPq 2024)", "publicador": "INCT-CONEXAO" }
+  ]
+}

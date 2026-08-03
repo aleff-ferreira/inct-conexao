@@ -7,6 +7,7 @@ import type {
   DocKind,
   Edital,
   Evaluation,
+  EvaluationEvent,
   Profile,
   StaffAllowlistEntry,
 } from "./types";
@@ -51,20 +52,24 @@ export type ApplicationDraft = Omit<
 export async function saveApplication(draft: ApplicationDraft, existingId?: string): Promise<Application> {
   const sb = supabase();
   if (existingId) {
+    // Edição até o fim do prazo NÃO altera submitted_at: o desempate do
+    // ranking usa a data da primeira submissão — corrigir a inscrição não
+    // pode rebaixar o candidato no critério de antiguidade.
     const { data, error } = await sb
       .from("applications")
-      .update({ ...draft, submitted_at: new Date().toISOString() })
+      .update({ ...draft })
       .eq("id", existingId)
       .select()
       .single();
     if (error) throw new Error(error.message);
     return data as Application;
   }
-  const { data: proto, error: pErr } = await sb.rpc("next_protocolo", { p_edital: draft.edital_id });
-  if (pErr) throw new Error(pErr.message);
+  // O protocolo é gerado no servidor (trigger BEFORE INSERT, contador atômico
+  // por edital — migração 003). Não o compomos no cliente: isso evita a corrida
+  // de count(*)+1 que duplicava protocolos sob submissões simultâneas.
   const { data, error } = await sb
     .from("applications")
-    .insert({ ...draft, protocolo: proto as string, status: "recebida", submitted_at: new Date().toISOString() })
+    .insert({ ...draft, status: "recebida", submitted_at: new Date().toISOString() })
     .select()
     .single();
   if (error) throw new Error(error.message);
@@ -110,7 +115,7 @@ export async function listFiles(applicationId: string): Promise<ApplicationFile[
 }
 
 /** URL assinada (temporária) para a comissão visualizar um PDF sem download público. */
-export async function signedUrl(path: string, expiresSeconds = 900): Promise<string> {
+export async function signedUrl(path: string, expiresSeconds = 3600): Promise<string> {
   const { data, error } = await supabase().storage.from("inscricoes").createSignedUrl(path, expiresSeconds);
   if (error) throw new Error(error.message);
   return data.signedUrl;
@@ -224,6 +229,24 @@ export async function addToAllowlist(emails: string[], role: StaffAllowlistEntry
 export async function removeFromAllowlist(email: string): Promise<void> {
   const { error } = await supabase().from("staff_allowlist").delete().eq("email", email);
   if (error) throw new Error(error.message);
+}
+
+// ------------------------------------------ auditoria (log append-only) ----
+/**
+ * Log append-only de todas as gravações de avaliação de um edital (para a
+ * auditoria de justiça). RLS: apenas admin. Ordenado por tempo.
+ */
+export async function listEvaluationEvents(editalId: string): Promise<EvaluationEvent[]> {
+  const { data, error } = await supabase()
+    .from("evaluation_events")
+    .select("*, applications!inner(edital_id)")
+    .eq("applications.edital_id", editalId)
+    .order("at", { ascending: true });
+  if (error) throw new Error(error.message);
+  // Descarta o objeto aninhado applications:{edital_id} usado só no filtro.
+  return ((data as unknown as Array<EvaluationEvent & { applications?: unknown }>) ?? []).map(
+    ({ applications: _drop, ...ev }) => ev,
+  );
 }
 
 /** Exporta o ranking como CSV (para a ata da comissão). */

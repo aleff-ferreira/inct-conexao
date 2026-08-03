@@ -1,0 +1,40 @@
+﻿# Focos de queimada nos estados que mais queimam
+# Detecções anuais do satélite de referência do INPE, nos quatro estados da Amazônia Legal com maior acumulado na série
+#
+# Fonte: Focos de queimada por unidade federativa e ano — Instituto Nacional de Pesquisas Espaciais (INPE) (2003 a 2024)
+# URL: https://terrabrasilis.dpi.inpe.br/queimadas/portal/dados-abertos/
+# Licença: Dados públicos, uso livre com citação da fonte (INPE)
+# Nota: Contagem de focos detectados pelo satélite de referência do INPE, a série indicada pelo próprio instituto para comparação entre anos, por manter o mesmo sensor e o mesmo horário de passagem. Foco de calor não é o mesmo que área queimada nem que incêndio confirmado: é uma detecção de anomalia térmica, e um incêndio grande pode gerar vários focos.
+#
+# Colunas:
+#   ano — Ano civil da detecção, conforme a data de passagem do satélite
+#   pa — Anomalias térmicas detectadas pelo satélite de referência em PA (focos)
+#   mt — Anomalias térmicas detectadas pelo satélite de referência em MT (focos)
+#   ma — Anomalias térmicas detectadas pelo satélite de referência em MA (focos)
+#   ro — Anomalias térmicas detectadas pelo satélite de referência em RO (focos)
+#
+# Compilado por INCT-CONEXAO · https://inct-conexao.com.br/#/figura/focos-estados-amazonia
+#
+ano;pa;mt;ma;ro
+2003;53040;70560;34548;30557
+2004;74214;97012;33585;40881
+2005;71477;72104;33691;41649
+2006;55840;43479;23302;41649
+2007;68491;79968;44765;27500
+2008;48449;29448;22122;11560
+2009;41664;15059;19132;5401
+2010;57196;59013;36277;16970
+2011;26563;17371;19315;6080
+2012;37221;27953;34299;8312
+2013;24046;18554;17455;4613
+2014;35526;24955;24675;7334
+2015;43164;27741;28436;13113
+2016;29724;27305;21789;13113
+2017;49770;30911;25576;11313
+2018;22080;18032;13892;10255
+2019;30165;31169;18521;11230
+2020;38603;47708;16817;11145
+2021;22876;22520;16077;10030
+2022;41421;29039;20224;12460
+2023;41715;21723;21113;7417
+2024;56070;50551;22879;10692

@@ -35,6 +35,251 @@ backend_commit_messages:
   deleteMedia: "Remove mídia “{{path}}” (via painel)"
 
 collections:
+  # ---------------------------------------------------------------- NOTÍCIAS
+  # Matérias/reportagens publicadas em #/noticias. O corpo é montado com
+  # BLOCOS: clique em "Adicionar" e escolha o tipo (texto, foto, citação...).
+  # As imagens de cada matéria ficam em public/assets/noticias/<slug>/.
+  - name: noticias
+    label: "Notícias / Matérias"
+    label_singular: "Matéria"
+    description: "Reportagens de campo, expedições e resultados da rede."
+    folder: src/content/noticias
+    create: true
+    delete: true
+    extension: json
+    format: json
+    identifier_field: slug
+    slug: "{{fields.slug}}"
+    summary: "{{data}} · {{titulo}}"
+    sortable_fields: [data, titulo]
+    editor:
+      preview: false
+    fields:
+      - label: "Identificador na URL (slug)"
+        name: slug
+        widget: string
+        pattern: ["^[a-z0-9-]+$", "Use apenas letras minúsculas, números e hifens."]
+        hint: "Aparece em #/noticias/<slug>. Use o MESMO nome da pasta de imagens."
+      - { label: "Título", name: titulo, widget: string }
+      - label: "Chapéu (editoria)"
+        name: chapeu
+        widget: string
+        required: false
+        hint: "Ex.: Expedição científica · Rondônia"
+      - label: "Linha-fina (resumo de 1 parágrafo)"
+        name: resumo
+        widget: text
+        hint: "Aparece nos cartões, na busca do Google e nas redes sociais."
+      - { label: "Data de publicação", name: data, widget: date, format: "YYYY-MM-DD" }
+      - { label: "Atualizado em", name: atualizadoEm, widget: date, format: "YYYY-MM-DD", required: false }
+      - label: "Local"
+        name: local
+        widget: string
+        required: false
+        hint: "Ex.: Guajará-Mirim e Nova Mamoré (RO)"
+      - label: "Assinatura (quem escreveu)"
+        name: autores
+        widget: list
+        required: false
+        label_singular: "Autor"
+        summary: "{{fields.nome}}"
+        hint: "Deixe vazio para a matéria assinar como INCT-CONEXAO."
+        fields:
+          - { label: "Nome", name: nome, widget: string }
+          - { label: "Papel", name: papel, widget: string, required: false, default: "Texto", hint: 'Ex.: "Texto", "Texto e fotos", "Edição".' }
+          - { label: "Currículo Lattes", name: lattes, widget: string, required: false }
+          - { label: "LinkedIn", name: linkedin, widget: string, required: false }
+          - { label: "Outro perfil (ORCID, site)", name: url, widget: string, required: false }
+      - label: "Foto de topo"
+        name: imagem
+        widget: object
+        required: false
+        fields:
+          - { label: "Arquivo", name: arquivo, widget: string, hint: "Nome do arquivo dentro de public/assets/noticias/<slug>/" }
+          - { label: "Texto alternativo", name: alt, widget: string, hint: "Descreva a cena para quem não enxerga a foto." }
+      - { label: "Crédito da foto de topo", name: imagemCredito, widget: string, required: false }
+      - label: "Números de destaque (barra do topo)"
+        name: numeros
+        widget: list
+        required: false
+        label_singular: "Número"
+        summary: "{{fields.rotulo}}: {{fields.valor}}"
+        fields:
+          - { label: "Rótulo", name: rotulo, widget: string }
+          - { label: "Valor", name: valor, widget: string }
+      # ---- corpo da matéria (blocos) ----
+      - label: "Corpo da matéria"
+        name: blocos
+        widget: list
+        label_singular: "Bloco"
+        types:
+          - label: "Texto"
+            name: texto
+            widget: object
+            summary: "Texto"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: texto }
+              - label: "Parágrafos"
+                name: texto
+                widget: text
+                hint: "Separe parágrafos com uma linha em branco. Aceita **negrito**, _itálico_ e [texto](link)."
+          - label: "Intertítulo"
+            name: subtitulo
+            widget: object
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: subtitulo }
+              - { label: "Texto", name: texto, widget: string }
+          - label: "Foto"
+            name: imagem
+            widget: object
+            summary: "Foto: {{fields.legenda}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: imagem }
+              - label: "Imagem"
+                name: imagem
+                widget: object
+                fields:
+                  - { label: "Arquivo", name: arquivo, widget: string }
+                  - { label: "Texto alternativo", name: alt, widget: string }
+              - { label: "Legenda", name: legenda, widget: string, required: false }
+              - { label: "Crédito", name: credito, widget: string, required: false }
+          - label: "Galeria (2 a 4 fotos)"
+            name: galeria
+            widget: object
+            summary: "Galeria: {{fields.legenda}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: galeria }
+              - label: "Imagens"
+                name: imagens
+                widget: list
+                min: 2
+                max: 4
+                fields:
+                  - { label: "Arquivo", name: arquivo, widget: string }
+                  - { label: "Texto alternativo", name: alt, widget: string }
+              - { label: "Legenda", name: legenda, widget: string, required: false }
+              - { label: "Crédito", name: credito, widget: string, required: false }
+          - label: "Vídeo"
+            name: video
+            widget: object
+            summary: "Vídeo: {{fields.arquivo}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: video }
+              - { label: "Arquivo .mp4", name: arquivo, widget: string, hint: "Em public/assets/noticias/<slug>/" }
+              - { label: "Capa (.webp)", name: poster, widget: string, required: false }
+              - { label: "Descrição para leitor de tela", name: descricao, widget: string }
+              - { label: "Legenda", name: legenda, widget: string, required: false }
+              - { label: "Crédito", name: credito, widget: string, required: false }
+              - { label: "Transcrição da fala", name: transcricao, widget: text, required: false, hint: "Obrigatória se houver voz no vídeo." }
+          - label: "Citação"
+            name: citacao
+            widget: object
+            summary: "Citação: {{fields.autor}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: citacao }
+              - { label: "Frase", name: texto, widget: text }
+              - { label: "Quem disse", name: autor, widget: string, required: false }
+          - label: "Cartão de destaque (lista)"
+            name: destaque
+            widget: object
+            summary: "Destaque: {{fields.titulo}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: destaque }
+              - { label: "Título", name: titulo, widget: string, required: false, hint: 'Ex.: "Em 30 segundos"' }
+              - { label: "Itens", name: itens, widget: list, field: { label: Item, name: item, widget: string } }
+          - label: "Passo a passo numerado"
+            name: etapas
+            widget: object
+            summary: "Etapas: {{fields.titulo}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: etapas }
+              - { label: "Título", name: titulo, widget: string, required: false }
+              - label: "Etapas"
+                name: itens
+                widget: list
+                summary: "{{fields.titulo}}"
+                fields:
+                  - { label: "Nome da etapa", name: titulo, widget: string }
+                  - { label: "Explicação", name: texto, widget: text }
+          - label: "Tabela (rótulo e valor)"
+            name: tabela
+            widget: object
+            summary: "Tabela: {{fields.titulo}}"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: tabela }
+              - { label: "Título", name: titulo, widget: string, required: false }
+              - label: "Linhas"
+                name: linhas
+                widget: list
+                summary: "{{fields.rotulo}}: {{fields.valor}}"
+                fields:
+                  - { label: "Rótulo", name: rotulo, widget: string }
+                  - { label: "Valor", name: valor, widget: string }
+                  - label: "Etapa concluída?"
+                    name: estado
+                    widget: select
+                    required: false
+                    options: [{ label: "Ainda pendente", value: "pendente" }, { label: "Concluída", value: "feito" }]
+                    hint: "Só muda o desenho: a etapa concluída ganha um sinal de check."
+          - label: "Perguntas frequentes"
+            name: faq
+            widget: object
+            summary: "Perguntas frequentes"
+            fields:
+              - { label: "Tipo", name: tipo, widget: hidden, default: faq }
+              - { label: "Título", name: titulo, widget: string, required: false }
+              - label: "Perguntas"
+                name: itens
+                widget: list
+                summary: "{{fields.pergunta}}"
+                fields:
+                  - { label: "Pergunta", name: pergunta, widget: string }
+                  - { label: "Resposta", name: resposta, widget: text }
+      # ---- rodapé ----
+      - label: "Quem esteve em campo"
+        name: equipe
+        widget: list
+        required: false
+        summary: "{{fields.nome}}"
+        fields:
+          - { label: "Nome", name: nome, widget: string }
+          - { label: "Instituição", name: instituicao, widget: string, required: false }
+      - label: "Créditos (realização e apoio)"
+        name: creditos
+        widget: text
+        required: false
+        hint: "Aceita **negrito**."
+      - { label: "Resumo em inglês", name: resumoIngles, widget: text, required: false }
+      - label: "Fontes"
+        name: fontes
+        widget: list
+        required: false
+        summary: "{{fields.titulo}}"
+        fields:
+          - { label: "Título", name: titulo, widget: string }
+          - { label: "Link", name: url, widget: string, required: false }
+      - { label: "Etiquetas", name: tags, widget: list, required: false, field: { label: Etiqueta, name: tag, widget: string } }
+      - label: "SEO e compartilhamento"
+        name: seo
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Título para redes sociais", name: ogTitle, widget: string, required: false }
+          - { label: "Descrição para redes sociais", name: ogDescription, widget: text, required: false }
+          - label: "Imagem de compartilhamento"
+            name: ogImage
+            widget: string
+            required: false
+            hint: "Mantenha em .jpg (1200x630). Fica na pasta da matéria."
+          - { label: "Palavras-chave", name: keywords, widget: list, required: false, field: { label: Palavra, name: kw, widget: string } }
+      - label: "Publicado"
+        name: publicado
+        widget: boolean
+        default: true
+        hint: "Desmarque para deixar a matéria como rascunho (some do site)."
+
   # ---------------------------------------------------------------- WEBINARS
   - name: webinars
     label: "Webinars / Transmissões"
@@ -234,3 +479,210 @@ collections:
         widget: boolean
         default: true
         hint: "Desligue para deixar o grupo oculto enquanto edita."
+
+  # ------------------------------------------------------- MAPA · ESTADOS
+  - name: mapa-estados
+    label: "Mapa · Fichas de estado"
+    label_singular: "Ficha de estado"
+    description: "Conteúdo por unidade federativa exibido no Mapa Interativo (#/mapa)."
+    folder: src/content/mapa/estados
+    create: true
+    delete: true
+    extension: json
+    format: json
+    identifier_field: uf
+    slug: "{{fields.uf}}"
+    summary: "{{uf}}"
+    editor:
+      preview: false
+    fields:
+      - label: "UF (sigla de 2 letras)"
+        name: uf
+        widget: string
+        pattern: ["^[A-Za-z]{2}$", "Use a sigla de 2 letras (ex.: RO). O arquivo deve ter esse nome, em minúsculas."]
+        hint: "Ex.: RO, AM, CE. Salve o arquivo com a sigla em minúsculas (ro.json)."
+      - { label: "Resumo (visão geral)", name: resumo, widget: text, required: false }
+      - { label: "Destaque curto (aparece no preview do mapa)", name: destaque, widget: string, required: false }
+      - label: "Publicado (visível no mapa)"
+        name: publicado
+        widget: boolean
+        default: true
+        hint: "Desligue para deixar a ficha oculta enquanto edita."
+      - label: "Ficha de demonstração"
+        name: demonstracao
+        widget: boolean
+        default: false
+        hint: "Ligue para marcar como exemplo ilustrativo, ainda não revisado para produção."
+      - { label: "Revisado por", name: revisadoPor, widget: string, required: false }
+      - { label: "Revisado em (AAAA-MM-DD)", name: revisadoEm, widget: string, required: false }
+      - label: "Animais peçonhentos"
+        name: animais
+        label_singular: "Animal"
+        widget: list
+        required: false
+        summary: "{{fields.nomeComum}} ({{fields.nomeCientifico}})"
+        fields:
+          - { label: "Nome comum", name: nomeComum, widget: string }
+          - { label: "Nome científico", name: nomeCientifico, widget: string }
+          - { label: "Grupo (serpente, escorpião, aranha…)", name: grupo, widget: string }
+          - label: "Confiança de ocorrência no estado"
+            name: ocorrencia
+            widget: select
+            options:
+              - { label: "Confirmada", value: confirmado }
+              - { label: "Provável", value: provavel }
+              - { label: "Incerta", value: incerto }
+            default: provavel
+          - { label: "Distribuição", name: distribuicao, widget: string, required: false }
+          - { label: "Como reconhecer", name: identificacao, widget: text, required: false }
+          - { label: "Prevenção", name: prevencao, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
+          - { label: "Em caso de acidente", name: primeirosSocorros, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
+          - { label: "NÃO faça", name: naoFazer, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
+          - { label: "Imagem (foto CREDITADA — nunca gerada por IA)", name: imagem, widget: image, required: false, choose_url: false }
+          - { label: "Crédito da imagem", name: imagemCredito, widget: string, required: false }
+          - { label: "Texto alternativo da imagem", name: imagemAlt, widget: string, required: false }
+          - label: "Fontes"
+            name: fontes
+            widget: list
+            required: false
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título", name: titulo, widget: string }
+              - { label: "Publicador", name: publicador, widget: string, required: false }
+              - { label: "URL", name: url, widget: string, required: false }
+      - label: "Doenças (tropicais/negligenciadas/zoonoses)"
+        name: doencas
+        label_singular: "Doença"
+        widget: list
+        required: false
+        summary: "{{fields.nome}}"
+        fields:
+          - { label: "Nome", name: nome, widget: string }
+          - { label: "Agente", name: agente, widget: string, required: false }
+          - { label: "Transmissão", name: transmissao, widget: text, required: false }
+          - { label: "Vetores / reservatórios", name: vetoresReservatorios, widget: string, required: false }
+          - { label: "Prevenção", name: prevencao, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
+          - { label: "Sinais de alerta (procurar atendimento)", name: sinaisAlerta, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
+          - { label: "Nos serviços de saúde (geral, sem dose/prescrição)", name: manejoServicos, widget: text, required: false }
+          - label: "Fontes"
+            name: fontes
+            widget: list
+            required: false
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título", name: titulo, widget: string }
+              - { label: "Publicador", name: publicador, widget: string, required: false }
+              - { label: "URL", name: url, widget: string, required: false }
+      - label: "Ambiente & clima"
+        name: ambiente
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Biomas", name: biomas, widget: list, field: { label: "Bioma", name: bioma, widget: string }, required: false }
+          - { label: "Hidrografia", name: hidrografia, widget: string, required: false }
+          - { label: "Clima", name: clima, widget: string, required: false }
+          - { label: "Resumo", name: resumo, widget: text, required: false }
+          - label: "Fontes"
+            name: fontes
+            widget: list
+            required: false
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título", name: titulo, widget: string }
+              - { label: "Publicador", name: publicador, widget: string, required: false }
+              - { label: "URL", name: url, widget: string, required: false }
+      - label: "Serviços (além dos nacionais SAMU/CIATox/Bombeiros)"
+        name: servicos
+        label_singular: "Serviço"
+        widget: list
+        required: false
+        summary: "{{fields.nome}}"
+        fields:
+          - { label: "Nome", name: nome, widget: string }
+          - { label: "Contato", name: contato, widget: string }
+          - { label: "Nota", name: nota, widget: string, required: false }
+          - { label: "URL", name: url, widget: string, required: false }
+      - label: "Atividades do INCT-CONEXAO"
+        name: atividadesInct
+        label_singular: "Atividade"
+        widget: list
+        required: false
+        summary: "{{fields.titulo}}"
+        fields:
+          - { label: "Título", name: titulo, widget: string }
+          - { label: "Tipo (instituição, laboratório, projeto…)", name: tipo, widget: string }
+          - { label: "Detalhe", name: detalhe, widget: text, required: false }
+          - label: "Confiança"
+            name: confianca
+            widget: select
+            options:
+              - { label: "Confirmada", value: confirmado }
+              - { label: "Incerta", value: incerto }
+            default: confirmado
+          - { label: "URL", name: url, widget: string, required: false }
+      - label: "Fontes gerais da ficha"
+        name: fontes
+        widget: list
+        required: false
+        summary: "{{fields.titulo}}"
+        fields:
+          - { label: "Título", name: titulo, widget: string }
+          - { label: "Publicador", name: publicador, widget: string, required: false }
+          - { label: "URL", name: url, widget: string, required: false }
+
+  # ------------------------------------------------------ MAPA · NARRATIVA
+  - name: mapa-narrativa
+    label: "Mapa · Capítulos (modo história)"
+    label_singular: "Capítulo"
+    description: "Capítulos do modo narrativo do Mapa Interativo."
+    folder: src/content/mapa/narrativa
+    create: true
+    delete: true
+    extension: json
+    format: json
+    identifier_field: id
+    slug: "{{fields.id}}"
+    summary: "{{ordem}} · {{titulo}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Identificador (id)", name: id, widget: string, pattern: ["^[a-z0-9-]+$", "letras minúsculas, números e hifens"] }
+      - { label: "Ordem", name: ordem, widget: number, value_type: int, default: 1 }
+      - { label: "Título", name: titulo, widget: string }
+      - { label: "Texto (parágrafos separados por linha em branco)", name: texto, widget: text }
+      - { label: "Estado em foco (sigla, opcional)", name: foco, widget: string, required: false, hint: "Ex.: RO. Deixe vazio para visão nacional." }
+      - { label: "Estados a destacar (siglas)", name: destaques, widget: list, field: { label: "UF", name: uf, widget: string }, required: false }
+      - label: "Camada a ativar"
+        name: camada
+        widget: select
+        required: false
+        hint: "O mapa pinta esta camada enquanto o capítulo estiver em leitura."
+        options:
+          - { label: "Amazônia Legal", value: amazonia-legal }
+          - { label: "Vagas de IC 2026", value: vagas-ic-2026 }
+          - { label: "Conteúdo disponível", value: conteudo }
+          - { label: "Instituições da rede", value: instituicoes }
+          - { label: "Doenças (notificações)", value: doencas-notificacoes }
+      - label: "Enquadramento inicial"
+        name: enquadrar
+        widget: select
+        required: false
+        hint: "Deixe vazio para o Brasil inteiro. Não use junto com 'Estado em foco' — o enquadramento vence."
+        options:
+          - { label: "Brasil inteiro", value: brasil }
+          - { label: "Amazônia Legal", value: amazonia-legal }
+          - { label: "Norte", value: Norte }
+          - { label: "Nordeste", value: Nordeste }
+          - { label: "Centro-Oeste", value: Centro-Oeste }
+          - { label: "Sudeste", value: Sudeste }
+          - { label: "Sul", value: Sul }
+      - label: "Fontes"
+        name: fontes
+        widget: list
+        required: false
+        summary: "{{fields.titulo}}"
+        fields:
+          - { label: "Título", name: titulo, widget: string }
+          - { label: "Publicador", name: publicador, widget: string, required: false }
+          - { label: "URL", name: url, widget: string, required: false }

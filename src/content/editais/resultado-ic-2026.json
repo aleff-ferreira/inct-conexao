@@ -1,0 +1,151 @@
+{
+  "edital": "Nº 04/2026",
+  "titulo": "Processo Seletivo Simplificado — Bolsas de Iniciação Científica IC/CNPq",
+  "programa": "INCT-CONEXAO · IC/CNPq",
+  "divulgadoEm": "2026-07-30",
+  "escopo": "Lista de selecionados e respectivos orientadores. Não inclui pontuação, ordem de classificação nem qualquer dado de avaliação: o processo seletivo publica o resultado, não os pareceres.",
+  "estados": [
+    {
+      "sigla": "AM",
+      "nome": "Amazonas",
+      "selecionados": [
+        { "nome": "Ravena Ferreira Silveira", "orientador": "Natacha Cintia Regina Aleixo" }
+      ]
+    },
+    {
+      "sigla": "CE",
+      "nome": "Ceará",
+      "selecionados": [
+        { "nome": "Gabrielle Alencar da Silva", "orientador": "Robson Waldemar Ávila" },
+        { "nome": "Maria Neulicélia Costa Marques", "orientador": "Alice Maria Costa Martins" },
+        { "nome": "Pedro Lucas Andrade Gomes", "orientador": "Roberta Jeane Bezerra Jorge" }
+      ]
+    },
+    {
+      "sigla": "GO",
+      "nome": "Goiás",
+      "selecionados": [
+        { "nome": "Maria Eduarda Silva Guimarães", "orientador": "Mirian Machado Mendes" }
+      ]
+    },
+    {
+      "sigla": "MA",
+      "nome": "Maranhão",
+      "selecionados": [
+        { "nome": "Késsila Cunha Pinheiro", "orientador": "Eduardo Bezerra de Almeida Junior" },
+        { "nome": "Samuel de Paiva Almeida", "orientador": "Eduardo Bezerra de Almeida Junior" }
+      ]
+    },
+    {
+      "sigla": "PA",
+      "nome": "Pará",
+      "selecionados": [
+        { "nome": "Bruna Bentes Gemaque", "orientador": "Ana Carla dos Santos Gomes" },
+        { "nome": "Carolina Leite de Almeida", "orientador": "Wandson Braamcamp de Souza Pinheiro" },
+        { "nome": "Delcivania de Sousa Miranda", "orientador": "Raphael Pablo Tapajós Silva" },
+        { "nome": "Gustavo dos Santos Ferreira", "orientador": "Consuelo Yumiko Yoshioka e Silva" },
+        { "nome": "Juliana Dias de Oliveira", "orientador": "Ana Carla dos Santos Gomes" },
+        { "nome": "Kathleen Silva", "orientador": "Ana Carla dos Santos Gomes" },
+        { "nome": "Lucas Michael Prata dos Santos", "orientador": "Ana Carla dos Santos Gomes" },
+        { "nome": "Ricardo Henrique Farias Medeiros", "orientador": "Consuelo Yumiko Yoshioka e Silva" }
+      ]
+    },
+    {
+      "sigla": "PE",
+      "nome": "Pernambuco",
+      "selecionados": [
+        { "nome": "Gabriela Lis de Souza", "orientador": "Norma Lucena Cavalcanti Licinio da Silva" },
+        { "nome": "Izabelly Ranyelly Serafim da Silva", "orientador": "Norma Lucena Cavalcanti Licinio da Silva" }
+      ]
+    },
+    {
+      "sigla": "PI",
+      "nome": "Piauí",
+      "selecionados": [
+        { "nome": "Ana Beatriz Miranda de Sousa", "orientador": "Antonio Marques Junior" },
+        { "nome": "Sarah Letícia Ribeiro Monteiro", "orientador": "Antonio Marques Junior" }
+      ]
+    },
+    {
+      "sigla": "RN",
+      "nome": "Rio Grande do Norte",
+      "selecionados": [
+        { "nome": "João Paulo Gomes da Silva França", "orientador": "Francisco Jablinski Castelhano" },
+        { "nome": "Pedro Henrique Honorato de Moura", "orientador": "Francisco Jablinski Castelhano" }
+      ]
+    },
+    {
+      "sigla": "RR",
+      "nome": "Roraima",
+      "selecionados": [
+        { "nome": "Brenda Basilio Boaventura", "orientador": "Cléria Mendonça de Moraes" },
+        { "nome": "Luis Eduardo Nascimento Memória", "orientador": "Cléria Mendonça de Moraes" },
+        { "nome": "Victoria Gabriele Lima da Silva", "orientador": "Cléria Mendonça de Moraes" }
+      ]
+    },
+    {
+      "sigla": "RO",
+      "nome": "Rondônia",
+      "selecionados": [
+        { "nome": "Adrianne Araújo Campelo", "orientador": "Adnilson de Almeida Silva" },
+        { "nome": "Alexandra Cairo Coelho Pinto", "orientador": "Antonio Coutinho Neto" },
+        { "nome": "Amanda Daneluci Lima", "orientador": "William Cristian da Silva Pizzaia" },
+        { "nome": "Ana Bela Alves Viana", "orientador": "Anderson Makoto Kayano" },
+        { "nome": "Anna Luísa Alvaro Fernandes", "orientador": "Antônio Laffayete Pires da Silveira" },
+        { "nome": "Carolina Costa Marques", "orientador": "Alexandre de Almeida e Silva" },
+        { "nome": "Danielly Eduarda Ferreira De Lima", "orientador": "Angelo Laurence Covatti Terra" },
+        { "nome": "Edicarlos da Silva Matos", "orientador": "Sérgio Nunes de Jesus" },
+        { "nome": "Fernanda Mendes Ferreira", "orientador": "Marcela Alvares Oliveira" },
+        { "nome": "Heloisa Cristina Garcia", "orientador": "João Paulo Assis Gobo" },
+        { "nome": "Hemilly Menezes Miranda", "orientador": "Sergio de Almeida Basano" },
+        { "nome": "Hevelen Andressa Nicaretta Ferreira", "orientador": "Leidiane Amorim Soares" },
+        { "nome": "Isabela Lima Almeida", "orientador": "Estevão Rafael Fernandes" },
+        { "nome": "Isis Ieda Movio Mondardo", "orientador": "Wilson Gómez Manrique" },
+        { "nome": "Jordania Ieticia Garcia de Freitas", "orientador": "Luís Marcelo Aranha Camargo" },
+        { "nome": "José Raimundo dos Santos Braga", "orientador": "João Paulo de Assis Gobo" },
+        { "nome": "Julio César Abreu dos Santos", "orientador": "Osvanda Silva de Moura" },
+        { "nome": "Kauany Bergamaschi de Oliveira", "orientador": "Chicoepab Suruí Dias" },
+        { "nome": "Lilian Cavalcante da Silva", "orientador": "Arlindo Gonzaga Branco Junior" },
+        { "nome": "Marcela Alves de Oliveira", "orientador": "Rafaela Diniz Sousa" },
+        { "nome": "Marcelo Henrique Gomes Dos Santos", "orientador": "Carolina Bioni Garcia Teles" },
+        { "nome": "Mariana Gonçalves Silva", "orientador": "Mônica Pereira Lima Cunha" },
+        { "nome": "Marina Fernanda Ferreira", "orientador": "Andreimar Martins Soares" },
+        { "nome": "Monique de Sousa Santos", "orientador": "Felipe Sant'Anna Cavalcante" },
+        { "nome": "Paula Taís Negreiro de Abreu", "orientador": "Marcela Alvares Oliveira" },
+        { "nome": "Paulo Josemberg Praxedes de Oliveira", "orientador": "Andreimar Martins Soares" }
+      ]
+    }
+  ],
+  "panorama": {
+    "bolsas": {
+      "valor": 50,
+      "rotulo": "estudantes bolsistas",
+      "definicao": "Total de bolsas de Iniciação Científica concedidas no Processo Seletivo Simplificado Nº 04/2026."
+    },
+    "mulheres": {
+      "valor": 37,
+      "rotulo": "mulheres selecionadas",
+      "definicao": "Selecionadas identificadas como mulheres, sobre o total de 50 bolsas (74%). Informação declarada na inscrição."
+    },
+    "orientadoresComBolsista": {
+      "valor": 38,
+      "rotulo": "orientadores com bolsista",
+      "definicao": "Pesquisadores que passam a orientar ao menos um bolsista deste processo seletivo."
+    },
+    "orientadoresNaRede": {
+      "valor": 99,
+      "rotulo": "orientadoras e orientadores na rede",
+      "definicao": "Pesquisadores cadastrados como potenciais orientadores no INCT-CONEXAO, incluindo os que não receberam bolsista neste processo."
+    },
+    "instituicoes": {
+      "valor": 36,
+      "rotulo": "instituições parceiras",
+      "definicao": "Instituições envolvidas neste processo seletivo. Não confundir com as 81 instituições do catálogo geral da rede."
+    },
+    "regioes": {
+      "valor": 3,
+      "rotulo": "regiões alcançadas",
+      "definicao": "Norte, Nordeste e Centro-Oeste, conforme a divisão regional do IBGE. Dez unidades da federação receberam bolsas."
+    }
+  }
+}

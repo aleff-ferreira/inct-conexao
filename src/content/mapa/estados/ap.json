@@ -1,0 +1,280 @@
+{
+  "uf": "AP",
+  "publicado": true,
+  "demonstracao": false,
+  "resumo": "O Amapá integra a Amazônia Legal, no extremo norte, com ampla cobertura florestal preservada e forte presença de comunidades ribeirinhas e extrativistas. Dengue e leishmaniose tegumentar estão entre os agravos de maior notificação no estado; a malária exige leitura à parte, por ser acompanhada em sistema próprio.",
+  "destaque": "Extremo norte · alta cobertura florestal",
+  "revisadoPor": "Conteúdo de prevenção, reconhecimento e cuidado transcrito do documento de referência da coordenação (fontes citadas em cada doença). Números de notificação preservados de levantamento anterior em SINAN (TabNet DataSUS). Pendente de revisão científica editorial.",
+  "revisadoEm": "2026-07-28",
+  "doencas": [
+    {
+      "nome": "Dengue",
+      "agente": "Vírus da dengue (DENV 1 a 4)",
+      "transmissao": "Picada do mosquito Aedes aegypti, que se reproduz em água parada limpa em recipientes domésticos.",
+      "vetoresReservatorios": "Vetor: Aedes aegypti (também transmite zika e chikungunya).",
+      "notificacoes": {
+        "valor": 16272,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": {
+          "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+          "publicador": "DataSUS · Ministério da Saúde",
+          "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+        }
+      },
+      "prevencao": [
+        "Eliminar água parada, onde o mosquito deposita seus ovos: tampar caixas d'água e reservatórios, esvaziar pratos de vasos ou pôr areia até a borda, descartar pneus, garrafas e latas que acumulem água.",
+        "Evitar picadas: usar repelente, roupas de mangas compridas e calças, sobretudo durante o dia, instalar telas em portas e janelas e usar mosquiteiros quando possível.",
+        "Manter o ambiente limpo: fechar bem as lixeiras, limpar quintais e terrenos e evitar o acúmulo de objetos que retenham água da chuva.",
+        "Seguir as orientações da vigilância local sobre vacinação: no SUS, a vacina da dengue é dirigida a públicos específicos (não à população em geral)."
+      ],
+      "comoReconhecer": "Nos quadros mais leves: febre alta (38,5 a 40 °C) de início súbito, dor de cabeça intensa, dor atrás dos olhos, dores musculares e nas articulações, cansaço e fraqueza, náuseas e vômitos, perda do apetite e manchas vermelhas na pele, que às vezes coçam.",
+      "sinaisAlerta": [
+        "Dor abdominal intensa e contínua, vômitos persistentes, sangramento pelo nariz ou pelas gengivas, sangue nas fezes ou no vômito.",
+        "Sonolência excessiva, irritabilidade ou confusão, dificuldade para respirar, pele fria, pálida ou úmida, tontura ou desmaio, diminuição da quantidade de urina.",
+        "Esses sinais indicam risco de dengue grave, costumam surgir quando a febre começa a diminuir e exigem atendimento imediato."
+      ],
+      "tratamento": [
+        "Procurar atendimento em uma unidade de saúde; em Macapá, há o Centro de Referência em Doenças Tropicais (CRDT).",
+        "Beber bastante água e manter-se em repouso."
+      ],
+      "manejoServicos": "O manejo baseia-se em hidratação e acompanhamento clínico; não há medicamento específico. A avaliação precoce reduz complicações.",
+      "fontes": [
+        {
+          "titulo": "Dengue: sintomas, prevenção e tratamento",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue"
+        },
+        {
+          "titulo": "Dengue: atividades médicas",
+          "publicador": "Médicos Sem Fronteiras (MSF Brasil)",
+          "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/",
+          "data": "2026-07-20"
+        },
+        {
+          "titulo": "Dengue: sintomas, causas, tratamento e prevenção",
+          "publicador": "Prefeitura Municipal de Potim (SP)",
+          "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Leishmaniose tegumentar americana (LTA)",
+      "agente": "Protozoários do gênero Leishmania",
+      "transmissao": "Picada de fêmeas de flebotomíneos (mosquito-palha), mais ativas ao amanhecer e ao entardecer, sobretudo em áreas de mata.",
+      "vetoresReservatorios": "Vetor: flebotomíneos (Lutzomyia). Animais silvestres funcionam como reservatórios do parasita.",
+      "notificacoes": {
+        "valor": 4496,
+        "periodo": "acumulado a partir de 2016",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": {
+          "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+          "publicador": "DataSUS · Ministério da Saúde",
+          "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+        }
+      },
+      "prevencao": [
+        "Proteção individual: usar repelente na pele ao frequentar mata ou áreas rurais e preferir camisa de manga comprida, calça comprida e calçado fechado.",
+        "Barreiras físicas: instalar telas de malha fina em portas e janelas e usar mosquiteiro ao dormir.",
+        "Cuidado nos horários de pico: evitar atividades ao ar livre, como banhos de rio e incursões na mata, ao amanhecer e ao entardecer, quando o mosquito-palha é mais ativo.",
+        "Manejo ambiental: manter quintais e arredores da casa limpos.",
+        "Destino do lixo: descartar corretamente o lixo orgânico, para não atrair animais silvestres que servem de reservatório ao parasita."
+      ],
+      "comoReconhecer": "Ferida na pele que geralmente não dói e cicatriza com dificuldade, na forma de úlcera com bordas elevadas e fundo avermelhado ou granuloso; podem surgir uma ou mais lesões e ínguas (gânglios aumentados) próximas à ferida. Quando atinge as mucosas, causa obstrução nasal, sangramentos pelo nariz e feridas na boca ou no nariz.",
+      "tratamento": [
+        "Procurar atendimento em uma unidade de saúde; em Macapá, há o Centro de Referência em Doenças Tropicais (CRDT).",
+        "Cuidar da ferida, mantendo-a limpa e seca, sem coçar.",
+        "Beber água para manter-se hidratado e ficar em repouso."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são feitos na rede pública, com acompanhamento especializado. Procure avaliação diante de ferida que não cicatriza.",
+      "fontes": [
+        {
+          "titulo": "Leishmaniose tegumentar: informações",
+          "publicador": "Ministério da Saúde"
+        },
+        {
+          "titulo": "Leishmaniose (glossário de saúde)",
+          "publicador": "Hospital Israelita Albert Einstein",
+          "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Leptospirose",
+      "agente": "Bactéria do gênero Leptospira",
+      "transmissao": "Contato da pele (sobretudo com feridas) ou mucosas com água e lama contaminadas pela urina de animais infectados, principalmente ratos, comum em enchentes.",
+      "vetoresReservatorios": "Reservatórios: roedores e outros animais. Risco aumenta em enchentes e ambientes com esgoto exposto.",
+      "notificacoes": {
+        "valor": 325,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": {
+          "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+          "publicador": "DataSUS · Ministério da Saúde",
+          "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+        }
+      },
+      "prevencao": [
+        "Evitar andar descalço em áreas alagadas ou com lama; usar botas e luvas ao limpar enchentes, esgotos ou terrenos úmidos.",
+        "Guardar alimentos e água em recipientes fechados; eliminar a presença de ratos dentro de casa e controlá-la nos arredores.",
+        "Descartar o lixo corretamente e manter os quintais limpos.",
+        "Tampar caixas d'água e manter o saneamento adequado; após contato com água de enchente, lavar bem o corpo com água e sabão."
+      ],
+      "comoReconhecer": "Após exposição a enchentes ou locais contaminados, procure atendimento se surgirem: febre alta, dor de cabeça, dores musculares (principalmente nas panturrilhas), náuseas ou vômitos, olhos avermelhados e pele ou olhos amarelados (icterícia).",
+      "tratamento": [
+        "Procurar atendimento em uma unidade de saúde; em Macapá, há o Centro de Referência em Doenças Tropicais (CRDT).",
+        "Beber água e repousar; evitar anti-inflamatórios por conta própria."
+      ],
+      "manejoServicos": "O tratamento é definido pela equipe de saúde e é mais eficaz quando iniciado cedo. Informe sobre contato recente com enchente ou lama.",
+      "fontes": [
+        {
+          "titulo": "Leptospirose: sintomas, prevenção e tratamento",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leptospirose",
+          "data": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "nome": "Doença de Chagas",
+      "agente": "Protozoário Trypanosoma cruzi",
+      "transmissao": "Na Amazônia, com destaque para a via oral: ingestão de alimentos contaminados por fezes do inseto 'barbeiro', sobretudo açaí e bacaba artesanais. Também há transmissão pela picada do barbeiro e da gestante para o bebê.",
+      "vetoresReservatorios": "Vetor: triatomíneos ('barbeiros'). Reservatórios: mamíferos silvestres.",
+      "notificacoes": {
+        "valor": 54,
+        "periodo": "acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS",
+        "fonte": {
+          "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+          "publicador": "DataSUS · Ministério da Saúde",
+          "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+        }
+      },
+      "prevencao": [
+        "Higiene alimentar: lavar bem alimentos crus com água tratada e ter atenção ao açaí e à bacaba artesanais, preferindo produtos de procedência conhecida, pasteurizados ou inspecionados.",
+        "Proteger a casa contra o barbeiro: telas em portas e janelas, vedar frestas nas paredes e evitar acúmulo de entulho e madeira no quintal.",
+        "Não esmagar o barbeiro com as mãos: capturá-lo com luva ou saco plástico e levá-lo intacto à unidade de saúde para análise.",
+        "Realizar o teste na gestação (pré-natal) para evitar a transmissão ao bebê."
+      ],
+      "comoReconhecer": "Fase inicial: febre prolongada, cansaço, dores no corpo, inchaço de uma pálpebra (sinal de Romaña) ou no local de entrada do parasita (chagoma) e ínguas. Em fases avançadas podem surgir palpitações, falta de ar, dor no peito e dificuldade para engolir.",
+      "sinaisAlerta": [
+        "Febre prolongada após consumo de açaí ou bacaba artesanais ou contato com barbeiro.",
+        "Palpitações, falta de ar ou inchaço nas pernas (sinais de comprometimento do coração)."
+      ],
+      "tratamento": [
+        "Procurar atendimento médico e seguir a orientação do profissional.",
+        "Guardar o inseto, se capturado com segurança, para ajudar na investigação."
+      ],
+      "manejoServicos": "O diagnóstico e o tratamento são realizados na rede pública. Quanto mais cedo identificada, melhor o prognóstico.",
+      "fontes": [
+        {
+          "titulo": "Doença de Chagas: o que é, sintomas, prevenção",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/doenca-de-chagas"
+        }
+      ]
+    },
+    {
+      "nome": "Malária",
+      "agente": "Protozoários do gênero Plasmodium (P. vivax e P. falciparum)",
+      "transmissao": "Picada da fêmea do mosquito Anopheles, com maior atividade do entardecer ao amanhecer, próximo a rios, igarapés e áreas de mata.",
+      "vetoresReservatorios": "Vetor: Anopheles darlingi, entre outros. A Amazônia concentra a maioria dos casos do país.",
+      "notificacoes": {
+        "valor": 21,
+        "periodo": "SINAN, acumulado desde 2018",
+        "sistema": "SINAN · TabNet DataSUS",
+        "representativo": false,
+        "nota": "A malária na Amazônia é acompanhada principalmente pelo SIVEP-Malária, um sistema à parte. O número do SINAN não reflete a carga real da doença no estado, que é muito maior. Trate este valor apenas como registro do SINAN.",
+        "fonte": {
+          "titulo": "Malária: vigilância e notificação (SIVEP-Malária)",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/malaria"
+        }
+      },
+      "prevencao": [
+        "Evitar picadas: repelente registrado pela Anvisa (Agência Nacional de Vigilância Sanitária) na pele exposta, roupas de mangas compridas ao anoitecer e mosquiteiro (de preferência impregnado) em áreas de risco.",
+        "Instalar telas em portas e janelas e evitar permanecer perto de rios, igarapés e mata nos horários de maior atividade do mosquito.",
+        "Ao viajar para área de transmissão, informar-se sobre o risco e levar repelente e roupas adequadas.",
+        "Buscar diagnóstico gratuito e imediato ao ter febre após exposição em área de mata ou beira de rio."
+      ],
+      "comoReconhecer": "Febre alta, em geral intermitente, com calafrios e tremores, seguidos de sudorese intensa; dor de cabeça, dores no corpo, cansaço, náuseas e vômitos. A crise costuma ter três fases: calafrios e tremores, febre alta (pode passar de 39 °C) e sudorese com sensação de alívio.",
+      "sinaisAlerta": [
+        "Alteração da consciência ou confusão, convulsões, dificuldade para respirar.",
+        "Icterícia (pele e olhos amarelados), urina escura, sangramentos ou fraqueza extrema (procure atendimento imediato)."
+      ],
+      "tratamento": [
+        "Procurar uma unidade de saúde e seguir a orientação do profissional.",
+        "Beber bastante água, alimentar-se bem e manter-se em repouso."
+      ],
+      "manejoServicos": "O diagnóstico é feito por gota espessa ou teste rápido, gratuitos no SUS, e o tratamento é definido pela equipe conforme a espécie de Plasmodium. O tratamento oportuno interrompe a transmissão.",
+      "fontes": [
+        {
+          "titulo": "Malária: o que é, sintomas, prevenção",
+          "publicador": "Ministério da Saúde",
+          "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/malaria"
+        }
+      ]
+    }
+  ],
+  "ambiente": {
+    "biomas": [
+      "Amazônia"
+    ],
+    "hidrografia": "Cortado pela foz do rio Amazonas e por rios como o Araguari; grande extensão de áreas úmidas e manguezais no litoral.",
+    "clima": "Equatorial quente e úmido, com estação chuvosa intensa no primeiro semestre.",
+    "resumo": "É um dos estados com maior proporção de floresta preservada do país; o consumo de açaí e bacaba conecta cultura alimentar e vigilância da doença de Chagas.",
+    "fontes": [
+      {
+        "titulo": "Biomas e mapas: Amazônia",
+        "publicador": "IBGE",
+        "url": "https://www.ibge.gov.br/geociencias"
+      }
+    ]
+  },
+  "servicos": [
+    {
+      "nome": "Vigilância em Saúde do Amapá (SESA-AP)",
+      "contato": "Consultar a Secretaria de Estado da Saúde do Amapá",
+      "nota": "notificação de agravos e orientação epidemiológica",
+      "url": "https://saude.portal.ap.gov.br/"
+    },
+    {
+      "nome": "Centro de Referência em Doenças Tropicais (CRDT)",
+      "contato": "Procurar a unidade em Macapá (AP) ou pedir encaminhamento na unidade de saúde mais próxima",
+      "nota": "referência estadual para atendimento de doenças tropicais, indicada no documento da coordenação"
+    }
+  ],
+  "fontes": [
+    {
+      "titulo": "Doenças de notificação compulsória (SINAN) via TabNet",
+      "publicador": "DataSUS · Ministério da Saúde",
+      "url": "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+    },
+    {
+      "titulo": "Dengue: atividades médicas",
+      "publicador": "Médicos Sem Fronteiras (MSF Brasil)",
+      "url": "https://www.msf.org.br/o-que-fazemos/atividades-medicas/dengue/",
+      "data": "2026-07-20"
+    },
+    {
+      "titulo": "Dengue: sintomas, causas, tratamento e prevenção",
+      "publicador": "Prefeitura Municipal de Potim (SP)",
+      "url": "https://www.potim.sp.gov.br/dengue-sintomas-causas-tratamento-e-prevencao/",
+      "data": "2026-07-20"
+    },
+    {
+      "titulo": "Leishmaniose (glossário de saúde)",
+      "publicador": "Hospital Israelita Albert Einstein",
+      "url": "https://www.einstein.br/n/glossario-de-saude/leishmaniose",
+      "data": "2026-07-20"
+    },
+    {
+      "titulo": "Leptospirose: sintomas, prevenção e tratamento",
+      "publicador": "Ministério da Saúde",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/l/leptospirose",
+      "data": "2026-07-20"
+    }
+  ]
+}

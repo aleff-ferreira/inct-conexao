@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" role="img" aria-labelledby="t-titulo t-desc" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<title id="t-titulo">Focos de queimada na Amazônia Legal</title>
+<desc id="t-desc">Detecções anuais do satélite de referência do INPE, nos nove estados Fonte: Instituto Nacional de Pesquisas Espaciais (INPE) · 2003 a 2024 · Dados públicos, uso livre com citação da fonte (INPE)</desc>
+<rect width="760" height="420" fill="#ffffff"/>
+<text x="20" y="30" font-size="19" font-weight="700" fill="#0f2b46">Focos de queimada na Amazônia Legal</text>
+<text x="20" y="52" font-size="13" fill="#4b6478">Detecções anuais do satélite de referência do INPE, nos nove estados</text>
+<line x1="62" y1="358.0" x2="740" y2="358.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="362.0" font-size="11" fill="#6b7f90" text-anchor="end">0</text>
+<line x1="62" y1="264.0" x2="740" y2="264.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="268.0" font-size="11" fill="#6b7f90" text-anchor="end">100.000</text>
+<line x1="62" y1="170.0" x2="740" y2="170.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="174.0" font-size="11" fill="#6b7f90" text-anchor="end">200.000</text>
+<line x1="62" y1="76.0" x2="740" y2="76.0" stroke="#e3e9ee" stroke-width="1"/>
+<text x="53" y="80.0" font-size="11" fill="#6b7f90" text-anchor="end">300.000</text>
+<text x="62.0" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2003</text>
+<text x="158.9" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2006</text>
+<text x="255.7" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2009</text>
+<text x="352.6" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2012</text>
+<text x="449.4" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2015</text>
+<text x="546.3" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2018</text>
+<text x="643.1" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2021</text>
+<text x="740.0" y="378" font-size="11" fill="#6b7f90" text-anchor="middle">2024</text>
+<line x1="62" y1="358" x2="740" y2="358" stroke="#9fb2c0" stroke-width="1"/>
+<path d="M62.0 143.6 L94.3 93.1 L126.6 104.0 L158.9 173.5 L191.1 103.6 L223.4 227.5 L255.7 259.0 L288.0 149.1 L320.3 272.4 L352.6 222.1 L384.9 274.3 L417.1 241.1 L449.4 214.4 L481.7 234.2 L514.0 212.6 L546.3 269.7 L578.6 235.6 L610.9 212.3 L643.1 257.6 L675.4 216.5 L707.7 233.0 L740.0 171.0" fill="none" stroke="#c2410c" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="94.3" cy="93.1" r="4" fill="#0f2b46"/>
+<text x="104.3" y="81.1" font-size="11.5" font-weight="600" fill="#0f2b46" text-anchor="start">2004: 281.827</text>
+<circle cx="740.0" cy="171.0" r="4" fill="#0f2b46"/>
+<text x="730.0" y="159.0" font-size="11.5" font-weight="600" fill="#0f2b46" text-anchor="end">2024: 198.972</text>
+<text x="62" y="400" font-size="10.5" fill="#8296a6">Fonte: Instituto Nacional de Pesquisas Espaciais (INPE) · 2003 a 2024 · Dados públicos, uso livre com citação da fonte (INPE)</text>
+</svg>

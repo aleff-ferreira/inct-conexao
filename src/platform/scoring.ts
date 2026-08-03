@@ -37,6 +37,11 @@ export function finalScore(total: number, bonusPct: number): number {
   return round2(total * (1 + bonusPct / 100));
 }
 
+/** Normaliza um texto para comparação tolerante (minúsculas, sem acento, trim). */
+export function normUf(uf: string): string {
+  return uf.trim().toUpperCase();
+}
+
 /** Média das avaliações ENVIADAS de uma inscrição (suporte a múltiplos avaliadores). */
 export function aggregateFinal(evals: Evaluation[]): number | null {
   const done = evals.filter((e) => e.submitted);

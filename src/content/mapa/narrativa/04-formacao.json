@@ -1,0 +1,10 @@
+{
+  "id": "formacao",
+  "ordem": 4,
+  "titulo": "Formar cientistas em todo o país",
+  "texto": "A rede não se resume à Amazônia. Em 2026, o processo seletivo de Iniciação Científica oferece 50 bolsas distribuídas por 18 unidades da federação, de Rondônia ao Ceará, do Amazonas ao Distrito Federal.\n\nO mapa passa aqui para a camada “Vagas de IC”: o tom mais forte indica mais vagas. É formação de novos pesquisadores conectando as regiões do Brasil.\n\nNo explorador você troca as camadas por conta própria, busca um estado e abre as fichas.",
+  "camada": "vagas-ic-2026",
+  "fontes": [
+    { "titulo": "Edital 04/2026: Processo Seletivo Simplificado", "publicador": "INCT-CONEXAO" }
+  ]
+}

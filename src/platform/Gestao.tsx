@@ -5,12 +5,14 @@ import {
   CheckCircle2,
   Download,
   ExternalLink,
+  FileSearch,
   FileText,
   KeyRound,
   Loader2,
   Lock,
   LogOut,
   Send,
+  ShieldAlert,
   ShieldCheck,
   Trash2,
   UserCog,
@@ -26,6 +28,7 @@ import {
   listApplications,
   listEditais,
   listEvaluations,
+  listEvaluationEvents,
   listFiles,
   listProfiles,
   removeFromAllowlist,
@@ -45,9 +48,20 @@ import {
   rankState,
   weightedTotal,
 } from "./scoring";
-import type { Application, ApplicationFile, Edital, Evaluation, Profile, StaffAllowlistEntry } from "./types";
+import { buildAudit, downloadAuditFiles } from "./audit";
+import AuthCard from "./AuthCard";
+import PasswordCard from "./PasswordCard";
+import type {
+  Application,
+  ApplicationFile,
+  Edital,
+  Evaluation,
+  EvaluationEvent,
+  Profile,
+  StaffAllowlistEntry,
+} from "./types";
 
-type Tab = "visao" | "inscricoes" | "classificacao" | "equipe";
+type Tab = "visao" | "inscricoes" | "classificacao" | "auditoria" | "equipe";
 
 /** Portal da comissão: dashboard, avaliação e classificação — dentro do site. */
 export default function Gestao() {
@@ -56,6 +70,8 @@ export default function Gestao() {
   const [editalId, setEditalId] = useState<string>("");
   const [apps, setApps] = useState<Application[]>([]);
   const [evals, setEvals] = useState<Evaluation[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [events, setEvents] = useState<EvaluationEvent[]>([]);
   const [tab, setTab] = useState<Tab>("visao");
   const [openApp, setOpenApp] = useState<Application | null>(null);
   const [showPw, setShowPw] = useState(false);
@@ -83,9 +99,15 @@ export default function Gestao() {
     if (!editalId) return;
     listApplications(editalId).then(setApps);
     listEvaluations(editalId).then(setEvals);
+    // Auditoria (admin): perfis para casar avaliador→nome e o log append-only.
+    // Falha graciosa para [] quando o usuário não é admin (RLS).
+    if (isAdmin) {
+      listProfiles().then(setProfiles).catch(() => setProfiles([]));
+      listEvaluationEvents(editalId).then(setEvents).catch(() => setEvents([]));
+    }
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(reload, [editalId]);
+  useEffect(reload, [editalId, isAdmin]);
 
   // ------------------------------------------------------------- derived
   const finalsByApp = useMemo(() => {
@@ -138,7 +160,7 @@ export default function Gestao() {
   if (!auth.session) {
     return (
       <Shell>
-        <LoginCard auth={auth} />
+        <AuthCard auth={auth} role="committee" />
       </Shell>
     );
   }
@@ -181,7 +203,7 @@ export default function Gestao() {
           <select value={editalId} onChange={(e) => setEditalId(e.target.value)}>
             {(editais ?? []).map((e) => (
               <option key={e.id} value={e.id}>
-                {e.numero} — {e.titulo} ({e.status})
+                {e.numero}: {e.titulo} ({e.status})
               </option>
             ))}
           </select>
@@ -196,6 +218,11 @@ export default function Gestao() {
           <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
             <ShieldCheck size={15} aria-hidden="true" /> Classificação
           </button>
+          {isAdmin ? (
+            <button className={tab === "auditoria" ? "active" : ""} onClick={() => setTab("auditoria")}>
+              <FileSearch size={15} aria-hidden="true" /> Auditoria
+            </button>
+          ) : null}
           {isAdmin ? (
             <button className={tab === "equipe" ? "active" : ""} onClick={() => setTab("equipe")}>
               <UserCog size={15} aria-hidden="true" /> Equipe
@@ -225,6 +252,8 @@ export default function Gestao() {
         <DashboardView edital={edital} apps={apps} evals={evals} finals={finalsByApp} />
       ) : tab === "inscricoes" ? (
         <ListaView apps={apps} evals={evals} finals={finalsByApp} myId={auth.session.user.id} onOpen={setOpenApp} />
+      ) : tab === "auditoria" && isAdmin ? (
+        <AuditoriaView edital={edital} apps={apps} evals={evals} profiles={profiles} events={events} />
       ) : (
         <RankingView
           edital={edital}
@@ -274,7 +303,7 @@ function DashboardView({
       <div className="plat-stats">
         <Stat label="Inscrições" value={String(submitted.length)} />
         <Stat label="Vagas" value={String(totalVagas)} />
-        <Stat label="Candidatas (♀)" value={submitted.length ? `${Math.round((100 * women) / submitted.length)}%` : "—"} />
+        <Stat label="Candidatas (♀)" value={submitted.length ? `${Math.round((100 * women) / submitted.length)}%` : "n/d"} />
         <Stat label="Avaliadas" value={`${evaluated}/${submitted.length}`} />
         <Stat label="Pareceres enviados" value={String(evals.filter((e) => e.submitted).length)} />
       </div>
@@ -383,7 +412,7 @@ function ListaView({
                     <td data-label="Candidato(a)">{a.nome}</td>
                     <td data-label="UF">{a.estado}</td>
                     <td data-label="Orientador(a)">{a.orientador}</td>
-                    <td data-label="Nota final" className="num">{final ?? "—"}</td>
+                    <td data-label="Nota final" className="num">{final ?? "n/d"}</td>
                     <td data-label="Minha avaliação">
                       {mine?.submitted ? (
                         <span className="plat-ok">
@@ -472,13 +501,13 @@ function AvaliacaoView({
             <div>
               <dt>Contato</dt>
               <dd>
-                {app.email} · {app.telefone || "—"}
+                {app.email} · {app.telefone || "n/d"}
               </dd>
             </div>
             <div>
               <dt>Acadêmico</dt>
               <dd>
-                {app.curso} — {app.instituicao} · {app.periodo} período · CR {app.coeficiente || "—"}
+                {app.curso}: {app.instituicao} · {app.periodo} período · CR {app.coeficiente || "n/d"}
               </dd>
             </div>
             <div>
@@ -504,7 +533,7 @@ function AvaliacaoView({
                     window.open(url, "_blank", "noopener");
                   }}
                 >
-                  {f.kind} — {f.file_name} <ExternalLink size={13} aria-hidden="true" />
+                  {f.kind}: {f.file_name} <ExternalLink size={13} aria-hidden="true" />
                 </button>
               </li>
             ))}
@@ -525,7 +554,7 @@ function AvaliacaoView({
           {criterios.map((c) => (
             <label key={c.key} className="plat-score">
               <span>
-                {c.label} <small>(0–{c.max})</small>
+                {c.label} <small>(0 a {c.max})</small>
               </span>
               <input
                 type="number"
@@ -618,6 +647,10 @@ function RankingView({
 
   const aprovadas = ranked.flatMap(({ rows }) => rows.filter((r) => r.withinQuota).map((r) => r.app.id));
   const espera = ranked.flatMap(({ rows }) => rows.filter((r) => !r.withinQuota && r.final !== null).map((r) => r.app.id));
+  // Inscrições válidas (não rascunho / não desclassificada) ainda sem nota.
+  // Homologar com elas pendentes as deixaria presas sem status terminal — o
+  // candidato nunca veria a decisão final. Trave até concluir as avaliações.
+  const pendentes = ranked.flatMap(({ rows }) => rows).filter((r) => r.final === null).length;
 
   return (
     <>
@@ -628,7 +661,7 @@ function RankingView({
         {isAdmin ? (
           <button
             className="button primary"
-            disabled={busy || edital.status === "homologado"}
+            disabled={busy || edital.status === "homologado" || pendentes > 0}
             onClick={() => {
               if (window.confirm("Homologar o resultado? As inscrições dentro das vagas serão marcadas como APROVADAS e as demais avaliadas como LISTA DE ESPERA.")) {
                 void onHomologar(aprovadas, espera);
@@ -640,12 +673,18 @@ function RankingView({
           </button>
         ) : null}
       </div>
+      {isAdmin && pendentes > 0 && edital.status !== "homologado" ? (
+        <p className="plat-hint plat-warn">
+          {pendentes} {pendentes > 1 ? "inscrições ainda sem avaliação" : "inscrição ainda sem avaliação"}. Conclua
+          todas as avaliações antes de homologar, do contrário, essas inscrições ficariam sem resultado final.
+        </p>
+      ) : null}
       {edital.config.regraGenero ? <p className="plat-hint">{edital.config.regraGenero} Ajustes automáticos aparecem marcados com ♀ e devem ser referendados pela comissão.</p> : null}
       {ranked.map(({ estado, rows }) =>
         rows.length ? (
           <div className="plat-card" key={estado.uf}>
             <h3>
-              {estado.nome} ({estado.uf}) — {estado.vagas} vaga{estado.vagas > 1 ? "s" : ""}
+              {estado.nome} ({estado.uf}): {estado.vagas} vaga{estado.vagas > 1 ? "s" : ""}
             </h3>
             <div className="edital-table-wrap">
               <table className="edital-table">
@@ -660,7 +699,7 @@ function RankingView({
                 <tbody>
                   {rows.map((r) => (
                     <tr key={r.app.id} className={r.withinQuota ? "plat-row-aprovada" : ""}>
-                      <td data-label="#" className="num">{r.position ?? "—"}</td>
+                      <td data-label="#" className="num">{r.position ?? "n/d"}</td>
                       <td data-label="Candidato(a)">
                         {r.app.nome} <small>({r.app.protocolo})</small>
                         {r.genderAdjusted ? <span title="Ajuste pela regra de gênero"> ♀</span> : null}
@@ -679,296 +718,104 @@ function RankingView({
   );
 }
 
-// ------------------------------------------------------------------ login --
-function LoginCard({ auth }: { auth: AuthState }) {
-  const [mode, setMode] = useState<"login" | "reset" | "reset-sent" | "signup" | "signup-sent">("login");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [confirmar, setConfirmar] = useState("");
-  const [msg, setMsg] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  if (mode === "signup-sent") {
-    return (
-      <div className="plat-card plat-login">
-        <CheckCircle2 size={22} aria-hidden="true" />
-        <h2>Conta criada — confirme seu e-mail</h2>
-        <p>
-          Enviamos um link de confirmação para <strong>{email}</strong>. Abra o e-mail{" "}
-          <strong>neste mesmo navegador</strong> e clique no link; depois é só entrar com sua senha.
-        </p>
-        <button className="plat-linkbtn" onClick={() => setMode("login")}>
-          Voltar ao login
-        </button>
-      </div>
-    );
-  }
-
-  if (mode === "signup") {
-    return (
-      <div className="plat-card plat-login">
-        <KeyRound size={22} aria-hidden="true" />
-        <h2>Primeiro acesso — criar conta</h2>
-        <p>
-          Use o e-mail que a coordenação pré-autorizou para a comissão; sua conta já nasce com o papel de
-          avaliador(a). Você define sua própria senha — nada de senhas temporárias.
-        </p>
-        <form
-          className="plat-fields"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const issue = passwordIssue(senha, confirmar);
-            if (issue) {
-              setMsg(issue);
-              return;
-            }
-            setBusy(true);
-            const { error, needsConfirm } = await auth.signUp(email, senha);
-            setBusy(false);
-            if (error) setMsg(error);
-            else if (needsConfirm) {
-              setMsg("");
-              setMode("signup-sent");
-            }
-            // com sessão imediata, o próprio estado de auth troca a tela
-          }}
-        >
-          <label>
-            E-mail
-            <input
-              type="email"
-              required
-              placeholder="email@instituicao.br"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="username"
-            />
-          </label>
-          <label>
-            Senha
-            <input
-              type="password"
-              required
-              minLength={10}
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              autoComplete="new-password"
-            />
-            <small>Mínimo de 10 caracteres.</small>
-          </label>
-          <label>
-            Confirmar a senha
-            <input
-              type="password"
-              required
-              value={confirmar}
-              onChange={(e) => setConfirmar(e.target.value)}
-              autoComplete="new-password"
-            />
-          </label>
-          {msg ? <p className="plat-error">{msg}</p> : null}
-          <div className="plat-nav">
-            <button type="button" className="plat-linkbtn" onClick={() => setMode("login")}>
-              Já tenho conta
-            </button>
-            <button className="button primary" type="submit" disabled={busy}>
-              {busy ? "Criando…" : "Criar conta"} <KeyRound size={15} aria-hidden="true" />
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  if (mode === "reset-sent") {
-    return (
-      <div className="plat-card plat-login">
-        <CheckCircle2 size={22} aria-hidden="true" />
-        <h2>Link de redefinição enviado</h2>
-        <p>
-          Enviamos um link para <strong>{email}</strong>. Abra o e-mail <strong>neste mesmo navegador</strong> e
-          clique no link para definir a nova senha.
-        </p>
-        <button className="plat-linkbtn" onClick={() => setMode("login")}>
-          Voltar ao login
-        </button>
-      </div>
-    );
-  }
-
-  if (mode === "reset") {
-    return (
-      <div className="plat-card plat-login">
-        <KeyRound size={22} aria-hidden="true" />
-        <h2>Redefinir senha</h2>
-        <p>Informe o e-mail da sua conta da comissão; enviaremos um link para definir uma nova senha.</p>
-        <form
-          className="plat-inline-form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setBusy(true);
-            const { error } = await auth.resetPassword(email);
-            setBusy(false);
-            if (error) setMsg(error);
-            else {
-              setMsg("");
-              setMode("reset-sent");
-            }
-          }}
-        >
-          <input
-            type="email"
-            required
-            placeholder="email@instituicao.br"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-label="Seu e-mail"
-          />
-          <button className="button primary" type="submit" disabled={busy}>
-            {busy ? "Enviando…" : "Enviar link"} <Send size={16} aria-hidden="true" />
-          </button>
-        </form>
-        {msg ? <p className="plat-error">{msg}</p> : null}
-        <button className="plat-linkbtn" onClick={() => setMode("login")}>
-          Voltar ao login
-        </button>
-      </div>
-    );
-  }
+// ----------------------------------------------------------------- auditoria --
+function AuditoriaView({
+  edital,
+  apps,
+  evals,
+  profiles,
+  events,
+}: {
+  edital: Edital;
+  apps: Application[];
+  evals: Evaluation[];
+  profiles: Profile[];
+  events: EvaluationEvent[];
+}) {
+  const audit = useMemo(
+    () => buildAudit(apps, evals, profiles, edital, events),
+    [apps, evals, profiles, edital, events],
+  );
+  const s = audit.summary;
+  const flagged = [...audit.rows].filter((r) => r.flags.length).sort((a, b) => b.flags.length - a.flags.length);
 
   return (
-    <div className="plat-card plat-login">
-      <Lock size={22} aria-hidden="true" />
-      <h2>Acesso da comissão</h2>
-      <p>Entre com o e-mail e a senha da sua conta de avaliador(a).</p>
-      <form
-        className="plat-fields"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          setBusy(true);
-          const { error } = await auth.signInWithPassword(email, senha);
-          setBusy(false);
-          setMsg(error ?? "");
-        }}
-      >
-        <label>
-          E-mail
-          <input
-            type="email"
-            required
-            placeholder="email@instituicao.br"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="username"
-          />
-        </label>
-        <label>
-          Senha
-          <input
-            type="password"
-            required
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            autoComplete="current-password"
-          />
-        </label>
-        {msg ? <p className="plat-error">{msg}</p> : null}
-        <div className="plat-nav">
-          <button type="button" className="plat-linkbtn" onClick={() => setMode("reset")}>
-            Esqueci a senha
-          </button>
-          <button className="button primary" type="submit" disabled={busy}>
-            {busy ? "Entrando…" : "Entrar"} <Lock size={15} aria-hidden="true" />
-          </button>
+    <div className="plat-eval">
+      <div className="plat-card">
+        <h3>
+          <ShieldAlert size={18} aria-hidden="true" /> Auditoria de justiça das avaliações
+        </h3>
+        <p className="plat-hint">
+          A avaliação é aberta (todo avaliador pontua qualquer inscrição). A integridade é verificada aqui, depois:
+          baixe os dois arquivos e investigue, o <strong>JSON</strong> reúne as métricas, pseudonimizado, em formato
+          próprio para análise. Sinais são <strong>pistas para revisão humana</strong>, nunca acusação.
+        </p>
+        {audit.rows.length === 0 ? (
+          <p className="plat-empty">Nenhuma avaliação enviada ainda.</p>
+        ) : (
+          <>
+            <div className="plat-stats">
+              <Stat label="Avaliações enviadas" value={String(s.total_avaliacoes)} />
+              <Stat label="Inscrições avaliadas" value={String(s.inscricoes_avaliadas)} />
+              <Stat label="Decididas por 1 avaliador" value={`${s.pct_decididas_por_unico}%`} />
+              <Stat label="Conflito (auto-avaliação)" value={String(s.n_coi)} />
+              <Stat label="Outliers (≥3 avaliadores)" value={String(s.n_outliers)} />
+              <Stat label="Nota extrema sem parecer" value={String(s.n_extrema_sem_parecer)} />
+              <Stat label="Editadas após outra" value={String(s.n_editadas_apos_outra)} />
+            </div>
+            <div className="plat-rank-actions">
+              <button className="button primary" onClick={() => downloadAuditFiles(audit, edital.slug)}>
+                Baixar auditoria (CSV interno + JSON de análise) <Download size={15} aria-hidden="true" />
+              </button>
+            </div>
+            <p className="plat-hint plat-warn">
+              <strong>LGPD:</strong> o <em>CSV interno</em> contém nome, CPF e pareceres: é a ata da comissão,
+              <strong> não compartilhe</strong>. O <em>JSON</em> é pseudonimizado (não anônimo): em estados de 1 vaga,
+              estado + curso + sexo podem reidentificar um candidato, trate como dado pessoal e use só para auditoria.
+              A ausência de sinais <strong>não é prova de justiça</strong>: {s.pct_decididas_por_unico}% das inscrições
+              foram decididas por um único avaliador, sem segunda opinião.
+            </p>
+          </>
+        )}
+      </div>
+
+      {flagged.length ? (
+        <div className="plat-card">
+          <h3>Sinais a revisar ({flagged.length})</h3>
+          <div className="edital-table-wrap">
+            <table className="edital-table">
+              <thead>
+                <tr>
+                  <th>Inscrição</th>
+                  <th>Avaliador(a)</th>
+                  <th className="num">Nota</th>
+                  <th className="num">Nº aval.</th>
+                  <th>Sinais</th>
+                </tr>
+              </thead>
+              <tbody>
+                {flagged.slice(0, 50).map((r, i) => (
+                  <tr key={`${r.cand_ref}-${r.aval_ref}-${i}`}>
+                    <td data-label="Inscrição">{r.cand_ref} <small>({r.estado})</small></td>
+                    <td data-label="Avaliador(a)">{r.aval_ref}</td>
+                    <td data-label="Nota" className="num">{r.final_score}</td>
+                    <td data-label="Nº aval." className="num">{r.n_avaliadores_inscricao}</td>
+                    <td data-label="Sinais">{r.flags.join(", ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {flagged.length > 50 ? (
+            <p className="plat-hint">Mostrando 50 de {flagged.length}. Baixe os arquivos para a lista completa.</p>
+          ) : null}
         </div>
-      </form>
-      <button type="button" className="plat-linkbtn" onClick={() => setMode("signup")}>
-        Primeiro acesso? Criar conta
-      </button>
+      ) : null}
     </div>
   );
 }
 
 // ----------------------------------------------------- definir/trocar senha --
-function PasswordCard({
-  title,
-  cta,
-  onSubmit,
-}: {
-  title: string;
-  cta: string;
-  onSubmit: (password: string) => Promise<{ error?: string }>;
-}) {
-  const [senha, setSenha] = useState("");
-  const [confirmar, setConfirmar] = useState("");
-  const [msg, setMsg] = useState("");
-  const [ok, setOk] = useState(false);
-  const [busy, setBusy] = useState(false);
-
-  return (
-    <div className="plat-card plat-login">
-      <KeyRound size={22} aria-hidden="true" />
-      <h2>{title}</h2>
-      <form
-        className="plat-fields"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const issue = passwordIssue(senha, confirmar);
-          if (issue) {
-            setMsg(issue);
-            return;
-          }
-          setBusy(true);
-          const { error } = await onSubmit(senha);
-          setBusy(false);
-          if (error) setMsg(error);
-          else {
-            setMsg("");
-            setOk(true);
-            setSenha("");
-            setConfirmar("");
-          }
-        }}
-      >
-        <label>
-          Nova senha
-          <input
-            type="password"
-            required
-            minLength={10}
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            autoComplete="new-password"
-          />
-          <small>Mínimo de 10 caracteres.</small>
-        </label>
-        <label>
-          Confirmar a nova senha
-          <input
-            type="password"
-            required
-            value={confirmar}
-            onChange={(e) => setConfirmar(e.target.value)}
-            autoComplete="new-password"
-          />
-        </label>
-        {msg ? <p className="plat-error">{msg}</p> : null}
-        {ok ? (
-          <p className="plat-ok">
-            <CheckCircle2 size={16} aria-hidden="true" /> Senha definida com sucesso — já vale no próximo login.
-          </p>
-        ) : null}
-        <div className="plat-nav">
-          <span />
-          <button className="button primary" type="submit" disabled={busy}>
-            {busy ? "Salvando…" : cta} <KeyRound size={15} aria-hidden="true" />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
-
 // ----------------------------------------------------------------- equipe --
 const ROLE_LABEL: Record<Profile["role"], string> = {
   admin: "Administrador(a)",
@@ -994,7 +841,7 @@ function EquipeView({ myId }: { myId: string }) {
   const addEmails = async () => {
     const { valid, invalid } = parseEmailList(paste);
     if (!valid.length) {
-      setPasteMsg(invalid.length ? `Nenhum e-mail válido — confira: ${invalid.join(", ")}` : "Cole ao menos um e-mail.");
+      setPasteMsg(invalid.length ? `Nenhum e-mail válido: confira: ${invalid.join(", ")}` : "Cole ao menos um e-mail.");
       return;
     }
     setPasteBusy(true);
@@ -1028,7 +875,7 @@ function EquipeView({ myId }: { myId: string }) {
         <p className="plat-hint">
           Cole os e-mails da comissão (um por linha, ou separados por vírgula). Quem estiver na lista cria a
           própria conta em <strong>#/gestao → “Primeiro acesso? Criar conta”</strong> e já nasce com o papel
-          escolhido — sem senha temporária e sem painel do Supabase. Quem já tinha conta é promovido na hora.
+          escolhido: sem senha temporária e sem painel do Supabase. Quem já tinha conta é promovido na hora.
         </p>
         <textarea
           className="plat-paste"
@@ -1081,6 +928,7 @@ function EquipeView({ myId }: { myId: string }) {
       <h3>Equipe e papéis</h3>
       <p className="plat-hint">
         Contas criadas e seus papéis. Ajustes pontuais podem ser feitos aqui; ninguém altera o próprio papel.
+        Todo avaliador pode pontuar qualquer inscrição, a integridade é verificada depois, na aba Auditoria.
       </p>
       <div className="plat-filters">
         <input placeholder="Buscar por e-mail ou nome…" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -1104,7 +952,7 @@ function EquipeView({ myId }: { myId: string }) {
               {rows.map((p) => (
                 <tr key={p.id}>
                   <td data-label="E-mail">{p.email}</td>
-                  <td data-label="Nome">{p.full_name || "—"}</td>
+                  <td data-label="Nome">{p.full_name || "n/d"}</td>
                   <td data-label="Papel">
                     {p.id === myId ? (
                       <span title="Você não pode alterar o próprio papel.">{ROLE_LABEL[p.role]} (você)</span>
