@@ -7,6 +7,12 @@ title: "INCT-CONEXAO — plataforma web e observatório territorial"
 message: "Se você usar esta plataforma, os dados dela ou seu código, cite conforme abaixo."
 type: software
 
+# `authors` identifica a autoria do SOFTWARE, que é individual. O conteúdo
+# científico e editorial veiculado pela plataforma é produzido pela coordenação
+# do INCT-CONEXAO e pelas equipes dos grupos de pesquisa — creditado abaixo como
+# entidade, e detalhado no README. São autorias distintas, e a arquitetura do
+# projeto mantém as duas separadas: o conteúdo vive em arquivos versionados,
+# independentes do código.
 authors:
   - family-names: Ferreira
     given-names: Aleff
@@ -16,6 +22,12 @@ authors:
       - software
       - data-curation
       - maintainer
+  - name: "INCT-CONEXAO — coordenação e equipes dos grupos de pesquisa"
+    website: "https://inct-conexao.com.br/"
+    roles:
+      - resources
+      - validation
+      - writing-original-draft
 
 repository-code: "https://github.com/aleff-ferreira/inct-conexao"
 url: "https://inct-conexao.com.br/"
@@ -28,7 +40,10 @@ abstract: >-
   científicas citáveis com proveniência declarada e exportação em CSV, e a
   gestão de processos seletivos da rede. Aplicação estática, sem servidor de
   aplicação, com dados ingeridos por scripts versionados a partir de fontes
-  oficiais (INPE, IBGE, DataSUS, NASA GIBS).
+  oficiais (INPE, IBGE, DataSUS, NASA GIBS). O desenvolvimento da plataforma é
+  de autoria individual; o conteúdo científico e editorial que ela veicula
+  resulta do trabalho da coordenação do INCT-CONEXAO e das equipes dos grupos
+  de pesquisa.
 
 keywords:
   - comunicação científica

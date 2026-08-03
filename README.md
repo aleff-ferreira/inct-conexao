@@ -17,14 +17,30 @@ processos seletivos e a produção editorial da rede.
 
 ## Autoria e manutenção
 
+### Desenvolvimento da plataforma
+
 **Aleff Ferreira** — concepção, arquitetura, desenvolvimento e manutenção.
 
-Responsável integral pelo ciclo de vida da plataforma: definição da arquitetura,
-implementação, modelo de conteúdo, política de proveniência de dados, suíte de
-testes, publicação e operação em produção. Todo o histórico deste repositório
-(43 commits, desde junho de 2026) é de autoria única.
+Autoria única do desenvolvimento web: definição da arquitetura, implementação,
+modelo de conteúdo, política de proveniência de dados, suíte de testes,
+publicação e operação em produção. Todo o histórico de código deste repositório,
+desde junho de 2026, é de autoria individual.
 
 Contato: <labioprot.toxin@gmail.com>
+
+### Conteúdo científico e editorial
+
+**Coordenação do INCT-CONEXAO e equipes dos grupos de pesquisa** — participação
+intensa e continuada.
+
+O conteúdo publicado — textos institucionais, fichas estaduais, material das
+expedições, definição das linhas de pesquisa, revisão técnica e validação
+científica — resulta do trabalho da coordenação do instituto e dos membros das
+equipes. A plataforma é o meio; o conhecimento que ela veicula é da rede.
+
+Essa separação é deliberada e está refletida na arquitetura: o conteúdo vive em
+arquivos JSON versionados e editáveis por CMS, **independentes do código**, para
+que a autoria editorial permaneça com quem a produz.
 
 Para citar esta plataforma, use o arquivo [`CITATION.cff`](CITATION.cff) — o
 GitHub o expõe em **"Cite this repository"**, no menu lateral.
