@@ -2,6 +2,7 @@ node_modules/
 dist/
 screenshots/
 .tools/
+.claude/
 
 # Pastas de upload: são cópias do dist/, geradas a cada deploy. Versionar uma
 # delas significa somar ~82 MB ao repositório a cada build, para sempre — o git
