@@ -23,8 +23,7 @@ processos seletivos e a produção editorial da rede.
 
 Autoria única do desenvolvimento web: definição da arquitetura, implementação,
 modelo de conteúdo, política de proveniência de dados, suíte de testes,
-publicação e operação em produção. Todo o histórico de código deste repositório,
-desde junho de 2026, é de autoria individual.
+publicação e operação em produção, desde junho de 2026.
 
 Contato: <labioprot.toxin@gmail.com>
 
