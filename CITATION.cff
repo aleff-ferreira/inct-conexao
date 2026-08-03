@@ -1,0 +1,61 @@
+# Citation File Format — https://citation-file-format.github.io/
+# O GitHub lê este arquivo e expõe "Cite this repository" na barra lateral do
+# repositório, em BibTeX e APA. É o padrão que gestores de referência e
+# ferramentas de metadados de software acadêmico consomem.
+cff-version: 1.2.0
+title: "INCT-CONEXAO — plataforma web e observatório territorial"
+message: "Se você usar esta plataforma, os dados dela ou seu código, cite conforme abaixo."
+type: software
+
+authors:
+  - family-names: Ferreira
+    given-names: Aleff
+    email: labioprot.toxin@gmail.com
+    roles:
+      - conceptualization
+      - software
+      - data-curation
+      - maintainer
+
+repository-code: "https://github.com/aleff-ferreira/inct-conexao"
+url: "https://inct-conexao.com.br/"
+
+abstract: >-
+  Plataforma web do INCT-CONEXAO (Instituto Nacional de Ciência e Tecnologia de
+  Pesquisa e Conhecimento de Excelência da Amazônia Ocidental). Reúne
+  comunicação científica, um observatório territorial interativo das 27 unidades
+  federativas do Brasil com camadas temáticas e modo narrativo, figuras
+  científicas citáveis com proveniência declarada e exportação em CSV, e a
+  gestão de processos seletivos da rede. Aplicação estática, sem servidor de
+  aplicação, com dados ingeridos por scripts versionados a partir de fontes
+  oficiais (INPE, IBGE, DataSUS, NASA GIBS).
+
+keywords:
+  - comunicação científica
+  - Amazônia
+  - Saúde Única
+  - visualização de dados
+  - observatório territorial
+  - dados abertos
+  - ciência aberta
+
+license-url: "https://github.com/aleff-ferreira/inct-conexao"
+date-released: "2026-06-24"
+
+references:
+  - type: data
+    title: "Programa Queimadas — focos detectados pelo satélite de referência"
+    authors:
+      - name: "Instituto Nacional de Pesquisas Espaciais (INPE)"
+    url: "https://terrabrasilis.dpi.inpe.br/queimadas/portal/dados-abertos/"
+    notes: "Série anual por unidade federativa, 2003–2024. Dados públicos, uso livre com citação da fonte."
+  - type: data
+    title: "Malhas Territoriais e Localidades"
+    authors:
+      - name: "Instituto Brasileiro de Geografia e Estatística (IBGE)"
+    url: "https://www.ibge.gov.br/geociencias/downloads-geociencias.html"
+  - type: data
+    title: "Doenças de notificação compulsória (SINAN) via TabNet"
+    authors:
+      - name: "DataSUS — Ministério da Saúde"
+    url: "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
