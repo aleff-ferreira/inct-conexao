@@ -11,8 +11,9 @@
  * 1. A faixa vem de `rootMargin`, NUNCA de `threshold`. Com `threshold: 0.5`,
  *    um capítulo mais alto que a faixa nunca alcança razão de interseção 0,5 —
  *    o callback simplesmente nunca dispara, e a funcionalidade morre calada,
- *    sem erro no console. Os capítulos aqui têm `min-height: 78svh`; qualquer
- *    limiar acima de ~0,5 já os condenaria.
+ *    sem erro no console. Os capítulos aqui têm `min-height: 72svh` (o trilho
+ *    `.map-step`, não o cartão que ele contém); qualquer limiar acima de ~0,5
+ *    já os condenaria.
  *
  * 2. `escolherPasso` é separada e pura. O que quebra em scrollytelling é a
  *    regra de desempate — dois blocos na faixa ao mesmo tempo, salto de vários

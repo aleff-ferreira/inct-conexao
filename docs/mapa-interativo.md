@@ -181,6 +181,38 @@ Um JSON por estado em `src/content/mapa/estados/<uf>.json` (tipo `EstadoConteudo
 
 Cada camada exibe sua fonte na interface (rodapé do mapa + legenda). Nenhuma camada é apresentada como "tempo real". Camadas de vigilância/ambiente com dados oficiais georreferenciados estão no backlog (§16) — **não** foram inventadas.
 
+### Decisão: a camada de doenças não vira imagem publicada
+
+**Não existe, e não deve passar a existir, uma versão estática da camada
+`doencas-notificacoes` em `public/`** — nem SVG, nem PNG, nem WebP. Decisão do
+coordenador do projeto, tomada em 2026-08-04, e travada por teste em
+`tests/mapa.test.ts`.
+
+O motivo é o mesmo que já impede `sort()` nessa camada: os totais somam
+conjuntos **diferentes** de doenças em cada estado. Tocantins traz 88.065 de
+dengue sozinha; o Acre traz 79.324 somando quatro doenças. O mapa interativo
+pode mostrar a camada porque leva junto a legenda, a frase `naoMede`, o selo de
+maturidade e o aviso de cobertura — tudo colado ao número, na mesma tela.
+
+Uma URL permanente com um coroplético mostrando Tocantins como o estado mais
+escuro é outra coisa: é republicável por qualquer redação, e nesse trajeto a
+imagem viaja e o parágrafo de cautela fica para trás. A afirmação que sobra —
+"Tocantins é o estado com mais doenças" — é falsa, e teria sido fabricada por
+nós, não pelo dado.
+
+Se um dia for preciso publicar essa evidência fora da página, o formato é a
+**tabela por UF × doença**, em que cada linha diz qual doença está contando.
+
+### "Ocultar camadas"
+
+`sem-camada` é uma camada de verdade (id em `CAMADA_IDS`, opção no CMS), e não um
+booleano de interface: `camada` é o que viaja no link, e um mapa limpo que volta
+pintado ao ser compartilhado seria um link mentindo sobre o que a pessoa viu.
+Ela devolve `null` em todas as UFs, o que já apaga a tinta sozinho — o desenho
+usa `fillOpacity = valor != null ? 0.42 : 0`, então nenhuma linha nova entrou no
+SVG. O botão no explorador desliga também as sobreposições (conexões e pinos):
+para quem olha a tela, elas são camadas tanto quanto a pintura.
+
 
 ## Modo narrativa: a história dirige o mapa (scrollytelling)
 
@@ -206,7 +238,13 @@ a nota de fonte acompanham a camada de cada capítulo.
 
 - **A faixa é `rootMargin`, nunca `threshold`.** Um capítulo mais alto que a
   faixa nunca alcança razão de interseção 0,5, então com limiar o callback nunca
-  dispara e a funcionalidade morre calada. Os passos têm `min-height: 78svh`.
+  dispara e a funcionalidade morre calada. Os passos têm `min-height: 72svh`.
+- **O trilho e o cartão são caixas separadas.** `.map-step` é o trilho: só
+  altura, sem moldura, é dele o `min-height` que dá curso à rolagem.
+  `.map-step-card` é o cartão: tem a altura do texto que carrega. Eram a mesma
+  caixa, e o resultado numa tela de 1080 era um cartão de mais de 800px para uns
+  600 caracteres — 28% a 44% de branco emoldurado, medido. O curso de rolagem
+  tem de existir; a moldura em volta dele, não. Guardado por teste.
 - **`.site-shell` usa `overflow-x: clip`, não `hidden`.** `clip` não cria
   contêiner de rolagem; `overflow-x: hidden` com `overflow-y: visible` é
   promovido a `auto` pelo navegador e o problema volta.

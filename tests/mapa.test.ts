@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { ufs, VIEW, WORLD, ufBySigla, focusViewBox, ufsPorRegiao, regionViewBox, enquadramentoDe, REGIOES } from "../src/mapa/geo";
 import { escolherPasso } from "../src/ui/passos";
 import { parseMapaHash, buildMapaHash, isMapaHash, ESTADO_PADRAO } from "../src/mapa/url";
 import { parseHash } from "../src/webinars/router";
-import { construirCamadas, VAGAS_IC_2026, totalVagasIc, totalUfsComVagas, TEMAS, CAMADA_IDS, SECAO_IDS } from "../src/mapa/layers";
+import { construirCamadas, VAGAS_IC_2026, totalVagasIc, totalUfsComVagas, TEMAS, CAMADA_IDS, CAMADA_SEM_ID, SECAO_IDS } from "../src/mapa/layers";
 import { carregarTodasFichas, capitulos, capituloInicial, temConteudo, totalNotificacoes, resumoNotificacoes } from "../src/mapa/content";
 import { conquistasDe } from "../src/mapa/gamify";
 import { CHUVA_POR_REGIAO } from "../src/mapa/clima";
@@ -354,11 +354,51 @@ describe("layers · dados reais e verificáveis", () => {
     expect(camadas.length).toBeGreaterThanOrEqual(3);
     for (const c of camadas) {
       expect(c.fonte.titulo || c.fonte.publicador).toBeTruthy();
-      expect(c.legenda.length).toBeGreaterThan(0);
+      /* Legenda vazia é permitida numa única camada — a que não pinta nada.
+         Escrito como exceção nomeada, e não como `>= 0`: assim uma camada nova
+         que esquecer a chave de cores continua sendo pega aqui. */
+      if (c.id === CAMADA_SEM_ID) expect(c.legenda.length, c.id).toBe(0);
+      else expect(c.legenda.length, c.id).toBeGreaterThan(0);
       expect(TEMAS.map((t) => t.id)).toContain(c.tema);
       // cor definida para todas as UFs
       for (const u of ufs) expect(typeof c.cor(u)).toBe("string");
     }
+  });
+
+  it("“ocultar camadas” é uma camada de verdade: sem valor, sem legenda, na URL", () => {
+    /* O botão não podia ser um booleano de interface: `camada` é o que viaja no
+       link, e um mapa limpo que volta pintado ao ser compartilhado é um link
+       que mente sobre o que a pessoa viu. */
+    const sem = construirCamadas(temConteudo, resumoNotificacoes).find((c) => c.id === CAMADA_SEM_ID)!;
+    expect(sem).toBeTruthy();
+    // Valor null em TODAS as UFs é o que apaga a tinta: o desenho já usa
+    // `fillOpacity = valor != null ? 0.42 : 0`. Nenhuma linha nova no SVG.
+    for (const u of ufs) expect(sem.valor(u), u.sigla).toBeNull();
+    expect(sem.escopo.comparavel).toBe(false);
+    expect(sem.escopo.cobertura.medidas).toBe(0);
+    // Viaja no link como qualquer outra camada.
+    expect(parseMapaHash(`#/mapa?camada=${CAMADA_SEM_ID}`).camada).toBe(CAMADA_SEM_ID);
+    expect(buildMapaHash({ camada: CAMADA_SEM_ID })).toContain(`camada=${CAMADA_SEM_ID}`);
+  });
+
+  it("a camada de doenças não é publicável como imagem republicável", () => {
+    /* DECISÃO EDITORIAL, e não uma preferência de implementação: não existe
+       versão estática desta camada em `public/`. Uma URL permanente com um
+       coroplético mostrando Tocantins como o mais escuro é republicável por
+       qualquer redação — e nesse trajeto a imagem viaja e o parágrafo de
+       cautela fica para trás. O total de TO é dengue sozinha; o do AC soma
+       quatro doenças. O mapa interativo pode mostrá-la porque leva a ressalva
+       grudada; um PNG solto, não.
+
+       O teste vive aqui para que a decisão seja quebrada de propósito, e não
+       por distração, no dia em que alguém escrever o exportador estático. */
+    const camadas = construirCamadas(temConteudo, resumoNotificacoes);
+    const doencas = camadas.find((c) => c.id === "doencas-notificacoes")!;
+    expect(doencas.escopo.comparavel).toBe(false);
+
+    const publico = join(process.cwd(), "public");
+    const proibidos = ["mapa/doencas-notificacoes.svg", "mapa/doencas-notificacoes.png", "mapa/doencas-notificacoes.webp"];
+    for (const p of proibidos) expect(existsSync(join(publico, p)), p).toBe(false);
   });
 
   it("camada de conteúdo reflete as fichas publicadas", () => {
@@ -465,6 +505,36 @@ describe("content · esquema editorial", () => {
       // dois esconde o foco sem avisar ninguém.
       expect(c.foco, `capítulo ${c.id} declara enquadrar E foco`).toBeFalsy();
     }
+  });
+
+  it("o trilho de rolagem e o cartão do capítulo são caixas separadas", () => {
+    /* Eram a mesma caixa: `.map-step` tinha `min-height: 78svh` E a moldura, com
+       o conteúdo centralizado dentro. Numa tela alta isso rendia um cartão de
+       mais de 800px para uns 600 caracteres — três quartos de branco
+       emoldurado. A altura é do trilho (sem ela o `sticky` do mapa não tem
+       curso e o scrollytelling morre); a moldura é do cartão.
+
+       Guarda de fusão: se alguém devolver o fundo/sombra ao trilho, ou tirar a
+       altura dele, uma das duas coisas volta a quebrar. */
+    const css = readFileSync(join(__dirname, "..", "src/styles.css"), "utf-8");
+    const regra = (sel: string) => {
+      const i = css.indexOf(`\n${sel} {`);
+      expect(i, `regra ${sel} não encontrada`).toBeGreaterThan(-1);
+      return css.slice(i, css.indexOf("}", i));
+    };
+    const trilho = regra(".map-step");
+    const cartao = regra(".map-step-card");
+
+    expect(trilho).toMatch(/min-height:\s*\d+svh/);
+    expect(trilho, "o trilho voltou a ser cartão").not.toMatch(/background|box-shadow|border-radius/);
+    expect(cartao, "o cartão herdou a altura do trilho").not.toContain("min-height");
+    expect(cartao).toContain("background");
+
+    // E o JSX tem de manter as duas caixas aninhadas nessa ordem.
+    const tsx = readFileSync(join(__dirname, "..", "src/mapa/MapaPage.tsx"), "utf-8");
+    const i = tsx.indexOf('className={`map-step${');
+    expect(i).toBeGreaterThan(-1);
+    expect(tsx.slice(i, i + 400)).toContain('className="map-step-card"');
   });
 
   it("o CMS oferece todas as camadas e todos os enquadramentos que existem", () => {

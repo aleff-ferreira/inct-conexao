@@ -17,7 +17,7 @@
  */
 import { INDICE } from "./content";
 import { ufs } from "./geo";
-import type { Camada } from "./layers";
+import { CAMADA_SEM_ID, type Camada } from "./layers";
 
 export type LacunaCamada = {
   id: string;
@@ -66,7 +66,10 @@ export function varrerLacunas(camadas: Camada[]): Lacunas {
   const comFicha = Object.keys(INDICE);
   const semFicha = ufs.filter((u) => !comFicha.includes(u.sigla)).map((u) => u.sigla).sort();
 
-  const porCamada: LacunaCamada[] = camadas.map((c) => {
+  /* "Sem camada" fora do relatório: ela não mede nada por definição, e entraria
+     aqui como "0 de 27, faltando as 27" — a pior lacuna da lista, num inventário
+     cujo propósito é apontar onde o cadastro está atrasado. */
+  const porCamada: LacunaCamada[] = camadas.filter((c) => c.id !== CAMADA_SEM_ID).map((c) => {
     const faltando = ufs.filter((u) => c.valor(u) == null).map((u) => u.sigla).sort();
     return {
       id: c.id,

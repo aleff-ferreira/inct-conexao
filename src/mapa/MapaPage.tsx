@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Compass, BookOpen, List as ListIcon, Map as MapIcon, Search, ArrowRight,
   ChevronRight, Gauge, Info, Share2, MapPin, Layers, Building2, FlaskConical, Leaf,
-  Trophy, Sparkles, Lock, Mountain, Activity, AlertTriangle, Download,
+  Trophy, Sparkles, Lock, Mountain, Activity, AlertTriangle, Download, EyeOff,
 } from "lucide-react";
 import { BrazilMap, type MapOverlays, type TooltipInfo } from "./BrazilMap";
 import { StatePanel, type SecaoId } from "./StatePanel";
@@ -16,7 +16,7 @@ import { CountUp } from "./viz";
 import { ufs, ufBySigla, ufsPorRegiao, regionViewBox, enquadramentoDe, REGIOES } from "./geo";
 import {
   construirCamadas, TEMAS, totalVagasIc, totalUfsComVagas, totalAmazoniaLegal,
-  totalInstituicoes, totalUfsComInstituicoes, INSTITUICOES_POR_UF, type Camada,
+  totalInstituicoes, totalUfsComInstituicoes, INSTITUICOES_POR_UF, CAMADA_SEM_ID, type Camada,
 } from "./layers";
 import { carregarFicha, fichaEmCache, temConteudo, resumoNotificacoes, capitulos, capituloInicial } from "./content";
 import { parseMapaHash, buildMapaHash, ESTADO_PADRAO, type MapaState } from "./url";
@@ -151,6 +151,29 @@ export default function MapaPage() {
   // camadas sobrepostas (não-URL): conexões da rede + pontos (POI)
   const [overlays, setOverlays] = useState<MapOverlays>({ conexoes: true, pontos: false });
   const toggleOverlay = useCallback((k: keyof MapOverlays) => setOverlays((o) => ({ ...o, [k]: !o[k] })), []);
+
+  /* ---- ocultar TODAS as camadas ----
+     "Todas" inclui as sobreposições: para quem olha a tela, as conexões e os
+     pinos de instituição são camadas tanto quanto a pintura — desligar só o
+     coroplético e deixar o mapa riscado de linhas azuis não é o que o botão
+     promete.
+
+     O estado anterior fica numa ref para o botão poder desfazer. Sem isso ele
+     seria um caminho de mão única: a pessoa esconde tudo, clica de novo e o
+     mapa volta com a camada padrão, não com a que ela estava lendo. */
+  const anteriorRef = useRef<{ camada: string | null; overlays: MapOverlays } | null>(null);
+  const tudoOculto = st.camada === CAMADA_SEM_ID && !overlays.conexoes && !overlays.pontos;
+  const alternarOcultar = useCallback(() => {
+    if (tudoOculto) {
+      const a = anteriorRef.current;
+      setOverlays(a?.overlays ?? { conexoes: true, pontos: false });
+      update({ camada: a?.camada ?? ESTADO_PADRAO.camada }, { replace: true });
+      return;
+    }
+    anteriorRef.current = { camada: st.camada, overlays };
+    setOverlays({ conexoes: false, pontos: false });
+    update({ camada: CAMADA_SEM_ID }, { replace: true });
+  }, [tudoOculto, st.camada, overlays, update]);
   // enquadramento de região (fast-travel); limpo ao selecionar um estado
   const [regiaoFoco, setRegiaoFoco] = useState<string | null>(null);
   const overrideTarget = useMemo(() => (regiaoFoco ? regionViewBox(regiaoFoco) : null), [regiaoFoco]);
@@ -275,6 +298,8 @@ export default function MapaPage() {
             setHover={setHover}
             overlays={overlays}
             toggleOverlay={toggleOverlay}
+            tudoOculto={tudoOculto}
+            onOcultarTudo={alternarOcultar}
             tooltipDe={tooltipDe}
             overrideTarget={overrideTarget}
             regiaoFoco={regiaoFoco}
@@ -445,6 +470,9 @@ type ExplorerProps = {
   setHover: (u: Uf | null) => void;
   overlays: MapOverlays;
   toggleOverlay: (k: keyof MapOverlays) => void;
+  /** Pintura E sobreposições desligadas ao mesmo tempo. */
+  tudoOculto: boolean;
+  onOcultarTudo: () => void;
   tooltipDe: (u: Uf) => TooltipInfo;
   overrideTarget: [number, number, number, number] | null;
   regiaoFoco: string | null;
@@ -456,7 +484,7 @@ type ExplorerProps = {
   rotuloDe: (u: Uf) => string;
 };
 
-function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
+function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tudoOculto, onOcultarTudo, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
   // fecha painel com Escape
   useEffect(() => {
     if (!ufSel) return;
@@ -481,7 +509,10 @@ function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAt
           </div>
           <div className="map-hud-layers">
             <div className="map-lens" role="group" aria-label="Camada (lente do mapa)">
-              {camadas.map((c) => {
+              {/* "Sem camada" sai da lista de lentes e vira o botão de ocultar,
+                  no fim: entre as lentes ela pareceria mais um assunto do mapa,
+                  quando é a ausência de todos eles. */}
+              {camadas.filter((c) => c.id !== CAMADA_SEM_ID).map((c) => {
                 const Icon = LENS_ICON[c.id] ?? Layers;
                 return (
                   <button key={c.id} type="button" className={`map-lens-btn${camadaAtiva.id === c.id ? " is-active" : ""}`}
@@ -491,6 +522,22 @@ function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAt
                   </button>
                 );
               })}
+              {/* Desliga a pintura E as sobreposições. Botão de dois estados, não
+                  de mão única: quem escondeu tudo para ver o relevo precisa
+                  poder voltar à camada que estava lendo. */}
+              <button
+                type="button"
+                className={`map-lens-btn map-lens-limpar${tudoOculto ? " is-active" : ""}`}
+                aria-pressed={tudoOculto}
+                title={
+                  tudoOculto
+                    ? "Traz de volta a camada e as sobreposições que estavam ligadas."
+                    : "Esconde a pintura temática, as conexões e os pinos. Ficam o relevo, os limites do IBGE e os nomes."
+                }
+                onClick={onOcultarTudo}
+              >
+                <EyeOff size={14} aria-hidden /> {tudoOculto ? "Mostrar camadas" : "Ocultar camadas"}
+              </button>
             </div>
             <div className="map-overlay-toggles" role="group" aria-label="Sobreposições do mapa">
               <button type="button" className={`map-ov-btn${overlays.conexoes ? " is-on" : ""}`} aria-pressed={overlays.conexoes} onClick={() => toggleOverlay("conexoes")}>
@@ -535,7 +582,12 @@ function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAt
           <StatBar />
         </div>
         <p className="map-fonte-nota">
-          Limites: <strong>IBGE</strong> (malhas oficiais) · Relevo: <strong>NASA / GIBS</strong> · Camada “{camadaAtiva.label}”: {camadaAtiva.fonte.publicador ?? camadaAtiva.fonte.titulo}.
+          Limites: <strong>IBGE</strong> (malhas oficiais) · Relevo: <strong>NASA / GIBS</strong>
+          {/* Sem camada, creditar "Camada 'Sem camada': IBGE" seria atribuir
+              procedência a uma leitura que não está na tela. */}
+          {camadaAtiva.id === CAMADA_SEM_ID
+            ? "."
+            : <> · Camada “{camadaAtiva.label}”: {camadaAtiva.fonte.publicador ?? camadaAtiva.fonte.titulo}.</>}
         </p>
       </div>
 
@@ -746,6 +798,13 @@ function Narrativa({ cap, camada, enquadrar, overlays, tooltipDe, explorados, re
           </ol>
         </nav>
 
+        {/* DUAS caixas, e não uma: `<section>` é o TRILHO (a altura que dá curso
+            à rolagem para o mapa grudado ter o que fazer) e `<article>` é o
+            CARTÃO (do tamanho do texto). Eram a mesma caixa, com `min-height:
+            78svh` e conteúdo centralizado — o que produzia, numa tela de 1080,
+            um cartão de mais de 800px de moldura para uns 600 caracteres de
+            texto: três quartos de branco emoldurado. O curso de rolagem tinha
+            de existir; a moldura em volta dele é que não. */}
         {capitulos.map((c, i) => (
           <section
             key={c.id}
@@ -753,17 +812,26 @@ function Narrativa({ cap, camada, enquadrar, overlays, tooltipDe, explorados, re
             className={`map-step${c.id === cap.id ? " is-ativa" : ""}`}
             aria-labelledby={`cap-${c.id}`}
           >
-            <p className="map-story-step">Capítulo {i + 1} de {capitulos.length}</p>
-            <h2 id={`cap-${c.id}`}>{c.titulo}</h2>
-            {c.texto.split(/\n\n+/).map((p, j) => <p key={j}>{p}</p>)}
-            {c.foco ? (
-              <button type="button" className="button plat-ghost map-story-open" onClick={() => onSelecionar(c.foco!)}>
-                Abrir ficha de {ufBySigla(c.foco)?.nome} <ChevronRight size={16} aria-hidden />
-              </button>
-            ) : null}
-            {c.fontes?.length ? (
-              <p className="map-sources"><span className="map-sources-h">Fontes:</span> {c.fontes.map((f, j) => <span key={j}>{j > 0 ? "; " : ""}{f.url ? <a href={f.url} target="_blank" rel="noreferrer">{f.titulo}</a> : f.titulo}</span>)}</p>
-            ) : null}
+            <article className="map-step-card">
+              {/* A posição fica na medalha e some do texto: com as duas coisas,
+                  a tarja saía "① CAPÍTULO 1 DE 4" — o mesmo número duas vezes a
+                  dois centímetros de distância. A medalha é `aria-hidden`, então
+                  o "1 de 4" volta como texto para quem ouve a página. */}
+              <p className="map-story-step">
+                <span className="map-step-n" aria-hidden>{i + 1}</span>
+                Capítulo<span className="sr-only"> {i + 1} de {capitulos.length}</span>
+              </p>
+              <h2 id={`cap-${c.id}`}>{c.titulo}</h2>
+              {c.texto.split(/\n\n+/).map((p, j) => <p key={j}>{p}</p>)}
+              {c.foco ? (
+                <button type="button" className="button plat-ghost map-story-open" onClick={() => onSelecionar(c.foco!)}>
+                  Abrir ficha de {ufBySigla(c.foco)?.nome} <ChevronRight size={16} aria-hidden />
+                </button>
+              ) : null}
+              {c.fontes?.length ? (
+                <p className="map-sources"><span className="map-sources-h">Fontes:</span> {c.fontes.map((f, j) => <span key={j}>{j > 0 ? "; " : ""}{f.url ? <a href={f.url} target="_blank" rel="noreferrer">{f.titulo}</a> : f.titulo}</span>)}</p>
+              ) : null}
+            </article>
           </section>
         ))}
 
@@ -818,6 +886,17 @@ function Busca({ onSelecionar }: { onSelecionar: (s: string) => void }) {
 }
 
 function Legenda({ camada }: { camada: Camada }) {
+  /* Camada sem cores não recebe chave de cores. Publicar uma legenda vazia (ou
+     pior, uma linha "sem dado") ao lado de um mapa sem pintura é dar aparência
+     de leitura a um mapa que deliberadamente não tem nenhuma. */
+  if (!camada.legenda.length) {
+    return (
+      <div className="map-legenda map-legenda--vazia">
+        <p className="map-legenda-h">{camada.label}</p>
+        <p className="map-legenda-nota">{camada.descricao}</p>
+      </div>
+    );
+  }
   return (
     <div className="map-legenda" aria-label={`Legenda: ${camada.label}`}>
       <p className="map-legenda-h">{camada.label}</p>
@@ -886,6 +965,12 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
   const [ordem, setOrdem] = useState<"nome" | "valor">("nome");
   const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   const e = camada.escopo;
+  /* Com as camadas ocultas, a tabela continua \u00fatil \u2014 nomes, regi\u00e3o e Amaz\u00f4nia
+     Legal s\u00e3o do territ\u00f3rio, n\u00e3o da camada. O que sai \u00e9 tudo que fala de um
+     dado que n\u00e3o est\u00e1 aplicado: o CSV (uma coluna inteira de vazio), o
+     invent\u00e1rio de lacunas (que acusaria "faltam as 27") e o bot\u00e3o de reportar
+     erro (n\u00e3o h\u00e1 valor sobre o qual reclamar). */
+  const semCamada = camada.id === CAMADA_SEM_ID;
 
   /* Ordenar por valor SÓ quando a camada permite. Em "doenças", ordenar
      produziria "Tocantins pior que Acre" — mas o número de TO é dengue sozinha
@@ -914,28 +999,36 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
           <Search size={16} aria-hidden />
           <input type="search" value={q} onChange={(ev) => setQ(ev.target.value)} placeholder="Filtrar estados…" aria-label="Filtrar estados" />
         </label>
-        <button type="button" className="map-toggle" onClick={() => baixarCsvDaCamada(camada)}>
-          <Download size={15} aria-hidden /> Baixar CSV
-        </button>
+        {semCamada ? null : (
+          <button type="button" className="map-toggle" onClick={() => baixarCsvDaCamada(camada)}>
+            <Download size={15} aria-hidden /> Baixar CSV
+          </button>
+        )}
         <button type="button" className="map-toggle" onClick={onFechar}><MapIcon size={15} aria-hidden /> Ver mapa</button>
       </div>
 
       {/* Bloco de escopo: a mesma informação que a legenda do mapa mostra, para
           quem lê a tabela sem ter visto o mapa. */}
       <p className="map-lista-escopo">
-        <span className={`map-selo map-selo--${e.maturidade}`}>{e.maturidade}</span>
-        {e.cobertura.medidas} de {e.cobertura.total} unidades federativas com valor medido.
-        {" "}{e.naoMede}
-        {" "}
-        <a className="map-reportar" href={linkDeErro({ categoria: "valor-errado", camada })}>
-          Reportar erro nesta camada
-        </a>
+        {semCamada ? (
+          e.naoMede
+        ) : (
+          <>
+            <span className={`map-selo map-selo--${e.maturidade}`}>{e.maturidade}</span>
+            {e.cobertura.medidas} de {e.cobertura.total} unidades federativas com valor medido.
+            {" "}{e.naoMede}
+            {" "}
+            <a className="map-reportar" href={linkDeErro({ categoria: "valor-errado", camada })}>
+              Reportar erro nesta camada
+            </a>
+          </>
+        )}
       </p>
 
       {/* O cinza do mapa é ambíguo: pode ser "medimos e não há" ou "não
           medimos". São coisas opostas, e nomear quais estados faltam é a única
           forma de não afirmar a primeira quando se quer dizer a segunda. */}
-      {faltando.length ? (
+      {faltando.length && !semCamada ? (
         <details className="map-lacunas">
           <summary>
             Sem dado nesta camada: {faltando.length} de {e.cobertura.total} unidades federativas

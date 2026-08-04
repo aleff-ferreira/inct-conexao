@@ -46,7 +46,17 @@ export const CAMADA_IDS: string[] = [
   "instituicoes",
   "conteudo",
   "focos-calor",
+  "sem-camada",
 ];
+
+/**
+ * "Ocultar camadas" é uma camada, não um `if` espalhado pelo desenho.
+ *
+ * Exportado como constante porque três lugares precisam reconhecê-lo — o botão
+ * do explorador, a legenda e a lista — e comparar contra um literal solto em
+ * cada um deles é como o id vira dois ids diferentes.
+ */
+export const CAMADA_SEM_ID = "sem-camada";
 
 /** Seções do painel de estado (StatePanel). */
 export const SECAO_IDS: string[] = ["geral", "animais", "doencas", "ambiente", "servicos", "inct"];
@@ -410,7 +420,43 @@ export function construirCamadas(
     rotularValor: (u) => rotularFocos(u, ano, medida),
   };
 
-  return [amazoniaLegal, doencas, vagas, instituicoes, conteudo, focosCalor];
+  /**
+   * Mapa base, sem leitura temática por cima.
+   *
+   * Não precisou de nenhuma linha nova no desenho: a tinta da camada já é
+   * `fillOpacity = valor != null ? 0.42 : 0`, então uma camada cujo valor é
+   * sempre `null` apaga a pintura sozinha e deixa o relevo, os limites e os
+   * nomes. Fazer disto um booleano de interface, em vez de uma camada, teria
+   * exigido um ramo em cada consumidor de `camada` — e o primeiro esquecido
+   * seria uma legenda descrevendo cor que não está mais na tela.
+   *
+   * Sendo camada, viaja na URL como qualquer outra: quem manda o link com o
+   * mapa limpo recebe o mapa limpo.
+   */
+  const semCamada: Camada = {
+    id: CAMADA_SEM_ID,
+    label: "Sem camada",
+    // O tipo exige um tema e esta camada não tem assunto. "ambiente" é o
+    // arbitrário menos ruim; nada na interface agrupa camadas por tema hoje.
+    tema: "ambiente",
+    tipo: "categorica",
+    descricao:
+      "Esconde a pintura temática e as sobreposições. Ficam o relevo, os limites oficiais do IBGE e os nomes dos estados.",
+    fonte: FONTE_IBGE,
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: 0, total: 27 },
+      comparavel: false,
+      naoMede: "Não há leitura temática aplicada: nenhuma cor deste mapa representa um dado.",
+    },
+    valor: () => null,
+    cor: () => CINZA,
+    // Legenda vazia, e não uma linha dizendo "sem dado": chave de cores para um
+    // mapa que não tem cor a explicar é ruído com aparência de informação.
+    legenda: [],
+  };
+
+  return [amazoniaLegal, doencas, vagas, instituicoes, conteudo, focosCalor, semCamada];
 }
 
 /** Total de vagas (para textos). */

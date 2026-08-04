@@ -7086,6 +7086,8 @@ select.admin-input {
 .map-legenda li { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--ink); }
 .map-legenda-sw { width: 16px; height: 12px; border-radius: 3px; border: 1px solid rgba(0, 0, 0, 0.12); flex: 0 0 auto; }
 .map-legenda-sw.is-hachura { background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 4px); }
+/* Camada sem cores: o lugar da chave de cores explica por que não há chave. */
+.map-legenda-nota { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--muted); }
 .map-preview {
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 10px 12px; min-height: 74px;
@@ -7292,34 +7294,61 @@ select.admin-input {
    para .map-step: é cada capítulo que precisa de moldura, porque agora existem
    quatro deles no DOM ao mesmo tempo. Sem isso o texto vira um bloco contínuo e
    o leitor perde a fronteira entre capítulos. */
-.map-story { display: grid; gap: 0; padding: 0 0 22vh; background: none; border: 0; box-shadow: none; }
+.map-story { display: grid; gap: 0; padding: 0 0 18vh; background: none; border: 0; box-shadow: none; }
+
+/* O TRILHO. Só existe para dar curso de rolagem: os capítulos têm ~600
+   caracteres e a pilha inteira caberia numa tela, deixando o `sticky` do mapa
+   sem o que fazer. Não tem moldura nenhuma — a moldura é do cartão. */
 .map-step {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  padding: 22px;
-  /* Sem altura mínima não há curso de rolagem: os capítulos têm ~500 caracteres
-     e a pilha inteira caberia numa tela, deixando o sticky sem o que fazer. */
-  min-height: 78svh;
+  min-height: 72svh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
   /* O cabeçalho fixo tem 124px; sem isto o deep-link encosta o capítulo nele. */
   scroll-margin-top: 124px;
-  border-left: 3px solid transparent;
-  transition: border-color 220ms ease;
 }
-/* Barra de acento no capítulo ativo — e NÃO opacidade nos inativos: escurecer
+/* O CARTÃO. Tem a altura do texto que carrega, e não a do trilho. */
+.map-step-card {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: 16px;
+  padding: 26px 28px 24px;
+  box-shadow: 0 8px 26px rgba(13, 48, 43, 0.06);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+/* Acento + elevação no capítulo ativo — e NÃO opacidade nos inativos: escurecer
    texto que não está na faixa derrubaria o contraste (WCAG 1.4.3) do conteúdo
    principal da página. */
-.map-step.is-ativa { border-left-color: var(--river); }
-.map-step + .map-step { margin-top: 20px; }
-.map-story-step { font-size: 0.78rem; font-weight: 900; text-transform: uppercase; color: var(--river-ink); letter-spacing: 0.04em; }
-.map-story h2 { color: var(--forest); font-size: 1.9rem; margin: 6px 0 12px; }
-.map-story p { color: var(--ink); margin: 0 0 12px; }
-.map-story-open { margin: 6px 0 14px; }
-.map-story-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.map-step.is-ativa .map-step-card {
+  border-left-color: var(--river);
+  box-shadow: 0 18px 44px rgba(13, 48, 43, 0.13);
+}
+.map-story-step {
+  display: flex; align-items: center; gap: 9px; margin: 0 0 12px;
+  font-size: 0.71rem; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--river-ink);
+}
+.map-step-n {
+  flex: 0 0 auto; width: 24px; height: 24px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 900; letter-spacing: 0;
+  background: rgba(31, 140, 165, 0.13); color: var(--river-ink);
+  transition: background 220ms ease, color 220ms ease;
+}
+.map-step.is-ativa .map-step-n { background: var(--river); color: #fff; }
+/* 1,9rem numa coluna de 460px dava três palavras por linha. `clamp` acompanha a
+   largura real da coluna em vez de apostar num tamanho de tela. */
+.map-story h2 {
+  color: var(--forest);
+  font-size: clamp(1.3rem, 1rem + 0.95vw, 1.62rem);
+  line-height: 1.16;
+  margin: 0 0 12px;
+}
+.map-story p { color: var(--ink); font-size: 0.95rem; line-height: 1.62; margin: 0 0 11px; }
+.map-story .map-sources { font-size: 0.82rem; margin-bottom: 0; }
+.map-story-open { margin: 4px 0 12px; }
+.map-story-nav { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
 
 /* ---- lista-alternativa ---- */
 .map-lista { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 20px; }
@@ -7351,7 +7380,13 @@ select.admin-input {
   .map-narrativa { display: block; }
   .map-narrativa .map-stage { position: sticky; top: 64px; max-height: none; margin-bottom: 18px; }
   .map-narrativa .map-svg { max-height: 38svh; }
-  .map-step { min-height: 70svh; }
+  /* No celular a coluna é estreita e o texto quebra em muito mais linhas: o
+     cartão costuma ficar MAIS ALTO que o trilho, que então colapsa e a rolagem
+     passa a vir do próprio texto. O `min-height` fica como piso para um
+     capítulo curto, e o `flex-end` decide o único caso em que ainda há folga —
+     encostando o cartão na base, longe do mapa que fica grudado no alto. */
+  .map-step { min-height: 66svh; align-items: flex-end; }
+  .map-step-card { padding: 20px 18px 18px; }
   .map-explorer.has-panel .map-side {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 46;
     max-height: 84vh;
@@ -7390,6 +7425,11 @@ select.admin-input {
      mapa em toda página. Esta regra morava no bloco do comprovante, onde o
      `visibility: hidden` do body a tornava inócua. */
   .map-stage { position: static !important; max-height: none !important; }
+  /* O trilho de rolagem não faz sentido no papel: 72svh por capítulo imprimia
+     quatro páginas com um parágrafo cada. Em papel não há rolagem para dar
+     curso a coisa nenhuma. */
+  .map-step { min-height: 0 !important; display: block !important; }
+  .map-step-card { box-shadow: none !important; break-inside: avoid; }
 }
 
 /* ============================================================================
@@ -7491,6 +7531,12 @@ select.admin-input {
 .map-lens-btn:hover { border-color: rgba(31, 140, 165, 0.42); }
 .map-lens-btn svg { color: var(--river); }
 .map-lens-btn.is-active { background: rgba(31, 140, 165, 0.12); border-color: var(--river); color: var(--river-ink); }
+/* "Ocultar camadas" não é uma lente: separador à esquerda e cor neutra, para
+   não disputar a leitura com os assuntos do mapa. */
+.map-lens-limpar { margin-left: 6px; box-shadow: inset 1px 0 0 -0.5px var(--line); }
+.map-lens-limpar svg { color: var(--muted); }
+.map-lens-limpar.is-active { background: var(--forest); border-color: var(--forest); color: #fff; }
+.map-lens-limpar.is-active svg { color: var(--acid); }
 .map-overlay-toggles { display: flex; gap: 5px; }
 .map-ov-btn {
   display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px;
