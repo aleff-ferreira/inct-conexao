@@ -324,18 +324,22 @@ collections:
       # edita: um líder de grupo em São Paulo digitando "16:00" gravava
       # silenciosamente 15:00 reais em Rondônia — e o token Z ainda carimbava
       # o offset do editor no JSON. Texto com pattern não interpreta nada.
+      # As faixas do regex (mês 01-12, dia 01-31, hora 00-23, minuto 00-59)
+      # existem porque \d{2} aceitava T25:00 (página publicada sem horário) e
+      # mês 13. Dia impossível no mês (30/02) o regex não pega — o teste de
+      # CMS valida os JSONs com Date + ida-e-volta do dia civil.
       - label: "Início (horário de RONDÔNIA)"
         name: startsAt
         widget: string
         pattern:
-          - '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00-04:00$'
+          - '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:00-04:00$'
           - "Use exatamente AAAA-MM-DDTHH:MM:00-04:00 (ex.: 2026-08-27T16:00:00-04:00)"
         hint: "Formato exato: 2026-08-27T16:00:00-04:00 — sempre o horário de Rondônia, com -04:00 no fim. O site converte para Brasília e para o fuso do visitante sozinho."
       - label: "Término (horário de RONDÔNIA)"
         name: endsAt
         widget: string
         pattern:
-          - '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00-04:00$'
+          - '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:00-04:00$'
           - "Use exatamente AAAA-MM-DDTHH:MM:00-04:00 (ex.: 2026-08-27T17:30:00-04:00)"
         hint: "Mesmo formato do início. Ex.: 2026-08-27T17:30:00-04:00."
       - { label: "Texto do fuso horário", name: timezoneLabel, widget: string, default: "Horário de Rondônia (UTC-4)" }

@@ -246,6 +246,22 @@ export function bareAsset(path?: string): string | undefined {
   return s.replace(/^\.?\/?(?:public\/)?assets\//i, "").replace(/^\.?\//, "");
 }
 
+/**
+ * URL que vai virar `<a href>` sem passar por player nenhum: só http(s).
+ * `javascript:` colado no CMS viraria execução de script com um clique — os
+ * campos NOVOS nascem com a guarda (os antigos passam por resolveStream, que
+ * tem as suas).
+ */
+function urlExterna(s?: string): string | undefined {
+  const t = s?.trim();
+  if (!t) return undefined;
+  if (!/^https?:\/\//i.test(t)) {
+    if (import.meta.env.DEV) console.warn(`[webinars] URL ignorada (apenas http/https viram link): ${t}`);
+    return undefined;
+  }
+  return t;
+}
+
 /** Caminho de mídia PRONTO para `src` (resolve via webinarAsset, exceto URLs absolutas). */
 function assetUrl(path?: string): string | undefined {
   const bare = bareAsset(path);
@@ -285,8 +301,8 @@ export function normalizeWebinar(raw: RawWebinar, groupName: (slug: string) => s
   const declaracao = (Object.keys(TEXTO_ACESSIBILIDADE) as AcessibilidadeDeclarada[]).find(
     (d) => d === raw.acessibilidade?.declaracao,
   );
-  const transcricaoUrl = raw.acessibilidade?.transcricaoUrl?.trim() || undefined;
-  const audioUrl = raw.acessibilidade?.audioUrl?.trim() || undefined;
+  const transcricaoUrl = urlExterna(raw.acessibilidade?.transcricaoUrl);
+  const audioUrl = urlExterna(raw.acessibilidade?.audioUrl);
   const acessibilidade: Acessibilidade | undefined =
     declaracao || transcricaoUrl || audioUrl ? { declaracao, transcricaoUrl, audioUrl } : undefined;
 
@@ -303,7 +319,7 @@ export function normalizeWebinar(raw: RawWebinar, groupName: (slug: string) => s
     status: raw.status || undefined,
     heroImage: bareAsset(raw.heroImage),
     liveStream: raw.liveStream?.trim() || undefined,
-    liveStreamBackup: raw.liveStreamBackup?.trim() || undefined,
+    liveStreamBackup: urlExterna(raw.liveStreamBackup),
     replay,
     posterImage: bareAsset(raw.posterImage),
     registrationUrl: raw.registrationUrl?.trim() || undefined,

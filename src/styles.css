@@ -4300,11 +4300,13 @@ h3 {
 }
 
 /* Rota de fuga sob o palco: um iframe bloqueado por proxy/extensão é
-   indetectável, então o link direto fica SEMPRE visível — pequeno, mas ali. */
+   indetectável, então o link direto fica SEMPRE visível — pequeno, mas ali.
+   Cor de texto pleno (--ink), não --muted: sob a borda da sombra do palco o
+   cinza cai a ~4,2:1, abaixo do AA para este corpo. */
 .webinar-stage-escape {
   margin: 10px 2px 0;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--ink);
 }
 .webinar-stage-escape a {
   display: inline-flex;

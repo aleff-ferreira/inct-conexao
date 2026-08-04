@@ -19,8 +19,8 @@ import {
   type WebinarEvent,
   type WebinarGroup,
 } from "../src/webinars/data";
-import { getCountdownParts, initials, formatEventTime, buildIcsContent, scheduleLines } from "../src/webinars/format";
-import { resolveStream } from "../src/webinars/stream";
+import { getCountdownParts, initials, formatEventTime, formatEventTimeBadge, buildIcsContent, scheduleLines } from "../src/webinars/format";
+import { resolveStream, stageEscapeLinks } from "../src/webinars/stream";
 
 const ev = (over: Partial<WebinarEvent>): WebinarEvent => ({
   slug: "x",
@@ -117,7 +117,7 @@ describe("countdown + misc", () => {
     expect(linhas("America/Sao_Paulo")).toEqual(["16:00 em Rondônia", "17:00 em Brasília"]);
     // Acre, UTC-5: uma hora ANTES de Rondônia.
     expect(linhas("America/Rio_Branco")).toEqual(["16:00 em Rondônia", "17:00 em Brasília", "15:00 no seu horário"]);
-    // Portugal em agosto: UTC+1 (horário de verão) -> 21:00.
+    // Portugal em agosto: UTC+1 (horário de verão) -> 21:00, mesmo dia civil.
     expect(linhas("Europe/Lisbon")).toContain("21:00 no seu horário");
     // Sem fuso do visitante (SSR/build): só as duas linhas fixas.
     expect(linhas(undefined)).toHaveLength(2);
@@ -125,6 +125,23 @@ describe("countdown + misc", () => {
     expect(linhas("Marte/Olympus_Mons")).toHaveLength(2);
     // Data inválida: lista vazia, nunca "NaN:NaN".
     expect(scheduleLines("data-quebrada")).toEqual([]);
+  });
+  it("quando o dia VIRA no fuso alvo, a linha carrega a data", () => {
+    /* "05:00 no seu horário" ao lado de "quinta, 27 de agosto" mandaria um
+       parceiro em Tóquio chegar 24 horas adiantado — lá o instante é SEXTA
+       05:00. Em 124 dos 418 fusos IANA a data local difere no instante do
+       evento-semente; a marca de dia é o que mantém o conjunto verdadeiro. */
+    const iso = "2026-08-27T16:00:00-04:00";
+    const linhas = (zona: string) => scheduleLines(iso, zona).map((l) => `${l.hora} ${l.rotulo}`);
+    expect(linhas("Asia/Tokyo")).toContain("05:00 no seu horário (28/08)");
+    // E vale até para Brasília: 23:30 em Rondônia já é 00:30 do dia seguinte lá.
+    const tarde = scheduleLines("2026-08-27T23:30:00-04:00").map((l) => `${l.hora} ${l.rotulo}`);
+    expect(tarde).toContain("00:30 em Brasília (28/08)");
+  });
+  it("formatEventTimeBadge dá aos cartões a hora com selo de fuso", () => {
+    // "16:00" seco num cartão é indistinguível de horário local.
+    expect(formatEventTimeBadge("2026-08-27T16:00:00-04:00")).toBe("16:00 RO · 17:00 Brasília");
+    expect(formatEventTimeBadge("data-quebrada")).toBe("");
   });
   it("ICS contains UTC stamps and the title", () => {
     const ics = buildIcsContent(ev({ title: "Mesa, teste; ok" }), "https://x/#/webinars/x");
@@ -227,6 +244,20 @@ describe("normalizeWebinar (CMS JSON -> WebinarEvent)", () => {
     expect(ruim.acessibilidade).toBeUndefined();
     expect(normalizeWebinar({ ...base, liveStreamBackup: "   " }, groupName).liveStreamBackup).toBeUndefined();
   });
+  it("campos novos de URL só aceitam http(s) — javascript: não vira link", () => {
+    /* Esses campos viram <a href> direto, sem passar por player: um esquema
+       executável colado no CMS seria script rodando no clique. */
+    const e = normalizeWebinar(
+      {
+        ...base,
+        liveStreamBackup: "javascript:alert(1)",
+        acessibilidade: { transcricaoUrl: "data:text/html,x", audioUrl: "https://archive.org/a.mp3" },
+      },
+      groupName,
+    );
+    expect(e.liveStreamBackup).toBeUndefined();
+    expect(e.acessibilidade).toEqual({ declaracao: undefined, transcricaoUrl: undefined, audioUrl: "https://archive.org/a.mp3" });
+  });
   it("resolves groupSlug into a {slug,name} snapshot and blank status to undefined", () => {
     const e = normalizeWebinar({ ...base, groupSlug: "g1", status: "" }, groupName);
     expect(e.group).toEqual({ slug: "g1", name: "Grupo Um" });
@@ -302,6 +333,36 @@ describe("resolveStream (regression)", () => {
     const r = resolveStream("https://youtube.com/live/abcdefghijk");
     expect(r).toMatchObject({ mode: "embed", provider: "youtube" });
     expect((r as { url: string }).url).toContain("youtube-nocookie.com/embed/abcdefghijk");
+  });
+  it("no ramo live_stream o original é SINTETIZADO: a página do canal ao vivo, não a URL de embed colada", () => {
+    /* A URL colada é de embed — inútil como link clicável. O único destino
+       clicável derivável dela é youtube.com/channel/<id>/live. */
+    const r = resolveStream("https://www.youtube.com/embed/live_stream?channel=UCabcdefghijk");
+    expect((r as { original: string }).original).toBe("https://www.youtube.com/channel/UCabcdefghijk/live");
+  });
+});
+
+describe("stageEscapeLinks (rota de fuga sob o palco)", () => {
+  const embed = resolveStream("https://youtube.com/live/abcdefghijk");
+  it("live com reserva: dois links; reserva IGUAL à original: um só (dedupe)", () => {
+    const dois = stageEscapeLinks({ liveStreamBackup: "https://reserva.org/x" }, "live", embed);
+    expect(dois.map((l) => l.href)).toEqual(["https://youtube.com/live/abcdefghijk", "https://reserva.org/x"]);
+    /* O hint do CMS sugere usar a página do YouTube como reserva — igual à
+       original, viraria dois links para o mesmo lugar e duas keys React. */
+    const um = stageEscapeLinks({ liveStreamBackup: "https://youtube.com/live/abcdefghijk" }, "live", embed);
+    expect(um).toHaveLength(1);
+  });
+  it("ended: transcrição e áudio entram; reserva não (a live acabou)", () => {
+    const links = stageEscapeLinks(
+      { liveStreamBackup: "https://reserva.org/x", acessibilidade: { transcricaoUrl: "https://archive.org/t", audioUrl: "https://archive.org/a.mp3" } },
+      "ended",
+      embed,
+    );
+    expect(links.map((l) => l.texto)).toEqual(["assistir direto no YouTube", "ler a transcrição", "ouvir em áudio (MP3)"]);
+  });
+  it("upcoming ou sem embed: nada a oferecer", () => {
+    expect(stageEscapeLinks({}, "upcoming", embed)).toEqual([]);
+    expect(stageEscapeLinks({}, "live", null)).toEqual([]);
   });
   it("zoom -> external", () => {
     expect(resolveStream("https://us02web.zoom.us/j/123")).toMatchObject({ mode: "external", provider: "Zoom" });

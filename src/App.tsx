@@ -161,7 +161,7 @@ import { GroupsHub } from "./webinars/GroupsHub";
 import { GroupPage } from "./webinars/GroupPage";
 import { featuredFrom, resolveStatus, webinarAsset } from "./webinars/data";
 import { useWebinars } from "./webinars/store";
-import { formatEventDateShort, formatEventTime, machineDate } from "./webinars/format";
+import { formatEventDateShort, formatEventTimeBadge, machineDate } from "./webinars/format";
 import { StatusBadge } from "./webinars/parts";
 
 type ResearchProgram = {
@@ -1594,7 +1594,7 @@ function App() {
                   <span className="webinar-teaser-meta">
                     <CalendarClock size={15} aria-hidden="true" />
                     <time dateTime={machineDate(featuredWebinar.startsAt)}>
-                      {formatEventDateShort(featuredWebinar.startsAt)} · {formatEventTime(featuredWebinar.startsAt)}
+                      {formatEventDateShort(featuredWebinar.startsAt)} · {formatEventTimeBadge(featuredWebinar.startsAt)}
                     </time>
                   </span>
                 </span>

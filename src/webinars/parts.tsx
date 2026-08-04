@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import type { AgendaItem, Material, Speaker, WebinarEvent, WebinarPartner, WebinarStatus } from "./data";
 import { webinarAsset } from "./data";
-import { resolveStream, type ResolvedStream } from "./stream";
-import { formatEventDateShort, formatEventTime, getCountdownParts, initials, machineDate } from "./format";
+import { resolveStream, stageEscapeLinks, type ResolvedStream } from "./stream";
+import { formatEventDateShort, formatEventTimeBadge, getCountdownParts, initials, machineDate } from "./format";
 
 const AVATAR_TONES = ["forest", "river", "leaf", "gold", "clay"] as const;
 
@@ -220,34 +220,17 @@ function StreamFallback({
   );
 }
 
-/** Nome de exibição do provedor incorporado — para a rota de fuga dizer PARA ONDE leva. */
-const PROVIDER_LABEL: Record<string, string> = {
-  youtube: "YouTube",
-  vimeo: "Vimeo",
-  streamyard: "StreamYard",
-  custom: "site da transmissão",
-};
-
 /**
  * A rota de fuga sob o player. Falha de iframe entre origens é indetectável de
  * verdade (onerror não dispara em bloqueio de rede; onload dispara mesmo com
  * erro interno do player) — a correção honesta não é detectar, é o link
  * PERMANENTE: quem vê um retângulo preto atrás de um proxy institucional tem
  * para onde ir sem recarregar nada. No replay, entram também a transcrição e o
- * áudio — as rotas de menor banda.
+ * áudio — as rotas de menor banda. A lógica dos links vive em
+ * `stageEscapeLinks` (stream.ts), pura e testada.
  */
 function StageEscape({ event, status, resolved }: { event: WebinarEvent; status: WebinarStatus; resolved: ResolvedStream | null }) {
-  const links: { href: string; texto: string }[] = [];
-  if (resolved?.mode === "embed") {
-    links.push({ href: resolved.original, texto: `assistir direto no ${PROVIDER_LABEL[resolved.provider] ?? resolved.provider}` });
-  }
-  if (status === "live" && event.liveStreamBackup) {
-    links.push({ href: event.liveStreamBackup, texto: "usar a transmissão reserva" });
-  }
-  if (status === "ended") {
-    if (event.acessibilidade?.transcricaoUrl) links.push({ href: event.acessibilidade.transcricaoUrl, texto: "ler a transcrição" });
-    if (event.acessibilidade?.audioUrl) links.push({ href: event.acessibilidade.audioUrl, texto: "ouvir em áudio (MP3)" });
-  }
+  const links = stageEscapeLinks(event, status, resolved);
   if (!links.length) return null;
 
   return (
@@ -530,8 +513,10 @@ export function EventCard({
         <strong className="webinar-card-title">{event.title}</strong>
         <span className="webinar-card-meta">
           <CalendarClock size={15} aria-hidden="true" />
+          {/* Com selo de fuso: "16:00" seco é indistinguível de horário local,
+              e quem só lê o cartão chegaria uma hora adiantado em 21 UFs. */}
           <time dateTime={machineDate(event.startsAt)}>
-            {formatEventDateShort(event.startsAt)} · {formatEventTime(event.startsAt)}
+            {formatEventDateShort(event.startsAt)} · {formatEventTimeBadge(event.startsAt)}
           </time>
         </span>
         <span className="webinar-card-cta">

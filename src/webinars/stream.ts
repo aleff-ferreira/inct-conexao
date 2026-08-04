@@ -1,4 +1,4 @@
-import type { StreamInput, StreamProvider } from "./data";
+import type { StreamInput, StreamProvider, WebinarEvent, WebinarStatus } from "./data";
 
 /**
  * Normaliza a transmissão informada em `liveStream` / `replay`.
@@ -9,10 +9,11 @@ import type { StreamInput, StreamProvider } from "./data";
  *   - "external" → link não incorporável (Zoom/Meet/etc.): abre em nova aba
  */
 export type ResolvedStream =
-  /* `original` guarda a URL como o editor colou. É a rota de fuga: quando o
-     iframe não carrega (proxy institucional, bloqueador, rede que barra o
-     provedor), o único socorro possível é um link direto — e a URL de embed
-     não serve para isso, porque foi feita para viver dentro de um iframe. */
+  /* `original` é a rota de fuga: a URL CLICÁVEL que socorre quem vê o iframe
+     falhar (proxy institucional, bloqueador, rede que barra o provedor). Em
+     quase todos os ramos é a URL como o editor colou; no ramo live_stream é
+     SINTETIZADA (youtube.com/channel/<id>/live), porque a colada é uma URL de
+     embed — feita para viver dentro de um iframe, inútil como link. */
   | { mode: "embed"; provider: StreamProvider; url: string; original: string }
   | { mode: "file"; url: string }
   | { mode: "external"; provider: string; url: string };
@@ -58,6 +59,15 @@ function recognize(url: string): ResolvedStream | null {
        Preserva o channel — era ele que o extrator de ID descartava. Host
        www.youtube.com de propósito: a combinação youtube-nocookie +
        live_stream não é documentada (NÃO CONFIRMADA em teste próprio).
+
+       AVISO DE CONFIABILIDADE: o formato inteiro não tem documentação oficial
+       do Google, e um teste empírico (2026-08-04, live da NASA) o viu devolver
+       ERROR — possivelmente artefato de testar a URL fora de uma página, o que
+       o YouTube bloqueia por Referer. A política editorial é NÃO usar esta
+       forma (o CMS pede youtube.com/live/<id>); este ramo é defesa em
+       profundidade para quando alguém usa mesmo assim: preservar o canal dá à
+       URL a chance de funcionar, e a rota de fuga (`original`) cobre o resto.
+
        Sem channel, a URL não aponta para nada: link externo, nunca um
        iframe mudo. */
     if (/\/embed\/live_stream/i.test(url)) {
@@ -66,9 +76,14 @@ function recognize(url: string): ResolvedStream | null {
         return {
           mode: "embed",
           provider: "youtube",
-          url: `https://www.youtube.com/embed/live_stream?channel=${channel[1]}`,
+          url: `https://www.youtube.com/embed/live_stream?channel=${channel[1]}&playsinline=1`,
           original: `https://www.youtube.com/channel/${channel[1]}/live`,
         };
+      }
+      if (import.meta.env.DEV) {
+        console.warn(
+          `[webinars] embed/live_stream SEM ?channel= não aponta para transmissão nenhuma; será link externo. Prefira youtube.com/live/<id> do evento agendado: ${url}`,
+        );
       }
       return { mode: "external", provider: "YouTube", url };
     }
@@ -143,4 +158,49 @@ export function resolveStream(input?: StreamInput): ResolvedStream | null {
     );
   }
   return { mode: "external", provider: "transmissão externa", url };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Rota de fuga sob o palco — a LÓGICA, pura e testável em Node.      */
+/* ------------------------------------------------------------------ */
+
+/** Nome de exibição do provedor incorporado — para a rota de fuga dizer PARA ONDE leva. */
+export const PROVIDER_LABEL: Record<string, string> = {
+  youtube: "YouTube",
+  vimeo: "Vimeo",
+  streamyard: "StreamYard",
+  custom: "site da transmissão",
+};
+
+export type EscapeLink = { href: string; texto: string };
+
+/**
+ * Que links a rota de fuga oferece, dado o estado do palco.
+ *
+ * Deduplicado por href: o hint do CMS sugere usar a página do YouTube como
+ * transmissão reserva — se ela for igual à `original` do embed, dois links
+ * para o mesmo destino (e duas keys React idênticas) seriam o resultado.
+ */
+export function stageEscapeLinks(
+  event: Pick<WebinarEvent, "liveStreamBackup" | "acessibilidade">,
+  status: WebinarStatus,
+  resolved: ResolvedStream | null,
+): EscapeLink[] {
+  // Antes do evento não há player no palco — "problemas com o vídeo?" seria
+  // oferecer fuga de um vídeo que não existe. A regra vive AQUI, não no
+  // chamador: um segundo consumidor não pode esquecê-la.
+  if (status === "upcoming") return [];
+  const links: EscapeLink[] = [];
+  if (resolved?.mode === "embed") {
+    links.push({ href: resolved.original, texto: `assistir direto no ${PROVIDER_LABEL[resolved.provider] ?? resolved.provider}` });
+  }
+  if (status === "live" && event.liveStreamBackup) {
+    links.push({ href: event.liveStreamBackup, texto: "usar a transmissão reserva" });
+  }
+  if (status === "ended") {
+    if (event.acessibilidade?.transcricaoUrl) links.push({ href: event.acessibilidade.transcricaoUrl, texto: "ler a transcrição" });
+    if (event.acessibilidade?.audioUrl) links.push({ href: event.acessibilidade.audioUrl, texto: "ouvir em áudio (MP3)" });
+  }
+  const vistos = new Set<string>();
+  return links.filter((l) => (vistos.has(l.href) ? false : (vistos.add(l.href), true)));
 }

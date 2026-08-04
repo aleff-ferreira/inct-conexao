@@ -34,6 +34,20 @@ export const formatEventDateShort = (iso: string): string =>
 export const formatEventTime = (iso: string): string =>
   formatWithZone(iso, { hour: "2-digit", minute: "2-digit", hour12: false });
 
+/**
+ * Hora com o selo do fuso, para CARTÕES: "16:00 RO · 17:00 Brasília".
+ * Sem o selo, "16:00" é indistinguível de horário local — e quem lê num cartão
+ * e não abre a página interna (onde existe a tradução completa) chega uma hora
+ * adiantado em 21 das 27 UFs. A hora de Brasília entra porque é onde está a
+ * maioria da audiência; a linha completa (com "no seu horário") fica na página.
+ */
+export const formatEventTimeBadge = (iso: string): string => {
+  const ro = formatEventTime(iso);
+  if (!ro) return "";
+  const bsb = formatTimeInZone(iso, BRASILIA_TIME_ZONE);
+  return bsb && bsb !== ro ? `${ro} RO · ${bsb} Brasília` : `${ro} (RO)`;
+};
+
 /* ------------------------------------------------------------------ */
 /*  O horário nos OUTROS fusos — porque o Brasil não é UTC-4.          */
 /* ------------------------------------------------------------------ */
@@ -69,21 +83,47 @@ export function visitorTimeZone(): string | undefined {
 
 export type ScheduleLine = { hora: string; rotulo: string };
 
+/** Data civil "AAAA-MM-DD" no fuso pedido — para detectar virada de dia. */
+function civilDate(iso: string, timeZone: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+  } catch {
+    return "";
+  }
+}
+
 /**
  * As linhas de horário da página: Rondônia sempre, Brasília sempre (é onde
  * está a maioria da audiência), e "no seu horário" só quando difere das duas —
  * repetir "16:00 no seu horário" para quem já lê "16:00 em Rondônia" seria
  * ruído. Pura: o fuso do visitante entra por parâmetro, o que a torna
  * testável em Node sem mock de navegador.
+ *
+ * Quando o dia VIRA no fuso alvo, a linha carrega a data: "05:00 no seu
+ * horário" ao lado de "quinta, 27 de agosto" mandaria um parceiro em Tóquio
+ * chegar 24 horas adiantado — o instante certo lá é SEXTA 05:00. Vale até
+ * para Brasília: um evento às 23:30 de Rondônia já é 00:30 do dia seguinte lá.
  */
 export function scheduleLines(iso: string, visitorZone?: string): ScheduleLine[] {
   const rondonia = formatTimeInZone(iso, EVENT_TIME_ZONE);
   if (!rondonia) return [];
+  const diaEvento = civilDate(iso, EVENT_TIME_ZONE);
+  const marcaDia = (zone: string): string => {
+    const diaLa = civilDate(iso, zone);
+    if (!diaLa || diaLa === diaEvento) return "";
+    const dm = new Intl.DateTimeFormat("pt-BR", { timeZone: zone, day: "2-digit", month: "2-digit" }).format(new Date(iso));
+    return ` (${dm})`;
+  };
+
   const lines: ScheduleLine[] = [{ hora: rondonia, rotulo: "em Rondônia" }];
   const brasilia = formatTimeInZone(iso, BRASILIA_TIME_ZONE);
-  if (brasilia && brasilia !== rondonia) lines.push({ hora: brasilia, rotulo: "em Brasília" });
+  if (brasilia && brasilia !== rondonia) lines.push({ hora: brasilia, rotulo: `em Brasília${marcaDia(BRASILIA_TIME_ZONE)}` });
   const local = visitorZone ? formatTimeInZone(iso, visitorZone) : "";
-  if (local && local !== rondonia && local !== brasilia) lines.push({ hora: local, rotulo: "no seu horário" });
+  if (local && local !== rondonia && local !== brasilia) {
+    lines.push({ hora: local, rotulo: `no seu horário${visitorZone ? marcaDia(visitorZone) : ""}` });
+  }
   return lines;
 }
 
