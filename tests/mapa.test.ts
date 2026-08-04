@@ -185,6 +185,65 @@ describe("layers · dados reais e verificáveis", () => {
     expect(Object.values(VAGAS_IC_2026).reduce((a, b) => a + b, 0)).toBe(50);
   });
 
+  it("toda camada declara escopo: maturidade, cobertura e comparabilidade", () => {
+    /* `comparavel` é um booleano que o CÓDIGO consulta antes de deixar ordenar,
+       somar ou exportar em formato largo. Ressalva em prosa não impede sort(). */
+    for (const c of construirCamadas(temConteudo, resumoNotificacoes)) {
+      const e = c.escopo;
+      expect(["consolidada", "preliminar", "experimental"], c.id).toContain(e.maturidade);
+      expect(e.cobertura.total, c.id).toBe(27);
+      expect(e.cobertura.medidas, c.id).toBeGreaterThanOrEqual(0);
+      expect(e.cobertura.medidas, c.id).toBeLessThanOrEqual(27);
+      expect(typeof e.comparavel, c.id).toBe("boolean");
+      // "o que este número NÃO mede" precisa ser uma frase, não um rótulo.
+      expect(e.naoMede.length, `${c.id}: naoMede curto demais`).toBeGreaterThan(40);
+    }
+  });
+
+  it("camada categórica nunca é declarada comparável", () => {
+    /* `amazoniaLegal.valor` devolve 1 para integral E para parcial: uma coluna
+       ordenável disso seria um ranking de booleanos, e o Maranhão apareceria
+       igual ao Amazonas. */
+    for (const c of construirCamadas(temConteudo, resumoNotificacoes)) {
+      if (c.tipo === "categorica") expect(c.escopo.comparavel, c.id).toBe(false);
+    }
+  });
+
+  it("a camada de doenças NÃO é comparável, e diz por quê", () => {
+    /* O total de TO é dengue sozinha (88.065); o do AC soma quatro doenças
+       (79.324). Ordenar produziria "TO pior que AC" — afirmação que o dado não
+       sustenta e que a interface teria fabricado. */
+    const d = construirCamadas(temConteudo, resumoNotificacoes).find((c) => c.id === "doencas-notificacoes")!;
+    expect(d.escopo.comparavel).toBe(false);
+    expect(d.escopo.maturidade).toBe("preliminar");
+    expect(d.escopo.naoMede.toLowerCase()).toContain("compar");
+    // A cobertura declarada tem de bater com os estados que de fato têm dado.
+    const comDado = ufs.filter((u) => resumoNotificacoes(u.sigla) != null).length;
+    expect(d.escopo.cobertura.medidas).toBe(comDado);
+  });
+
+  it("o CSV da camada carrega procedência e respeita a comparabilidade", async () => {
+    const { csvDaCamada } = await import("../src/mapa/csvCamada");
+    for (const c of construirCamadas(temConteudo, resumoNotificacoes)) {
+      const csv = csvDaCamada(c, "2026-08-04");
+      expect(csv.charCodeAt(0), `${c.id}: sem BOM`).toBe(0xfeff);
+      expect(csv).toContain(c.escopo.naoMede);
+      expect(csv).toContain(`${c.escopo.cobertura.medidas} de 27`);
+      const cabecalho = csv.split("\n").find((l) => l.startsWith("uf;"))!;
+      if (c.escopo.comparavel) {
+        expect(cabecalho, c.id).toContain("valor");
+      } else {
+        // Sem coluna de total: numa planilha, uma coluna de números é um convite
+        // a ordenar, e a ressalva do cabeçalho não impede isso.
+        expect(cabecalho, c.id).not.toContain("valor");
+        expect(csv).toContain("NÃO são comparáveis");
+      }
+      // 27 UFs + cabeçalho de coluna, além das linhas de comentário.
+      const dados = csv.split("\n").filter((l) => l && !l.startsWith("#") && !l.startsWith("﻿#"));
+      expect(dados.length, c.id).toBe(28);
+    }
+  });
+
   it("toda camada tem fonte declarada e legenda", () => {
     const camadas = construirCamadas(temConteudo);
     expect(camadas.length).toBeGreaterThanOrEqual(3);

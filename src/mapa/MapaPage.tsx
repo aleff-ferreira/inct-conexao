@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Compass, BookOpen, List as ListIcon, Map as MapIcon, Search, ArrowRight,
   ChevronRight, Gauge, Info, Share2, MapPin, Layers, Building2, FlaskConical, Leaf,
-  Trophy, Sparkles, Lock, Mountain, Activity, AlertTriangle,
+  Trophy, Sparkles, Lock, Mountain, Activity, AlertTriangle, Download,
 } from "lucide-react";
 import { BrazilMap, type MapOverlays, type TooltipInfo } from "./BrazilMap";
 import { StatePanel, type SecaoId } from "./StatePanel";
@@ -24,6 +24,7 @@ import type { EstadoConteudo, Uf } from "./types";
 import { Figura } from "../figuras/Figura";
 import { FOCOS } from "../figuras/registro";
 import { usePassoAtivo, rolarAtePasso } from "../ui/passos";
+import { baixarCsvDaCamada } from "./csvCamada";
 
 /* ---- hooks utilitários ---- */
 function usePrefersReducedMotion(): boolean {
@@ -207,7 +208,7 @@ export default function MapaPage() {
         <AvisoBeta />
 
         {st.lista ? (
-          <EstadosLista onSelecionar={selecionar} onFechar={() => update({ lista: false }, { replace: true })} />
+          <EstadosLista camada={camadaAtiva} onSelecionar={selecionar} onFechar={() => update({ lista: false }, { replace: true })} />
         ) : st.modo === "panorama" ? (
           <Panorama
             camada={camadaAtiva}
@@ -817,42 +818,104 @@ function StatBar() {
   );
 }
 
-function EstadosLista({ onSelecionar, onFechar }: { onSelecionar: (s: string) => void; onFechar: () => void }) {
+function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSelecionar: (s: string) => void; onFechar: () => void }) {
   const [q, setQ] = useState("");
-  const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-  const grupos = ufsPorRegiao();
+  const [ordem, setOrdem] = useState<"nome" | "valor">("nome");
+  const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const e = camada.escopo;
+
+  /* Ordenar por valor SÓ quando a camada permite. Em "doenças", ordenar
+     produziria "Tocantins pior que Acre" — mas o número de TO é dengue sozinha
+     e o do AC soma quatro doenças. A interface teria fabricado a afirmação; o
+     dado não a contém. Por isso o botão de ordenar nem existe nesse caso. */
+  const podeOrdenarPorValor = e.comparavel;
+
+  const linhas = useMemo(() => {
+    const alvo = norm(q.trim());
+    const filtradas = ufs.filter(
+      (u) => !alvo || norm(u.nome).includes(alvo) || u.sigla.toLowerCase() === alvo || norm(u.regiao).includes(alvo),
+    );
+    const com = filtradas.map((u) => ({ u, v: camada.valor(u), rotulo: camada.rotularValor?.(u) }));
+    if (ordem === "valor" && podeOrdenarPorValor) {
+      // Sem dado vai SEMPRE para o fim, nunca tratado como zero.
+      return com.sort((a, b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
+    }
+    return com.sort((a, b) => a.u.nome.localeCompare(b.u.nome, "pt-BR"));
+  }, [q, ordem, camada, podeOrdenarPorValor]);
+
   return (
     <div className="map-lista">
       <div className="map-lista-top">
         <label className="map-busca-field">
           <Search size={16} aria-hidden />
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filtrar estados…" aria-label="Filtrar estados" />
+          <input type="search" value={q} onChange={(ev) => setQ(ev.target.value)} placeholder="Filtrar estados…" aria-label="Filtrar estados" />
         </label>
+        <button type="button" className="map-toggle" onClick={() => baixarCsvDaCamada(camada)}>
+          <Download size={15} aria-hidden /> Baixar CSV
+        </button>
         <button type="button" className="map-toggle" onClick={onFechar}><MapIcon size={15} aria-hidden /> Ver mapa</button>
       </div>
-      {grupos.map((g) => {
-        const itens = g.ufs.filter((u) => !q.trim() || norm(u.nome).includes(norm(q)) || u.sigla.toLowerCase() === norm(q));
-        if (!itens.length) return null;
-        return (
-          <section key={g.regiao} className="map-lista-regiao" aria-label={g.regiao}>
-            <h2>{g.regiao}</h2>
-            <ul>
-              {itens.map((u) => (
-                <li key={u.sigla}>
-                  <button type="button" onClick={() => onSelecionar(u.sigla)}>
-                    <span className="map-lista-nome">{u.nome} <em>{u.sigla}</em></span>
-                    <span className="map-lista-meta">
-                      {u.amazoniaLegal ? "Amazônia Legal" : u.regiao}
-                      {temConteudo(u.sigla) ? <span className="map-tag map-tag--confirmado">ficha</span> : null}
-                    </span>
-                    <ChevronRight size={16} aria-hidden />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })}
+
+      {/* Bloco de escopo: a mesma informação que a legenda do mapa mostra, para
+          quem lê a tabela sem ter visto o mapa. */}
+      <p className="map-lista-escopo">
+        <span className={`map-selo map-selo--${e.maturidade}`}>{e.maturidade}</span>
+        {e.cobertura.medidas} de {e.cobertura.total} unidades federativas com valor medido.
+        {" "}{e.naoMede}
+      </p>
+
+      <table className="map-tabela">
+        <caption>
+          {camada.label} — {camada.fonte.publicador ?? camada.fonte.titulo}
+          {camada.fonte.data ? ` (${camada.fonte.data})` : ""}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">
+              <button type="button" className="map-th-btn" onClick={() => setOrdem("nome")} aria-pressed={ordem === "nome"}>
+                Estado
+              </button>
+            </th>
+            <th scope="col">Região</th>
+            <th scope="col">Amazônia Legal</th>
+            <th scope="col" aria-sort={ordem === "valor" ? "descending" : "none"}>
+              {podeOrdenarPorValor ? (
+                <button type="button" className="map-th-btn" onClick={() => setOrdem("valor")} aria-pressed={ordem === "valor"}>
+                  {camada.tipo === "sequencial" ? "Valor" : "Situação"}
+                </button>
+              ) : (
+                camada.tipo === "sequencial" ? "Valor" : "Situação"
+              )}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {linhas.map(({ u, v, rotulo }) => (
+            <tr key={u.sigla}>
+              <th scope="row">
+                <button type="button" className="map-tabela-uf" onClick={() => onSelecionar(u.sigla)}>
+                  {u.nome} <em>{u.sigla}</em>
+                  {temConteudo(u.sigla) ? <span className="map-tag map-tag--confirmado">ficha</span> : null}
+                  <ChevronRight size={15} aria-hidden />
+                </button>
+              </th>
+              <td data-rotulo="Região">{u.regiao}</td>
+              <td data-rotulo="Amazônia Legal">{u.amazoniaLegal ?? "—"}</td>
+              {/* Camada categórica mostra o RÓTULO, não o número: `valor` devolve
+                  1 tanto para integral quanto para parcial, e publicar isso como
+                  coluna seria um ranking de booleanos. */}
+              <td data-rotulo="Valor" className="map-tabela-valor">
+                {camada.tipo === "categorica" || !e.comparavel
+                  ? rotulo ?? "—"
+                  : v == null
+                    ? <span className="map-sem-dado">sem dado</span>
+                    : v.toLocaleString("pt-BR")}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {linhas.length === 0 ? <p className="map-empty-note">Nenhum estado corresponde a “{q}”.</p> : null}
     </div>
   );
 }

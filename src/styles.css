@@ -8499,3 +8499,74 @@ select.admin-input {
   .res-uf { break-inside: avoid; }
   .res-tabela thead th { background: #fff; color: #000; border-bottom: 2px solid #000; }
 }
+
+/* ==========================================================================
+   TABELA DA CAMADA ATIVA (lista-alternativa do mapa)
+   --------------------------------------------------------------------------
+   Era uma <ul> fixa que ignorava a camada: trocar para "Doenças" não mudava
+   uma linha, e o valor de cada UF vivia só no tooltip — que no toque nunca
+   aparece. Ou seja: no celular, o número do mapa era invisível.
+   Agora é tabela HTML nativa, que imprime, é lida por leitor de tela e responde
+   ao localizar-na-página do navegador.
+   ========================================================================== */
+.map-tabela { width: 100%; border-collapse: collapse; margin-top: 12px; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+.map-tabela caption {
+  text-align: left; padding: 0 0 10px; font-size: 0.82rem; color: var(--muted);
+}
+.map-tabela thead th {
+  text-align: left; padding: 9px 12px; font-size: 0.72rem; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  background: var(--forest); color: #fff; white-space: nowrap;
+}
+.map-tabela tbody th, .map-tabela tbody td {
+  padding: 9px 12px; font-size: 0.9rem; text-align: left; vertical-align: middle;
+  border-top: 1px solid var(--line);
+}
+.map-tabela tbody th { font-weight: 700; }
+.map-tabela tbody tr:nth-child(even) th, .map-tabela tbody tr:nth-child(even) td { background: rgba(17, 33, 31, 0.022); }
+.map-tabela-valor { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--forest); }
+/* "sem dado" é diferente de zero, e a tipografia diz isso. */
+.map-sem-dado { font-weight: 500; font-style: italic; color: var(--muted); }
+
+.map-tabela-uf {
+  display: inline-flex; align-items: center; gap: 7px; width: 100%;
+  background: none; border: 0; padding: 0; font: inherit; font-weight: 700;
+  color: var(--forest); cursor: pointer; text-align: left;
+}
+.map-tabela-uf em { font-style: normal; color: var(--muted); font-weight: 600; }
+.map-tabela-uf:hover { color: var(--river-ink); }
+.map-tabela-uf:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; border-radius: 4px; }
+
+/* Ordenação por BOTÃO no cabeçalho, não por "clique no th": cabeçalho clicável
+   sem botão é invisível para teclado e para leitor de tela. */
+.map-th-btn {
+  background: none; border: 0; padding: 0; font: inherit; color: inherit;
+  cursor: pointer; text-transform: inherit; letter-spacing: inherit;
+}
+.map-th-btn[aria-pressed="true"]::after { content: " ↓"; }
+.map-th-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.map-lista-escopo {
+  margin: 10px 0 0; padding: 11px 13px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line);
+  font-size: 0.84rem; line-height: 1.55; color: var(--muted);
+}
+/* A maturidade aparece como PALAVRA, nunca só como cor: quem não distingue
+   matizes precisa da mesma informação. */
+.map-selo {
+  display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.map-selo--consolidada { background: rgba(47, 122, 82, 0.14); color: #2f7a52; }
+.map-selo--preliminar { background: rgba(216, 154, 43, 0.18); color: #8a5f10; }
+.map-selo--experimental { background: rgba(180, 93, 66, 0.16); color: #b45d42; }
+
+@media (max-width: 680px) {
+  /* Mesma receita da tabela de selecionados: some o cabeçalho e cada linha
+     vira pares rotulados. Quatro colunas em 360px cortariam nome de estado. */
+  .map-tabela thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .map-tabela tbody tr { display: block; padding: 8px 0; border-top: 1px solid var(--line); }
+  .map-tabela tbody th, .map-tabela tbody td { display: block; border: 0; padding: 2px 12px; }
+  .map-tabela tbody td::before { content: attr(data-rotulo) ": "; font-weight: 700; color: var(--muted); }
+  .map-tabela tbody tr:nth-child(even) th, .map-tabela tbody tr:nth-child(even) td { background: none; }
+}

@@ -59,6 +59,32 @@ export type LegendaItem = { cor: string; rotulo: string; /** padrão para daltô
 
 export type CamadaTipo = "categorica" | "sequencial";
 
+/**
+ * Até onde este número pode ser levado.
+ *
+ * `comparavel` é um BOOLEANO que o código consulta, e não uma ressalva em
+ * prosa — porque prosa não impede `sort()`. Sem ele, uma tabela ordenável
+ * permitiria a alguém gerar, e compartilhar por link, a afirmação de que
+ * "Tocantins tem mais doenças que o Acre" quando o número de TO é dengue
+ * sozinha e o do AC soma quatro doenças. A interface teria fabricado a
+ * mentira; o dado não a contém.
+ *
+ * Regra: ordenar, somar, normalizar e exportar em formato largo exigem
+ * `comparavel: true`. Camada categórica nunca é comparável — `amazoniaLegal`
+ * devolve 1 tanto para integral quanto para parcial, e um ranking disso seria
+ * um ranking de booleanos.
+ */
+export type Comparabilidade = {
+  /** Estágio do dado. A palavra aparece na legenda, nunca só uma cor. */
+  maturidade: "consolidada" | "preliminar" | "experimental";
+  /** Quantas UFs têm valor medido, de 27. Ausência é fato, não zero. */
+  cobertura: { medidas: number; total: number };
+  /** Valores podem ser ordenados, somados e comparados entre UFs. */
+  comparavel: boolean;
+  /** O que este número NÃO mede. Uma frase, exibida junto da legenda. */
+  naoMede: string;
+};
+
 export type Camada = {
   id: string;
   label: string;
@@ -66,6 +92,8 @@ export type Camada = {
   tipo: CamadaTipo;
   descricao: string;
   fonte: Fonte;
+  /** Ver `Comparabilidade`. Obrigatório: camada sem isso não pode ser tabelada. */
+  escopo: Comparabilidade;
   /** valor bruto por UF (para tooltip/legenda); null = sem dado. */
   valor: (uf: Uf) => number | null;
   /** cor de preenchimento por UF. */
@@ -167,6 +195,15 @@ export function construirCamadas(
     : "nenhum estado ainda";
 
   const amazoniaLegal: Camada = {
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: 27, total: 27 },
+      // Categórica: `valor` devolve 1 para integral E para parcial. Ordenar
+      // isso produziria um ranking de booleanos, e o Maranhão apareceria igual
+      // ao Amazonas.
+      comparavel: false,
+      naoMede: "É um recorte legal de planejamento (LC nº 124/2007), não a extensão do bioma nem da floresta em pé.",
+    },
     id: "amazonia-legal",
     label: "Amazônia Legal",
     tema: "ambiente",
@@ -184,6 +221,12 @@ export function construirCamadas(
   };
 
   const vagas: Camada = {
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: totalUfsComVagas, total: 27 },
+      comparavel: true,
+      naoMede: "É a oferta prevista no edital, não as bolsas efetivamente implementadas — a distribuição realizada difere.",
+    },
     id: "vagas-ic-2026",
     label: "Vagas de IC (Edital 04/2026)",
     tema: "pesquisa",
@@ -210,6 +253,12 @@ export function construirCamadas(
   };
 
   const instituicoes: Camada = {
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: totalUfsComInstituicoes, total: 27 },
+      comparavel: true,
+      naoMede: "Conta instituições cadastradas no catálogo da rede, não pesquisadores, laboratórios nem volume de atividade.",
+    },
     id: "instituicoes",
     label: "Instituições da rede",
     tema: "pesquisa",
@@ -236,6 +285,14 @@ export function construirCamadas(
   };
 
   const conteudo: Camada = {
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: ufs.filter((u) => temConteudo(u.sigla)).length, total: 27 },
+      // Categórica (tem ficha / não tem). E o que ela mede é o nosso trabalho
+      // editorial, não o território.
+      comparavel: false,
+      naoMede: "Mede o andamento do cadastro editorial deste site. Ausência de ficha NÃO significa ausência de risco ou de atividade.",
+    },
     id: "conteudo",
     label: "Conteúdo disponível",
     tema: "pesquisa",
@@ -258,6 +315,16 @@ export function construirCamadas(
   };
 
   const doencas: Camada = {
+    escopo: {
+      maturidade: "preliminar",
+      cobertura: { medidas: comNotificacao.length, total: 27 },
+      /* NÃO comparável, e esta é a decisão mais importante do bloco: os totais
+         somam conjuntos DIFERENTES de doenças em cada estado. Tocantins traz
+         88.065 de dengue sozinha; o Acre traz 79.324 somando quatro doenças.
+         Ordenar produziria "TO pior que AC", que o dado não sustenta. */
+      comparavel: false,
+      naoMede: "Notificação não é caso confirmado, e o total soma conjuntos diferentes de doenças em cada estado — os números não se comparam entre UFs. A malária fica de fora (é acompanhada pelo SIVEP-Malária, não pelo SINAN).",
+    },
     id: "doencas-notificacoes",
     label: "Doenças (notificações)",
     tema: "saude",
