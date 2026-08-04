@@ -664,6 +664,7 @@ collections:
           - { label: "Conteúdo disponível", value: conteudo }
           - { label: "Instituições da rede", value: instituicoes }
           - { label: "Doenças (notificações)", value: doencas-notificacoes }
+          - { label: "Focos de calor (INPE, 2003–2024)", value: focos-calor }
       - label: "Enquadramento inicial"
         name: enquadrar
         widget: select

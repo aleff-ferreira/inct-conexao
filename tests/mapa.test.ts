@@ -244,6 +244,67 @@ describe("layers · dados reais e verificáveis", () => {
     }
   });
 
+  it("focos de calor: escala fixa entre anos, e a série inteira acessível", async () => {
+    const f = await import("../src/mapa/focos");
+    /* A escala NÃO pode ser recalculada por ano. Reescalar faz todo ano parecer
+       igual e apaga a tendência — que é exatamente o que o controle de ano
+       existe para mostrar. Os cortes são calculados uma vez, sobre a série
+       inteira, e por isso a cor de um mesmo valor não muda de ano para ano. */
+    const cortes = f.CORTES;
+    expect(cortes).toHaveLength(4);
+    for (let i = 1; i < cortes.length; i++) expect(cortes[i]).toBeGreaterThan(cortes[i - 1]);
+
+    // O mesmo valor recebe a mesma cor em qualquer ano.
+    const alvo = cortes[1] + 1;
+    expect(f.corDoFoco(alvo)).toBe(f.corDoFoco(alvo));
+
+    // 22 anos contínuos, sem buraco.
+    expect(f.ANOS).toHaveLength(22);
+    for (let i = 1; i < f.ANOS.length; i++) expect(f.ANOS[i] - f.ANOS[i - 1]).toBe(1);
+
+    // A rampa é PRÓPRIA: usar a das notificações insinuaria parentesco entre
+    // queimada e doença que este dado não sustenta.
+    const doencas = construirCamadas(temConteudo, resumoNotificacoes).find((c) => c.id === "doencas-notificacoes")!;
+    const coresDoenca = new Set(doencas.legenda.map((l) => l.cor));
+    for (const c of f.RAMPA_FOGO) expect(coresDoenca.has(c), `cor ${c} repetida entre camadas`).toBe(false);
+  });
+
+  it("a camada de focos muda com o ano, e é comparável", () => {
+    const de = (ano: number) =>
+      construirCamadas(temConteudo, resumoNotificacoes, { ano }).find((c) => c.id === "focos-calor")!;
+    const pa = ufBySigla("PA")!;
+    const c2004 = de(2004);
+    const c2024 = de(2024);
+    expect(c2004.valor(pa)).not.toBe(c2024.valor(pa));
+    // Mesmo satélite, mesmo horário de passagem: comparável entre UFs e anos.
+    expect(c2024.escopo.comparavel).toBe(true);
+    expect(c2024.escopo.cobertura.medidas).toBe(27);
+    // A nota metodológica da própria fonte vira o "o que não mede".
+    expect(c2024.escopo.naoMede.toLowerCase()).toContain("não é o mesmo que área queimada");
+  });
+
+  it("variação usa escala divergente com pontas nomeadas, não 'baixo/alto'", async () => {
+    const f = await import("../src/mapa/focos");
+    const rotulos = f.LEGENDA_VARIACAO.map((l) => l.rotulo.toLowerCase()).join(" ");
+    expect(rotulos).toContain("caiu");
+    expect(rotulos).toContain("subiu");
+    // Em variação o meio é ZERO e as pontas são opostos, não extremos de uma
+    // mesma grandeza — "baixo/alto" descreveria outra coisa.
+    expect(rotulos).not.toContain("baixo");
+    expect(rotulos).not.toContain("alto");
+    expect(f.LEGENDA_VARIACAO).toHaveLength(5);
+  });
+
+  it("ano e medida viajam na URL, e ano inválido cai no padrão", () => {
+    expect(parseMapaHash("#/mapa?camada=focos-calor&ano=2010").ano).toBe(2010);
+    expect(parseMapaHash("#/mapa?ano=banana").ano).toBeNull();
+    expect(parseMapaHash("#/mapa?ano=99999").ano).toBeNull();
+    expect(parseMapaHash("#/mapa?medida=variacao").medida).toBe("variacao");
+    expect(parseMapaHash("#/mapa?medida=xpto").medida).toBe("absoluto");
+    expect(buildMapaHash({ ano: 2010 })).toContain("ano=2010");
+    expect(buildMapaHash({ ano: null })).not.toContain("ano=");
+  });
+
   it("toda camada tem fonte declarada e legenda", () => {
     const camadas = construirCamadas(temConteudo);
     expect(camadas.length).toBeGreaterThanOrEqual(3);

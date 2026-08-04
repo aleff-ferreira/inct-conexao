@@ -26,6 +26,8 @@ import { FOCOS } from "../figuras/registro";
 import { usePassoAtivo, rolarAtePasso } from "../ui/passos";
 import { baixarCsvDaCamada } from "./csvCamada";
 import { linkDeErro, EMAIL_EQUIPE } from "./reportar";
+import { ControleAno } from "./ControleAno";
+import { ANO_FINAL } from "./focos";
 
 /* ---- hooks utilitários ---- */
 function usePrefersReducedMotion(): boolean {
@@ -117,7 +119,17 @@ export default function MapaPage() {
   }, []);
   const leve = st.leve === "auto" ? leveAuto : st.leve === "1";
 
-  const camadas = useMemo(() => construirCamadas(temConteudo, resumoNotificacoes), []);
+  /* O ano vive em estado local ENQUANTO se arrasta, e na URL quando se solta.
+     Repintar 27 estados a cada passo precisa ser instantâneo; escrever na URL a
+     cada passo criaria 22 entradas de histórico e transformaria o botão Voltar
+     numa armadilha. */
+  const [anoVivo, setAnoVivo] = useState<number>(st.ano ?? ANO_FINAL);
+  useEffect(() => { setAnoVivo(st.ano ?? ANO_FINAL); }, [st.ano]);
+
+  const camadas = useMemo(
+    () => construirCamadas(temConteudo, resumoNotificacoes, { ano: anoVivo, medida: st.medida }),
+    [anoVivo, st.medida],
+  );
   const camadaAtiva: Camada = camadas.find((c) => c.id === st.camada) ?? camadas[0];
   const ufSel = ufBySigla(st.uf);
 
@@ -251,6 +263,8 @@ export default function MapaPage() {
           <Explorer
             st={st}
             fichaSel={fichaSel}
+            anoVivo={anoVivo}
+            setAnoVivo={setAnoVivo}
             update={update}
             camadas={camadas}
             camadaAtiva={camadaAtiva}
@@ -417,6 +431,9 @@ const LENS_ICON: Record<string, typeof Leaf> = {
 type ExplorerProps = {
   /** Ficha do estado selecionado, carregada sob demanda (undefined enquanto vem). */
   fichaSel: EstadoConteudo | undefined;
+  /** Ano corrente da camada de focos, enquanto se arrasta o controle. */
+  anoVivo: number;
+  setAnoVivo: (a: number) => void;
   st: MapaState;
   update: (p: Partial<MapaState>, o?: { replace?: boolean }) => void;
   camadas: Camada[];
@@ -439,7 +456,7 @@ type ExplorerProps = {
   rotuloDe: (u: Uf) => string;
 };
 
-function Explorer({ st, fichaSel, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
+function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
   // fecha painel com Escape
   useEffect(() => {
     if (!ufSel) return;
@@ -500,6 +517,18 @@ function Explorer({ st, fichaSel, update, camadas, camadaAtiva, ufSel, leve, red
           rotuloDe={rotuloDe}
           tooltipDe={tooltipDe}
         />
+
+        {/* O controle de ano só existe quando a camada tem eixo de tempo. */}
+        {camadaAtiva.id === "focos-calor" ? (
+          <ControleAno
+            ano={anoVivo}
+            medida={st.medida}
+            reduzirMovimento={reduzir}
+            onPreview={setAnoVivo}
+            onFirmar={(a) => update({ ano: a }, { replace: true })}
+            onMedida={(m) => update({ medida: m }, { replace: true })}
+          />
+        ) : null}
 
         <div className="map-stage-foot">
           <Legenda camada={camadaAtiva} />

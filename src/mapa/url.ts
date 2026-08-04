@@ -34,6 +34,10 @@ export type MapaState = {
   sec: string | null;
   cap: string | null;
   lista: boolean;
+  /** Ano da camada de focos. null = o ano final da serie. */
+  ano: number | null;
+  /** Medida da camada de focos: valor absoluto ou variacao contra o ano-base. */
+  medida: "absoluto" | "variacao";
   /**
    * "auto" deixa o aparelho decidir (economia de dados ligada, rede 2G).
    * "1"/"0" são a escolha explícita da pessoa, e ganham do automático — antes
@@ -50,6 +54,8 @@ export const ESTADO_PADRAO: MapaState = {
   sec: null,
   cap: null,
   lista: false,
+  ano: null,
+  medida: "absoluto",
   leve: "auto",
 };
 
@@ -83,6 +89,12 @@ export function parseMapaHash(rawHash: string): MapaState {
     sec: secRaw && SECAO_IDS.includes(secRaw) ? secRaw : null,
     cap: q.get("cap") || null,
     lista: q.get("lista") === "1",
+    // Ano invalido cai no padrao, como toda validacao desta funcao.
+    ano: (() => {
+      const n = Number(q.get("ano"));
+      return Number.isInteger(n) && n >= 1990 && n <= 2100 ? n : null;
+    })(),
+    medida: q.get("medida") === "variacao" ? "variacao" : "absoluto",
     leve: leveRaw === "1" ? "1" : leveRaw === "0" ? "0" : "auto",
   };
 }
@@ -101,6 +113,8 @@ export function buildMapaHash(s: Partial<MapaState>): string {
   if (st.sec) q.set("sec", st.sec);
   if (st.cap) q.set("cap", st.cap);
   if (st.lista) q.set("lista", "1");
+  if (st.ano) q.set("ano", String(st.ano));
+  if (st.medida !== "absoluto") q.set("medida", st.medida);
   // "auto" é o padrão e fica fora da URL; a escolha explícita viaja no link.
   if (st.leve !== "auto") q.set("leve", st.leve);
 

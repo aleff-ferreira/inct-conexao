@@ -8622,3 +8622,54 @@ select.admin-input {
     border-top: 1px solid #999; font-size: 9pt; color: #444;
   }
 }
+
+/* ==========================================================================
+   CONTROLE DE ANO (camada de focos de calor)
+   --------------------------------------------------------------------------
+   `<input type="range">` nativo de propósito: alvo do tamanho do polegar,
+   setas do teclado e role="slider" sem custo. O Timeline climatológico de
+   viz.tsx desenha um botão por célula — com 22 anos em 360px, cada alvo teria
+   ~13px, abaixo do mínimo de toque da WCAG 2.5.8.
+   ========================================================================== */
+.map-ano {
+  margin-top: 10px; padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.map-ano-topo { display: flex; align-items: center; gap: 8px; }
+.map-ano-label {
+  display: flex; align-items: baseline; gap: 8px; margin-right: auto; cursor: pointer;
+}
+.map-ano-label strong {
+  font-size: 1.5rem; line-height: 1; letter-spacing: -0.02em;
+  color: var(--forest); font-variant-numeric: tabular-nums;
+}
+.map-ano-label span { font-size: 0.76rem; color: var(--muted); }
+
+.map-ano-btn {
+  /* 34px: acima do mínimo de 24px da WCAG 2.5.8, com folga para o dedo. */
+  width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--line); color: var(--forest);
+}
+.map-ano-btn:hover:not(:disabled) { background: #fff; border-color: var(--river); }
+.map-ano-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.map-ano-btn.is-on { background: rgba(31, 140, 165, 0.14); border-color: var(--river); color: var(--river-ink); }
+.map-ano-btn:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; }
+
+.map-ano-range { width: 100%; margin: 12px 0 4px; accent-color: #d1462f; }
+.map-ano-range:focus-visible { outline: 3px solid var(--river); outline-offset: 4px; }
+
+.map-ano-medida { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.map-ano-tab {
+  min-height: 30px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 0.76rem; font-weight: 700;
+  background: var(--paper); border: 1px solid var(--line); color: var(--muted);
+}
+.map-ano-tab.is-on { background: var(--forest); border-color: var(--forest); color: #fff; }
+.map-ano-tab:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* O botão de autoplay nem é renderizado nesse caso; a regra é rede de
+     segurança para o caso de a preferência mudar com a página aberta. */
+  .map-ano-btn.is-on { animation: none; }
+}

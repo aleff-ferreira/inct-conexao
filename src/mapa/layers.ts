@@ -13,6 +13,10 @@
  */
 import type { Fonte, ResumoNotificacoes, Uf } from "./types";
 import { ufs } from "./geo";
+import {
+  ANO_INICIAL, ANO_FINAL, META_FOCOS, LEGENDA_FOCOS, LEGENDA_VARIACAO,
+  focosDe, variacaoDe, corDoFoco, corDaVariacao, rotularFocos, type MedidaFocos,
+} from "./focos";
 
 /**
  * Acesso mais recente ao TabNet declarado nas fichas de estado.
@@ -41,6 +45,7 @@ export const CAMADA_IDS: string[] = [
   "vagas-ic-2026",
   "instituicoes",
   "conteudo",
+  "focos-calor",
 ];
 
 /** Seções do painel de estado (StatePanel). */
@@ -172,8 +177,14 @@ const FONTE_IBGE: Fonte = {
 export function construirCamadas(
   temConteudo: (sigla: string) => boolean,
   notificacoesDe: (sigla: string) => ResumoNotificacoes | null = () => null,
+  /* A camada de focos tem eixo de tempo: o ano e a medida entram aqui em vez de
+     virarem estado interno da camada, para que ela continue sendo uma função
+     pura do dado — que é o que permite ao build gerar a versão estática. */
+  tempo: { ano?: number; medida?: MedidaFocos } = {},
 ): Camada[] {
   const CINZA = "#dfe8e2";
+  const ano = tempo.ano ?? ANO_FINAL;
+  const medida = tempo.medida ?? "absoluto";
 
   /* Cobertura e período da lente de doenças, DERIVADOS das fichas.
      Antes eram prosa: a descrição dizia "Acre e Amapá" enquanto o mapa pintava
@@ -360,7 +371,46 @@ export function construirCamadas(
     },
   };
 
-  return [amazoniaLegal, doencas, vagas, instituicoes, conteudo];
+  /**
+   * Focos de calor do INPE — a única camada do mapa com eixo de tempo.
+   *
+   * É a série mais forte do projeto: 594 pontos, satélite de referência, e uma
+   * nota metodológica que a própria fonte escreve. Ela entra no fim da lista
+   * porque é a mais recente, não porque é a menos importante.
+   */
+  const focosCalor: Camada = {
+    id: "focos-calor",
+    label: `Focos de calor (${ano})`,
+    tema: "ambiente",
+    tipo: "sequencial",
+    descricao:
+      `Detecções de anomalia térmica pelo satélite de referência do INPE em ${ano}, por unidade federativa. ` +
+      `A série cobre ${ANO_INICIAL} a ${ANO_FINAL}; use o controle de ano para percorrê-la. ` +
+      "A escala de cor é a mesma em todos os anos — sem isso, cada ano pareceria igual e a tendência sumiria.",
+    fonte: {
+      titulo: META_FOCOS.titulo,
+      publicador: META_FOCOS.publicador,
+      url: META_FOCOS.url,
+      data: META_FOCOS.geradoEm,
+    },
+    escopo: {
+      maturidade: "consolidada",
+      cobertura: { medidas: 27, total: 27 },
+      // Mesmo satélite, mesmo horário de passagem, mesma contagem: comparável
+      // entre estados E entre anos. É a única camada do mapa de que isso vale.
+      comparavel: true,
+      naoMede: META_FOCOS.notaMetodologica,
+    },
+    valor: (u) => (medida === "variacao" ? variacaoDe(u.sigla, ano) : focosDe(u.sigla, ano)),
+    cor: (u) =>
+      (medida === "variacao"
+        ? corDaVariacao(variacaoDe(u.sigla, ano))
+        : corDoFoco(focosDe(u.sigla, ano))) ?? CINZA,
+    legenda: medida === "variacao" ? LEGENDA_VARIACAO : LEGENDA_FOCOS,
+    rotularValor: (u) => rotularFocos(u, ano, medida),
+  };
+
+  return [amazoniaLegal, doencas, vagas, instituicoes, conteudo, focosCalor];
 }
 
 /** Total de vagas (para textos). */
