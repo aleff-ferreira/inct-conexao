@@ -5,11 +5,16 @@ import { ufs, VIEW, WORLD, ufBySigla, focusViewBox, ufsPorRegiao, regionViewBox,
 import { escolherPasso } from "../src/ui/passos";
 import { parseMapaHash, buildMapaHash, isMapaHash, ESTADO_PADRAO } from "../src/mapa/url";
 import { parseHash } from "../src/webinars/router";
-import { construirCamadas, VAGAS_IC_2026, totalVagasIc, totalUfsComVagas, TEMAS } from "../src/mapa/layers";
-import { conteudoPorUf, capitulos, capituloInicial, temConteudo, totalNotificacoes, resumoNotificacoes } from "../src/mapa/content";
+import { construirCamadas, VAGAS_IC_2026, totalVagasIc, totalUfsComVagas, TEMAS, CAMADA_IDS, SECAO_IDS } from "../src/mapa/layers";
+import { carregarTodasFichas, capitulos, capituloInicial, temConteudo, totalNotificacoes, resumoNotificacoes } from "../src/mapa/content";
 import { conquistasDe } from "../src/mapa/gamify";
 import { CHUVA_POR_REGIAO } from "../src/mapa/clima";
 import type { EstadoConteudo } from "../src/mapa/types";
+
+/* As fichas passaram a ser carregadas sob demanda (135 kB que nao precisam
+   descer para quem nunca abre um estado). Em teste, pedimos todas de uma vez —
+   await de topo, que o vitest suporta em ESM. */
+const FICHAS = await carregarTodasFichas();
 
 /* --------------------------------------------------------------- GEOMETRIA */
 describe("geo · artefato oficial do IBGE", () => {
@@ -103,7 +108,39 @@ describe("url · estado serializado na hash", () => {
     expect(s.camada).toBe("vagas-ic-2026");
     expect(s.sec).toBe("doencas");
     expect(s.lista).toBe(true);
-    expect(s.leve).toBe(true);
+    expect(s.leve).toBe("1");
+  });
+
+  it("valor inválido na URL cai no padrão, e não passa em silêncio", () => {
+    /* `?sec=banana` esvaziava o corpo do painel sem erro nem aviso — nenhum
+       ramo do StatePanel casava. `?camada=` errada pintava o padrão e deixava
+       um link mentiroso no ar. */
+    expect(parseMapaHash("#/mapa/am?sec=banana").sec).toBeNull();
+    expect(parseMapaHash("#/mapa/am?camada=xpto").camada).toBe(ESTADO_PADRAO.camada);
+    for (const id of CAMADA_IDS) {
+      expect(parseMapaHash(`#/mapa?camada=${id}`).camada).toBe(id);
+    }
+    for (const id of SECAO_IDS) {
+      expect(parseMapaHash(`#/mapa/ro?sec=${id}`).sec).toBe(id);
+    }
+  });
+
+  it("o modo leve tem três estados, e a escolha da pessoa viaja no link", () => {
+    // "auto" é o padrão e fica fora da URL; sem os três estados, quem tem
+    // economia de dados no aparelho não conseguia desligar o modo leve.
+    expect(parseMapaHash("#/mapa").leve).toBe("auto");
+    expect(parseMapaHash("#/mapa?leve=1").leve).toBe("1");
+    expect(parseMapaHash("#/mapa?leve=0").leve).toBe("0");
+    expect(parseMapaHash("#/mapa?leve=xyz").leve).toBe("auto");
+    expect(buildMapaHash({ leve: "auto" })).toBe("#/mapa");
+    expect(buildMapaHash({ leve: "0" })).toContain("leve=0");
+    expect(buildMapaHash({ leve: "1" })).toContain("leve=1");
+  });
+
+  it("a lista de validação não envelhece em relação às camadas reais", () => {
+    // Lista de validação desatualizada rejeita link legítimo — pior que não validar.
+    const reais = construirCamadas(temConteudo, resumoNotificacoes).map((c) => c.id);
+    expect([...CAMADA_IDS].sort()).toEqual([...reais].sort());
   });
 
   it("URLs ficam curtas (omite padrões)", () => {
@@ -182,11 +219,11 @@ describe("layers · dados reais e verificáveis", () => {
 /* ---------------------------------------------------------------- CONTEÚDO */
 describe("content · esquema editorial", () => {
   it("carrega as fichas de demonstração RO, AM, CE", () => {
-    for (const uf of ["RO", "AM", "CE"]) expect(conteudoPorUf.has(uf)).toBe(true);
+    for (const uf of ["RO", "AM", "CE"]) expect(FICHAS.has(uf)).toBe(true);
   });
 
   it("todo registro publicado é consistente e citado", () => {
-    for (const e of conteudoPorUf.values() as IterableIterator<EstadoConteudo>) {
+    for (const e of FICHAS.values() as IterableIterator<EstadoConteudo>) {
       expect(e.uf).toMatch(/^[A-Z]{2}$/);
       for (const a of e.animais ?? []) {
         expect(["confirmado", "provavel", "incerto"]).toContain(a.ocorrencia);
@@ -357,7 +394,7 @@ describe("ui · escolherPasso", () => {
 describe("doenças · notificações com procedência", () => {
   it("carrega as fichas epidemiológicas AC e AP (dado real, não demonstração)", () => {
     for (const uf of ["AC", "AP"]) {
-      const e = conteudoPorUf.get(uf)!;
+      const e = FICHAS.get(uf)!;
       expect(e).toBeTruthy();
       expect(e.demonstracao).toBe(false);
       expect(e.fontes?.length ?? 0).toBeGreaterThan(0);
@@ -365,7 +402,7 @@ describe("doenças · notificações com procedência", () => {
   });
 
   it("toda notificação traz valor, período, sistema e fonte", () => {
-    for (const e of conteudoPorUf.values() as IterableIterator<EstadoConteudo>) {
+    for (const e of FICHAS.values() as IterableIterator<EstadoConteudo>) {
       for (const d of e.doencas ?? []) {
         if (!d.notificacoes) continue;
         expect(d.notificacoes.valor).toBeGreaterThanOrEqual(0);
@@ -378,7 +415,7 @@ describe("doenças · notificações com procedência", () => {
   });
 
   it("Amapá: a malária é marcada não-representativa (SIVEP) e fica fora do total", () => {
-    const ap = conteudoPorUf.get("AP")!;
+    const ap = FICHAS.get("AP")!;
     const malaria = ap.doencas!.find((d) => d.nome === "Malária")!;
     expect(malaria.notificacoes!.representativo).toBe(false);
     expect(malaria.notificacoes!.nota).toMatch(/SIVEP/);

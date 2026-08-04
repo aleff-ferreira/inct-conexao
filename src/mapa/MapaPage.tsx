@@ -18,9 +18,9 @@ import {
   construirCamadas, TEMAS, totalVagasIc, totalUfsComVagas, totalAmazoniaLegal,
   totalInstituicoes, totalUfsComInstituicoes, INSTITUICOES_POR_UF, type Camada,
 } from "./layers";
-import { conteudoDe, temConteudo, resumoNotificacoes, capitulos, capituloInicial } from "./content";
+import { carregarFicha, fichaEmCache, temConteudo, resumoNotificacoes, capitulos, capituloInicial } from "./content";
 import { parseMapaHash, buildMapaHash, ESTADO_PADRAO, type MapaState } from "./url";
-import type { Uf } from "./types";
+import type { EstadoConteudo, Uf } from "./types";
 import { Figura } from "../figuras/Figura";
 import { FOCOS } from "../figuras/registro";
 import { usePassoAtivo, rolarAtePasso } from "../ui/passos";
@@ -100,13 +100,38 @@ export default function MapaPage() {
   const reduzir = usePrefersReducedMotion();
   const [st, update] = useMapaState();
 
-  // modo leve: manual (?leve=1) OU economia de dados do navegador
-  const saveData = typeof navigator !== "undefined" && (navigator as { connection?: { saveData?: boolean } }).connection?.saveData;
-  const leve = st.leve || !!saveData;
+  /* Modo leve em três estados, e não dois.
+     Era `st.leve || !!saveData`: com economia de dados ligada no aparelho, o
+     modo ficava preso em ligado — o `aria-pressed` afirmava "ligado", o clique
+     não fazia nada, e a pessoa não tinha como ver o relevo.
+     Agora o automático é só uma sugestão, e a escolha explícita ganha dele.
+     Largura de tela DELIBERADAMENTE fora da conta: telefone pequeno não é
+     prova de banda cara, e usar isso tiraria o relevo de quase todo o público
+     do site por decisão que ninguém pediu. */
+  const leveAuto = useMemo(() => {
+    if (typeof navigator === "undefined") return false;
+    const c = (navigator as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    return c?.saveData === true || c?.effectiveType === "2g" || c?.effectiveType === "slow-2g";
+  }, []);
+  const leve = st.leve === "auto" ? leveAuto : st.leve === "1";
 
   const camadas = useMemo(() => construirCamadas(temConteudo, resumoNotificacoes), []);
   const camadaAtiva: Camada = camadas.find((c) => c.id === st.camada) ?? camadas[0];
   const ufSel = ufBySigla(st.uf);
+
+  /* A ficha do estado é lida sob demanda: as 10 fichas somam 135 kB e não
+     precisam descer para quem abre o mapa e nunca clica num estado. O painel
+     abre na hora com o que o índice já sabe (contagens, notificações) e o corpo
+     preenche quando o JSON chega. `fichaEmCache` evita o piscar em quem
+     revisita um estado já aberto. */
+  const [fichaSel, setFichaSel] = useState<EstadoConteudo | undefined>(() => fichaEmCache(st.uf));
+  useEffect(() => {
+    let vivo = true;
+    setFichaSel(fichaEmCache(st.uf));
+    if (!st.uf) return;
+    carregarFicha(st.uf).then((f) => { if (vivo) setFichaSel(f); });
+    return () => { vivo = false; };
+  }, [st.uf]);
   const [hover, setHover] = useState<Uf | null>(null);
 
   // camadas sobrepostas (não-URL): conexões da rede + pontos (POI)
@@ -223,6 +248,7 @@ export default function MapaPage() {
         ) : (
           <Explorer
             st={st}
+            fichaSel={fichaSel}
             update={update}
             camadas={camadas}
             camadaAtiva={camadaAtiva}
@@ -292,8 +318,21 @@ function MapaHeader({ st, update, leve }: { st: MapaState; update: (p: Partial<M
           <button type="button" className={`map-toggle${st.lista ? " is-on" : ""}`} aria-pressed={st.lista} onClick={() => update({ lista: !st.lista }, { replace: true })}>
             {st.lista ? <MapIcon size={15} aria-hidden /> : <ListIcon size={15} aria-hidden />} {st.lista ? "Ver mapa" : "Ver lista"}
           </button>
-          <button type="button" className={`map-toggle${leve ? " is-on" : ""}`} aria-pressed={leve} onClick={() => update({ leve: !st.leve }, { replace: true })} title="Reduz imagens e animações">
+          {/* O clique escreve o OPOSTO do que está valendo, não o oposto do que
+              está na URL — é isso que permite desligar o automático. */}
+          <button
+            type="button"
+            className={`map-toggle${leve ? " is-on" : ""}`}
+            aria-pressed={leve}
+            onClick={() => update({ leve: leve ? "0" : "1" }, { replace: true })}
+            title={
+              leve && st.leve === "auto"
+                ? "Ligado automaticamente: seu aparelho sinaliza economia de dados. Clique para ver o relevo."
+                : "Reduz imagens e animações"
+            }
+          >
             <Gauge size={15} aria-hidden /> Modo leve
+            {leve && st.leve === "auto" ? <span className="map-toggle-auto"> (automático)</span> : null}
           </button>
         </div>
       </div>
@@ -369,6 +408,8 @@ const LENS_ICON: Record<string, typeof Leaf> = {
 };
 
 type ExplorerProps = {
+  /** Ficha do estado selecionado, carregada sob demanda (undefined enquanto vem). */
+  fichaSel: EstadoConteudo | undefined;
   st: MapaState;
   update: (p: Partial<MapaState>, o?: { replace?: boolean }) => void;
   camadas: Camada[];
@@ -391,7 +432,7 @@ type ExplorerProps = {
   rotuloDe: (u: Uf) => string;
 };
 
-function Explorer({ st, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
+function Explorer({ st, fichaSel, update, camadas, camadaAtiva, ufSel, leve, reduzir, setHover, overlays, toggleOverlay, tooltipDe, overrideTarget, regiaoFoco, onRegiao, explorados, conquistas, onSelecionar, onFechar, rotuloDe }: ExplorerProps) {
   // fecha painel com Escape
   useEffect(() => {
     if (!ufSel) return;
@@ -466,7 +507,7 @@ function Explorer({ st, update, camadas, camadaAtiva, ufSel, leve, reduzir, setH
         {ufSel ? (
           <StatePanel
             uf={ufSel}
-            conteudo={conteudoDe(ufSel.sigla)}
+            conteudo={fichaSel}
             secaoAberta={st.sec as SecaoId | null}
             leve={leve}
             onAbrirSecao={(s) => update({ sec: s }, { replace: true })}

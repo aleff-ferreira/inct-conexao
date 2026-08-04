@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Compass, MapPin, Layers } from "lucide-react";
 import { BrazilMap, type MapOverlays, type TooltipInfo } from "./BrazilMap";
 import { construirCamadas, INSTITUICOES_POR_UF, totalAmazoniaLegal } from "./layers";
-import { temConteudo, totalNotificacoes, resumoNotificacoes, conteudoDe } from "./content";
+import { temConteudo, totalNotificacoes, resumoNotificacoes, resumoDe } from "./content";
 import { regionViewBox, REGIOES } from "./geo";
 import { MAPA_HREF } from "../webinars/router";
 import type { Uf } from "./types";
@@ -38,7 +38,7 @@ function economiaDeDados(): boolean {
 }
 
 /**
- * O relevo do mapa pesa 2,13 MB (brasil-relevo.webp mais os vizinhos). Baixar
+ * O relevo do mapa pesa 490 kB (brasil-relevo.avif mais os vizinhos). Baixar
  * isso em TODA visita à home, para uma seção que fica abaixo da dobra, é o tipo
  * de custo que castiga justamente o público em internet medida.
  *
@@ -107,7 +107,9 @@ export default function MapaTeaser() {
   /* O painel lateral reage ao passar o mouse: é o retorno imediato que mostra
      que o mapa responde. Sem hover, mostra o resumo da rede. */
   const uf = hover;
-  const ficha = uf ? conteudoDe(uf.sigla) : undefined;
+  // O teaser mostra contagens, não texto: o índice basta, e evita puxar 135 kB
+  // de ficha na HOME por causa de um hover.
+  const ficha = uf ? resumoDe(uf.sigla) : undefined;
 
   return (
     <section className="section-band mapa-teaser-band" id="mapa-teaser">
@@ -188,10 +190,10 @@ export default function MapaTeaser() {
                   </div>
                   <div>
                     <dt>Ficha</dt>
-                    <dd>{ficha ? `${ficha.doencas?.length ?? 0} doenças` : "em preparação"}</dd>
+                    <dd>{ficha ? `${ficha.contagens.doencas} doenças` : "em preparação"}</dd>
                   </div>
                 </dl>
-                {ficha?.destaque ? <p className="mapa-teaser-destaque">{ficha.destaque}</p> : null}
+                {/* O destaque textual mora na ficha, que o teaser nao baixa mais. */}
                 <a className="button primary mapa-teaser-abrir" href={`#/mapa/${uf.sigla.toLowerCase()}`}>
                   Abrir ficha de {uf.sigla} <ArrowRight size={15} aria-hidden="true" />
                 </a>

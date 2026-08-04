@@ -32,7 +32,12 @@ import { FIGURAS, figuraPorId } from "../src/figuras/registro";
 import { csvDaFigura, tabelaDaFigura, csvEscape } from "../src/figuras/csv";
 import { escala, esc, geometria } from "../src/figuras/desenho";
 import { construirCamadas, DATA_ACESSO_TABNET } from "../src/mapa/layers";
-import { temConteudo, totalNotificacoes, resumoNotificacoes, conteudoPorUf } from "../src/mapa/content";
+import { temConteudo, totalNotificacoes, resumoNotificacoes, carregarTodasFichas } from "../src/mapa/content";
+
+/* As fichas passaram a ser carregadas sob demanda (135 kB que nao precisam
+   descer para quem nunca abre um estado). Em teste, pedimos todas de uma vez —
+   await de topo, que o vitest suporta em ESM. */
+const FICHAS = await carregarTodasFichas();
 
 const RAIZ = join(__dirname, "..");
 const ler = (p: string) => readFileSync(join(RAIZ, p), "utf-8");
@@ -309,7 +314,7 @@ describe("proveniência das camadas do mapa", () => {
     // Data chumbada envelhece calada. Este teste avisa quando uma ficha nova
     // deixa a camada citando um acesso mais antigo do que o dado que ela pinta.
     let maisRecente = "";
-    for (const e of conteudoPorUf.values()) {
+    for (const e of FICHAS.values()) {
       for (const f of e.fontes ?? []) if (f.data && f.data > maisRecente) maisRecente = f.data;
     }
     expect(maisRecente).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -328,7 +333,7 @@ describe("proveniência das camadas do mapa", () => {
 
   it("a camada de doenças descreve a cobertura que ela de fato tem", () => {
     // Defeito 3: dizia "Acre e Amapá" e pintava AC, AP, MA e TO.
-    const cobertas = [...conteudoPorUf.keys()].filter((uf) => totalNotificacoes(uf) != null).sort();
+    const cobertas = [...FICHAS.keys()].filter((uf) => totalNotificacoes(uf) != null).sort();
     expect(cobertas.length).toBeGreaterThan(0);
     const descricao = de("doencas-notificacoes").descricao ?? "";
     for (const uf of cobertas) {
@@ -339,7 +344,7 @@ describe("proveniência das camadas do mapa", () => {
   it("o rótulo não afirma um ano inicial que os dados não têm", () => {
     // Defeito 4: rotulava tudo "(desde 2018)"; MA e TO acumulam de 2016.
     const anos = new Set<string>();
-    for (const e of conteudoPorUf.values()) {
+    for (const e of FICHAS.values()) {
       for (const d of e.doencas ?? []) {
         const p = d.notificacoes?.representativo !== false ? d.notificacoes?.periodo : undefined;
         const a = p ? /(\d{4})/.exec(p)?.[1] : undefined;
@@ -355,7 +360,7 @@ describe("proveniência das camadas do mapa", () => {
       if (!/\d{4}/.test(rotulo)) continue;
       const citado = /(\d{4})/.exec(rotulo)![1];
       const real = /(\d{4})/.exec(
-        [...(conteudoPorUf.get(uf)?.doencas ?? [])]
+        [...(FICHAS.get(uf)?.doencas ?? [])]
           .filter((d) => d.notificacoes && d.notificacoes.representativo !== false)
           .map((d) => d.notificacoes!.periodo ?? "")
           .sort()[0] ?? "",

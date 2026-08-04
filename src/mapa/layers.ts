@@ -26,6 +26,26 @@ export const DATA_ACESSO_TABNET = "2026-07-26";
 
 export type TemaId = "saude" | "ambiente" | "pesquisa" | "comunidades";
 
+/**
+ * Vocabulário aceito na URL. Existem como constantes, e não derivados de
+ * `construirCamadas`, porque `url.ts` precisa validar sem carregar o módulo de
+ * conteúdo inteiro — e porque validação que depende de injeção não é validação.
+ *
+ * `tests/mapa.test.ts` mantém CAMADA_IDS igual aos ids realmente construídos:
+ * lista de validação que envelhece rejeita link legítimo, que é pior do que
+ * não validar.
+ */
+export const CAMADA_IDS: string[] = [
+  "amazonia-legal",
+  "doencas-notificacoes",
+  "vagas-ic-2026",
+  "instituicoes",
+  "conteudo",
+];
+
+/** Seções do painel de estado (StatePanel). */
+export const SECAO_IDS: string[] = ["geral", "animais", "doencas", "ambiente", "servicos", "inct"];
+
 export type Tema = { id: TemaId; label: string; descricao: string };
 
 export const TEMAS: Tema[] = [

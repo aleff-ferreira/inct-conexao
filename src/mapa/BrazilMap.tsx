@@ -59,9 +59,78 @@ const ASPECT = VIEW.w / VIEW.h;
 const MAXZOOM = 7;
 const DRAG_THRESHOLD = 5;
 /** Relevo 3D real (satélite × sombreamento de DEM), recortado ao Brasil. Web Mercator, alinhado à malha. */
-const RELIEVE_URL = `${import.meta.env.BASE_URL}assets/maps/brasil-relevo.webp`;
+/**
+ * Relevo em três arquivos, e a razão de cada um.
+ *
+ * O relevo era um WebP de 2.065.194 B que NÃO comprime — 87% do peso da rota,
+ * baixado por todo mundo. Medido nesta base: AVIF entrega a mesma fidelidade em
+ * pouco mais da metade dos bytes, o que permitiu fazer as duas coisas de uma
+ * vez — aliviar a primeira pintura E melhorar o zoom.
+ *
+ *   base (1600px, 423 kB)   o que todo mundo recebe; o mapa é exibido com
+ *                           ~860px, então já é 2x
+ *   alta (3200px, 1.145 kB) entra só quando a pessoa aproxima de verdade, e é
+ *                           mais nítida que o arquivo de 2 MB que substituiu
+ *   webp (1600px, 463 kB)   resguardo para navegador sem AVIF (Safari < 16.4)
+ *
+ * Gerados por `scripts/reencode-basemap.py`.
+ */
+const RELEVO = {
+  base: `${import.meta.env.BASE_URL}assets/maps/brasil-relevo.avif`,
+  alta: `${import.meta.env.BASE_URL}assets/maps/brasil-relevo-alta.avif`,
+  semAvif: `${import.meta.env.BASE_URL}assets/maps/brasil-relevo-fallback.webp`,
+};
+const VIZINHOS = {
+  base: `${import.meta.env.BASE_URL}assets/maps/brasil-vizinhos.avif`,
+  semAvif: `${import.meta.env.BASE_URL}assets/maps/brasil-vizinhos-fallback.webp`,
+};
+
+/**
+ * O navegador decodifica AVIF?
+ *
+ * `<image>` de SVG não aceita `<picture>`, então a escolha tem de ser feita em
+ * JavaScript. Um AVIF de 1x1 em data URI resolve sem tocar a rede. A promessa é
+ * criada uma vez, no módulo, e compartilhada por todas as instâncias do mapa.
+ */
+const SUPORTA_AVIF: Promise<boolean> = (() => {
+  if (typeof Image === "undefined") return Promise.resolve(false);
+  return new Promise((res) => {
+    const img = new Image();
+    img.onload = () => res(img.width > 0);
+    img.onerror = () => res(false);
+    img.src =
+      "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQAMAAAAABNjb2xybmNseAACAAIABoAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEDQgMgkQAAAAB8dSLfI=";
+  });
+})();
 /** Vizinhos (América do Sul) esmaecidos — moldura "flutuante". */
-const VIZINHOS_URL = `${import.meta.env.BASE_URL}assets/maps/brasil-vizinhos.webp`;
+/**
+ * Escolhe os arquivos de relevo: formato pelo suporte, resolução pelo zoom.
+ *
+ * A versão de alta só é pedida depois que a pessoa aproxima — e, uma vez
+ * pedida, não volta atrás: trocar o href para trás faria o navegador redecodificar
+ * a imagem a cada gesto de zoom, que é justamente o custo que se quer evitar.
+ */
+function useRelevoSrc(zoomK: number, ativo: boolean) {
+  const [avif, setAvif] = useState<boolean | null>(null);
+  const [querAlta, setQuerAlta] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    SUPORTA_AVIF.then((ok) => vivo && setAvif(ok));
+    return () => { vivo = false; };
+  }, []);
+
+  useEffect(() => {
+    // ATENÇÃO ao sentido: zoomK = largura da vista / largura do mundo, então ele
+    // DIMINUI ao aproximar. 0,55 ≈ 2x de aproximação, que é onde a resolução
+    // base começa a mostrar o limite e vale gastar o megabyte.
+    if (ativo && avif && zoomK < 0.55) setQuerAlta(true);
+  }, [ativo, avif, zoomK]);
+
+  if (avif === null) return null; // ainda decidindo: não pede byte nenhum
+  if (!avif) return { relevo: RELEVO.semAvif, vizinhos: VIZINHOS.semAvif };
+  return { relevo: querAlta ? RELEVO.alta : RELEVO.base, vizinhos: VIZINHOS.base };
+}
 
 function clampView(b: Box): Box {
   let [x, y, w] = b;
@@ -258,6 +327,7 @@ export function BrazilMap({
   const destaqueSet = useMemo(() => new Set(destaques), [destaques]);
   const canPan = view[2] < WORLD.w - 0.5;
   const zoomK = view[2] / WORLD.w; // <1 quando aproximado (para manter marcadores ~constantes)
+  const src = useRelevoSrc(zoomK, !leve);
 
   // ---- geometria das camadas decorativas ----
   const hubUf = ufBySigla(HUB);
@@ -327,20 +397,22 @@ export function BrazilMap({
         </defs>
 
         {/* vizinhos (América do Sul) esmaecidos — moldura flutuante, atrás de tudo */}
-        {!leve ? (
-          <image className="map-vizinhos" href={VIZINHOS_URL} x={WORLD.x} y={WORLD.y} width={WORLD.w} height={WORLD.h}
+        {!leve && src ? (
+          <image className="map-vizinhos" href={src.vizinhos} x={WORLD.x} y={WORLD.y} width={WORLD.w} height={WORLD.h}
             preserveAspectRatio="none" aria-hidden />
         ) : null}
 
-        {/* relevo realista recortado ao Brasil, com sombra de elevação.
-            Modo leve: silhueta plana no lugar (não baixa ~2,5 MB de imagem). */}
-        {leve ? (
+        {/* Relevo recortado ao Brasil, com sombra de elevação. Duas ausências
+            possíveis, e a silhueta chapada serve às duas: modo leve (escolha de
+            quem tem pacote de dados curto) e o instante antes de saber se o
+            navegador decodifica AVIF. */}
+        {leve || !src ? (
           <g className="map-base-leve" filter="url(#mapLift)" aria-hidden>
             {ufs.map((u) => <path key={`lv-${u.sigla}`} d={u.path} />)}
           </g>
         ) : (
           <g className="map-relief" filter="url(#mapLift)">
-            <image href={RELIEVE_URL} x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h}
+            <image href={src.relevo} x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h}
               preserveAspectRatio="none" clipPath="url(#mapBrasilClip)" aria-hidden />
           </g>
         )}
@@ -431,9 +503,12 @@ export function BrazilMap({
                transform={`translate(${lcx} ${lcy}) scale(1.013) translate(${-lcx} ${-lcy})`}>
               <path d={lift.path} className="map-uf-lift-shadow" filter="url(#mapSoftBlur)" />
               <g clipPath={`url(#mapClip-${lift.sigla})`}>
-                {leve
+                {/* Reusa o MESMO href do relevo de fundo: o navegador já tem a
+                    imagem decodificada, então o estado "levantado" não custa
+                    byte nem decodificação nova. */}
+                {leve || !src
                   ? <path d={lift.path} fill="#e9f0ea" />
-                  : <image href={RELIEVE_URL} x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h} preserveAspectRatio="none" />}
+                  : <image href={src.relevo} x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h} preserveAspectRatio="none" />}
                 {tinted ? <path d={lift.path} fill={camada.cor(lift)} fillOpacity={0.3} /> : null}
               </g>
               {/* na seleção o anel fica por conta do .map-sel-outline (senão

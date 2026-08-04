@@ -1,0 +1,147 @@
+{
+  "_nota": "GERADO por scripts/build-indice-mapa.py — não editar à mão. Índice enxuto para a interface saber o que existe sem baixar as fichas inteiras. tests/mapa.test.ts reprova se divergir delas.",
+  "estados": {
+    "AC": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 4,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": {
+        "desde": 2018,
+        "valor": 79324
+      }
+    },
+    "AM": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 5,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": null
+    },
+    "AP": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 5,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": {
+        "desde": 2016,
+        "valor": 21147
+      }
+    },
+    "CE": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 3,
+        "doencas": 3,
+        "inct": 2,
+        "resumo": 1,
+        "servicos": 1
+      },
+      "demonstracao": true,
+      "nome": null,
+      "notificacoes": null
+    },
+    "MA": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 4,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": {
+        "desde": 2016,
+        "valor": 60524
+      }
+    },
+    "MT": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 4,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": null
+    },
+    "PA": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 5,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": null
+    },
+    "RO": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 5,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": null
+    },
+    "RR": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 4,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": null
+    },
+    "TO": {
+      "contagens": {
+        "ambiente": 1,
+        "animais": 0,
+        "doencas": 4,
+        "inct": 0,
+        "resumo": 1,
+        "servicos": 2
+      },
+      "demonstracao": false,
+      "nome": null,
+      "notificacoes": {
+        "desde": 2016,
+        "valor": 88065
+      }
+    }
+  }
+}
