@@ -6550,10 +6550,16 @@ select.admin-input {
   .comprovante-grid { grid-template-columns: 1fr; }
 }
 
-/* Impressão / salvar em PDF: só o comprovante sai na página */
+/* Impressão do COMPROVANTE de inscrição: só ele sai na página.
+   --------------------------------------------------------------------------
+   `body:has(#comprovante)` é o que torna esta regra local. Sem o `:has`, o
+   `visibility: hidden` valia para o site INTEIRO: qualquer página impressa
+   saía em branco, porque `#comprovante` só existe aqui. Isso derrubava, em
+   silêncio, o CSS de impressão da lista de selecionados e o do mapa — os dois
+   escritos depois, sem que ninguém notasse que já nasciam mortos.
+   Regra: bloco de impressão que esconde o body precisa dizer em QUAL página. */
 @media print {
-  .map-stage { position: static !important; max-height: none !important; }
-  body { visibility: hidden !important; background: #fff !important; }
+  body:has(#comprovante) { visibility: hidden !important; background: #fff !important; }
   #comprovante, #comprovante * { visibility: visible !important; }
   #comprovante {
     position: absolute;
@@ -7380,6 +7386,10 @@ select.admin-input {
 /* ---- impressão: esconde controles interativos ---- */
 @media print {
   .map-zoom, .map-modeswitch, .map-head-toggles, .map-controls { display: none !important; }
+  /* O sticky vira estático ao imprimir: uma pilha rolável impressa repetiria o
+     mapa em toda página. Esta regra morava no bloco do comprovante, onde o
+     `visibility: hidden` do body a tornava inócua. */
+  .map-stage { position: static !important; max-height: none !important; }
 }
 
 /* ============================================================================

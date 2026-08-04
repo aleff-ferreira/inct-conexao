@@ -151,6 +151,34 @@ describe("resultado · procedência e endereço", () => {
   });
 });
 
+describe("css · impressão não pode ser sequestrada por uma página", () => {
+  /* Havia um `@media print` global com `body { visibility: hidden }` revelando
+     só `#comprovante`. A regra é do comprovante de inscrição, mas valia para o
+     site inteiro: imprimir a lista de selecionados, ou qualquer outra página,
+     saía em branco. E o pior é que o defeito era silencioso — o CSS de
+     impressão escrito depois parecia certo e nunca chegava a valer.
+
+     A guarda: quem esconde o body ao imprimir tem de dizer em qual página. */
+  const css = readFileSync(join(__dirname, "..", "src/styles.css"), "utf-8");
+
+  it("nenhuma regra de impressão esconde o body sem escopo de página", () => {
+    const blocos = css.split("@media print").slice(1);
+    expect(blocos.length).toBeGreaterThan(0);
+    for (const b of blocos) {
+      const corpo = b.slice(0, b.indexOf("\n}\n") + 1);
+      const esconde = /(^|[^-\w])body[^{]*\{[^}]*visibility:\s*hidden/m.exec(corpo);
+      if (!esconde) continue;
+      // Se esconde, o seletor precisa ser condicional a algo da página.
+      expect(esconde[0], "regra de impressão esconde o body globalmente").toMatch(/body:(has|not|where|is)\(/);
+    }
+  });
+
+  it("a lista de selecionados tem regras próprias de impressão", () => {
+    expect(css).toContain(".res-uf { break-inside: avoid; }");
+    expect(css).toMatch(/\.res-tabela tbody tr\[hidden\]\s*\{\s*display: table-row/);
+  });
+});
+
 describe("resultado · a busca serve a quem procura o próprio nome", () => {
   /* A página é lazy e usa DOM, então o que se testa aqui é a REGRA, replicada
      do componente: sem acento, sem caixa, e sigla de estado como caso à parte.
