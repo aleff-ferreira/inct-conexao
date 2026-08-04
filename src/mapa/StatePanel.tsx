@@ -7,7 +7,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import {
   X, AlertTriangle, Bug, Activity, Leaf, Stethoscope, FlaskConical,
-  ExternalLink, Info, ShieldAlert, ShieldCheck, Eye, HeartPulse,
+  ExternalLink, Info, ShieldAlert, ShieldCheck, Eye, HeartPulse, Printer,
 } from "lucide-react";
 import type { Uf } from "./types";
 import type { AnimalPeconhento, Doenca, EstadoConteudo, Fonte } from "./types";
@@ -51,7 +51,22 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
     ref.current?.querySelector<HTMLElement>(".map-panel-title")?.focus();
   }, [uf.sigla]);
 
+  /* `tudo` expande as seis seções ao mesmo tempo. Serve a dois usos:
+     imprimir a ficha inteira (uma regra @media print não conseguiria, porque
+     as seções são renderização condicional e não estão no DOM) e permitir que
+     o Ctrl+F do navegador encontre um termo que está numa aba fechada. */
+  const [tudo, setTudo] = useState(false);
   const aberta = secaoAberta ?? "geral";
+  const mostrar = (s: SecaoId) => tudo || aberta === s;
+
+  /* O botão precisa existir: no iOS Safari não há `onbeforeprint`, então não dá
+     para expandir automaticamente ao acionar a impressão do navegador. E o
+     `requestAnimationFrame` duplo garante que o React já pintou as seções antes
+     de a caixa de impressão abrir — sem isso, imprime o que estava na tela. */
+  const imprimir = () => {
+    setTudo(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+  };
   const vagas = VAGAS_IC_2026[uf.sigla];
   const inst = INSTITUICOES_POR_UF[uf.sigla] ?? 0;
   const contagem: Record<SecaoId, number> = {
@@ -76,7 +91,17 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
   ];
 
   return (
-    <aside className="map-panel" role="dialog" aria-modal="false" aria-labelledby={tituloId} ref={ref}>
+    <aside
+      className="map-panel"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby={tituloId}
+      ref={ref}
+      /* Vira o rodapé da folha impressa (ver `@media print`). Endereço e data
+         no papel são o que impede o PDF de virar dado sem origem — e o papel é
+         justamente onde o número circula mais longe de quem o publicou. */
+      data-procedencia={`${uf.nome} (${uf.sigla}) · ${typeof window !== "undefined" ? window.location.href : ""} · impresso em ${new Date().toLocaleDateString("pt-BR")}`}
+    >
       <header className="map-panel-head">
         <div>
           <p className="map-panel-kicker">
@@ -85,9 +110,17 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </p>
           <h2 className="map-panel-title" id={tituloId} tabIndex={-1}>{uf.nome}</h2>
         </div>
-        <button type="button" className="icon-button" onClick={onFechar} aria-label="Fechar painel e voltar ao Brasil">
-          <X size={18} aria-hidden />
-        </button>
+        <div className="map-panel-acoes">
+          <button type="button" className="map-panel-acao" onClick={() => setTudo((v) => !v)} aria-pressed={tudo}>
+            {tudo ? "Recolher seções" : "Expandir tudo"}
+          </button>
+          <button type="button" className="map-panel-acao" onClick={imprimir}>
+            <Printer size={14} aria-hidden /> Imprimir ficha
+          </button>
+          <button type="button" className="icon-button no-print" onClick={onFechar} aria-label="Fechar painel e voltar ao Brasil">
+            <X size={18} aria-hidden />
+          </button>
+        </div>
       </header>
 
       {/* Emergência SEMPRE visível, no topo */}
@@ -134,7 +167,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
       </nav>
 
       <div className="map-panel-body">
-        {aberta === "geral" && (
+        {mostrar("geral") && (
           <Secao titulo="Visão geral" icon={Info}>
             {/* Painel visual: anel de completude + perfil em barras */}
             <div className="viz-dash">
@@ -163,7 +196,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </Secao>
         )}
 
-        {aberta === "animais" && (
+        {mostrar("animais") && (
           <Secao titulo="Animais peçonhentos" icon={Bug}>
             <p className="map-section-lede">Animais <em>peçonhentos</em> inoculam veneno (picada/ferrão); diferentes de <em>venenosos</em> (tóxicos se ingeridos/tocados). Fotos servem só de referência: a identificação segura em campo exige cautela.</p>
             {conteudo?.animais?.length ? (
@@ -174,7 +207,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </Secao>
         )}
 
-        {aberta === "doencas" && (
+        {mostrar("doencas") && (
           <Secao titulo="Doenças tropicais e negligenciadas" icon={Activity}>
             <p className="map-section-lede">Conteúdo <strong>educativo</strong>. Não substitui avaliação profissional; o site não diagnostica nem prescreve.</p>
             {conteudo?.doencas?.length ? (
@@ -185,7 +218,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </Secao>
         )}
 
-        {aberta === "ambiente" && (
+        {mostrar("ambiente") && (
           <Secao titulo="Ambiente & clima" icon={Leaf}>
             {conteudo?.ambiente ? (
               <>
@@ -203,7 +236,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </Secao>
         )}
 
-        {aberta === "servicos" && (
+        {mostrar("servicos") && (
           <Secao titulo="Serviços & emergência" icon={Stethoscope}>
             <ul className="map-servicos">
               <li><strong>SAMU</strong>: <a href="tel:192">192</a> <span className="map-muted">urgência e emergência</span></li>
@@ -217,7 +250,7 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
           </Secao>
         )}
 
-        {aberta === "inct" && (
+        {mostrar("inct") && (
           <Secao titulo="Pesquisa & INCT-CONEXAO" icon={FlaskConical}>
             {conteudo?.atividadesInct?.length ? (
               <ul className="map-inct">

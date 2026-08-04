@@ -8570,3 +8570,55 @@ select.admin-input {
   .map-tabela tbody td::before { content: attr(data-rotulo) ": "; font-weight: 700; color: var(--muted); }
   .map-tabela tbody tr:nth-child(even) th, .map-tabela tbody tr:nth-child(even) td { background: none; }
 }
+
+/* ==========================================================================
+   FICHA DO ESTADO: AÇÕES E IMPRESSÃO
+   ========================================================================== */
+.map-panel-acoes { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.map-panel-acao {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 30px;
+  padding: 5px 10px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 0.75rem; font-weight: 700;
+  color: var(--forest); background: var(--paper); border: 1px solid var(--line);
+}
+.map-panel-acao:hover { background: #fff; border-color: var(--river); }
+.map-panel-acao:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; }
+.map-panel-acao[aria-pressed="true"] { background: rgba(31, 140, 165, 0.12); border-color: var(--river); color: var(--river-ink); }
+
+.map-reportar { color: var(--river-ink); font-weight: 700; white-space: nowrap; }
+
+.map-lacunas { margin: 10px 0 0; font-size: 0.84rem; }
+.map-lacunas summary { cursor: pointer; color: var(--river-ink); font-weight: 700; }
+.map-lacunas p { margin: 6px 0 0; line-height: 1.55; color: var(--ink); }
+.map-lacunas-nota { color: var(--muted); font-size: 0.8rem; }
+
+@media print {
+  /* Imprimir a ficha de um estado é o caso de uso de quem vai a campo sem
+     internet. As seções já vêm expandidas por estado (React), porque @media
+     print não consegue revelar o que não está no DOM.
+
+     `leve` é forçado: mandar um AVIF de 400 kB para a fila de impressão de um
+     celular é onde isso trava. */
+  .map-hud, .map-zoom, .map-lens, .map-regions, .map-overlay-toggles,
+  .map-modeswitch, .map-head-toggles, .map-xp, .map-toast, .map-tooltip,
+  .map-panel-acoes, .map-lista-top, .map-story-nav, .map-beta, .no-print {
+    display: none !important;
+  }
+  .map-relief, .map-vizinhos, .map-vista-sheen { display: none !important; }
+
+  .map-panel, .map-side { position: static !important; max-height: none !important; box-shadow: none !important; border: 0 !important; }
+  .map-panel-body { max-height: none !important; overflow: visible !important; }
+  .map-panel-sec { break-inside: avoid; }
+
+  /* Sem isto a hachura da legenda (o padrão para quem não distingue matizes)
+     desaparece na impressão, e a legenda vira uma lista de cinzas iguais. */
+  .map-legenda, .map-tabela, .map-uf { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  /* O carimbo: sem endereço e data, um PDF impresso vira dado órfão — e órfão é
+     o formato em que o número viaja mais longe. */
+  .map-panel::after {
+    content: "INCT-CONEXAO · " attr(data-procedencia);
+    display: block; margin-top: 16px; padding-top: 10px;
+    border-top: 1px solid #999; font-size: 9pt; color: #444;
+  }
+}

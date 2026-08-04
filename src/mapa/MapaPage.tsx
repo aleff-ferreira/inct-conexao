@@ -25,6 +25,7 @@ import { Figura } from "../figuras/Figura";
 import { FOCOS } from "../figuras/registro";
 import { usePassoAtivo, rolarAtePasso } from "../ui/passos";
 import { baixarCsvDaCamada } from "./csvCamada";
+import { linkDeErro, EMAIL_EQUIPE } from "./reportar";
 
 /* ---- hooks utilitários ---- */
 function usePrefersReducedMotion(): boolean {
@@ -389,8 +390,13 @@ function AvisoBeta() {
         <p className="map-beta-texto">
           Os dados e textos desta página ainda estão em revisão científica e podem conter erros ou lacunas.{" "}
           <strong>Não use o mapa como referência</strong> para decisão clínica, citação acadêmica ou
-          divulgação: para números oficiais, consulte as fontes indicadas em cada ficha. Encontrou algum erro?{" "}
-          <a href="mailto:inctconexao@gmail.com?subject=Mapa%20interativo%20(beta)">Avise a equipe</a>.
+          divulgação: para números oficiais, consulte as fontes indicadas em cada ficha.{" "}
+          {/* O aviso NÃO cobre a seção de figuras: aquelas têm fonte, licença e
+              CSV, e dizer "não cite" sobre elas seria falso. Ver SecaoFocos. */}
+          <a href={`mailto:${EMAIL_EQUIPE}?subject=${encodeURIComponent("[mapa] correção")}`}>
+            Encontrou um erro? Avise a equipe
+          </a>{" "}
+          — ou use o botão “Reportar erro” ao lado da legenda, que já leva a camada, o estado e a safra do dado.
         </p>
       </div>
     </aside>
@@ -829,6 +835,7 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
      e o do AC soma quatro doenças. A interface teria fabricado a afirmação; o
      dado não a contém. Por isso o botão de ordenar nem existe nesse caso. */
   const podeOrdenarPorValor = e.comparavel;
+  const faltando = useMemo(() => ufs.filter((u) => camada.valor(u) == null).map((u) => u.sigla), [camada]);
 
   const linhas = useMemo(() => {
     const alvo = norm(q.trim());
@@ -862,7 +869,27 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
         <span className={`map-selo map-selo--${e.maturidade}`}>{e.maturidade}</span>
         {e.cobertura.medidas} de {e.cobertura.total} unidades federativas com valor medido.
         {" "}{e.naoMede}
+        {" "}
+        <a className="map-reportar" href={linkDeErro({ categoria: "valor-errado", camada })}>
+          Reportar erro nesta camada
+        </a>
       </p>
+
+      {/* O cinza do mapa é ambíguo: pode ser "medimos e não há" ou "não
+          medimos". São coisas opostas, e nomear quais estados faltam é a única
+          forma de não afirmar a primeira quando se quer dizer a segunda. */}
+      {faltando.length ? (
+        <details className="map-lacunas">
+          <summary>
+            Sem dado nesta camada: {faltando.length} de {e.cobertura.total} unidades federativas
+          </summary>
+          <p>{faltando.join(", ")}</p>
+          <p className="map-lacunas-nota">
+            Ausência aqui significa dado ainda não cadastrado — não ausência de risco, de atividade
+            ou de ocorrência.
+          </p>
+        </details>
+      ) : null}
 
       <table className="map-tabela">
         <caption>
