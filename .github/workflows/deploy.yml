@@ -1,0 +1,92 @@
+# ============================================================================
+#  Deploy contínuo: push no main → testes → build (Node 22) → FTPS Hostinger
+# ============================================================================
+#  É este arquivo que permite corrigir a URL de uma transmissão 15 minutos
+#  antes do evento, pelo celular, via /admin: o Sveltia grava direto no main,
+#  e todo save chega ao ar em ~5 min. Consequência: `published: false` é o
+#  ÚNICO rascunho — qualquer outro save de webinário publicado vai ao ar.
+#
+#  REGRAS OPERACIONAIS (quebrá-las custa caro):
+#  - Upload manual pelo hPanel com o CI ativo DESSINCRONIZA o estado do sync
+#    (.ftp-deploy-sync-state.json no servidor). Só em emergência — e, depois,
+#    apague esse arquivo no servidor para o próximo run ressincronizar tudo.
+#  - NUNCA estrear o CI no dia de um evento: a primeira execução sobe o site
+#    inteiro (10–20 min); as seguintes são incrementais (~4–6 min).
+#  - O deploy só roda quando existirem os secrets FTP_* E a variable
+#    FTP_SERVER_DIR. Comece com FTP_SERVER_DIR = "./deploy-test/" e só aponte
+#    para a raiz ("./") depois de conferir o resultado no navegador.
+#  - `dangerous-clean-slate: false` é o que preserva o que o CI não gerencia
+#    (.htaccess, llms.txt, .private no servidor): o sync só apaga o que ele
+#    mesmo subiu um dia. Nunca mude para true.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nunca cancelar um envio FTP no meio: um deploy interrompido deixa o site
+# metade novo, metade velho. Runs enfileiram e rodam até o fim, um por vez.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  build-e-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          # PINADO de propósito: o vite build no Node 18 FALHA e ainda assim
+          # sai com código 0 — sem o pin, o CI publicaria um dist quebrado
+          # "com sucesso". O projeto exige Node 20.19+; usamos a mesma major
+          # do toolchain local (.tools/node-v22).
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      # Portão: os testes travam as decisões editoriais (comparabilidade,
+      # fusos, CMS). Nada que os quebre vai ao ar.
+      - run: npm test
+
+      # `build` já inclui `tsc --noEmit` (ver package.json).
+      - run: npm run build
+
+      - name: Guarda anti-build-vazio
+        # Cinto e suspensório para o caso do Node 18: só um dist/ com
+        # index.html real e bundle referenciado segue para o FTP.
+        run: |
+          test -s dist/index.html
+          grep -q "assets/index-" dist/index.html
+
+      - name: Credenciais de FTP existem?
+        id: gate
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
+        run: |
+          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_SERVER_DIR" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Build validado; deploy PULADO (faltam os secrets FTP_* e/ou a variable FTP_SERVER_DIR — ver docs/plano-webinario-zoom-youtube.md, item 9)."
+          fi
+
+      - name: Enviar dist/ por FTPS
+        if: steps.gate.outputs.deploy == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          # Repository variable (Settings > Secrets and variables > Actions >
+          # Variables). "./deploy-test/" para validar; "./" para produção,
+          # relativo à raiz da CONTA FTP dedicada (restrita a public_html).
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          dangerous-clean-slate: false

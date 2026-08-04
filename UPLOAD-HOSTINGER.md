@@ -6,6 +6,25 @@ rotas, o CMS, a página estática de figuras, os PDFs).
 
 Este arquivo **não** faz parte do site — não suba ele.
 
+> **Desde 04/08/2026 existe deploy automático** (`.github/workflows/deploy.yml`):
+> todo push no `main` roda os testes, o build em Node 22 e envia o `dist/` por
+> FTPS. O processo manual abaixo passa a ser SÓ para emergência — e tem um
+> custo novo: upload manual dessincroniza o estado do CI
+> (`.ftp-deploy-sync-state.json` no servidor). Se precisar fazê-lo, apague esse
+> arquivo no servidor depois, para o próximo run ressincronizar tudo.
+>
+> **Para ativar o CI** (uma vez): criar uma conta FTP dedicada no hPanel
+> (Arquivos → Contas FTP, restrita a `public_html`); no GitHub, Settings →
+> Secrets and variables → Actions: secrets `FTP_SERVER`, `FTP_USERNAME`,
+> `FTP_PASSWORD` e a **variable** `FTP_SERVER_DIR` começando em
+> `./deploy-test/`. Conferido o resultado em
+> `inct-conexao.com.br/deploy-test/`, mude a variable para `./` e apague a
+> pasta de teste. Sem os secrets, o CI só valida o build (verde, sem deploy).
+> A primeira execução com FTP sobe o site inteiro (10–20 min; **nunca estrear
+> no dia de um evento**); as seguintes são incrementais (~4–6 min).
+> `.htaccess`, `llms.txt` e `.private` no servidor não são tocados — o sync só
+> apaga o que ele mesmo subiu.
+
 ---
 
 ## O que subir
