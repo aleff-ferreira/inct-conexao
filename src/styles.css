@@ -8673,3 +8673,59 @@ select.admin-input {
      segurança para o caso de a preferência mudar com a página aberta. */
   .map-ano-btn.is-on { animation: none; }
 }
+
+/* ==========================================================================
+   ONDA 3: RÉGUA DE POSIÇÃO E ÍNDICE DE CAPÍTULOS
+   ========================================================================== */
+
+/* Texto só para leitor de tela. O projeto não tinha esta classe — a barra da
+   régua é decorativa, e a frase precisa existir em algum lugar para quem não
+   enxerga o comprimento. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.map-regua {
+  margin: 12px 0; padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.map-regua-titulo {
+  margin: 0 0 8px; font-size: 0.72rem; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+}
+.map-regua-linha { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; font-size: 0.82rem; }
+.map-regua-rotulo { flex: 0 0 92px; color: var(--muted); }
+.map-regua-trilho { flex: 1; height: 7px; border-radius: 999px; background: rgba(17, 33, 31, 0.08); overflow: hidden; }
+.map-regua-preenchida { display: block; height: 100%; border-radius: 999px; background: var(--river); }
+.map-regua-posto { flex: 0 0 auto; font-weight: 800; color: var(--forest); font-variant-numeric: tabular-nums; }
+/* O denominador é parte do número, não uma nota: "3º" sozinho engana. */
+.map-regua-de { font-weight: 600; color: var(--muted); }
+.map-regua-aviso { margin: 8px 0 0; font-size: 0.76rem; line-height: 1.5; color: var(--muted); }
+
+.map-indice { margin-bottom: 18px; }
+.map-indice-titulo {
+  margin: 0 0 8px; font-size: 0.72rem; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--river-ink);
+}
+.map-indice ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.map-indice-btn {
+  display: flex; align-items: center; gap: 9px; width: 100%; min-height: 36px;
+  padding: 7px 11px; border-radius: 8px; cursor: pointer; text-align: left;
+  font: inherit; font-size: 0.86rem; font-weight: 600;
+  background: none; border: 1px solid transparent; color: var(--muted);
+}
+.map-indice-btn:hover { background: var(--surface); border-color: var(--line); color: var(--ink); }
+.map-indice-btn:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; }
+.map-indice-btn.is-on { background: var(--surface); border-color: var(--river); color: var(--forest); font-weight: 800; }
+.map-indice-n {
+  flex: 0 0 auto; width: 20px; height: 20px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 900;
+  background: rgba(17, 33, 31, 0.07); color: var(--muted);
+}
+.map-indice-btn.is-on .map-indice-n { background: var(--river); color: #fff; }
+
+@media print {
+  .map-indice, .map-regua-trilho { display: none !important; }
+}

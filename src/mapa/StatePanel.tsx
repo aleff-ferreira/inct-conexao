@@ -10,6 +10,8 @@ import {
   ExternalLink, Info, ShieldAlert, ShieldCheck, Eye, HeartPulse, Printer,
 } from "lucide-react";
 import type { Uf } from "./types";
+import type { Camada } from "./layers";
+import { posicaoDe, frasePosicao, avisoCobertura } from "./ranking";
 import type { AnimalPeconhento, Doenca, EstadoConteudo, Fonte } from "./types";
 import { mapaAsset } from "./content";
 import { VAGAS_IC_2026, INSTITUICOES_POR_UF } from "./layers";
@@ -36,13 +38,15 @@ const OCORRENCIA_ROTULO: Record<string, string> = {
 export type StatePanelProps = {
   uf: Uf;
   conteudo?: EstadoConteudo;
+  /** Camada ativa: define se ha posicao a mostrar, e em que recorte. */
+  camada: Camada;
   secaoAberta: SecaoId | null;
   leve: boolean;
   onAbrirSecao: (s: SecaoId | null) => void;
   onFechar: () => void;
 };
 
-export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFechar }: StatePanelProps) {
+export function StatePanel({ uf, conteudo, camada, secaoAberta, leve, onAbrirSecao, onFechar }: StatePanelProps) {
   const ref = useRef<HTMLElement>(null);
   const tituloId = useId();
 
@@ -67,6 +71,8 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
     setTudo(true);
     requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
   };
+  const postos = posicaoDe(uf, camada);
+  const aviso = postos.length ? avisoCobertura(camada) : null;
   const vagas = VAGAS_IC_2026[uf.sigla];
   const inst = INSTITUICOES_POR_UF[uf.sigla] ?? 0;
   const contagem: Record<SecaoId, number> = {
@@ -141,6 +147,30 @@ export function StatePanel({ uf, conteudo, secaoAberta, leve, onAbrirSecao, onFe
 
       {conteudo?.demonstracao ? (
         <p className="map-demo-flag"><Info size={14} aria-hidden /> Ficha de <strong>demonstração</strong>: conteúdo ilustrativo, verificável pelas fontes citadas, ainda em revisão editorial.</p>
+      ) : null}
+
+      {/* Régua de posição: só existe quando a camada é comparável, e sempre
+          com o denominador impresso. "1º de 27" com 4 estados medidos não é
+          posição — é artefato de cobertura, e o mais enganoso possível. */}
+      {postos.length ? (
+        <div className="map-regua">
+          <p className="map-regua-titulo">Posição em {camada.label}</p>
+          {postos.map((p) => (
+            <div key={p.recorte} className="map-regua-linha">
+              <span className="map-regua-rotulo">{p.recorte}</span>
+              {/* A barra é decorativa: quem usa leitor de tela recebe a frase,
+                  que é mais precisa que qualquer comprimento. */}
+              <span className="map-regua-trilho" aria-hidden>
+                <span className="map-regua-preenchida" style={{ width: `${Math.round(p.fracao * 100)}%` }} />
+              </span>
+              <span className="map-regua-posto">
+                {p.posicao}º<span className="map-regua-de"> de {p.de}</span>
+              </span>
+              <span className="sr-only">{frasePosicao(p, camada)}</span>
+            </div>
+          ))}
+          {aviso ? <p className="map-regua-aviso">{aviso}</p> : null}
+        </div>
       ) : null}
 
       {/* Painel de indicadores do estado */}

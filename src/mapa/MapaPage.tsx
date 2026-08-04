@@ -544,6 +544,7 @@ function Explorer({ st, fichaSel, anoVivo, setAnoVivo, update, camadas, camadaAt
           <StatePanel
             uf={ufSel}
             conteudo={fichaSel}
+            camada={camadaAtiva}
             secaoAberta={st.sec as SecaoId | null}
             leve={leve}
             onAbrirSecao={(s) => update({ sec: s }, { replace: true })}
@@ -718,6 +719,33 @@ function Narrativa({ cap, camada, enquadrar, overlays, tooltipDe, explorados, re
       </div>
 
       <div className="map-story" ref={pilha}>
+        {/* Índice da história: diz onde a pessoa está e permite pular.
+            No celular é uma lista normal no topo, não uma segunda barra
+            grudada: o palco já é sticky com 38svh, e empilhar outra barra
+            espremeria o texto — que é o conteúdo. */}
+        <nav className="map-indice" aria-label="Capítulos da história">
+          <p className="map-indice-titulo">
+            Capítulo {capitulos.findIndex((c) => c.id === cap.id) + 1} de {capitulos.length}
+          </p>
+          <ol>
+            {capitulos.map((c, i) => (
+              <li key={c.id}>
+                <button
+                  type="button"
+                  className={`map-indice-btn${c.id === cap.id ? " is-on" : ""}`}
+                  aria-current={c.id === cap.id ? "step" : undefined}
+                  onClick={() => {
+                    const alvo = pilha.current?.querySelector<HTMLElement>(`[data-passo="${c.id}"]`);
+                    alvo?.scrollIntoView({ behavior: reduzir ? "auto" : "smooth", block: "start" });
+                  }}
+                >
+                  <span className="map-indice-n">{i + 1}</span> {c.titulo}
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         {capitulos.map((c, i) => (
           <section
             key={c.id}

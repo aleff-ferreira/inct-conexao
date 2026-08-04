@@ -305,6 +305,50 @@ describe("layers · dados reais e verificáveis", () => {
     expect(buildMapaHash({ ano: null })).not.toContain("ano=");
   });
 
+  it("posição só existe em camada comparável, e o denominador é quem tem dado", async () => {
+    const { posicaoDe, frasePosicao } = await import("../src/mapa/ranking");
+    const camadas = construirCamadas(temConteudo, resumoNotificacoes);
+    const doencas = camadas.find((c) => c.id === "doencas-notificacoes")!;
+    const vagas = camadas.find((c) => c.id === "vagas-ic-2026")!;
+    const ac = ufBySigla("AC")!;
+    const ro = ufBySigla("RO")!;
+
+    /* Camada não comparável não tem posição. E note que `doencas` É sequencial:
+       filtrar por tipo não bastaria — só o booleano `comparavel` segura. */
+    expect(posicaoDe(ac, doencas)).toEqual([]);
+
+    const postos = posicaoDe(ro, vagas);
+    expect(postos.length).toBeGreaterThan(0);
+    for (const p of postos) {
+      /* O denominador é o número de UFs COM dado, nunca 27. "1º de 27" com 18
+         medidos não é posição: é artefato de cobertura, e parece nacional. */
+      expect(p.de).toBeLessThanOrEqual(27);
+      expect(p.posicao).toBeGreaterThanOrEqual(1);
+      expect(p.posicao).toBeLessThanOrEqual(p.de);
+      // A frase impressa carrega o denominador, sempre.
+      expect(frasePosicao(p, vagas)).toContain(`entre os ${p.de} estados com dado publicado`);
+      /* Concordância: as cinco regiões do IBGE são masculinas; só "Amazônia
+         Legal" é feminina. "na Norte" numa página institucional custa mais
+         credibilidade do que parece. E a sigla IC não pode virar "ic". */
+      expect(frasePosicao(p, vagas)).not.toMatch(/na (Norte|Nordeste|Centro-Oeste|Sudeste|Sul)\b/);
+      expect(frasePosicao(p, vagas)).toContain("IC");
+    }
+    // Rondônia tem 15 vagas, o maior valor do edital: 1º no Brasil.
+    expect(postos.find((p) => p.recorte === "Brasil")!.posicao).toBe(1);
+    // O denominador nacional é 18 (UFs com vaga), não 27.
+    expect(postos.find((p) => p.recorte === "Brasil")!.de).toBe(totalUfsComVagas);
+  });
+
+  it("estado sem dado na camada não recebe posição inventada", async () => {
+    const { posicaoDe } = await import("../src/mapa/ranking");
+    const vagas = construirCamadas(temConteudo, resumoNotificacoes).find((c) => c.id === "vagas-ic-2026")!;
+    // Acre não tem vaga neste edital: contar como zero daria a ele uma posição
+    // que ele não tem, e ainda por cima a última — uma afirmação sobre um dado
+    // que não existe.
+    expect(vagas.valor(ufBySigla("AC")!)).toBeNull();
+    expect(posicaoDe(ufBySigla("AC")!, vagas)).toEqual([]);
+  });
+
   it("toda camada tem fonte declarada e legenda", () => {
     const camadas = construirCamadas(temConteudo);
     expect(camadas.length).toBeGreaterThanOrEqual(3);
