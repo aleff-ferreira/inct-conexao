@@ -9,7 +9,7 @@ import {
   Radio,
   Users,
 } from "lucide-react";
-import { resolveStatus, webinarAsset } from "./data";
+import { TEXTO_ACESSIBILIDADE, resolveStatus, webinarAsset } from "./data";
 import { useWebinar } from "./store";
 import { HUB_HREF, eventHref, useNow } from "./router";
 import { absoluteUrl, buildEventJsonLd, useWebinarHead } from "./seo";
@@ -20,6 +20,8 @@ import {
   formatEventWeekday,
   icsDataUri,
   machineDate,
+  scheduleLines,
+  visitorTimeZone,
 } from "./format";
 import {
   AgendaTimeline,
@@ -109,6 +111,14 @@ export function WebinarEvent({ slug }: { slug: string }) {
   const heroImage = webinarAsset(event.heroImage ?? "hero-forest.jpg");
   const hasReplay = Boolean(event.replay);
   const paragraphs = event.description.split(/\n\n+/);
+  /* O horário traduzido: Rondônia é UTC-4 e a maior parte da audiência está em
+     UTC-3 — "16:00" seco fazia metade do público chegar uma hora antes. A
+     primeira linha (Rondônia) já está no rótulo editorial; daqui saem as
+     EXTRAS: "17:00 em Brasília" e, quando difere, "no seu horário". */
+  const horariosExtras = scheduleLines(event.startsAt, visitorTimeZone())
+    .slice(1)
+    .map((l) => `${l.hora} ${l.rotulo}`)
+    .join(" · ");
 
   return (
     <main className="webinar-page webinar-event" id="conteudo" tabIndex={-1}>
@@ -144,6 +154,7 @@ export function WebinarEvent({ slug }: { slug: string }) {
             <span>
               <Globe2 size={17} aria-hidden="true" />
               {event.timezoneLabel}
+              {horariosExtras ? ` · ${horariosExtras}` : ""}
             </span>
           </div>
 
@@ -267,6 +278,7 @@ export function WebinarEvent({ slug }: { slug: string }) {
                   <dt>Horário</dt>
                   <dd>
                     {formatEventTime(event.startsAt)} · {event.timezoneLabel}
+                    {horariosExtras ? ` · ${horariosExtras}` : ""}
                   </dd>
                 </div>
                 <div>
@@ -277,6 +289,12 @@ export function WebinarEvent({ slug }: { slug: string }) {
                   <dt>Tema</dt>
                   <dd>{event.theme}</dd>
                 </div>
+                {event.acessibilidade?.declaracao ? (
+                  <div>
+                    <dt>Acessibilidade</dt>
+                    <dd>{TEXTO_ACESSIBILIDADE[event.acessibilidade.declaracao]}</dd>
+                  </div>
+                ) : null}
               </dl>
             </div>
           </aside>

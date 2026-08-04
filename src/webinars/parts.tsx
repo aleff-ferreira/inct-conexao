@@ -220,6 +220,52 @@ function StreamFallback({
   );
 }
 
+/** Nome de exibição do provedor incorporado — para a rota de fuga dizer PARA ONDE leva. */
+const PROVIDER_LABEL: Record<string, string> = {
+  youtube: "YouTube",
+  vimeo: "Vimeo",
+  streamyard: "StreamYard",
+  custom: "site da transmissão",
+};
+
+/**
+ * A rota de fuga sob o player. Falha de iframe entre origens é indetectável de
+ * verdade (onerror não dispara em bloqueio de rede; onload dispara mesmo com
+ * erro interno do player) — a correção honesta não é detectar, é o link
+ * PERMANENTE: quem vê um retângulo preto atrás de um proxy institucional tem
+ * para onde ir sem recarregar nada. No replay, entram também a transcrição e o
+ * áudio — as rotas de menor banda.
+ */
+function StageEscape({ event, status, resolved }: { event: WebinarEvent; status: WebinarStatus; resolved: ResolvedStream | null }) {
+  const links: { href: string; texto: string }[] = [];
+  if (resolved?.mode === "embed") {
+    links.push({ href: resolved.original, texto: `assistir direto no ${PROVIDER_LABEL[resolved.provider] ?? resolved.provider}` });
+  }
+  if (status === "live" && event.liveStreamBackup) {
+    links.push({ href: event.liveStreamBackup, texto: "usar a transmissão reserva" });
+  }
+  if (status === "ended") {
+    if (event.acessibilidade?.transcricaoUrl) links.push({ href: event.acessibilidade.transcricaoUrl, texto: "ler a transcrição" });
+    if (event.acessibilidade?.audioUrl) links.push({ href: event.acessibilidade.audioUrl, texto: "ouvir em áudio (MP3)" });
+  }
+  if (!links.length) return null;
+
+  return (
+    <p className="webinar-stage-escape">
+      {status === "ended" ? "Prefere outro formato? " : "Problemas com o vídeo? "}
+      {links.map((l, i) => (
+        <span key={l.href}>
+          {i > 0 ? " · " : ""}
+          <a href={l.href} target="_blank" rel="noreferrer">
+            {l.texto}
+            <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        </span>
+      ))}
+    </p>
+  );
+}
+
 /**
  * Palco do vídeo: 16:9, sem layout shift, com estados graciosos por status.
  *  - live + transmissão -> player; live sem URL -> "entrando no ar"
@@ -257,7 +303,12 @@ export function StreamStage({ event, status }: { event: WebinarEvent; status: We
     );
   }
 
-  return <div className="webinar-stage">{inner}</div>;
+  return (
+    <>
+      <div className="webinar-stage">{inner}</div>
+      <StageEscape event={event} status={status} resolved={status === "live" ? live : status === "ended" ? replay : null} />
+    </>
+  );
 }
 
 /* ------------------------------------------------------------------ */

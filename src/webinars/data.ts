@@ -105,6 +105,34 @@ export type WebinarSeo = {
   keywords?: string[];
 };
 
+/**
+ * O que esta edição declara de acessibilidade — e portanto PROMETE.
+ *
+ * É um select de três estados, e não booleanos soltos (`libras: true` ao lado
+ * de `declaracao: "sem-recursos"` seria contradição possível; duas fontes de
+ * verdade para o mesmo fato é como o catálogo diverge). O texto correspondente
+ * é publicado na página: prometer "evento acessível" sem contrato assinado é
+ * pior do que declarar honestamente o que não há.
+ */
+export type AcessibilidadeDeclarada = "libras-e-legenda" | "transcricao-posterior" | "sem-recursos";
+
+export const TEXTO_ACESSIBILIDADE: Record<AcessibilidadeDeclarada, string> = {
+  "libras-e-legenda":
+    "Transmissão com intérprete de Libras e legenda em tempo real.",
+  "transcricao-posterior":
+    "A transmissão ao vivo não terá Libras nem legenda em tempo real. A gravação será publicada com legenda revisada e transcrição.",
+  "sem-recursos":
+    "Esta edição não conta com recursos de acessibilidade ao vivo. Se precisar de apoio para acompanhar, fale conosco pela página de contato.",
+};
+
+export type Acessibilidade = {
+  declaracao?: AcessibilidadeDeclarada;
+  /** URL da transcrição do replay (ex.: Internet Archive). */
+  transcricaoUrl?: string;
+  /** MP3 do evento — a rota de menor custo para quem tem pouca internet. */
+  audioUrl?: string;
+};
+
 export type WebinarEvent = {
   slug: string;
   title: string;
@@ -123,12 +151,15 @@ export type WebinarEvent = {
   heroImage?: string;
 
   liveStream?: StreamInput;
+  /** URL alternativa em OUTRO serviço, exibida como rota de fuga sob o player. */
+  liveStreamBackup?: string;
   replay?: StreamInput;
   /** Imagem usada como pôster do player (padrão: heroImage). */
   posterImage?: string;
 
   registrationUrl?: string;
   questionUrl?: string;
+  acessibilidade?: Acessibilidade;
 
   speakers: Speaker[];
   moderator?: Speaker;
@@ -180,13 +211,16 @@ type RawWebinar = {
   heroImage?: string;
   /** URL da transmissão ao vivo (YouTube/Vimeo/StreamYard). */
   liveStream?: string;
-  /** URL da gravação (YouTube/Vimeo). */
+  /** URL reserva em outro serviço (rota de fuga sob o player). */
+  liveStreamBackup?: string;
+  /** URL da gravação (YouTube/Vimeo). Se presente, VENCE o replayVideo. */
   replay?: string;
-  /** Arquivo de vídeo próprio enviado pelo painel (tem prioridade sobre `replay`). */
+  /** Arquivo de vídeo próprio enviado pelo painel (fallback quando não há URL). */
   replayVideo?: string;
   posterImage?: string;
   registrationUrl?: string;
   questionUrl?: string;
+  acessibilidade?: { declaracao?: string; transcricaoUrl?: string; audioUrl?: string };
   speakers?: RawSpeaker[];
   moderator?: RawSpeaker;
   agenda?: AgendaItem[];
@@ -233,9 +267,28 @@ function normalizeSpeaker(raw: RawSpeaker): Speaker {
 }
 
 export function normalizeWebinar(raw: RawWebinar, groupName: (slug: string) => string): WebinarEvent {
-  const replay: StreamInput | undefined = raw.replayVideo
-    ? { type: "file", url: assetUrl(raw.replayVideo) as string }
-    : raw.replay?.trim() || undefined;
+  /* A URL de replay VENCE o arquivo enviado. Era o contrário, e o custo era
+     silencioso: um upload por engano (ou um placeholder esquecido no campo de
+     arquivo) anulava o VOD do YouTube já cadastrado — e ninguém via erro
+     nenhum, só o vídeo errado. O arquivo é o fallback de quem não tem URL. */
+  const replayUrl = raw.replay?.trim() || undefined;
+  const replay: StreamInput | undefined =
+    replayUrl ?? (raw.replayVideo ? { type: "file", url: assetUrl(raw.replayVideo) as string } : undefined);
+  if (import.meta.env.DEV && replayUrl && raw.replayVideo) {
+    console.warn(
+      `[webinars] ${raw.slug}: "replay" (URL) e "replayVideo" (arquivo) definidos ao mesmo tempo — a URL vence. Remova o arquivo se ele não for a gravação oficial.`,
+    );
+  }
+
+  /* Acessibilidade: valida o select contra o vocabulário conhecido — um valor
+     antigo gravado pelo CMS não pode publicar um texto de promessa errado. */
+  const declaracao = (Object.keys(TEXTO_ACESSIBILIDADE) as AcessibilidadeDeclarada[]).find(
+    (d) => d === raw.acessibilidade?.declaracao,
+  );
+  const transcricaoUrl = raw.acessibilidade?.transcricaoUrl?.trim() || undefined;
+  const audioUrl = raw.acessibilidade?.audioUrl?.trim() || undefined;
+  const acessibilidade: Acessibilidade | undefined =
+    declaracao || transcricaoUrl || audioUrl ? { declaracao, transcricaoUrl, audioUrl } : undefined;
 
   return {
     slug: raw.slug,
@@ -250,10 +303,12 @@ export function normalizeWebinar(raw: RawWebinar, groupName: (slug: string) => s
     status: raw.status || undefined,
     heroImage: bareAsset(raw.heroImage),
     liveStream: raw.liveStream?.trim() || undefined,
+    liveStreamBackup: raw.liveStreamBackup?.trim() || undefined,
     replay,
     posterImage: bareAsset(raw.posterImage),
     registrationUrl: raw.registrationUrl?.trim() || undefined,
     questionUrl: raw.questionUrl?.trim() || undefined,
+    acessibilidade,
     speakers: (raw.speakers ?? []).map(normalizeSpeaker),
     moderator: raw.moderator ? normalizeSpeaker(raw.moderator) : undefined,
     agenda: raw.agenda ?? [],

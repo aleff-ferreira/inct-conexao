@@ -4299,6 +4299,22 @@ h3 {
   }
 }
 
+/* Rota de fuga sob o palco: um iframe bloqueado por proxy/extensão é
+   indetectável, então o link direto fica SEMPRE visível — pequeno, mas ali. */
+.webinar-stage-escape {
+  margin: 10px 2px 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.webinar-stage-escape a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--river-ink);
+  font-weight: 650;
+  text-decoration: underline;
+}
+
 .webinar-iframe,
 .webinar-file-player,
 .webinar-video,

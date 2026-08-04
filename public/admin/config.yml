@@ -319,19 +319,25 @@ collections:
         search_fields: ["name"]
         display_fields: ["name"]
         hint: "Escolha o grupo dono deste webinar."
-      - label: "Início"
+      # Horários como TEXTO com o offset -04:00 literal, e não widget datetime.
+      # O widget interpretava o horário digitado no fuso do NAVEGADOR de quem
+      # edita: um líder de grupo em São Paulo digitando "16:00" gravava
+      # silenciosamente 15:00 reais em Rondônia — e o token Z ainda carimbava
+      # o offset do editor no JSON. Texto com pattern não interpreta nada.
+      - label: "Início (horário de RONDÔNIA)"
         name: startsAt
-        widget: datetime
-        format: "YYYY-MM-DDTHH:mm:ssZ"
-        date_format: "DD/MM/YYYY"
-        time_format: "HH:mm"
-        hint: "Use o horário de Rondônia (UTC-4)."
-      - label: "Término"
+        widget: string
+        pattern:
+          - '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00-04:00$'
+          - "Use exatamente AAAA-MM-DDTHH:MM:00-04:00 (ex.: 2026-08-27T16:00:00-04:00)"
+        hint: "Formato exato: 2026-08-27T16:00:00-04:00 — sempre o horário de Rondônia, com -04:00 no fim. O site converte para Brasília e para o fuso do visitante sozinho."
+      - label: "Término (horário de RONDÔNIA)"
         name: endsAt
-        widget: datetime
-        format: "YYYY-MM-DDTHH:mm:ssZ"
-        date_format: "DD/MM/YYYY"
-        time_format: "HH:mm"
+        widget: string
+        pattern:
+          - '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00-04:00$'
+          - "Use exatamente AAAA-MM-DDTHH:MM:00-04:00 (ex.: 2026-08-27T17:30:00-04:00)"
+        hint: "Mesmo formato do início. Ex.: 2026-08-27T17:30:00-04:00."
       - { label: "Texto do fuso horário", name: timezoneLabel, widget: string, default: "Horário de Rondônia (UTC-4)" }
       - label: "Forçar status (opcional)"
         name: status
@@ -354,16 +360,38 @@ collections:
         name: liveStream
         widget: string
         required: false
-        hint: "Cole a URL do YouTube/Vimeo/StreamYard. Zoom/Meet viram botão “Abrir transmissão”."
+        hint: "Cole youtube.com/live/<id> do evento AGENDADO no YouTube Studio (ou URL do Vimeo/StreamYard). Zoom/Meet viram botão “Abrir transmissão”."
+      - label: "Transmissão reserva (URL)"
+        name: liveStreamBackup
+        widget: string
+        required: false
+        hint: "URL alternativa em OUTRO serviço (ou a página do vídeo no YouTube). Aparece como rota de fuga sob o player durante o ao vivo."
       - label: "URL da gravação (replay)"
         name: replay
         widget: string
         required: false
-        hint: "URL do YouTube/Vimeo da gravação. (Ou envie um arquivo abaixo.)"
-      - { label: "Ou envie um arquivo de vídeo (.mp4)", name: replayVideo, widget: file, required: false }
+        hint: "URL do YouTube/Vimeo da gravação. Se preenchida, VENCE o arquivo abaixo."
+      - { label: "Ou envie um arquivo de vídeo (.mp4)", name: replayVideo, widget: file, required: false, hint: "Só para gravação própria SEM URL. Se a URL acima existir, ela vence." }
       - { label: "Imagem do player (pôster)", name: posterImage, widget: image, required: false, choose_url: false }
       - { label: "Link de inscrição", name: registrationUrl, widget: string, required: false }
       - { label: "Link para perguntas (Slido/Forms)", name: questionUrl, widget: string, required: false }
+      - label: "Acessibilidade desta edição"
+        name: acessibilidade
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - label: "Declaração"
+            name: declaracao
+            widget: select
+            required: false
+            options:
+              - { label: "Com Libras e legenda ao vivo (só com contrato assinado)", value: libras-e-legenda }
+              - { label: "Sem recursos ao vivo; gravação com legenda revisada e transcrição", value: transcricao-posterior }
+              - { label: "Sem recursos nesta edição (atendimento sob demanda)", value: sem-recursos }
+            hint: "O texto correspondente é publicado na página do evento. Nunca declare o que não está contratado."
+          - { label: "Transcrição (URL)", name: transcricaoUrl, widget: string, required: false, hint: "Link da transcrição do replay (ex.: Internet Archive)." }
+          - { label: "Áudio MP3 (URL)", name: audioUrl, widget: string, required: false, hint: "Rota de pouca internet: MP3 do evento hospedado fora do site." }
       - label: "Palestrantes"
         name: speakers
         label_singular: "Palestrante"

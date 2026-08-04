@@ -34,6 +34,59 @@ export const formatEventDateShort = (iso: string): string =>
 export const formatEventTime = (iso: string): string =>
   formatWithZone(iso, { hour: "2-digit", minute: "2-digit", hour12: false });
 
+/* ------------------------------------------------------------------ */
+/*  O horário nos OUTROS fusos — porque o Brasil não é UTC-4.          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Rondônia é UTC-4; a maioria das 21 UFs da rede está em UTC-3. Mostrar
+ * "16:00" para todo mundo fazia um estudante em Recife chegar uma hora antes,
+ * encontrar a página sem player e ir embora. A âncora editorial continua sendo
+ * o fuso do evento — estas funções apenas TRADUZEM o mesmo instante.
+ */
+export const BRASILIA_TIME_ZONE = "America/Sao_Paulo";
+
+/** "16:00" no fuso pedido; string vazia se a data ou o fuso forem inválidos. */
+export function formatTimeInZone(iso: string, timeZone: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  try {
+    return new Intl.DateTimeFormat("pt-BR", { timeZone, hour: "2-digit", minute: "2-digit", hour12: false }).format(date);
+  } catch {
+    // Fuso IANA desconhecido (ex.: vindo de um navegador exótico): sem linha.
+    return "";
+  }
+}
+
+/** Fuso do navegador do visitante; undefined quando não há como saber. */
+export function visitorTimeZone(): string | undefined {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export type ScheduleLine = { hora: string; rotulo: string };
+
+/**
+ * As linhas de horário da página: Rondônia sempre, Brasília sempre (é onde
+ * está a maioria da audiência), e "no seu horário" só quando difere das duas —
+ * repetir "16:00 no seu horário" para quem já lê "16:00 em Rondônia" seria
+ * ruído. Pura: o fuso do visitante entra por parâmetro, o que a torna
+ * testável em Node sem mock de navegador.
+ */
+export function scheduleLines(iso: string, visitorZone?: string): ScheduleLine[] {
+  const rondonia = formatTimeInZone(iso, EVENT_TIME_ZONE);
+  if (!rondonia) return [];
+  const lines: ScheduleLine[] = [{ hora: rondonia, rotulo: "em Rondônia" }];
+  const brasilia = formatTimeInZone(iso, BRASILIA_TIME_ZONE);
+  if (brasilia && brasilia !== rondonia) lines.push({ hora: brasilia, rotulo: "em Brasília" });
+  const local = visitorZone ? formatTimeInZone(iso, visitorZone) : "";
+  if (local && local !== rondonia && local !== brasilia) lines.push({ hora: local, rotulo: "no seu horário" });
+  return lines;
+}
+
 /** Ex.: "16:00 – 17:30". */
 export const formatEventTimeRange = (startIso: string, endIso: string): string => {
   const start = formatEventTime(startIso);

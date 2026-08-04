@@ -9,7 +9,11 @@ import type { StreamInput, StreamProvider } from "./data";
  *   - "external" → link não incorporável (Zoom/Meet/etc.): abre em nova aba
  */
 export type ResolvedStream =
-  | { mode: "embed"; provider: StreamProvider; url: string }
+  /* `original` guarda a URL como o editor colou. É a rota de fuga: quando o
+     iframe não carrega (proxy institucional, bloqueador, rede que barra o
+     provedor), o único socorro possível é um link direto — e a URL de embed
+     não serve para isso, porque foi feita para viver dentro de um iframe. */
+  | { mode: "embed"; provider: StreamProvider; url: string; original: string }
   | { mode: "file"; url: string }
   | { mode: "external"; provider: string; url: string };
 
@@ -24,7 +28,11 @@ function youTubeId(url: string): string | null {
   ];
   for (const pattern of patterns) {
     const match = url.match(pattern);
-    if (match) return match[1];
+    /* "live_stream" tem exatamente 11 caracteres, todos válidos num ID — o
+       padrão de /embed/ casava com a PALAVRA e o código montava
+       embed/live_stream?rel=0, descartando o ?channel= que dava sentido à URL.
+       O resultado era um iframe de erro, mudo. */
+    if (match && match[1] !== "live_stream") return match[1];
   }
   return null;
 }
@@ -46,24 +54,56 @@ function recognize(url: string): ResolvedStream | null {
   }
 
   if (/(?:youtube\.com|youtu\.be|youtube-nocookie\.com)/i.test(url)) {
+    /* embed/live_stream?channel=UC…: o embed "da live corrente do canal".
+       Preserva o channel — era ele que o extrator de ID descartava. Host
+       www.youtube.com de propósito: a combinação youtube-nocookie +
+       live_stream não é documentada (NÃO CONFIRMADA em teste próprio).
+       Sem channel, a URL não aponta para nada: link externo, nunca um
+       iframe mudo. */
+    if (/\/embed\/live_stream/i.test(url)) {
+      const channel = url.match(/[?&]channel=(UC[A-Za-z0-9_-]{10,})/);
+      if (channel) {
+        return {
+          mode: "embed",
+          provider: "youtube",
+          url: `https://www.youtube.com/embed/live_stream?channel=${channel[1]}`,
+          original: `https://www.youtube.com/channel/${channel[1]}/live`,
+        };
+      }
+      return { mode: "external", provider: "YouTube", url };
+    }
+
+    /* youtube.com/@canal/live não expõe ID nenhum — não há como montar o
+       embed. Vira link externo, com aviso em DEV: a forma que funciona é
+       youtube.com/live/<id> do evento AGENDADO. */
+    if (/youtube\.com\/@[^/?#]+\/live/i.test(url)) {
+      if (import.meta.env.DEV) {
+        console.warn(
+          `[webinars] URL @canal/live não é incorporável; será link externo. Agende a transmissão no YouTube Studio e cole youtube.com/live/<id>: ${url}`,
+        );
+      }
+      return { mode: "external", provider: "YouTube", url };
+    }
+
     const id = youTubeId(url);
     if (id) {
       return {
         mode: "embed",
         provider: "youtube",
         url: `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`,
+        original: url,
       };
     }
   }
 
   if (/vimeo\.com/i.test(url)) {
     const embed = vimeoEmbed(url);
-    if (embed) return { mode: "embed", provider: "vimeo", url: embed };
+    if (embed) return { mode: "embed", provider: "vimeo", url: embed, original: url };
   }
 
   if (/streamyard\.com/i.test(url)) {
     const embed = /[?&]embed=1\b/.test(url) ? url : `${url}${url.includes("?") ? "&" : "?"}embed=1`;
-    return { mode: "embed", provider: "streamyard", url: embed };
+    return { mode: "embed", provider: "streamyard", url: embed, original: url };
   }
 
   // Plataformas de reunião: o link NÃO vira player — abre externamente.
@@ -74,7 +114,7 @@ function recognize(url: string): ResolvedStream | null {
 
   // Já é uma URL de player/embed de outro provedor → confia.
   if (/\/embed\/|player\./i.test(url)) {
-    return { mode: "embed", provider: "custom", url };
+    return { mode: "embed", provider: "custom", url, original: url };
   }
 
   return null;
@@ -87,7 +127,7 @@ export function resolveStream(input?: StreamInput): ResolvedStream | null {
     if (input.type === "file") return { mode: "file", url: input.url };
     // Forma explícita { type: "iframe" }: normaliza hosts conhecidos; caso
     // contrário, confia na URL informada como embed.
-    return recognize(input.url) ?? { mode: "embed", provider: input.provider, url: input.url };
+    return recognize(input.url) ?? { mode: "embed", provider: input.provider, url: input.url, original: input.url };
   }
 
   const url = input.trim();

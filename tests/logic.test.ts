@@ -19,7 +19,7 @@ import {
   type WebinarEvent,
   type WebinarGroup,
 } from "../src/webinars/data";
-import { getCountdownParts, initials, formatEventTime, buildIcsContent } from "../src/webinars/format";
+import { getCountdownParts, initials, formatEventTime, buildIcsContent, scheduleLines } from "../src/webinars/format";
 import { resolveStream } from "../src/webinars/stream";
 
 const ev = (over: Partial<WebinarEvent>): WebinarEvent => ({
@@ -105,6 +105,27 @@ describe("countdown + misc", () => {
   it("formatEventTime shows Rondônia HH:MM", () => {
     expect(formatEventTime("2026-08-27T16:00:00-04:00")).toBe("16:00");
   });
+  it("scheduleLines traduz o instante para Brasília e para o fuso do visitante", () => {
+    /* Rondônia é UTC-4; a maioria das 21 UFs está em UTC-3. "16:00" seco fazia
+       um estudante em Recife chegar uma hora antes. Determinístico: o fuso do
+       visitante entra por parâmetro — nada de mock de navegador. */
+    const iso = "2026-08-27T16:00:00-04:00";
+    const linhas = (zona?: string) => scheduleLines(iso, zona).map((l) => `${l.hora} ${l.rotulo}`);
+    // Visitante no próprio fuso do evento: sem linha "no seu horário" repetida.
+    expect(linhas("America/Porto_Velho")).toEqual(["16:00 em Rondônia", "17:00 em Brasília"]);
+    // Visitante em UTC-3 (a maioria): coberto pela linha de Brasília.
+    expect(linhas("America/Sao_Paulo")).toEqual(["16:00 em Rondônia", "17:00 em Brasília"]);
+    // Acre, UTC-5: uma hora ANTES de Rondônia.
+    expect(linhas("America/Rio_Branco")).toEqual(["16:00 em Rondônia", "17:00 em Brasília", "15:00 no seu horário"]);
+    // Portugal em agosto: UTC+1 (horário de verão) -> 21:00.
+    expect(linhas("Europe/Lisbon")).toContain("21:00 no seu horário");
+    // Sem fuso do visitante (SSR/build): só as duas linhas fixas.
+    expect(linhas(undefined)).toHaveLength(2);
+    // Fuso inválido não derruba a página nem inventa linha.
+    expect(linhas("Marte/Olympus_Mons")).toHaveLength(2);
+    // Data inválida: lista vazia, nunca "NaN:NaN".
+    expect(scheduleLines("data-quebrada")).toEqual([]);
+  });
   it("ICS contains UTC stamps and the title", () => {
     const ics = buildIcsContent(ev({ title: "Mesa, teste; ok" }), "https://x/#/webinars/x");
     expect(ics).toContain("BEGIN:VEVENT");
@@ -180,10 +201,31 @@ describe("normalizeWebinar (CMS JSON -> WebinarEvent)", () => {
     const e = normalizeWebinar({ ...base, replayVideo: "gravacao.mp4" }, groupName);
     expect(e.replay).toEqual({ type: "file", url: webinarAsset("gravacao.mp4") });
   });
-  it("replayVideo wins over a replay URL; a bare replay URL passes through", () => {
+  it("a replay URL wins over an uploaded replayVideo file", () => {
+    /* INVERTIDO DE PROPÓSITO (o teste antigo travava o contrário): com o
+       arquivo vencendo, um upload por engano — ou um placeholder esquecido —
+       anulava em silêncio o VOD do YouTube já cadastrado. A URL é a gravação
+       oficial; o arquivo é o fallback de quem não tem URL. Se alguém "consertar"
+       isto de volta por reflexo, o placeholder volta a sequestrar o replay. */
     expect(normalizeWebinar({ ...base, replay: "https://youtu.be/abc" }, groupName).replay).toBe("https://youtu.be/abc");
     const both = normalizeWebinar({ ...base, replay: "https://youtu.be/abc", replayVideo: "g.mp4" }, groupName);
-    expect(both.replay).toEqual({ type: "file", url: webinarAsset("g.mp4") });
+    expect(both.replay).toBe("https://youtu.be/abc");
+  });
+  it("liveStreamBackup e acessibilidade são normalizados (trim, vazio→undefined, select validado)", () => {
+    const e = normalizeWebinar(
+      {
+        ...base,
+        liveStreamBackup: "  https://reserva.exemplo/ao-vivo  ",
+        acessibilidade: { declaracao: "transcricao-posterior", transcricaoUrl: " https://archive.org/t ", audioUrl: "" },
+      },
+      groupName,
+    );
+    expect(e.liveStreamBackup).toBe("https://reserva.exemplo/ao-vivo");
+    expect(e.acessibilidade).toEqual({ declaracao: "transcricao-posterior", transcricaoUrl: "https://archive.org/t", audioUrl: undefined });
+    // Valor desconhecido no select (CMS antigo) NÃO vira promessa na página.
+    const ruim = normalizeWebinar({ ...base, acessibilidade: { declaracao: "banana" } }, groupName);
+    expect(ruim.acessibilidade).toBeUndefined();
+    expect(normalizeWebinar({ ...base, liveStreamBackup: "   " }, groupName).liveStreamBackup).toBeUndefined();
   });
   it("resolves groupSlug into a {slug,name} snapshot and blank status to undefined", () => {
     const e = normalizeWebinar({ ...base, groupSlug: "g1", status: "" }, groupName);
@@ -231,6 +273,33 @@ describe("content files load through the glob loader", () => {
 describe("resolveStream (regression)", () => {
   it("youtube watch -> nocookie embed", () => {
     const r = resolveStream("https://www.youtube.com/watch?v=abcdefghijk");
+    expect(r).toMatchObject({ mode: "embed", provider: "youtube" });
+    expect((r as { url: string }).url).toContain("youtube-nocookie.com/embed/abcdefghijk");
+  });
+  it("todo embed carrega a URL original — é a rota de fuga quando o iframe não carrega", () => {
+    const entrada = "https://www.youtube.com/watch?v=abcdefghijk";
+    expect((resolveStream(entrada) as { original: string }).original).toBe(entrada);
+    const vimeo = resolveStream("https://vimeo.com/123456789");
+    expect((vimeo as { original: string }).original).toBe("https://vimeo.com/123456789");
+  });
+  it("embed/live_stream preserva o ?channel= (a regex de 11 chars casava a PALAVRA live_stream e o descartava)", () => {
+    const r = resolveStream("https://www.youtube.com/embed/live_stream?channel=UCabcdefghijk");
+    expect(r).toMatchObject({ mode: "embed", provider: "youtube" });
+    const { url } = r as { url: string };
+    expect(url).toContain("channel=UCabcdefghijk");
+    // O defeito antigo: embed/live_stream SEM canal, com parâmetros de vídeo comum.
+    expect(url).not.toMatch(/embed\/live_stream\?rel=/);
+  });
+  it("embed/live_stream SEM canal nunca vira iframe mudo — é link externo", () => {
+    expect(resolveStream("https://www.youtube.com/embed/live_stream")).toMatchObject({ mode: "external", provider: "YouTube" });
+    // youtu.be/live_stream: 11 chars válidos que NÃO são um ID de vídeo.
+    expect(resolveStream("https://youtu.be/live_stream")).toMatchObject({ mode: "external" });
+  });
+  it("@canal/live não expõe ID — link externo, nunca embed quebrado", () => {
+    expect(resolveStream("https://www.youtube.com/@inctconexao/live")).toMatchObject({ mode: "external", provider: "YouTube" });
+  });
+  it("youtube.com/live/<id> (evento agendado — a forma recomendada) -> nocookie embed", () => {
+    const r = resolveStream("https://youtube.com/live/abcdefghijk");
     expect(r).toMatchObject({ mode: "embed", provider: "youtube" });
     expect((r as { url: string }).url).toContain("youtube-nocookie.com/embed/abcdefghijk");
   });
