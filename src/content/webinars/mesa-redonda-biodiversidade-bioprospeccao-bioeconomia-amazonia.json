@@ -10,8 +10,7 @@
   "timezoneLabel": "Horário de Rondônia (UTC-4)",
   "heroImage": "bioprospec.jpg",
   "groupSlug": "conexao-bioprospeccao-bioeconomia",
-  "published": false,
-  "replayVideo": "instagram-iniciacao-cientifica.mp4",
+  "published": true,
   "posterImage": "bioprospec.jpg",
   "speakers": [
     {
@@ -44,29 +43,93 @@
     "bio": "Pesquisador em biotecnologia amazônica, com foco na conversão de biodiversidade em rotas de inovação. Atua em cooperação científica internacional voltada à bioprospecção sustentável."
   },
   "agenda": [
-    { "time": "15:00", "title": "Abertura e apresentação do tema da mesa", "speaker": "Dr. Mateus Vasconcelos" },
-    { "time": "15:10", "title": "Da floresta ao laboratório: bioprospecção de plantas medicinais amazônicas", "speaker": "Dra. Luana Figueiredo" },
-    { "time": "15:35", "title": "Venenos e toxinas como plataforma para antivenenos e biofármacos", "speaker": "Dr. André Bezerra" },
-    { "time": "16:00", "title": "Bioeconomia e arranjos ecoprodutivos: saberes tradicionais e inovação social", "speaker": "Dra. Patrícia Lemos" },
-    { "time": "16:15", "title": "Debate com o público e perguntas da audiência", "speaker": "" },
-    { "time": "16:25", "title": "Considerações finais e encerramento", "speaker": "Dr. Mateus Vasconcelos" }
+    {
+      "time": "15:00",
+      "title": "Abertura e apresentação do tema da mesa",
+      "speaker": "Dr. Mateus Vasconcelos"
+    },
+    {
+      "time": "15:10",
+      "title": "Da floresta ao laboratório: bioprospecção de plantas medicinais amazônicas",
+      "speaker": "Dra. Luana Figueiredo"
+    },
+    {
+      "time": "15:35",
+      "title": "Venenos e toxinas como plataforma para antivenenos e biofármacos",
+      "speaker": "Dr. André Bezerra"
+    },
+    {
+      "time": "16:00",
+      "title": "Bioeconomia e arranjos ecoprodutivos: saberes tradicionais e inovação social",
+      "speaker": "Dra. Patrícia Lemos"
+    },
+    {
+      "time": "16:15",
+      "title": "Debate com o público e perguntas da audiência",
+      "speaker": ""
+    },
+    {
+      "time": "16:25",
+      "title": "Considerações finais e encerramento",
+      "speaker": "Dr. Mateus Vasconcelos"
+    }
   ],
   "materials": [
-    { "title": "Ementa e programação da mesa-redonda", "kind": "PDF", "note": "Tema, objetivos, composição da mesa e cronograma do encontro." },
-    { "title": "Gravação completa da mesa-redonda (replay)", "kind": "Vídeo", "note": "Acesso à transmissão na íntegra para consulta posterior." },
-    { "title": "Política de uso de imagem e dados do evento", "kind": "Link", "note": "Orientações sobre uso institucional da gravação e dos materiais." }
+    {
+      "title": "Ementa e programação da mesa-redonda",
+      "kind": "PDF",
+      "note": "Tema, objetivos, composição da mesa e cronograma do encontro."
+    },
+    {
+      "title": "Gravação completa da mesa-redonda (replay)",
+      "kind": "Vídeo",
+      "note": "Acesso à transmissão na íntegra para consulta posterior."
+    },
+    {
+      "title": "Política de uso de imagem e dados do evento",
+      "kind": "Link",
+      "note": "Orientações sobre uso institucional da gravação e dos materiais."
+    }
   ],
   "partners": [
-    { "acronym": "FIOCRUZ RO", "name": "Fundação Oswaldo Cruz Noroeste: Rondônia", "logo": "partner-logos/fiocruz-ro.png" },
-    { "acronym": "UNIR", "name": "Universidade Federal de Rondônia", "logo": "institution-logos/unir.png" },
-    { "acronym": "UFAM", "name": "Universidade Federal do Amazonas", "logo": "partner-logos/ufam.png" },
-    { "acronym": "UFPA", "name": "Universidade Federal do Pará", "logo": "partner-logos/ufpa.png" },
-    { "acronym": "IKIAM", "name": "Universidad Regional Amazónica IKIAM", "logo": "partner-logos/ikiam.png" }
+    {
+      "acronym": "FIOCRUZ RO",
+      "name": "Fundação Oswaldo Cruz Noroeste: Rondônia",
+      "logo": "partner-logos/fiocruz-ro.png"
+    },
+    {
+      "acronym": "UNIR",
+      "name": "Universidade Federal de Rondônia",
+      "logo": "institution-logos/unir.png"
+    },
+    {
+      "acronym": "UFAM",
+      "name": "Universidade Federal do Amazonas",
+      "logo": "partner-logos/ufam.png"
+    },
+    {
+      "acronym": "UFPA",
+      "name": "Universidade Federal do Pará",
+      "logo": "partner-logos/ufpa.png"
+    },
+    {
+      "acronym": "IKIAM",
+      "name": "Universidad Regional Amazónica IKIAM",
+      "logo": "partner-logos/ikiam.png"
+    }
   ],
   "seo": {
     "ogTitle": "Biodiversidade, bioprospecção e bioeconomia na Amazônia",
     "ogDescription": "Replay da mesa-redonda do INCT-CONEXAO sobre biodiversidade, bioprospecção e bioeconomia na Amazônia: de plantas e venenos à inovação para a saúde e o SUS.",
     "ogImage": "bioprospec.jpg",
-    "keywords": ["biodiversidade", "bioprospecção", "bioeconomia", "Amazônia", "biotecnologia", "INCT-CONEXAO", "produtos naturais"]
+    "keywords": [
+      "biodiversidade",
+      "bioprospecção",
+      "bioeconomia",
+      "Amazônia",
+      "biotecnologia",
+      "INCT-CONEXAO",
+      "produtos naturais"
+    ]
   }
 }

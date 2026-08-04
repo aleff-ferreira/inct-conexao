@@ -294,10 +294,19 @@ describe("content files load through the glob loader", () => {
     expect(webinarGroups.length).toBeGreaterThanOrEqual(2);
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("ships both example webinars in standby (published:false) → none are public yet", () => {
-    // Ainda não houve mesas-redondas; o conteúdo de exemplo fica oculto até haver datas.
-    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeUndefined();
-    expect(bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")).toBeUndefined();
+  it("os dois webinários estão publicados (decisão editorial de 2026-08-04)", () => {
+    /* Até aqui eram sementes em standby; o coordenador liberou a publicação.
+       A REGRA de ocultação (published:false some do site) continua coberta no
+       teste de normalizeWebinar acima — aqui trava-se o ESTADO editorial, e o
+       invariante de que a lista pública nunca contém item em standby. */
+    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeDefined();
+    expect(bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")).toBeDefined();
+    expect(webinars.every((e) => e.published !== false)).toBe(true);
+    // O evento passado não pode apresentar vídeo alheio como gravação oficial:
+    // o replayVideo placeholder (clipe de Instagram) foi removido junto com a
+    // publicação — sem gravação real, a página diz "em breve", que é a verdade.
+    const bio = bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")!;
+    expect(bio.replay).toBeUndefined();
   });
 });
 

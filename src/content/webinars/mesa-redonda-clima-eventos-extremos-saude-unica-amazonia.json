@@ -10,7 +10,7 @@
   "timezoneLabel": "Horário de Rondônia (UTC-4)",
   "heroImage": "clima-saude.jpg",
   "groupSlug": "conexao-clima-saude-unica",
-  "published": false,
+  "published": true,
   "speakers": [
     {
       "name": "Dr. Rafael Tavares",
@@ -42,29 +42,93 @@
     "bio": "Pesquisadora em climatologia geográfica e modelagem bioclimática, com foco na vulnerabilidade socioambiental amazônica. Atua na interface entre ciência do clima e tomada de decisão em saúde."
   },
   "agenda": [
-    { "time": "16:00", "title": "Abertura e contextualização da agenda Clima e Saúde Única", "speaker": "Dra. Helena Marques" },
-    { "time": "16:10", "title": "Eventos climáticos extremos na Amazônia: o que os dados de satélite revelam", "speaker": "Dr. Rafael Tavares" },
-    { "time": "16:35", "title": "Da fumaça à febre: impactos das queimadas e do calor na saúde ribeirinha", "speaker": "Dra. Beatriz Nogueira" },
-    { "time": "17:00", "title": "Alerta precoce e Saúde Pública de Precisão: caminhos para a decisão", "speaker": "Dr. Caio Pereira da Silva" },
-    { "time": "17:15", "title": "Debate com o público e perguntas da audiência", "speaker": "" },
-    { "time": "17:25", "title": "Sínteses e encerramento", "speaker": "Dra. Helena Marques" }
+    {
+      "time": "16:00",
+      "title": "Abertura e contextualização da agenda Clima e Saúde Única",
+      "speaker": "Dra. Helena Marques"
+    },
+    {
+      "time": "16:10",
+      "title": "Eventos climáticos extremos na Amazônia: o que os dados de satélite revelam",
+      "speaker": "Dr. Rafael Tavares"
+    },
+    {
+      "time": "16:35",
+      "title": "Da fumaça à febre: impactos das queimadas e do calor na saúde ribeirinha",
+      "speaker": "Dra. Beatriz Nogueira"
+    },
+    {
+      "time": "17:00",
+      "title": "Alerta precoce e Saúde Pública de Precisão: caminhos para a decisão",
+      "speaker": "Dr. Caio Pereira da Silva"
+    },
+    {
+      "time": "17:15",
+      "title": "Debate com o público e perguntas da audiência",
+      "speaker": ""
+    },
+    {
+      "time": "17:25",
+      "title": "Sínteses e encerramento",
+      "speaker": "Dra. Helena Marques"
+    }
   ],
   "materials": [
-    { "title": "Ementa e programação da mesa-redonda", "kind": "PDF", "note": "Tema, objetivos, composição da mesa e cronograma detalhado." },
-    { "title": "Apresentações das falas científicas", "kind": "Slides", "note": "Material de apoio das exposições, disponibilizado após o evento." },
-    { "title": "Política de uso de imagem e dados do evento", "kind": "Link", "note": "Orientações sobre gravação, transmissão e uso institucional do conteúdo." }
+    {
+      "title": "Ementa e programação da mesa-redonda",
+      "kind": "PDF",
+      "note": "Tema, objetivos, composição da mesa e cronograma detalhado."
+    },
+    {
+      "title": "Apresentações das falas científicas",
+      "kind": "Slides",
+      "note": "Material de apoio das exposições, disponibilizado após o evento."
+    },
+    {
+      "title": "Política de uso de imagem e dados do evento",
+      "kind": "Link",
+      "note": "Orientações sobre gravação, transmissão e uso institucional do conteúdo."
+    }
   ],
   "partners": [
-    { "acronym": "FIOCRUZ RO", "name": "Fundação Oswaldo Cruz Noroeste: Rondônia", "logo": "partner-logos/fiocruz-ro.png" },
-    { "acronym": "UNIR", "name": "Universidade Federal de Rondônia", "logo": "institution-logos/unir.png" },
-    { "acronym": "INPE", "name": "Instituto Nacional de Pesquisas Espaciais", "logo": "partner-logos/inpe.png" },
-    { "acronym": "UEMA", "name": "Universidade Estadual do Maranhão", "logo": "partner-logos/uema.png" },
-    { "acronym": "FAPERO", "name": "Fundação Rondônia de Amparo à Pesquisa", "logo": "partner-logos/fapero.png" }
+    {
+      "acronym": "FIOCRUZ RO",
+      "name": "Fundação Oswaldo Cruz Noroeste: Rondônia",
+      "logo": "partner-logos/fiocruz-ro.png"
+    },
+    {
+      "acronym": "UNIR",
+      "name": "Universidade Federal de Rondônia",
+      "logo": "institution-logos/unir.png"
+    },
+    {
+      "acronym": "INPE",
+      "name": "Instituto Nacional de Pesquisas Espaciais",
+      "logo": "partner-logos/inpe.png"
+    },
+    {
+      "acronym": "UEMA",
+      "name": "Universidade Estadual do Maranhão",
+      "logo": "partner-logos/uema.png"
+    },
+    {
+      "acronym": "FAPERO",
+      "name": "Fundação Rondônia de Amparo à Pesquisa",
+      "logo": "partner-logos/fapero.png"
+    }
   ],
   "seo": {
     "ogTitle": "Clima, eventos extremos e Saúde Única na Amazônia",
     "ogDescription": "Mesa-redonda científica do INCT-CONEXAO sobre clima, eventos extremos e Saúde Única na Amazônia: dados, alerta precoce e políticas públicas. Transmissão ao vivo.",
     "ogImage": "clima-saude.jpg",
-    "keywords": ["clima", "Saúde Única", "Amazônia", "eventos extremos", "alerta precoce", "INCT-CONEXAO", "biometeorologia"]
+    "keywords": [
+      "clima",
+      "Saúde Única",
+      "Amazônia",
+      "eventos extremos",
+      "alerta precoce",
+      "INCT-CONEXAO",
+      "biometeorologia"
+    ]
   }
 }
