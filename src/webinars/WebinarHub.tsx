@@ -120,7 +120,13 @@ export function WebinarHub() {
 
                 <div className="webinar-featured-actions">
                   <a className="button primary" href={eventHref(featured.slug)}>
-                    {featuredStatus === "live" ? "Assistir ao vivo" : featuredStatus === "upcoming" ? "Ver detalhes e se preparar" : "Assistir à gravação"}
+                    {featuredStatus === "live"
+                      ? "Assistir ao vivo"
+                      : featuredStatus === "upcoming"
+                        ? "Ver detalhes e se preparar"
+                        : featured.replay
+                          ? "Assistir à gravação"
+                          : "Ver detalhes"}
                     <PlayCircle size={18} aria-hidden="true" />
                   </a>
                 </div>

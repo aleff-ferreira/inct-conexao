@@ -134,8 +134,14 @@ export default function Gestao() {
         <div className="plat-card plat-notice">
           <Lock size={20} aria-hidden="true" />
           <div>
-            <strong>Plataforma não configurada</strong>
-            <p>Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY e refaça o build (ver docs/plataforma-selecoes.md).</p>
+            {/* Texto PÚBLICO: esta tela fica atrás de um item da navegação
+                principal — nome de variável de ambiente e doc interna não são
+                para o visitante (Inscricao.tsx já fazia certo). */}
+            <strong>Área da equipe em preparação</strong>
+            <p>
+              O acesso à gestão de seleções será habilitado em breve. Se você faz parte da
+              equipe do INCT-CONEXAO, fale com a coordenação do projeto.
+            </p>
           </div>
         </div>
       </Shell>

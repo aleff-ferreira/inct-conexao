@@ -1,8 +1,16 @@
 # Upload para a Hostinger — pasta `inct_deploy/`
 
-Gerado em **30/07/2026** a partir do build atual. **215 arquivos, 82,5 MB.**
-Conferido: idêntico a `dist/`, e testado servindo a própria pasta (todas as
-rotas, o CMS, a página estática de figuras, os PDFs).
+Regenerado em **04/08/2026** a partir de um build LIMPO do commit `ad8feb7`
+(worktree do HEAD — sem trabalho local não comitado). **228 arquivos,
+86,3 MB.** Conferido byte a byte contra `dist/`. Inclui: plataforma de
+webinários com os dois eventos publicados, mapa interativo (ondas 1–3, relevo
+AVIF), resultado IC 2026 e notícias.
+
+Pronto para subir: **`inct-site-2026-08-04.zip`** (80 MB, na raiz do repo) —
+o conteúdo está na RAIZ do zip, então "Extrair" dentro de `public_html/`
+coloca o `index.html` direto no lugar certo. *(O zip antigo embrulhava a
+pasta `inct_deploy/` e o site já foi parar em `public_html/inct_deploy/` uma
+vez — este formato elimina esse erro.)*
 
 Este arquivo **não** faz parte do site — não suba ele.
 
@@ -45,46 +53,73 @@ public_html/
 
 ## Como subir
 
-**Pelo hPanel (mais simples).** Gerenciador de Arquivos → `public_html` →
-enviar. Para 82,5 MB, compacte antes: `zip -r inct_deploy.zip inct_deploy` e
-use "Extrair" no painel — enviar 215 arquivos avulsos pelo navegador costuma
-falhar no meio.
+**Pelo hPanel (mais simples).** Gerenciador de Arquivos → entrar em
+`public_html` → enviar **`inct-site-2026-08-04.zip`** → "Extrair" **ali
+dentro** → apagar o zip do servidor. O conteúdo já está na raiz do arquivo:
+extrai direto no lugar certo, sem criar subpasta. Não toque em `.htaccess`,
+`llms.txt` nem `.private` — o zip não os contém e a extração não os remove.
 
 **Por SSH/rsync (mais rápido e seguro).** `deploy.sh` na raiz do projeto já
 faz isso; falta preencher `SSH_HOST` e `SSH_USER` com os dados de
 hPanel → Avançado → SSH.
 
-## Depois de subir: apagar os arquivos antigos
+**Daqui em diante, o caminho preferido é o CI** (`.github/workflows/deploy.yml`):
+configurados os secrets de FTP, todo push no `main` publica sozinho e este
+processo manual vira emergência.
+
+## Antes de extrair: limpar o build antigo
 
 O Vite põe um hash no nome de cada arquivo, então os chunks do build anterior
-**não são sobrescritos** — eles ficam no servidor ocupando espaço e sendo
-servidos a quem tiver HTML em cache. Se você subir por cima em vez de limpar
-`public_html/assets/` antes, apague estes 16:
+**não são sobrescritos** — ficam ocupando espaço e sendo servidos a quem tiver
+HTML em cache. A limpeza segura, no Gerenciador de Arquivos, é apagar **estas
+quatro coisas** dentro de `public_html/` antes de extrair o zip (todas são
+100% regeneradas pelo build):
 
 ```
-assets/Gestao-DxlS685N.js          assets/NoticiasTeaser-OKwFh78s.js
-assets/Inscricao-DAqfwtK_.js       assets/PasswordCard-FVs-e-Rx.js
-assets/MapaPage-CmD1aObQ.js        assets/api-BHC-lVVU.js
-assets/MapaTeaser-blAMooz8.js      assets/content-C8kZeA7h.js
-assets/MinhaInscricao-TDC_Pg3G.js  assets/index-CVaDUo14.css
-assets/NoticiaPage-BCox6jlN.js     assets/index-DwYg4LLd.js
-assets/NoticiasHub-CTrwCQkX.js     assets/lock-BnPOzh37.js
-assets/share-2-BmF__OcG.js         assets/shield-alert-BgWmjbpm.js
+public_html/index.html
+public_html/assets/     (inteira)
+public_html/admin/      (inteira)
+public_html/figuras/    (inteira)
 ```
+
+**NÃO apague** `.htaccess`, `llms.txt`, `.private` nem qualquer outro arquivo
+na raiz — eles não vêm do build e o site precisa deles.
 
 ## Conferir depois do upload
 
-1. `https://inct-conexao.com.br/` carrega e o menu funciona.
-2. **`/#/editais/selecao-ic-2026/resultado`** — os 50 selecionados aparecem, e
-   a busca acha um nome digitado sem acento.
-3. `/#/mapa?modo=narrativa` — ao rolar, o mapa fica fixo e troca de camada.
-4. `/figuras/` — abre como página estática, com gráfico, tabela e CSV.
-5. `/#/editais/selecao-ic-2026` — o selo diz "Resultado publicado".
-6. Recarregue com Ctrl+F5: se algo parecer o site velho, é HTML em cache.
+Primeiro, o automático — da raiz do repositório:
+
+```
+bash scripts/probe-live.sh
+```
+
+Ele compara o bundle publicado com o local, confere os assets essenciais
+(incluindo o relevo AVIF do mapa), verifica que a plataforma de webinários
+está assada no bundle no ar e que `robots.txt`/`llms.txt` sobreviveram.
+
+Depois, no navegador:
+
+1. `https://inct-conexao.com.br/` carrega; o teaser do webinário em destaque
+   mostra **"16:00 RO · 17:00 Brasília"**.
+2. **`/#/webinars`** — destaque "Em breve" (Clima, 27/08) com contagem
+   regressiva viva + cartão "Gravação" (Bioprospecção).
+3. **`/#/webinars/mesa-redonda-clima-eventos-extremos-saude-unica-amazonia`**
+   — contagem, horários traduzidos no topo e no painel lateral, botão
+   "Adicionar à agenda" baixa um .ics válido.
+4. **A página do evento encerrado** diz "A gravação será publicada em breve"
+   (nunca um vídeo de Instagram no palco).
+5. `/#/editais/selecao-ic-2026/resultado` — os 50 selecionados, busca sem acento.
+6. `/#/mapa?modo=narrativa` — mapa fixo ao rolar; `/#/mapa?modo=explorador` —
+   botão "Ocultar camadas" funciona.
+7. `/figuras/` — página estática com gráfico, tabela e CSV.
+8. Recarregue com Ctrl+F5: se algo parecer o site velho, é HTML em cache.
+9. `/admin` — a tela do CMS abre, mas o LOGIN ainda não funciona (OAuth sem
+   `base_url`); editar conteúdo em produção continua sendo pelo GitHub por
+   enquanto. Não é regressão: nunca funcionou em produção.
 
 ## Sobre o peso
 
-82,5 MB, dos quais **45 MB são cinco vídeos**:
+86,3 MB, dos quais **45 MB são cinco vídeos**:
 
 | arquivo | tamanho |
 |---|---|

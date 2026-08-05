@@ -8,7 +8,7 @@
   "startsAt": "2026-08-27T16:00:00-04:00",
   "endsAt": "2026-08-27T17:30:00-04:00",
   "timezoneLabel": "Horário de Rondônia (UTC-4)",
-  "heroImage": "clima-saude.jpg",
+  "heroImage": "clima-amazonia.jpg",
   "groupSlug": "conexao-clima-saude-unica",
   "published": true,
   "speakers": [
@@ -120,7 +120,7 @@
   "seo": {
     "ogTitle": "Clima, eventos extremos e Saúde Única na Amazônia",
     "ogDescription": "Mesa-redonda científica do INCT-CONEXAO sobre clima, eventos extremos e Saúde Única na Amazônia: dados, alerta precoce e políticas públicas. Transmissão ao vivo.",
-    "ogImage": "clima-saude.jpg",
+    "ogImage": "clima-amazonia.jpg",
     "keywords": [
       "clima",
       "Saúde Única",

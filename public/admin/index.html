@@ -12,10 +12,13 @@
     <!--
       Sveltia CMS — editor de conteúdo (webinars + grupos) compatível com Decap CMS.
       Lê a configuração em ./config.yml e grava os arquivos JSON no repositório do
-      GitHub (ver config.yml -> backend.repo). Para trocar pelo Decap CMS clássico,
-      basta substituir o src abaixo por
-      https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js
+      GitHub (ver config.yml -> backend.repo).
+
+      VERSÃO PINADA de propósito: sem o pin, o unpkg serve o "latest" e uma
+      atualização do Sveltia pode derrubar o painel inteiro sem ninguém tocar no
+      site (foi o que a 0.180.0 fez ao remover o widget `date`). Atualize o pin
+      conscientemente, testando o /admin local antes.
     -->
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+    <script src="https://unpkg.com/@sveltia/cms@0.180.0/dist/sveltia-cms.js" type="module"></script>
   </body>
 </html>

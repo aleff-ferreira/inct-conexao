@@ -70,8 +70,11 @@ collections:
         name: resumo
         widget: text
         hint: "Aparece nos cartões, na busca do Google e nas redes sociais."
-      - { label: "Data de publicação", name: data, widget: date, format: "YYYY-MM-DD" }
-      - { label: "Atualizado em", name: atualizadoEm, widget: date, format: "YYYY-MM-DD", required: false }
+      # O Sveltia (0.180+) removeu o widget `date` — e um único campo inválido
+      # derruba o PAINEL INTEIRO na tela de erro de configuração. A forma
+      # suportada de campo só-data é datetime com `type: date`.
+      - { label: "Data de publicação", name: data, widget: datetime, type: date, format: "YYYY-MM-DD" }
+      - { label: "Atualizado em", name: atualizadoEm, widget: datetime, type: date, format: "YYYY-MM-DD", required: false }
       - label: "Local"
         name: local
         widget: string

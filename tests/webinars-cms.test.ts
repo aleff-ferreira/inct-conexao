@@ -25,13 +25,23 @@ function padroesDeHorario(): string[] {
 }
 
 describe("config.yml · webinários", () => {
-  it("nenhum campo volta a ser widget datetime — em NENHUMA grafia", () => {
+  it("na coleção de WEBINÁRIOS, nenhum campo volta a ser widget datetime", () => {
     /* O widget datetime interpretava o horário digitado no fuso do NAVEGADOR
        de quem edita: alguém em São Paulo digitando "16:00" gravava 15:00 reais
        em Rondônia, em silêncio. Banir a STRING do format era burlável (aspas
-       simples, ou datetime sem format). Banir o widget não é: o arquivo
-       inteiro só usa `widget: date` (datas sem hora), que segue permitido. */
-    expect(yml).not.toContain("widget: datetime");
+       simples, ou datetime sem format); banir o widget não é.
+
+       O banimento é ESCOPADO à coleção de webinários: campos só-data de outras
+       coleções USAM datetime com `type: date` por exigência do Sveltia 0.180+
+       (que removeu o widget `date`) — e data sem hora não tem fuso a corromper. */
+    const inicio = yml.indexOf("- name: webinars");
+    expect(inicio).toBeGreaterThan(-1);
+    const proxima = yml.indexOf("\n  - name: ", inicio);
+    const bloco = yml.slice(inicio, proxima === -1 ? undefined : proxima);
+    // O bloco extraído tem de ser mesmo a coleção inteira de webinários.
+    expect(bloco).toContain("name: startsAt");
+    expect(bloco).toContain("name: liveStreamBackup");
+    expect(bloco).not.toContain("widget: datetime");
   });
 
   it("startsAt e endsAt são string com o MESMO pattern, com faixas de calendário", () => {

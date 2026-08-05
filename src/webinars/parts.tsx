@@ -500,7 +500,13 @@ export function EventCard({
   href: string;
 }) {
   const cover = webinarAsset(event.heroImage ?? "hero-forest.jpg");
-  const ctaLabel = status === "live" ? "Assistir ao vivo" : status === "upcoming" ? "Ver detalhes" : "Ver gravação";
+  /* "Ver gravação" só quando a gravação EXISTE — o rótulo fixo prometia replay
+     em evento encerrado sem vídeo, e a página de destino dizia "em breve". */
+  const ctaLabel =
+    status === "live" ? "Assistir ao vivo"
+    : status === "upcoming" ? "Ver detalhes"
+    : event.replay ? "Ver gravação"
+    : "Ver detalhes";
 
   return (
     <a className="webinar-card" href={href}>
