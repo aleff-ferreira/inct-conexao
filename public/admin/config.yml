@@ -175,6 +175,13 @@ collections:
               - { label: "Legenda", name: legenda, widget: string, required: false }
               - { label: "Crédito", name: credito, widget: string, required: false }
               - { label: "Transcrição da fala", name: transcricao, widget: text, required: false, hint: "Obrigatória se houver voz no vídeo." }
+              - label: "Formato da janela"
+                name: proporcao
+                widget: select
+                required: false
+                options: ["5/4", "16/9"]
+                default: "5/4"
+                hint: "5/4 para vídeo de celular; 16/9 para panorâmico (drone). Recorte o ARQUIVO nessa proporção antes de subir."
           - label: "Citação"
             name: citacao
             widget: object
@@ -337,7 +344,7 @@ collections:
         pattern:
           - '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d:00-04:00$'
           - "Use exatamente AAAA-MM-DDTHH:MM:00-04:00 (ex.: 2026-08-27T16:00:00-04:00)"
-        hint: "Formato exato: 2026-08-27T16:00:00-04:00 — sempre o horário de Rondônia, com -04:00 no fim. O site converte para Brasília e para o fuso do visitante sozinho."
+        hint: "Formato exato: 2026-08-27T16:00:00-04:00, sempre o horário de Rondônia, com -04:00 no fim. O site converte para Brasília e para o fuso do visitante sozinho."
       - label: "Término (horário de RONDÔNIA)"
         name: endsAt
         widget: string
@@ -429,11 +436,11 @@ collections:
         label_singular: "Item"
         widget: list
         required: false
-        summary: "{{fields.time}} — {{fields.title}}"
+        summary: "{{fields.time}} · {{fields.title}}"
         fields:
           - { label: "Horário (HH:MM)", name: time, widget: string }
           - { label: "Atividade", name: title, widget: string }
-          - { label: "Responsável", name: speaker, widget: string, required: false, hint: "Use “—” para debate/intervalo." }
+          - { label: "Responsável", name: speaker, widget: string, required: false, hint: "Use “-” para debate/intervalo." }
       - label: "Materiais"
         name: materials
         label_singular: "Material"
@@ -573,7 +580,7 @@ collections:
           - { label: "Prevenção", name: prevencao, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
           - { label: "Em caso de acidente", name: primeirosSocorros, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
           - { label: "NÃO faça", name: naoFazer, widget: list, field: { label: "Item", name: item, widget: string }, required: false }
-          - { label: "Imagem (foto CREDITADA — nunca gerada por IA)", name: imagem, widget: image, required: false, choose_url: false }
+          - { label: "Imagem (foto CREDITADA, nunca gerada por IA)", name: imagem, widget: image, required: false, choose_url: false }
           - { label: "Crédito da imagem", name: imagemCredito, widget: string, required: false }
           - { label: "Texto alternativo da imagem", name: imagemAlt, widget: string, required: false }
           - label: "Fontes"
@@ -699,13 +706,13 @@ collections:
           - { label: "Conteúdo disponível", value: conteudo }
           - { label: "Instituições da rede", value: instituicoes }
           - { label: "Doenças (notificações)", value: doencas-notificacoes }
-          - { label: "Focos de calor (INPE, 2003–2024)", value: focos-calor }
+          - { label: "Focos de calor (INPE, 2003 a 2024)", value: focos-calor }
           - { label: "Sem camada (só o relevo e os limites)", value: sem-camada }
       - label: "Enquadramento inicial"
         name: enquadrar
         widget: select
         required: false
-        hint: "Deixe vazio para o Brasil inteiro. Não use junto com 'Estado em foco' — o enquadramento vence."
+        hint: "Deixe vazio para o Brasil inteiro. Não use junto com 'Estado em foco': o enquadramento vence."
         options:
           - { label: "Brasil inteiro", value: brasil }
           - { label: "Amazônia Legal", value: amazonia-legal }

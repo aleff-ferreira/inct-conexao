@@ -358,7 +358,7 @@ export function BrazilMap({
         className={`map-svg${panning ? " is-panning" : canPan ? " can-pan" : ""}${vitrine ? " is-vitrine" : ""}`}
         viewBox={view.join(" ")}
         role="group"
-        aria-label="Mapa do Brasil por unidade federativa. Use Tab para percorrer os estados e Enter para abrir. Roda do mouse aproxima; arraste para deslocar."
+        aria-label="Mapa do Brasil por unidade federativa. Use Tab para percorrer os estados e Enter para abrir. Roda do mouse aproxima. Arraste para deslocar."
         preserveAspectRatio="xMidYMid meet"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -366,7 +366,7 @@ export function BrazilMap({
         onPointerLeave={(e) => { endPan(e); leave(); }}
         onPointerCancel={endPan}
       >
-        <title>Mapa do Brasil — unidades federativas</title>
+        <title>Mapa do Brasil: unidades federativas</title>
         <defs>
           {/* recorte no contorno do Brasil (união das UFs) */}
           <clipPath id="mapBrasilClip">

@@ -151,7 +151,7 @@ export default function ResultadoIC2026() {
 
         {alvo && achados === 0 ? (
           <p className="res-vazio">
-            Nenhum nome corresponde a “{busca}”. Confira a grafia, ou limpe a busca para ver a lista completa.
+            Nenhum nome corresponde a “{busca}”. Confira a grafia ou limpe a busca para ver a lista completa.
             A ausência aqui não substitui a consulta ao documento oficial.
           </p>
         ) : null}
@@ -166,7 +166,7 @@ export default function ResultadoIC2026() {
             </h2>
             <table className="res-tabela">
               <caption className="res-tabela-cap">
-                Selecionados e orientadores — {e.nome}
+                Selecionados e orientadores: {e.nome}
               </caption>
               <thead>
                 <tr>

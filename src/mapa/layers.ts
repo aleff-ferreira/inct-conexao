@@ -246,7 +246,7 @@ export function construirCamadas(
       maturidade: "consolidada",
       cobertura: { medidas: totalUfsComVagas, total: 27 },
       comparavel: true,
-      naoMede: "É a oferta prevista no edital, não as bolsas efetivamente implementadas — a distribuição realizada difere.",
+      naoMede: "É a oferta prevista no edital, não as bolsas efetivamente implementadas: a distribuição realizada difere.",
     },
     id: "vagas-ic-2026",
     label: "Vagas de IC (Edital 04/2026)",
@@ -344,7 +344,7 @@ export function construirCamadas(
          88.065 de dengue sozinha; o Acre traz 79.324 somando quatro doenças.
          Ordenar produziria "TO pior que AC", que o dado não sustenta. */
       comparavel: false,
-      naoMede: "Notificação não é caso confirmado, e o total soma conjuntos diferentes de doenças em cada estado — os números não se comparam entre UFs. A malária fica de fora (é acompanhada pelo SIVEP-Malária, não pelo SINAN).",
+      naoMede: "Notificação não é caso confirmado, e o total soma conjuntos diferentes de doenças em cada estado. Os números não se comparam entre UFs. A malária fica de fora (é acompanhada pelo SIVEP-Malária, não pelo SINAN).",
     },
     id: "doencas-notificacoes",
     label: "Doenças (notificações)",
@@ -395,8 +395,8 @@ export function construirCamadas(
     tipo: "sequencial",
     descricao:
       `Detecções de anomalia térmica pelo satélite de referência do INPE em ${ano}, por unidade federativa. ` +
-      `A série cobre ${ANO_INICIAL} a ${ANO_FINAL}; use o controle de ano para percorrê-la. ` +
-      "A escala de cor é a mesma em todos os anos — sem isso, cada ano pareceria igual e a tendência sumiria.",
+      `A série cobre ${ANO_INICIAL} a ${ANO_FINAL}. Use o controle de ano para percorrê-la. ` +
+      "A escala de cor é a mesma em todos os anos. Sem isso, cada ano pareceria igual e a tendência sumiria.",
     fonte: {
       titulo: META_FOCOS.titulo,
       publicador: META_FOCOS.publicador,

@@ -67,7 +67,7 @@ export function ControleAno({ ano, medida, reduzirMovimento, onPreview, onFirmar
         <label className="map-ano-label" htmlFor="map-ano-range">
           <strong>{ano}</strong>
           <span>
-            {ANO_INICIAL}–{ANO_FINAL}
+            {ANO_INICIAL} a {ANO_FINAL}
           </span>
         </label>
 

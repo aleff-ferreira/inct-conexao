@@ -238,7 +238,7 @@ export function Figura({ id, className }: { id: string; className?: string }) {
       <div className="figura-rodape">
         <p className="figura-fonte">
           Fonte: <a href={fig.fonte.url} target="_blank" rel="noopener noreferrer">{fig.fonte.titulo}</a>
-          {" — "}{fig.fonte.publicador} ({fig.fonte.ano}). {fig.fonte.licenca}.
+          {", "}{fig.fonte.publicador} ({fig.fonte.ano}). {fig.fonte.licenca}.
         </p>
         <div className="figura-acoes">
           <button type="button" className="figura-botao" onClick={() => baixarCsv(fig)}>
@@ -260,7 +260,7 @@ export function Figura({ id, className }: { id: string; className?: string }) {
       {/* A tabela é a figura para quem usa leitor de tela. Fica visualmente
           escondida, nunca `display:none`, que a tiraria da árvore acessível. */}
       <table id={`${svgId}-tabela`} className="figura-tabela-oculta">
-        <caption>{fig.titulo} — {fig.subtitulo}</caption>
+        <caption>{fig.titulo}. {fig.subtitulo}</caption>
         <thead>
           <tr>{fig.colunas.map((c) => <th key={c.chave} scope="col">{c.rotulo}</th>)}</tr>
         </thead>

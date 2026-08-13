@@ -1,0 +1,22 @@
+# =============================================================================
+#  INCT-CONEXAO · configuração do CLI do Supabase
+# =============================================================================
+#  Este arquivo existe por UMA razão declarada: tornar explícita a proteção da
+#  Edge Function `indicadores`.
+#
+#  `verify_jwt = true` é hoje o padrão do CLI — mas padrão é herança, não
+#  decisão. Sem esta linha, o que impede a função de virar um proxy público e
+#  anônimo para o Google Acadêmico é um comportamento que ninguém escreveu e que
+#  uma versão futura do CLI pode mudar. Com ela, a exigência de sessão está no
+#  repositório, revisável sem rodar nada.
+#
+#  Publicação:
+#      supabase functions deploy indicadores --project-ref <ref-do-projeto>
+#
+#  NUNCA publique com `--no-verify-jwt`: a função sairia para o Scholar a mando
+#  de qualquer pessoa na internet, com o IP do projeto — e o bloqueio que viesse
+#  disso cairia sobre os 209 pesquisadores da rede.
+# =============================================================================
+
+[functions.indicadores]
+verify_jwt = true

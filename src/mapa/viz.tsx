@@ -93,7 +93,7 @@ export function Timeline({ chuvoso, mes, onMes, regiao }: { chuvoso: boolean[]; 
         ))}
       </div>
       <input type="range" min={0} max={11} value={mes} onChange={(e) => onMes(Number(e.target.value))} className="viz-tl-range" aria-label={`Mês (${MES_LONGO[mes]})`} />
-      <p className="viz-tl-note">Padrão climatológico geral da região {regiao} (tendência de chuva). Referência: climatologia/INMET — não é previsão nem indica risco de doença.</p>
+      <p className="viz-tl-note">Padrão climatológico geral da região {regiao} (tendência de chuva). Referência: climatologia/INMET. Não é previsão nem indica risco de doença.</p>
     </div>
   );
 }

@@ -1,6 +1,11 @@
-/** Tipos da Plataforma de Seleções (espelham supabase/migrations/001_platform.sql). */
+/** Tipos da Plataforma de Seleções (espelham supabase/migrations/001_platform.sql
+ *  e 012_superadmin.sql). */
 
-export type Role = "admin" | "avaliador" | "candidato";
+/**
+ * 'superadmin' (012): herda tudo de 'admin' em todo o site e é o ÚNICO papel
+ * que gere contas (allowlist + troca de papéis, painel Administração de Contas).
+ */
+export type Role = "superadmin" | "admin" | "avaliador" | "candidato";
 
 export type Profile = {
   id: string;
@@ -12,7 +17,7 @@ export type Profile = {
 /** E-mail pré-autorizado da comissão: a conta nasce com este papel. */
 export type StaffAllowlistEntry = {
   email: string;
-  role: "admin" | "avaliador";
+  role: "superadmin" | "admin" | "avaliador";
   created_at?: string;
 };
 

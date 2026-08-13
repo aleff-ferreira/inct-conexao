@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { CheckCircle2, KeyRound, Lock, Send } from "lucide-react";
-import type { AuthState } from "./auth";
+import { lembrarEmailDeRecuperacao, type AuthState } from "./auth";
 import { passwordIssue } from "./validation";
+import { NOVA_SENHA_HREF } from "../webinars/router";
 
 /**
  * Login por e-mail + SENHA (sem link mágico). Usado pela comissão e pelos
@@ -17,21 +18,23 @@ const COPY: Record<Role, { loginTitle: string; loginIntro: string; signupIntro: 
     loginTitle: "Acesso da comissão",
     loginIntro: "Entre com o e-mail e a senha da sua conta de avaliador(a).",
     signupIntro:
-      "Use o e-mail que a coordenação pré-autorizou; sua conta já nasce com o papel de avaliador(a). Você define sua própria senha: nada de senhas temporárias.",
-    resetIntro: "Informe o e-mail da sua conta da comissão; enviaremos um link para definir uma nova senha.",
+      "Use o e-mail que a coordenação pré-autorizou. Sua conta já nasce com o papel de avaliador(a). Você define sua própria senha: nada de senhas temporárias.",
+    resetIntro:
+      "Informe o e-mail da sua conta da comissão. Enviaremos um código numérico. Você digita o código na tela seguinte e define a nova senha ali mesmo.",
   },
   candidate: {
     loginTitle: "Entre para se inscrever",
     loginIntro: "Entre com o e-mail e a senha da sua conta. Sua inscrição fica salva e você pode revisá-la até o fim do prazo.",
     signupIntro:
-      "Crie sua conta com e-mail e senha para iniciar sua inscrição. Você poderá voltar e editar seus dados até o fim do prazo, guarde bem a sua senha.",
-    resetIntro: "Informe o e-mail da sua conta; enviaremos um link para definir uma nova senha.",
+      "Crie sua conta com e-mail e senha para iniciar sua inscrição. Você poderá voltar e editar seus dados até o fim do prazo. Guarde bem a sua senha.",
+    resetIntro:
+      "Informe o e-mail da sua conta. Enviaremos um código numérico. Você digita o código na tela seguinte e define a nova senha ali mesmo.",
   },
 };
 
 export default function AuthCard({ auth, role }: { auth: AuthState; role: Role }) {
   const copy = COPY[role];
-  const [mode, setMode] = useState<"login" | "reset" | "reset-sent" | "signup" | "signup-sent">("login");
+  const [mode, setMode] = useState<"login" | "reset" | "signup" | "signup-sent">("login");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmar, setConfirmar] = useState("");
@@ -45,7 +48,7 @@ export default function AuthCard({ auth, role }: { auth: AuthState; role: Role }
         <h2>Conta criada: confirme seu e-mail</h2>
         <p>
           Enviamos um link de confirmação para <strong>{email}</strong>. Abra o e-mail{" "}
-          <strong>neste mesmo navegador</strong> e clique no link; depois é só entrar com sua senha.
+          <strong>neste mesmo navegador</strong> e clique no link. Depois é só entrar com sua senha.
         </p>
         <button className="plat-linkbtn" onClick={() => setMode("login")}>
           Voltar ao login
@@ -128,22 +131,22 @@ export default function AuthCard({ auth, role }: { auth: AuthState; role: Role }
     );
   }
 
-  if (mode === "reset-sent") {
-    return (
-      <div className="plat-card plat-login">
-        <CheckCircle2 size={22} aria-hidden="true" />
-        <h2>Link de redefinição enviado</h2>
-        <p>
-          Enviamos um link para <strong>{email}</strong>. Abra o e-mail <strong>neste mesmo navegador</strong> e
-          clique no link para definir a nova senha.
-        </p>
-        <button className="plat-linkbtn" onClick={() => setMode("login")}>
-          Voltar ao login
-        </button>
-      </div>
-    );
-  }
-
+  /*
+   * ESQUECI A SENHA — pede o e-mail e LEVA A PESSOA ATÉ O CAMPO DO CÓDIGO.
+   *
+   * Antes esta tela terminava num cartão "link enviado, abra o e-mail neste
+   * mesmo navegador" e parava ali: a continuação dependia de um clique num link
+   * que, na prática, chegava gasto (o Safe Links da Microsoft e o rastreador de
+   * cliques da Brevo abrem a URL antes da pessoa — ver o bloco "O CÓDIGO DE
+   * NUMÉRICO" em auth.tsx). Agora o e-mail traz um código numérico e a
+   * navegação continua sozinha até `#/nova-senha`, com o endereço já preenchido
+   * lá (via sessionStorage; o e-mail NÃO vai para a URL, e o código não é
+   * guardado em lugar nenhum).
+   *
+   * O envio em si não mudou: `resetPassword` continua disparando o mesmo
+   * e-mail, que carrega o código E o link — quem tiver um link antigo ainda
+   * válido não fica para trás.
+   */
   if (mode === "reset") {
     return (
       <div className="plat-card plat-login">
@@ -157,11 +160,13 @@ export default function AuthCard({ auth, role }: { auth: AuthState; role: Role }
             setBusy(true);
             const { error } = await auth.resetPassword(email);
             setBusy(false);
-            if (error) setMsg(error);
-            else {
-              setMsg("");
-              setMode("reset-sent");
+            if (error) {
+              setMsg(error);
+              return;
             }
+            setMsg("");
+            lembrarEmailDeRecuperacao(email);
+            window.location.hash = NOVA_SENHA_HREF;
           }}
         >
           <input
@@ -171,12 +176,17 @@ export default function AuthCard({ auth, role }: { auth: AuthState; role: Role }
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             aria-label="Seu e-mail"
+            autoComplete="username"
           />
           <button className="button primary" type="submit" disabled={busy}>
-            {busy ? "Enviando…" : "Enviar link"} <Send size={16} aria-hidden="true" />
+            {busy ? "Enviando…" : "Enviar código"} <Send size={16} aria-hidden="true" />
           </button>
         </form>
         {msg ? <p className="plat-error">{msg}</p> : null}
+        <p>
+          O código chega por e-mail e vale por 1 hora. Se você já tem um código, vá direto para{" "}
+          <a href={NOVA_SENHA_HREF}>definir a nova senha</a>.
+        </p>
         <button className="plat-linkbtn" onClick={() => setMode("login")}>
           Voltar ao login
         </button>

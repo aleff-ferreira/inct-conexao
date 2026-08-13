@@ -76,8 +76,8 @@ const criterios = [
 
 /** Documentos para inscrição (item 5.1 — versão final). */
 const documentos = [
-  { icon: FileText, title: "Carta de intenção", text: "Até 4.000 caracteres (com espaços), em PDF, experiência na graduação, habilidades, motivação para participar do projeto junto ao(à) orientador(a) pretendido(a) e indicação clara da região e do(a) orientador(a)." },
-  { icon: ScrollText, title: "Plano de Atividades", text: "Até 6.000 caracteres (com espaços), em PDF, de acordo com a linha de atuação, Objetivo, Justificativa, Metodologia e Cronograma de Execução." },
+  { icon: FileText, title: "Carta de intenção", text: "Até 4.000 caracteres (com espaços), em PDF, contendo experiência na graduação, habilidades, motivação para participar do projeto junto ao(à) orientador(a) pretendido(a) e indicação clara da região e do(a) orientador(a)." },
+  { icon: ScrollText, title: "Plano de Atividades", text: "Até 6.000 caracteres (com espaços), em PDF, de acordo com a linha de atuação, contendo Objetivo, Justificativa, Metodologia e Cronograma de Execução." },
   { icon: GraduationCap, title: "Histórico escolar e matrícula", text: "Histórico escolar e comprovante de matrícula atualizados, em PDF." },
   { icon: Users, title: "Currículo Lattes", text: "Currículo Lattes atualizado nos últimos 30 dias, em PDF." },
   { icon: Video, title: "Vídeo de apresentação", text: "Vídeo de apresentação direto ao(à) orientador(a), com a motivação para participar do projeto, de 1 a 3 minutos (arquivo MPEG); enviar o link de acesso." },
@@ -260,7 +260,7 @@ export function EditalIC2026() {
         <div className="section-inner edital-shell">
           <div className="edital-block">
             <p className="eyebrow dark">Quem pode se inscrever</p>
-            <h2>Perfil do candidato(a)</h2>
+            <h2>Perfil do(a) candidato(a)</h2>
             <p>Além de atender a todos os requisitos do CNPq, o(a) candidato(a) deve cumprir os itens obrigatórios:</p>
             <ul className="edital-check">
               {perfil.map((p, i) => (
@@ -319,7 +319,7 @@ export function EditalIC2026() {
                 <span>
                   Em consonância com a SNCT 2026, candidatas do sexo feminino recebem bonificação adicional de 10% sobre
                   a nota final. Havendo candidatas suficientes, a lista final de aprovados(as) terá ao menos 50% de
-                  mulheres. Mais meninas e mulheres na ciência.
+                  mulheres. O objetivo é ampliar a presença de meninas e mulheres na ciência.
                 </span>
               </div>
             </div>

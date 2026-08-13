@@ -1,0 +1,568 @@
+{
+  "_meta": {
+    "titulo": "Verificacao ao vivo das APIs de metadados usadas pelo formulario do relato anual",
+    "proposito": "Decidir se a promessa da Tela 2 ('cole o DOI e o resto vem sozinho' / 'buscamos sua producao pelo ORCID') se sustenta a partir do navegador, sem backend e sem chave de API.",
+    "testadoEm": "2026-08-04",
+    "metodo": "curl 8.21.0 (Windows/Schannel), sempre com o cabecalho 'Origin: https://inct-conexao.com.br'. Cabecalhos capturados com -D em arquivo separado do corpo (-o). Nenhum resultado abaixo foi herdado de frente anterior: tudo foi reexecutado.",
+    "origemDeTeste": "https://inct-conexao.com.br",
+    "avisoDeEscopo": "CORS foi verificado pelo cabecalho de resposta real, que e o que o navegador aplica. Nao houve execucao dentro de um browser real; a checagem equivalente e o par (Origin enviado -> Access-Control-Allow-Origin recebido), reproduzido abaixo em 'cabecalhoBruto'.",
+    "janelaCiclo1": { "inicio": "2025-05-01", "fim": "2026-04-30" }
+  },
+
+  "resumoExecutivo": {
+    "vereditoGeral": "A promessa se sustenta. As cinco APIs centrais (Crossref, ORCID, ROR, DataCite, doi.org) devolvem CORS aberto e nao pedem chave. O formulario pode ser construido como a especificacao desenhou.",
+    "aSurpresa": "A cobertura brasileira nao e o ponto fraco - e o ponto FORTE. Nos quatro DOIs SciELO testados, 100% dos autores vieram com ORCID e com afiliacao. Nos dois DOIs internacionais testados (Nature e capitulo Elsevier), ZERO autores vieram com ORCID ou afiliacao. O Indicador 3 (colaboracao interna da rede, casada por ORCID) funciona MELHOR na producao brasileira do que na internacional.",
+    "oQueRealmenteQuebra": "Nao e o DOI - e o ORCID como fonte de descoberta. Em 18 pesquisadores brasileiros reais medidos, 33% tem ZERO trabalhos dentro da janela do ciclo 1, e a media e de 2,89 trabalhos por pessoa. A tela de 'encontramos sua producao' vai vir vazia para um em cada tres, e com 2 ou 3 itens para a maioria dos demais.",
+    "oQueMuda": [
+      "O texto de fallback da Tela 2 nao e caso de borda: e o caminho de um terco dos usuarios. Precisa ser tao bom quanto o caminho feliz.",
+      "A citacao montada precisa cair de 'page' para 'article-number': artigo SciELO nao tem pagina, tem e-location (ex.: e20230039).",
+      "Nenhum DOI brasileiro trouxe 'abstract', 'language', 'funder' nem 'subject' no Crossref. Se a interface exibir esses campos, eles ficam vazios justamente na producao mais comum da rede.",
+      "ROR nao tem registro para a FIOCRUZ Rondonia. Derivar a UF do ROR devolve RJ para a instituicao-sede do proprio INCT."
+    ]
+  },
+
+  "apis": [
+    {
+      "nome": "Crossref REST API",
+      "endpoint": "https://api.crossref.org/works/{doi}",
+      "usoNoFormulario": "Resolucao primaria de DOI: artigo, capitulo de livro, anais, preprint.",
+      "metodoTeste": "curl -D headers -o body -H 'Origin: https://inct-conexao.com.br' 'https://api.crossref.org/works/{doi}?mailto=...' para 8 DOIs (2 internacionais, 4 SciELO, 1 Zenodo, 1 inexistente), mais um preflight OPTIONS e uma rajada de 12 pedidos.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "access-control-allow-origin: *\naccess-control-allow-headers: X-Requested-With, Accept, Accept-Encoding, Accept-Charset, Accept-Language, Accept-Ranges, Cache-Control\naccess-control-expose-headers: Link\nx-rate-limit-limit: 10\nx-rate-limit-interval: 1s\nx-concurrency-limit: 3\nx-api-pool: polite-single",
+      "preflight": "OPTIONS -> HTTP 200, access-control-allow-origin: *. Na pratica o navegador nao dispara preflight aqui: GET sem cabecalho customizado e requisicao simples.",
+      "limiteTaxa": {
+        "politePool": "10 req/s, concorrencia 3 (x-api-pool: polite-single)",
+        "publicPool": "5 req/s, concorrencia 1 (x-api-pool: public-single)",
+        "comoEntrarNoPolitePool": "Parametro de query ?mailto=<email>. VERIFICADO: com ?mailto= o cabecalho vira polite-single/10/3; sem ele vira public-single/5/1. O navegador nao pode setar User-Agent, entao o parametro de query e o unico caminho - e ele funciona.",
+        "consequenciaDeProjeto": "A concorrencia 3 que a especificacao recomenda so e legal DENTRO do polite pool. Se o ?mailto= for esquecido, o limite de concorrencia cai para 1 e a fila de 3 passa a violar a politica.",
+        "429Observado": false,
+        "medicaoReal": "12 pedidos sequenciais: 11,1 s, nenhum 429. 9 DOIs em lotes de 3 concorrentes: 4,1 s no total (0,46 s por DOI), 9 de 9 resolvidos."
+      },
+      "formatoResponse404": "HTTP 404 com content-type text/plain e corpo literal 'Resource not found.' - NAO e JSON. Confira o status; nao tente parsear.",
+      "formatoResposta": "JSON { status, message-type, message: {...} }. Campos uteis: title[], type, container-title[], short-container-title[], publisher, ISSN[], ISBN[], volume, issue, page, article-number, author[] (given, family, sequence, ORCID, authenticated-orcid, affiliation[].name), license[], URL, published.date-parts, reference-count, is-referenced-by-count, alternative-id[].",
+      "coberturaBrasileira": "EXCELENTE, e melhor que a internacional no que mais importa. Os 4 DOIs SciELO testados (10.1590/...) resolveram com HTTP 200 e trouxeram ISSN, volume, container-title e - decisivo - ORCID e afiliacao para 100% dos autores (4/4, 2/2, 2/2, 3/3). Nos DOIs internacionais testados, 0/8 autores da Nature e 0/1 do capitulo Elsevier trouxeram ORCID ou afiliacao. Lacunas brasileiras: 'page' ausente (usar article-number), 'language' ausente nos 4, 'abstract' ausente em 3 de 4, 'funder' e 'subject' ausentes em todos - mas 'funder' e 'subject' tambem faltaram nos internacionais.",
+      "ressalvas": [
+        "authenticated-orcid vem false nos DOIs SciELO: o ORCID foi declarado pelo editor, nao autenticado pelo autor. Serve para casar coautoria, mas nao e prova de identidade.",
+        "DOI e case-insensitive na rota: 10.1590/1678-9199-JVATITD-2023-0039 e a versao minuscula devolvem ambos HTTP 200.",
+        "DOI SciELO com DUAS barras (10.1590/1807-1929/agriambi.v26n12p947-952) funciona cru e tambem percent-encoded. Nao e preciso codificar, mas codificar nao quebra.",
+        "DOI de dataset Zenodo devolve 404 aqui - e registro DataCite, nao Crossref. Nao e falha: e o motivo de a cadeia de provedores existir."
+      ],
+      "veredito": "usavel-no-navegador"
+    },
+
+    {
+      "nome": "ORCID Public API - lista de trabalhos",
+      "endpoint": "https://pub.orcid.org/v3.0/{orcid}/works",
+      "usoNoFormulario": "Descoberta: 'encontramos N producoes suas no periodo'.",
+      "metodoTeste": "curl com Origin e Accept: application/json em 18 ORCIDs reais de pesquisadores com afiliacao brasileira, colhidos dos metadados Crossref de artigos SciELO 2023+; mais preflight OPTIONS e um ORCID inexistente.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\ncontent-type: application/json;charset=UTF-8\naccess-control-allow-origin: *\nvary: accept-encoding",
+      "preflight": "OPTIONS -> HTTP 200, access-control-allow-origin: *, access-control-allow-methods: GET, POST, PUT, DELETE, access-control-allow-headers: X-Requested-With,Origin,Content-Type, Accept. Sem access-control-max-age (o navegador reusa pouco o preflight, mas Accept: application/json e cabecalho safelisted, entao na pratica nao ha preflight).",
+      "limiteTaxa": "Nenhum cabecalho de limite publicado pela API. A politica documentada do ORCID e de 24 req/s por IP para a API publica; nada foi observado nos testes (18 ORCIDs consultados em sequencia, todos HTTP 200).",
+      "formatoResposta": "JSON { group: [ { external-ids: { external-id: [{external-id-type:'doi', external-id-value:'...'}] }, work-summary: [ { put-code, title.title.value, journal-title.value, type, publication-date:{year:{value},month:{value},day:{value}}, url, visibility, source } ] } ] }. Agrupado: cada 'group' e um trabalho, com N work-summary (uma por fonte que o declarou).",
+      "atencaoAccept": "SEM o cabecalho Accept a resposta vem em application/vnd.orcid+xml. E OBRIGATORIO enviar Accept: application/json. Verificado nos dois modos.",
+      "resposta404": "HTTP 404 com JSON estruturado: {\"response-code\":404,\"developer-message\":\"404 Not Found: The resource was not found.\",\"user-message\":\"The resource was not found.\",\"error-code\":9016,...}. Diferente do Crossref, aqui da para parsear o erro.",
+      "coberturaBrasileira": "Os registros existem e sao ricos - mediana de 104 trabalhos por ORCID entre os 18 pesquisadores brasileiros medidos - MAS sao pobres na janela que interessa. Medicao real: media 2,89 trabalhos dentro de 2025-05-01..2026-04-30; 6 dos 18 (33%) com ZERO na janela; 1 dos 18 (6%) com ZERO trabalhos no total; 3 dos 18 (17%) com no maximo 2 trabalhos no total. 79% dos trabalhos declarados (1549 de 1962) trazem DOI - ou seja, 21% nao trazem e nao podem ser enriquecidos pelo Crossref.",
+      "granularidadeDeData": "Amostra de 361 trabalhos (ORCID 0000-0002-0848-1940): 86% com ano+mes, 14% com ANO APENAS, 0% sem data. Consequencia: para uma janela que atravessa dois anos civis (mai/2025 a abr/2026), 14% dos itens sao ambiguos - um item datado so '2025' pode ser de janeiro (fora) ou de novembro (dentro). O filtro do periodo nao pode ser exclusivo.",
+      "ressalvas": [
+        "O agrupamento 'group' pode conter varias work-summary para o mesmo trabalho (uma por fonte). Contar 'group', nao 'work-summary', sob pena de inflar o numero mostrado ao usuario.",
+        "Nao ha filtro de data no lado do servidor: a rota devolve a lista inteira (361 itens no maior caso testado) e o filtro do periodo e feito no cliente."
+      ],
+      "veredito": "usavel-no-navegador"
+    },
+
+    {
+      "nome": "ORCID Public API - busca expandida por nome",
+      "endpoint": "https://pub.orcid.org/v3.0/expanded-search/?q=...",
+      "usoNoFormulario": "Botao 'nao lembro o meu ORCID' na Tela 1.",
+      "metodoTeste": "curl com Origin e Accept: application/json, consulta q=family-name:Giatti+AND+given-names:Leandro.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\ncontent-type: application/json;charset=UTF-8\naccess-control-allow-origin: *\nvary: Accept-Encoding",
+      "limiteTaxa": "Sem cabecalho de limite. Mesma politica da API publica.",
+      "formatoResposta": "JSON { num-found, expanded-result: [ { orcid-id, given-names, family-names, credit-name, other-name[], email[], institution-name[] } ] }. Teste real devolveu num-found: 1 e o ORCID correto (0000-0003-1154-6503).",
+      "coberturaBrasileira": "Funciona, mas institution-name veio VAZIO ([]) no resultado testado - ou seja, a tela de desambiguacao nao pode contar com a instituicao para o usuario reconhecer a si mesmo. Com nomes brasileiros comuns (Silva, Santos, Oliveira) a lista tende a ser longa e sem criterio de desempate visivel.",
+      "ressalvas": [
+        "Sintaxe de consulta e Solr/Lucene: 'family-name:X AND given-names:Y'. Consulta livre por nome completo funciona pior.",
+        "Sem institution-name, mostre tambem os titulos recentes de cada candidato (uma chamada /works por candidato) antes de o usuario escolher - senao a escolha e cega."
+      ],
+      "veredito": "usavel-com-ressalva"
+    },
+
+    {
+      "nome": "ROR - Research Organization Registry",
+      "endpoint": "https://api.ror.org/v2/organizations?query={nome}",
+      "usoNoFormulario": "Instituicao canonica; derivacao de pais e UF (Indicador 3, e alimenta o #/mapa que ja existe).",
+      "metodoTeste": "curl com Origin em v1 e v2, buscas por Fiocruz, UNIR, INPA e 'Fundacao Oswaldo Cruz Rondonia'; mais preflight OPTIONS.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\ncontent-type: application/json\nAccess-Control-Allow-Origin: *\nVary: Cookie, Origin",
+      "preflight": "OPTIONS -> HTTP 200, Access-Control-Allow-Origin: *",
+      "limiteTaxa": "Nenhum cabecalho de limite ou de depreciacao e publicado (verificado: nem Sunset, nem Deprecation, nem X-RateLimit em v1 ou v2). A politica documentada do ROR e de 2000 req / 5 min por IP. v1 e v2 responderam HTTP 200 - v1 nao foi desligada.",
+      "formatoResposta": "v2: JSON { number_of_results, items: [ { id: 'https://ror.org/xxxx', names: [{value, types:['ror_display'|'alias'|...]}], locations: [{geonames_details: {country_code, country_subdivision_code, name, lat, lng}}], types, links, domains, established, external_ids, relationships, status } ] }.",
+      "extracaoVerificada": [
+        "UNIR -> https://ror.org/02842cb31 | BR | UF RO | Porto Velho | -8.76194, -63.90389",
+        "INPA -> https://ror.org/01xe86309 | BR | UF AM | Manaus | -3.10194, -60.025",
+        "Fiocruz -> https://ror.org/04jhswv08 | BR | UF RJ | Rio de Janeiro | -22.90642, -43.18223"
+      ],
+      "coberturaBrasileira": "Boa para universidades federais e institutos nacionais - UNIR e INPA resolveram com UF e coordenadas corretas. ACHADO CRITICO: nao existe registro ROR para a FIOCRUZ Rondonia. A busca por 'Fundacao Oswaldo Cruz Rondonia' devolve a sede nacional (04jhswv08, UF=RJ) e a consulta 'Oswaldo Cruz Rondonia' devolve 32 resultados sem nenhuma unidade de Rondonia. Derivar a UF do ROR classificaria a instituicao-sede do proprio INCT como RJ.",
+      "ressalvas": [
+        "A busca v1 e fuzzy demais: query=Universidade Federal de Rondonia devolveu number_of_results 11610, com o alvo em primeiro lugar mas seguido de instituicoes sem relacao. Sempre mostrar o topo N e exigir escolha humana; nunca aceitar o primeiro resultado automaticamente.",
+        "Unidades regionais de instituicoes nacionais (Fiocruz RO, Fiocruz AM, campi) em geral nao tem ROR proprio. A UF precisa de um campo declarado, com o ROR guardado ao lado apenas como identificador da instituicao-mae."
+      ],
+      "veredito": "usavel-com-ressalva"
+    },
+
+    {
+      "nome": "OpenAlex",
+      "endpoint": "https://api.openalex.org/works/doi:{doi}",
+      "usoNoFormulario": "Complemento/alternativa ao Crossref: abstract, ROR por autor, e resolucao por titulo quando nao ha DOI.",
+      "metodoTeste": "curl com Origin em 2 DOIs (SciELO e Nature), busca por titulo de capitulo, e comparacao com e sem ?mailto=.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Methods: GET, HEAD, POST, OPTIONS\nAccess-Control-Allow-Headers: Accept, Accept-Language, Accept-Encoding, Authorization, Content-Type, X-OpenAlex-UI\nX-RateLimit-Limit: 1000\nX-RateLimit-Remaining: 982\nX-RateLimit-Reset: 12367\nX-RateLimit-Limit-USD: 0.1\nX-RateLimit-Remaining-USD: 0.0982\nX-RateLimit-Credits-Used: 0\nX-RateLimit-Prepaid-Remaining-USD: 0",
+      "limiteTaxa": {
+        "regime": "CONFIRMADO o regime de creditos que a especificacao suspeitava. Nao e mais 100k/dia livre.",
+        "cota": "X-RateLimit-Limit: 1000 por janela, com X-RateLimit-Reset em torno de 12300 s (~3,4 h). Cota monetaria paralela: X-RateLimit-Limit-USD 0.1.",
+        "decremento": "Observado ao vivo: Remaining caiu de 992 para 982 ao longo da sessao de testes. O contador e real.",
+        "mailtoNaoAjuda": "VERIFICADO: com e sem ?mailto= os cabecalhos de cota sao identicos. Diferente do Crossref, o mailto nao concede pool melhor.",
+        "atenuante": "A cota e por IP. Como as chamadas partem do navegador de cada pesquisador, cada pessoa tem a propria cota de 1000 - o que e folgado para um formulario. O risco concentra-se em rede institucional atras de NAT unico (um laboratorio inteiro saindo pelo mesmo IP).",
+        "expostoAoNavegador": "Os cabecalhos de cota estao em Access-Control-Expose-Headers, entao o JS consegue le-los e degradar antes de estourar."
+      },
+      "formatoResposta": "JSON do work: id, doi, title, type, publication_year, language, cited_by_count, authorships[] (author.orcid, institutions[].ror, institutions[].country_code), abstract_inverted_index, open_access.oa_status, grants[].",
+      "oQueResolveQueOCrossrefNaoResolve": [
+        "ABSTRACT do artigo SciELO: o Crossref nao trouxe abstract para 10.1590/1678-9199-jvatitd-2023-0039; o OpenAlex trouxe (abstract_inverted_index presente).",
+        "LANGUAGE: o Crossref nao trouxe language para nenhum DOI brasileiro; o OpenAlex trouxe ('en').",
+        "ROR POR AUTOR: 4 de 4 autores do artigo SciELO vieram com ROR e country_code (ex.: https://ror.org/036rp1748, BR). Isso alimenta o Indicador 3 sem digitacao.",
+        "CAPITULO/ITEM SEM DOI: a busca por titulo 'Bites, Stings, and Envenoming Injuries' devolveu o capitulo correto com type 'book-chapter' e seu DOI. E o unico provedor testado que faz esse caminho."
+      ],
+      "coberturaBrasileira": "Boa e complementar. O DOI SciELO resolveu com mais campos do que no Crossref (abstract e language inclusive), e com ROR resolvido por autor. Mas a cota de creditos torna imprudente depende-lo no caminho critico.",
+      "ressalvas": [
+        "abstract vem como indice invertido (abstract_inverted_index), nao como texto: precisa ser remontado no cliente.",
+        "A especificacao ja manda usar so como enriquecimento que degrada em silencio. Os testes confirmam que essa e a leitura correta."
+      ],
+      "veredito": "usavel-com-ressalva"
+    },
+
+    {
+      "nome": "DataCite",
+      "endpoint": "https://api.datacite.org/dois/{doi}",
+      "usoNoFormulario": "Fallback do Crossref para dataset, software e deposito Zenodo/figshare.",
+      "metodoTeste": "curl com quatro origens diferentes (producao, dominio arbitrario, localhost:5173, sem Origin) em DOI Zenodo e figshare; mais um DOI Crossref para provar o 404.",
+      "corsLiberado": true,
+      "corsObservacao": "ACAO NAO e '*': a API ECOA a Origin recebida. Verificado com tres origens distintas - todas ecoadas, inclusive http://localhost:5173. Do ponto de vista do navegador funciona igual; do ponto de vista de cache/CDN exige atencao ao Vary.",
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\ncontent-type: application/json; charset=utf-8\nvary: Accept,Accept-Encoding\nAccess-Control-Allow-Origin: https://inct-conexao.com.br\nAccess-Control-Allow-Credentials: true\nAccess-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS\nAccess-Control-Allow-Headers: Accept,Access-Control-Allow-Origin,...,Authorization,Cache-Control,Content-Type,Origin,User-Agent,X-Requested-With\nAccess-Control-Expose-Headers: Authorization",
+      "ecoDeOrigem": [
+        "Origin: https://inct-conexao.com.br  -> ACAO: https://inct-conexao.com.br",
+        "Origin: https://exemplo-qualquer.org -> ACAO: https://exemplo-qualquer.org",
+        "Origin: http://localhost:5173        -> ACAO: http://localhost:5173",
+        "sem Origin                            -> ACAO ausente (esperado)"
+      ],
+      "alertaDeCache": "vary lista apenas 'Accept,Accept-Encoding' e NAO lista 'Origin', embora o ACAO varie por Origin. Um cache intermediario poderia servir um ACAO de outra origem. Nao afeta o navegador do usuario final diretamente, mas desaconselha qualquer proxy/CDN na frente dessa chamada.",
+      "limiteTaxa": "Nenhum cabecalho de limite publicado. Politica documentada de uso justo; nada observado nos testes.",
+      "formatoResposta": "JSON { data: { attributes: { doi, titles[], creators[] (name, nameIdentifiers[] com ORCID), publisher, publicationYear, types{resourceTypeGeneral, resourceType}, dates[], descriptions[], rights[], version, container, fundingReferences[], geoLocations[], language, citationCount, downloadCount, formats[], identifiers[], alternateIdentifiers[] } } }.",
+      "amostrasVerificadas": [
+        "10.5281/zenodo.7712765 -> HTTP 200, 'Plant Treaty Crop Indicator - Results', publisher Zenodo, 2023, 8 creators (0 com ORCID)",
+        "10.6084/m9.figshare.21591173 -> HTTP 200, transcriptomica de cupuacu (Theobroma grandiflorum), resourceType Dataset, 9 creators (0 com ORCID)",
+        "10.1590/1678-9199-jvatitd-2023-0039 (DOI Crossref) -> HTTP 404, provando que a cadeia precisa dos dois provedores"
+      ],
+      "coberturaBrasileira": "Adequada para o que lhe cabe. Deposito brasileiro em repositorio internacional (o dataset de cupuacu, especie amazonica) resolveu normalmente. Ressalva: nos dois depositos testados NENHUM creator trouxe ORCID em nameIdentifiers - o casamento de coautoria interna da rede nao funciona para dataset como funciona para artigo.",
+      "veredito": "usavel-no-navegador"
+    },
+
+    {
+      "nome": "doi.org - negociacao de conteudo (CSL-JSON)",
+      "endpoint": "https://doi.org/{doi} com Accept: application/vnd.citationstyles.csl+json",
+      "usoNoFormulario": "Rede de seguranca, por ultimo na cadeia.",
+      "metodoTeste": "curl -L com Origin e Accept CSL-JSON em DOI SciELO, inspecionando cada bloco de cabecalho da cadeia de redirecionamento.",
+      "corsLiberado": true,
+      "corsObservacao": "Tambem ECOA a Origin (nao e '*'), e declara vary: Origin corretamente - ao contrario do DataCite.",
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 302 Found\naccess-control-allow-origin: https://inct-conexao.com.br\nvary: Origin\nvary: Accept\naccess-control-expose-headers: Vary,Content-Length,Location\nLocation: https://api.crossref.org/v1/works/10.1590%2F1678-9199-jvatitd-2023-0039/transform/application/vnd.citationstyles.csl+json\n--- apos seguir o redirect ---\nHTTP/1.1 200 OK\ncontent-type: application/vnd.citationstyles.csl+json\naccess-control-allow-origin: *",
+      "cadeiaDeRedirect": "302 doi.org -> api.crossref.org (com o DOI percent-encoded). AMBOS os saltos trazem ACAO valido, entao o fetch do navegador atravessa a cadeia inteira. Este e o ponto que costuma quebrar em negociacao de conteudo e aqui NAO quebra.",
+      "correcaoDaEspecificacao": "A especificacao (secao 4.3) afirma que esta chamada 'dispara preflight (Accept customizado)'. Isso esta ERRADO: 'Accept' e um CORS-safelisted request-header, qualquer que seja o valor, entao a requisicao continua sendo simples e NAO ha preflight. A recomendacao de deixar por ultimo continua valida por causa do salto extra de latencia, nao por causa de preflight.",
+      "limiteTaxa": "Herdado do provedor de destino (aqui, o Crossref).",
+      "formatoResposta": "CSL-JSON: DOI, ISSN, URL, alternative-id, article-number, author, container-title, container-title-short, is-referenced-by-count, issued, license, link, member, original-title, prefix, published. Formato ja pronto para montar citacao.",
+      "coberturaBrasileira": "Identica a do Crossref para DOI Crossref, porque redireciona para la. Nao acrescenta cobertura; acrescenta robustez quando o registrante nao e o Crossref.",
+      "veredito": "usavel-no-navegador"
+    },
+
+    {
+      "nome": "OpenLibrary",
+      "endpoint": "https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data",
+      "usoNoFormulario": "Livro por ISBN (item sem DOI).",
+      "metodoTeste": "curl com Origin em um ISBN de livro brasileiro (Editora FIOCRUZ) e um internacional.",
+      "corsLiberado": true,
+      "precisaChave": false,
+      "cabecalhoBruto": "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *",
+      "limiteTaxa": "Nenhum cabecalho publicado. Politica documentada pede uso moderado.",
+      "formatoResposta": "JSON com chave 'ISBN:{isbn}': { title, authors[].name, publishers[].name, publish_date, number_of_pages, cover, url }.",
+      "amostrasVerificadas": [
+        "9788575412244 -> HTTP 200, 'Ciencia, nacao e regiao', Julio Cesar Schweickardt, Editora FIOCRUZ + FAPEAM, 2011 - livro brasileiro da area, RESOLVEU",
+        "9780262033848 -> HTTP 200, 'Introduction to Algorithms', MIT Press, 2009"
+      ],
+      "coberturaBrasileira": "Melhor do que a especificacao supunha - o livro da Editora FIOCRUZ resolveu com autor, editora e ano. Ainda assim a base e alimentada por doacao de catalogos e a cobertura de livro brasileiro permanece irregular; um ISBN ausente devolve HTTP 200 com corpo '{}' vazio, nao 404.",
+      "ressalvas": [
+        "ISBN nao encontrado devolve 200 + objeto vazio. Trate corpo vazio como 'nao encontrado', nunca confie no status."
+      ],
+      "veredito": "usavel-com-ressalva"
+    },
+
+    {
+      "nome": "Plataforma Lattes (CNPq)",
+      "endpoint": "https://buscatextual.cnpq.br/buscatextual/busca.do | .../visualizacv.do | https://servicosweb.cnpq.br/wspessoa/...",
+      "usoNoFormulario": "Nenhum - e o que os pesquisadores realmente mantem, e e justamente o que nao da para usar.",
+      "metodoTeste": "curl com Origin em tres endpoints: Busca Textual, visualizacv e o WSCurriculo.",
+      "corsLiberado": false,
+      "precisaChave": true,
+      "precisaChaveObservacao": "O WSCurriculo (SOAP) exige convenio formal com o CNPq, nao chave auto-atendida.",
+      "cabecalhoBruto": "buscatextual.cnpq.br/buscatextual/busca.do -> HTTP/1.1 200 OK, content-type: text/html;charset=iso-8859-1, server: Apache-Coyote/1.1  [NENHUM cabecalho Access-Control-* na resposta]\nbuscatextual.cnpq.br/buscatextual/visualizacv.do -> HTTP/1.1 200 OK, content-type: text/html;charset=ISO-8859-1  [NENHUM Access-Control-*]\nlattes.cnpq.br/ -> HTTP/1.1 200 OK  [NENHUM Access-Control-*]\nservicosweb.cnpq.br/wspessoa/servletrecuperagrupo -> HTTP/1.1 404",
+      "limiteTaxa": "Nao aplicavel - inacessivel do navegador.",
+      "formatoResposta": "HTML em ISO-8859-1, gerado por Java/Struts, sem endpoint JSON publico. O curriculo depende de sessao e de captcha na Busca Textual.",
+      "coberturaBrasileira": "E a base mais completa que existe para esta rede - e a unica totalmente inalcancavel. Ausencia de Access-Control-Allow-Origin verificada em tres endpoints distintos; nao ha via publica.",
+      "veredito": "inviavel",
+      "consequencia": "Confirma a decisao da especificacao: nada pode ser construido sobre o Lattes na v1. O ID Lattes continua sendo campo declarado (16 digitos, sem checksum publico) e serve como ponteiro para auditoria humana, nunca como fonte de autopreenchimento."
+    }
+  ],
+
+  "amostras": [
+    {
+      "doi": "10.1038/nature12373",
+      "descricao": "artigo internacional (Nature) - grupo de controle",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "short-container-title", "publisher", "ISSN", "volume", "issue", "page", "author", "language", "license", "URL", "reference-count", "is-referenced-by-count", "published", "alternative-id"],
+      "camposAusentes": ["ISBN", "article-number", "abstract", "funder", "subject"],
+      "autores": 8,
+      "autoresComOrcid": 0,
+      "autoresComAfiliacao": 0
+    },
+    {
+      "doi": "10.1016/b978-0-323-54696-6.00048-3",
+      "descricao": "capitulo de livro (Travel Medicine, Elsevier)",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "publisher", "ISBN", "page", "author", "language", "license", "URL", "reference-count", "is-referenced-by-count", "published"],
+      "camposAusentes": ["short-container-title", "ISSN", "volume", "issue", "article-number", "abstract", "funder", "subject", "alternative-id"],
+      "autores": 1,
+      "autoresComOrcid": 0,
+      "autoresComAfiliacao": 0,
+      "nota": "Capitulo traz ISBN e page, nao traz ISSN/volume/issue - a citacao montada precisa de ramo por 'type'."
+    },
+    {
+      "doi": "10.1590/1678-9199-jvatitd-2023-0039",
+      "descricao": "artigo BR SciELO (J. Venomous Animals and Toxins incl. Trop. Dis., toxinologia)",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "short-container-title", "publisher", "ISSN", "volume", "article-number", "author", "license", "URL", "reference-count", "is-referenced-by-count", "published", "alternative-id"],
+      "camposAusentes": ["ISBN", "issue", "page", "abstract", "language", "funder", "subject"],
+      "autores": 4,
+      "autoresComOrcid": 4,
+      "autoresComAfiliacao": 4,
+      "articleNumber": "e20230039",
+      "afiliacaoExemplo": "University of Sao Paulo, Brazil",
+      "nota": "100% dos autores com ORCID e afiliacao. No OpenAlex o mesmo DOI ainda traz abstract, language='en' e ROR por autor (https://ror.org/036rp1748, BR)."
+    },
+    {
+      "doi": "10.1590/0037-8682-0323-2022",
+      "descricao": "artigo BR SciELO (Rev. Soc. Bras. Medicina Tropical)",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "short-container-title", "publisher", "ISSN", "volume", "article-number", "author", "license", "URL", "reference-count", "is-referenced-by-count", "published", "alternative-id"],
+      "camposAusentes": ["ISBN", "issue", "page", "abstract", "language", "funder", "subject"],
+      "autores": 2,
+      "autoresComOrcid": 2,
+      "autoresComAfiliacao": 2,
+      "articleNumber": "e0323-2022"
+    },
+    {
+      "doi": "10.1590/s0104-12902023230329pt",
+      "descricao": "artigo BR SciELO publicado EM PORTUGUES (Saude e Sociedade)",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "short-container-title", "publisher", "ISSN", "volume", "issue", "article-number", "author", "license", "URL", "reference-count", "is-referenced-by-count", "published", "alternative-id"],
+      "camposAusentes": ["ISBN", "page", "abstract", "language", "funder", "subject"],
+      "autores": 2,
+      "autoresComOrcid": 2,
+      "autoresComAfiliacao": 2,
+      "articleNumber": "e230329pt",
+      "afiliacaoExemplo": "Universidade de Sao Paulo,  Brasil; Fiocruz,  Brasil",
+      "nota": "Titulo em portugues volta corretamente acentuado em UTF-8. O campo 'language' esta AUSENTE mesmo o artigo sendo em portugues - nao da para detectar idioma pelo Crossref. Note tambem que a afiliacao vem como string unica com duas instituicoes concatenadas por ponto-e-virgula: nao e parseavel de forma confiavel para contagem institucional."
+    },
+    {
+      "doi": "10.1590/1807-1929/agriambi.v26n12p947-952",
+      "descricao": "artigo BR SciELO (Rev. Bras. Eng. Agricola e Ambiental, clima) - DOI com DUAS barras",
+      "api": "crossref",
+      "http": 200,
+      "camposRecuperados": ["title", "type", "container-title", "short-container-title", "publisher", "ISSN", "volume", "issue", "page", "author", "abstract", "license", "URL", "reference-count", "is-referenced-by-count", "published", "alternative-id"],
+      "camposAusentes": ["ISBN", "article-number", "language", "funder", "subject"],
+      "autores": 3,
+      "autoresComOrcid": 3,
+      "autoresComAfiliacao": 3,
+      "nota": "Unico DOI brasileiro testado que trouxe abstract (1301 chars) E page. Resolve tanto cru quanto percent-encoded, provando que a barra interna nao quebra a rota."
+    },
+    {
+      "doi": "10.5281/zenodo.7712765",
+      "descricao": "dataset Zenodo",
+      "api": "datacite (crossref devolve 404)",
+      "http": 200,
+      "camposRecuperados": ["doi", "titles", "creators", "publisher", "publicationYear", "types", "dates", "descriptions", "identifiers", "container", "citationCount", "downloadCount", "formats", "language", "fundingReferences", "geoLocations"],
+      "camposAusentes": ["version", "rights (vazio)", "ORCID em creators"],
+      "autores": 8,
+      "autoresComOrcid": 0,
+      "nota": "Confirmado 404 no Crossref para este mesmo DOI - a cadeia de dois provedores nao e redundancia, e necessidade."
+    },
+    {
+      "doi": "10.6084/m9.figshare.21591173",
+      "descricao": "dataset figshare (transcriptomica de cupuacu, especie amazonica)",
+      "api": "datacite",
+      "http": 200,
+      "camposRecuperados": ["doi", "titles", "creators", "publisher", "publicationYear", "types.resourceType=Dataset", "descriptions", "identifiers"],
+      "camposAusentes": ["version", "rights (vazio)", "ORCID em creators"],
+      "autores": 9,
+      "autoresComOrcid": 0,
+      "nota": "Titulo vem com HTML embutido (<i>Theobroma grandiflorum</i>) - precisa ser sanitizado antes de exibir."
+    },
+    {
+      "isbn": "9788575412244",
+      "descricao": "livro brasileiro (Editora FIOCRUZ / FAPEAM)",
+      "api": "openlibrary",
+      "http": 200,
+      "camposRecuperados": ["title", "authors", "publishers", "publish_date"],
+      "valores": "Ciencia, nacao e regiao | Julio Cesar Schweickardt | Editora FIOCRUZ, FAPEAM | 2011"
+    },
+    {
+      "orcid": "0000-0002-0848-1940",
+      "descricao": "pesquisador brasileiro de alta producao (medicina tropical, Manaus)",
+      "api": "orcid",
+      "http": 200,
+      "camposRecuperados": ["group[].external-ids", "work-summary[].title", "journal-title", "type", "publication-date", "put-code", "url", "visibility", "source"],
+      "totalTrabalhos": 361,
+      "comDoi": 361,
+      "comAnoEMes": 312,
+      "somenteAno": 49,
+      "naJanelaCiclo1": 10
+    },
+    {
+      "orcid": "0000-0002-9243-9509",
+      "descricao": "pesquisadora brasileira em inicio de carreira (toxinologia, USP)",
+      "api": "orcid",
+      "http": 200,
+      "totalTrabalhos": 2,
+      "comDoi": 2,
+      "naJanelaCiclo1": 1,
+      "nota": "O caso que a interface precisa tratar bem: registro ORCID valido e quase vazio."
+    },
+    {
+      "orcid": "0000-0002-1552-2288",
+      "descricao": "pesquisador brasileiro com ORCID valido e registro VAZIO",
+      "api": "orcid",
+      "http": 200,
+      "totalTrabalhos": 0,
+      "comDoi": 0,
+      "naJanelaCiclo1": 0,
+      "nota": "HTTP 200 com group: []. Nao e erro - e ausencia. A interface nao pode mostrar mensagem de falha aqui."
+    }
+  ],
+
+  "medicaoOrcidBrasileiro": {
+    "amostra": "18 ORCIDs de autores com afiliacao declarada no Brasil, colhidos dos metadados Crossref de artigos SciELO publicados a partir de 2023 nas areas de toxinologia, saude/clima e Amazonia.",
+    "comoForamEscolhidos": "Nao foram escolhidos a mao: sairam do campo author[].ORCID de consultas ao prefixo 10.1590, filtrados por affiliation contendo 'Brazil' ou 'Brasil'.",
+    "totalTrabalhos": 1962,
+    "mediaTrabalhosPorOrcid": 109.0,
+    "medianaTrabalhosPorOrcid": 104,
+    "trabalhosComDoi": 1549,
+    "percentualComDoi": 79,
+    "trabalhosNaJanelaCiclo1": 52,
+    "mediaNaJanelaPorPessoa": 2.89,
+    "orcidsComZeroNaJanela": 6,
+    "percentualComZeroNaJanela": 33,
+    "orcidsComZeroTrabalhos": 1,
+    "orcidsComAte2Trabalhos": 3,
+    "leitura": "O registro ORCID do pesquisador brasileiro publicante e rico no acumulado, mas magro na janela de 12 meses. A tela 'encontramos N producoes suas' vai mostrar zero para um terco das pessoas e dois ou tres itens para a maioria do resto. E 21% dos trabalhos declarados nao tem DOI e portanto nao podem ser enriquecidos automaticamente."
+  },
+
+  "degradacao": {
+    "principio": "Nenhuma falha de API pode produzir tela vazia, mensagem de erro tecnica, ou bloqueio de envio. O item sempre pode ser registrado a mao. Perder o dado e pior do que perder o autopreenchimento.",
+    "porApi": {
+      "crossref": {
+        "quandoFalha": "timeout de 8 s, erro de rede, ou 5xx",
+        "acao": "Cai para DataCite, depois para doi.org CSL-JSON, depois para OpenAlex. Se todos falharem, abre o formulario manual de 4 campos JA PREENCHIDO com o DOI digitado e a mensagem 'Nao conseguimos buscar os dados agora - o DOI foi guardado, preencha o titulo e seguimos'.",
+        "nunca": "Nunca bloquear o envio por falha de resolucao. Nunca descartar o DOI que a pessoa colou."
+      },
+      "crossref404": {
+        "quandoFalha": "HTTP 404 com content-type text/plain",
+        "acao": "NAO e falha de rede - e DOI que nao existe no Crossref. Tentar DataCite (pode ser dataset). So depois disso dizer 'Nao encontramos esse DOI. Confira, ou registre a mao.' com o botao de registro manual ja visivel.",
+        "armadilha": "O corpo do 404 e text/plain ('Resource not found.'). Se o codigo tentar JSON.parse, lanca excecao e vira 'erro' quando na verdade e 'nao encontrado'. Cheque o status ANTES de parsear."
+      },
+      "orcidVazio": {
+        "quandoFalha": "HTTP 200 com group: [] (medido: 6% dos ORCIDs) ou sem nada na janela (medido: 33%)",
+        "acao": "NAO tratar como erro. A Tela 2 abre direto no campo grande 'Cole o DOI, o link ou o ISBN' ja focado, com o texto que a especificacao ja definiu. O caminho manual e o caminho principal para um terco das pessoas - ele precisa ser o mais polido da tela, nao o plano B.",
+        "nunca": "Nunca exibir 'nenhum resultado encontrado' em tom de falha para um registro ORCID legitimamente vazio."
+      },
+      "orcidIndisponivel": {
+        "quandoFalha": "timeout, 5xx, ou ORCID nao informado",
+        "acao": "Pular a descoberta automatica em silencio e ir direto ao campo de colar DOI. Registrar o ORCID mesmo assim (ele e util para o relatorio e para casar coautoria depois). Oferecer 'tentar de novo' sem perder o que ja foi digitado."
+      },
+      "orcidDataAmbigua": {
+        "quandoFalha": "14% dos trabalhos tem so o ano, e a janela atravessa dois anos civis",
+        "acao": "Incluir o item na lista com o rotulo 'data incompleta no ORCID - confirme se foi no periodo', pre-marcado como NAO selecionado. Deixar a pessoa decidir. Isso conversa diretamente com a decisao 3 do dono: aceitar com a data verdadeira e marcar, nunca rejeitar e empurrar para a adulteracao."
+      },
+      "ror": {
+        "quandoFalha": "timeout, ou instituicao sem registro (medido: FIOCRUZ Rondonia nao existe no ROR)",
+        "acao": "O campo de instituicao aceita texto livre e guarda ror_id como NULO. A UF e o pais viram campos declarados com valor pre-sugerido, editaveis. O relatorio conta o que foi declarado e informa quantos registros nao tem ROR.",
+        "nunca": "Nunca aceitar automaticamente o primeiro resultado da busca ROR: a v1 devolveu 11610 resultados para uma consulta que tem uma resposta so. Sempre exigir escolha humana entre os primeiros resultados.",
+        "critico": "Derivar a UF do ROR classifica a FIOCRUZ Rondonia como RJ. Para o Indicador 3 (9 estados), a UF precisa ser declarada e conferida, com o ROR guardado ao lado apenas como identificador da instituicao-mae."
+      },
+      "openalex": {
+        "quandoFalha": "X-RateLimit-Remaining chegando a zero, ou HTTP 429",
+        "acao": "Degradar EM SILENCIO. O usuario nunca ve que o OpenAlex existiu. Os campos que so ele traz (abstract, language, ROR por autor) simplesmente ficam vazios; nenhum deles e obrigatorio.",
+        "comoAntecipar": "Os cabecalhos de cota estao em Access-Control-Expose-Headers e sao legiveis pelo JS. Ler X-RateLimit-Remaining e parar de chamar abaixo de ~50, em vez de esperar o 429.",
+        "nunca": "Nunca colocar o OpenAlex no caminho critico de resolver um DOI. Ele e enriquecimento, nao provedor primario."
+      },
+      "datacite": {
+        "quandoFalha": "404 (DOI e do Crossref) ou timeout",
+        "acao": "404 aqui e informacao, nao erro: significa 'tente o outro provedor'. Se ambos derem 404, o DOI provavelmente esta errado - mostrar o formulario manual com o DOI preservado."
+      },
+      "doiorg": {
+        "quandoFalha": "timeout na cadeia de redirecionamento",
+        "acao": "Ultimo da fila; se falhar, vai direto ao manual. Nao gastar retry aqui: ele ja e o retry."
+      },
+      "openlibrary": {
+        "quandoFalha": "HTTP 200 com corpo '{}' (ISBN nao encontrado) ou timeout",
+        "acao": "Tratar corpo vazio como nao-encontrado. Cair para os 4 campos manuais com o ISBN preservado. A cobertura de livro brasileiro e irregular por desenho da base.",
+        "armadilha": "ISBN inexistente devolve status 200. Testar o corpo, nunca so o status."
+      },
+      "lattes": {
+        "quandoFalha": "sempre - nao ha CORS",
+        "acao": "Nao chamar. O ID Lattes e campo declarado de 16 digitos, guardado como ponteiro para conferencia humana. O aviso que a especificacao ja previu ('e do Lattes que o CNPq vai contar a producao') permanece como texto, nunca como validacao."
+      }
+    },
+    "regrasTransversais": [
+      "Timeout de 8 s por provedor, como a especificacao ja define; a cadeia inteira nao pode passar de ~25 s antes de oferecer o manual.",
+      "Abortar a requisicao anterior a cada digitacao (AbortController), senao a fila enche com DOIs parciais colados do PDF.",
+      "Cache em memoria por DOI na sessao E cache no servidor junto do item: gerar o relatorio em 2027 nao pode depender de reconsultar 800 DOIs em API externa. Isso ja esta na especificacao e os testes reforcam - o regime de creditos do OpenAlex mostra que uma API gratuita hoje pode nao ser gratuita depois.",
+      "Guardar sempre o payload bruto resolvido (jsonb) junto do item, alem dos campos normalizados. Se um provedor mudar de formato, o dado ja coletado continua auditavel.",
+      "Normalizacao de entrada antes de qualquer chamada: minusculas, remover 'https://doi.org/', 'doi:' e espacos colados de PDF. Verificado que maiusculas e barras internas nao quebram a rota, mas o cache por chave exige forma canonica."
+    ]
+  },
+
+  "achadosCriticos": [
+    {
+      "id": "AC-1",
+      "gravidade": "alta",
+      "titulo": "A promessa 'cole o DOI' se sustenta - inclusive, e sobretudo, para revista brasileira",
+      "evidencia": "4 de 4 DOIs SciELO (10.1590/...) resolveram com HTTP 200 no Crossref, trazendo ISSN, volume, container-title, licenca e autores. Em todos, 100% dos autores vieram com ORCID e afiliacao. Nos DOIs internacionais de controle, 0 de 8 autores (Nature) e 0 de 1 (capitulo Elsevier) trouxeram ORCID ou afiliacao.",
+      "consequencia": "O medo de que a cobertura brasileira quebrasse o desenho e infundado. O Indicador 3, que depende de casar coautoria por ORCID, funciona melhor na producao nacional do que na internacional."
+    },
+    {
+      "id": "AC-2",
+      "gravidade": "alta",
+      "titulo": "O ponto fraco real e o ORCID como descoberta, nao o DOI como resolucao",
+      "evidencia": "18 pesquisadores brasileiros reais: media de 2,89 trabalhos na janela do ciclo 1; 33% com ZERO na janela; 21% dos trabalhos declarados sem DOI; 14% das datas so com ano.",
+      "consequencia": "'Encontramos 6 producoes suas' e um caso otimista. O caminho manual precisa ser tratado como caminho principal para um terco dos usuarios, e nao como degradacao."
+    },
+    {
+      "id": "AC-3",
+      "gravidade": "alta",
+      "titulo": "ROR nao tem registro para a FIOCRUZ Rondonia",
+      "evidencia": "query=Fiocruz devolve exatamente 1 resultado: https://ror.org/04jhswv08, UF RJ. A consulta 'Oswaldo Cruz Rondonia' devolve 32 resultados, nenhum sendo unidade da Fiocruz em Rondonia.",
+      "consequencia": "Derivar 'uf' do ROR - como a especificacao preve em 'pais_iso2 e uf DERIVADOS do ROR, nunca digitados' - classifica a instituicao-sede do proprio INCT como Rio de Janeiro. Para o Indicador 3 (35 instituicoes em 9 estados), a UF precisa ser declarada e conferida."
+    },
+    {
+      "id": "AC-4",
+      "gravidade": "media",
+      "titulo": "Artigo SciELO nao tem pagina: tem article-number",
+      "evidencia": "3 dos 4 DOIs brasileiros vieram sem 'page' e com 'article-number' (e20230039, e0323-2022, e230329pt). Os DOIs internacionais vieram com 'page' e sem 'article-number'.",
+      "consequencia": "O montador de citacao precisa cair de page para article-number, senao a citacao de artigo brasileiro sai truncada."
+    },
+    {
+      "id": "AC-5",
+      "gravidade": "media",
+      "titulo": "O regime de creditos do OpenAlex e real e ja esta ativo",
+      "evidencia": "X-RateLimit-Limit: 1000, X-RateLimit-Remaining decrescendo de 992 para 982 ao longo da sessao, X-RateLimit-Reset ~12300 s, X-RateLimit-Limit-USD: 0.1. Enviar ?mailto= NAO altera a cota (verificado com e sem).",
+      "consequencia": "Confirma a orientacao da especificacao de usar OpenAlex so como enriquecimento que degrada em silencio. Atenuante: a cota e por IP e as chamadas partem do navegador de cada pesquisador, entao cada pessoa tem sua propria cota."
+    },
+    {
+      "id": "AC-6",
+      "gravidade": "media",
+      "titulo": "Nenhum DOI brasileiro trouxe 'language' - nem o artigo publicado em portugues",
+      "evidencia": "10.1590/s0104-12902023230329pt e um artigo em portugues e o campo 'language' esta ausente no Crossref. O OpenAlex trouxe language para o mesmo tipo de DOI.",
+      "consequencia": "Nao da para separar producao em portugues de producao em ingles pelo Crossref. Se o relatorio precisar dessa quebra, o campo tem de ser declarado ou vir do OpenAlex (que degrada)."
+    },
+    {
+      "id": "AC-7",
+      "gravidade": "baixa",
+      "titulo": "Afiliacao brasileira vem como string unica com varias instituicoes concatenadas",
+      "evidencia": "10.1590/s0104-12902023230329pt: affiliation[0].name = 'Universidade de Sao Paulo,  Brasil; Fiocruz,  Brasil'.",
+      "consequencia": "Contagem institucional a partir do campo affiliation do Crossref nao e confiavel. Use o ROR por autor do OpenAlex, ou a instituicao declarada em ciclo_membros."
+    },
+    {
+      "id": "AC-8",
+      "gravidade": "baixa",
+      "titulo": "O parametro ?mailto= e o que separa concorrencia 3 de concorrencia 1 no Crossref",
+      "evidencia": "Sem mailto: x-api-pool public-single, x-rate-limit-limit 5, x-concurrency-limit 1. Com ?mailto=: polite-single, 10, 3.",
+      "consequencia": "A fila de concorrencia 3 da especificacao so e legal com o mailto presente. Esquecer o parametro dobra a violacao: metade do limite de taxa e um terco da concorrencia permitida."
+    }
+  ],
+
+  "correcoesAEspecificacao": [
+    {
+      "onde": "secao 4.3, linha da tabela sobre doi.org",
+      "afirmacaoOriginal": "doi.org + Accept: application/vnd.citationstyles.csl+json ... dispara preflight (Accept customizado)",
+      "correcao": "NAO dispara preflight. 'Accept' e um CORS-safelisted request-header independentemente do valor, entao a requisicao continua simples. A recomendacao de deixar por ultimo permanece valida, mas pelo salto extra de redirecionamento (302 doi.org -> api.crossref.org), nao por preflight.",
+      "impacto": "baixo - a ordem recomendada nao muda"
+    },
+    {
+      "onde": "secao 4.3, linha do Crossref",
+      "afirmacaoOriginal": "10 req/s, concorrencia 3",
+      "correcao": "Correto SOMENTE no polite pool, isto e, com ?mailto= presente. Sem o parametro sao 5 req/s e concorrencia 1. Vale registrar a condicao junto do numero.",
+      "impacto": "medio - o numero certo depende de um parametro que e facil esquecer"
+    },
+    {
+      "onde": "secao 4.3, lista 'Nao construa nada em cima de'",
+      "afirmacaoOriginal": "openlibrary.org/api/books ... cobertura irregular para livro brasileiro",
+      "correcao": "A ressalva continua justa, mas o teste real foi melhor que o esperado: um livro da Editora FIOCRUZ (ISBN 9788575412244) resolveu com titulo, autor, editora e ano. Vale manter como fonte com fallback manual, nao descartar.",
+      "impacto": "baixo"
+    },
+    {
+      "onde": "secao 4.1, 'pais_iso2 e uf DERIVADOS do ROR - nunca digitado'",
+      "afirmacaoOriginal": "UF derivada do ROR",
+      "correcao": "Insustentavel para unidades regionais. FIOCRUZ Rondonia nao tem ROR e a busca resolve para a sede no RJ. UF precisa ser declarada, com o ROR guardado ao lado como identificador da instituicao-mae.",
+      "impacto": "alto - afeta diretamente a contagem do Indicador 3 por estado"
+    },
+    {
+      "onde": "secao 4.3, cabecalho 'Todas estas chamadas ... devolvem CORS aberto'",
+      "afirmacaoOriginal": "CORS aberto",
+      "correcao": "Verdadeiro para todas, mas com duas formas diferentes: Crossref, ORCID, ROR, OpenAlex e OpenLibrary devolvem literalmente '*'; DataCite e doi.org ECOAM a Origin recebida. Ambas funcionam no navegador. A distincao importa se algum dia entrar CDN ou proxy no caminho - o DataCite ainda por cima nao lista 'Origin' no seu Vary.",
+      "impacto": "baixo hoje, relevante se surgir cache intermediario"
+    }
+  ],
+
+  "cadeiaRecomendada": {
+    "porTipoDeEntrada": {
+      "doi": ["crossref", "datacite", "doi.org-csl", "openalex (enriquecimento)", "manual"],
+      "orcid": ["orcid/works -> filtrar periodo no cliente -> resolver cada DOI pela cadeia acima"],
+      "isbn": ["openlibrary", "crossref (capitulo/livro com DOI)", "manual"],
+      "semIdentificador": ["openalex busca por titulo (unico que resolveu capitulo por titulo)", "manual"],
+      "instituicao": ["ror v2 com escolha humana obrigatoria", "texto livre com ror_id nulo"]
+    },
+    "concorrencia": 3,
+    "timeoutPorProvedorMs": 8000,
+    "exigeMailtoNoCrossref": true,
+    "observacao": "9 DOIs resolvidos em lotes de 3 concorrentes levaram 4,1 s no total (0,46 s por DOI), 9 de 9 com sucesso. Uma lista tipica de ORCID (media 2,89 itens na janela) resolve em menos de 2 s."
+  },
+
+  "reprodutibilidade": {
+    "comoRefazer": "Todos os comandos sao GET com curl e o cabecalho Origin. Exemplo minimo que prova o ponto contestado: curl -i -H 'Origin: https://inct-conexao.com.br' 'https://api.crossref.org/works/10.1590/1678-9199-jvatitd-2023-0039?mailto=SEU@EMAIL' | head -20",
+    "oQueEsperar": "access-control-allow-origin: * e x-api-pool: polite-single nas primeiras linhas.",
+    "naoVerificado": [
+      "Execucao dentro de um browser real com DevTools: a checagem feita foi do par (Origin enviado -> ACAO recebido), que e o insumo que o navegador usa para decidir. Se quiser prova final em browser, abra o site em producao e rode fetch() no console.",
+      "Comportamento sob 429 real: nenhuma API devolveu 429 nos volumes testados, entao o caminho de retry com backoff nao foi exercitado ao vivo.",
+      "Cobertura de patente (INPI) e de anais de evento brasileiro sem DOI: fora do escopo desta rodada."
+    ]
+  }
+}

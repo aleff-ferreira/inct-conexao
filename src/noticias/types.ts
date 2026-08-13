@@ -52,6 +52,14 @@ export type Bloco =
       credito?: string;
       /** Transcrição da fala. Obrigatória quando há voz no vídeo. */
       transcricao?: string;
+      /**
+       * Formato da janela do player. Padrão `"5/4"`, pensado para vídeo de
+       * celular recortado. Use `"16/9"` quando o arquivo for panorâmico (drone,
+       * câmera) — recortá-lo em 5/4 jogaria fora a composição. Em qualquer
+       * caso, o arquivo já deve vir NA proporção declarada: quem recorta é o
+       * ffmpeg, não o CSS.
+       */
+      proporcao?: "5/4" | "16/9";
     }
   /** Citação em destaque. */
   | { tipo: "citacao"; texto: string; autor?: string }

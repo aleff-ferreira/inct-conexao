@@ -197,8 +197,8 @@ export default function MapaPage() {
   useEffect(() => {
     const prev = document.title;
     document.title = ufSel
-      ? `${ufSel.nome} · Mapa Interativo (beta): INCT-CONEXAO`
-      : "Mapa Interativo (beta): INCT-CONEXAO";
+      ? `${ufSel.nome} · Mapa interativo (beta) | INCT-CONEXAO`
+      : "Mapa interativo (beta) | INCT-CONEXAO";
     return () => { document.title = prev; };
   }, [ufSel]);
 
@@ -406,7 +406,7 @@ function SecaoFocos() {
           Entre {FOCOS.anoInicial} e {FOCOS.anoFinal}, o satélite de referência do INPE registrou{" "}
           <strong>{FOCOS.totalBrasil.toLocaleString("pt-BR")}</strong> focos de calor no Brasil.{" "}
           <strong>{FOCOS.participacaoAmazonia.toLocaleString("pt-BR")}%</strong> deles estão nos nove
-          estados da Amazônia Legal — o território onde a rede atua. Os dados são públicos e podem ser
+          estados da Amazônia Legal, o território onde a rede atua. Os dados são públicos e podem ser
           baixados abaixo.
         </p>
       </div>
@@ -435,7 +435,7 @@ function AvisoBeta() {
           <a href={`mailto:${EMAIL_EQUIPE}?subject=${encodeURIComponent("[mapa] correção")}`}>
             Encontrou um erro? Avise a equipe
           </a>{" "}
-          — ou use o botão “Reportar erro” ao lado da legenda, que já leva a camada, o estado e a safra do dado.
+          ou use o botão “Reportar erro” ao lado da legenda, que já leva a camada, o estado e a safra do dado.
         </p>
       </div>
     </aside>
@@ -615,7 +615,7 @@ function IntroExplorador({ onSelecionar, explorados }: { onSelecionar: (s: strin
   return (
     <aside className="map-intro">
       <h2>Comece a explorar</h2>
-      <p className="map-muted">Clique num estado, use a busca ou parta dos exemplos — Rondônia e Amazonas (Amazônia Legal) e Ceará (fora dela). Cada estado aberto conta na sua exploração (veja o progresso no topo do mapa).</p>
+      <p className="map-muted">Clique num estado, use a busca ou parta dos exemplos: Rondônia e Amazonas (Amazônia Legal) e Ceará (fora dela). Cada estado aberto conta na sua exploração (veja o progresso no topo do mapa).</p>
       <div className="map-intro-demos">
         {demoUfs.map((u) => (
           <button key={u.sigla} type="button" className={`map-demo-card${explorados.has(u.sigla) ? " is-explored" : ""}`} onClick={() => onSelecionar(u.sigla)}>
@@ -1035,7 +1035,7 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
           </summary>
           <p>{faltando.join(", ")}</p>
           <p className="map-lacunas-nota">
-            Ausência aqui significa dado ainda não cadastrado — não ausência de risco, de atividade
+            Ausência aqui significa dado ainda não cadastrado, não ausência de risco, de atividade
             ou de ocorrência.
           </p>
         </details>
@@ -1043,7 +1043,7 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
 
       <table className="map-tabela">
         <caption>
-          {camada.label} — {camada.fonte.publicador ?? camada.fonte.titulo}
+          {camada.label}: {camada.fonte.publicador ?? camada.fonte.titulo}
           {camada.fonte.data ? ` (${camada.fonte.data})` : ""}
         </caption>
         <thead>
@@ -1077,13 +1077,13 @@ function EstadosLista({ camada, onSelecionar, onFechar }: { camada: Camada; onSe
                 </button>
               </th>
               <td data-rotulo="Região">{u.regiao}</td>
-              <td data-rotulo="Amazônia Legal">{u.amazoniaLegal ?? "—"}</td>
+              <td data-rotulo="Amazônia Legal">{u.amazoniaLegal ?? "Não"}</td>
               {/* Camada categórica mostra o RÓTULO, não o número: `valor` devolve
                   1 tanto para integral quanto para parcial, e publicar isso como
                   coluna seria um ranking de booleanos. */}
               <td data-rotulo="Valor" className="map-tabela-valor">
                 {camada.tipo === "categorica" || !e.comparavel
-                  ? rotulo ?? "—"
+                  ? rotulo ?? "sem dado"
                   : v == null
                     ? <span className="map-sem-dado">sem dado</span>
                     : v.toLocaleString("pt-BR")}

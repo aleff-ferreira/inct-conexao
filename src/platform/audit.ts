@@ -329,7 +329,7 @@ const GLOSSARIO: Record<string, string> = {
     "final_score menos a média das OUTRAS avaliações da mesma inscrição. null quando não há outra avaliação.",
   z_na_inscricao: "Desvio padronizado dentro da inscrição; só calculado quando há >=3 avaliações (senão null).",
   flag_outlier: "|z_na_inscricao| >= 1.3 (só quando >=3 avaliações). Nota destoante do júri.",
-  flag_nota_extrema: "Todas as notas de critério no máximo ou todas em zero, possível padding para empurrar/afundar.",
+  flag_nota_extrema: "Todas as notas de critério no máximo ou todas em zero, possível manobra para empurrar/afundar.",
   editada_apos_outra_submissao:
     "O avaliador alterou a própria nota DEPOIS de outra avaliação já ter sido enviada (via log append-only).",
   bias_vs_global: "Média do avaliador menos a média geral. Só é sinal confiável quando amostra_suficiente=true.",
@@ -337,7 +337,7 @@ const GLOSSARIO: Record<string, string> = {
 
 const PROMPT = [
   "Você é auditor(a) de integridade de um processo seletivo de bolsas. Cada LINHA é UMA avaliação: um avaliador (AVxx) pontuando um candidato (Cxxx). A nota final do candidato é a MÉDIA das avaliações enviadas. O modelo é ABERTO: qualquer avaliador pode pontuar qualquer candidato. Investigue possíveis INJUSTIÇAS e liste, por prioridade, casos para REVISÃO HUMANA. NÃO acuse: aponte padrões com a evidência numérica e trate tudo como suspeita a verificar.",
-  "Priorize, nesta ordem: (1) DECISÕES SEM CONTRADITÓRIO (inscrições com decidida_por_avaliador_unico=true, sobretudo perto do corte de vagas; é o risco dominante aqui. (2) CONFLITO DE INTERESSE) flag_coi_orientador=true; veja se a nota do COI está acima da dos demais. (3) OUTLIERS (flag_outlier=true (só existe quando a inscrição teve >=3 avaliações); separe outliers altos (inflam) de baixos (afundam), com peso extra se vier sem parecer (flag_parecer_vazio) ou com nota extrema. (4) LINGUAGEM do parecer) leia o texto e sinalize linguagem depreciativa, preconceituosa ou dupla-medida entre candidatos parecidos. (5) EDIÇÃO TARDIA: editada_apos_outra_submissao=true (mudou a nota depois de ver outra).",
+  "Priorize, nesta ordem: (1) DECISÕES SEM CONTRADITÓRIO: inscrições com decidida_por_avaliador_unico=true, sobretudo perto do corte de vagas; é o risco dominante aqui. (2) CONFLITO DE INTERESSE: flag_coi_orientador=true; veja se a nota do COI está acima da dos demais. (3) OUTLIERS: flag_outlier=true (só existe quando a inscrição teve >=3 avaliações); separe outliers altos (inflam) de baixos (afundam), com peso extra se vier sem parecer (flag_parecer_vazio) ou com nota extrema. (4) LINGUAGEM DO PARECER: leia o texto e sinalize linguagem depreciativa, preconceituosa ou com dois pesos e duas medidas entre candidatos parecidos. (5) EDIÇÃO TARDIA: editada_apos_outra_submissao=true (mudou a nota depois de ver outra).",
   "REGRAS DE HONESTIDADE ESTATÍSTICA: os avaliadores são POUCOS. NÃO afirme conluio nem viés demográfico de um avaliador a partir de poucos casos, trate bias_vs_global como sinal só quando amostra_suficiente=true, e sempre declare a incerteza. Ao final, diga explicitamente O QUE NÃO DÁ PARA CONCLUIR com estes dados.",
   "Entregue: (a) TOP 10 casos priorizados (candidato, avaliador, tipo de risco, evidência numérica, ação sugerida); (b) avaliadores mais atípicos, com a ressalva de amostra; (c) limitações da análise.",
 ].join("\n\n");

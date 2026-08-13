@@ -1,45 +1,42 @@
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
+  Atom,
   BarChart3,
   CheckCircle2,
+  ClipboardList,
   Download,
   ExternalLink,
   FileSearch,
   FileText,
+  GraduationCap,
   KeyRound,
+  Leaf,
   Loader2,
   Lock,
   LogOut,
   Send,
   ShieldAlert,
   ShieldCheck,
-  Trash2,
   UserCog,
-  UserPlus,
   Users,
   Video,
 } from "lucide-react";
 import { platformEnabled } from "./supabaseClient";
 import { useAuth, type AuthState } from "./auth";
 import {
-  addToAllowlist,
-  listAllowlist,
   listApplications,
   listEditais,
   listEvaluations,
   listEvaluationEvents,
   listFiles,
   listProfiles,
-  removeFromAllowlist,
   setApplicationStatus,
   setEditalStatus,
-  setProfileRole,
   signedUrl,
   toCsv,
   upsertEvaluation,
 } from "./api";
-import { parseEmailList, passwordIssue } from "./validation";
 import {
   aggregateFinal,
   bonusApplies,
@@ -58,10 +55,67 @@ import type {
   Evaluation,
   EvaluationEvent,
   Profile,
-  StaffAllowlistEntry,
 } from "./types";
 
-type Tab = "visao" | "inscricoes" | "classificacao" | "auditoria" | "equipe";
+type Tab = "visao" | "inscricoes" | "classificacao" | "auditoria";
+
+/**
+ * As áreas novas são carregadas sob demanda: quem entra para avaliar inscrições
+ * não paga pelo código do Relatório Anual nem pelo painel do workshop (o
+ * inverso também vale — cada chunk só desce quando a área é aberta).
+ */
+const PainelRelatorio = lazy(() => import("../relato/PainelRelatorio"));
+const PainelFitofarmas = lazy(() => import("../fitofarmas/PainelFitofarmas"));
+const PainelCurso = lazy(() => import("../curso/PainelCurso"));
+const PainelContas = lazy(() => import("./PainelContas"));
+
+/**
+ * As ÁREAS da Gestão. "Processo Seletivo" é todo o portal da comissão de IC,
+ * intacto; "Relatório Anual" é o painel da coordenação do ciclo; "Fitofarmas"
+ * (2026-08) é a leitura das respostas do formulário pré-evento do workshop —
+ * métricas, lista priorizada por escore e CSV; "Contas" (2026-08, migração
+ * 012) é a Administração de Contas — gerência de acesso do site inteiro,
+ * exclusiva de SuperAdministradores (a antiga aba Equipe morava dentro do
+ * Processo Seletivo e era de admin; a RLS da 012 fecha o dado por baixo).
+ *
+ * A área escolhida persiste na URL (`#/gestao?area=relatorio`,
+ * `#/gestao?area=fitofarmas`, `#/gestao?area=contas`) para link direto e para
+ * sobreviver ao F5 — mesmo padrão de query na hash que o mapa usa
+ * (src/mapa/url.ts), implementado localmente porque aqui é um único
+ * parâmetro. Valor desconhecido cai na área padrão, nunca em erro.
+ */
+type Area = "selecao" | "relatorio" | "fitofarmas" | "curso" | "contas";
+
+function areaDaHash(): Area {
+  if (typeof window === "undefined") return "selecao";
+  const query = window.location.hash.split("?").slice(1).join("?");
+  const valor = new URLSearchParams(query).get("area");
+  if (valor === "relatorio") return "relatorio";
+  if (valor === "fitofarmas") return "fitofarmas";
+  if (valor === "curso") return "curso";
+  if (valor === "contas") return "contas";
+  return "selecao";
+}
+
+/**
+ * Grava com `replaceState` (não cria entrada no histórico nem dispara
+ * hashchange — o App não re-roteia). Preserva outros parâmetros que um dia
+ * existam na query.
+ */
+function gravarAreaNaHash(area: Area): void {
+  const hash = window.location.hash.replace(/^#/, "");
+  const [path] = hash.split("?");
+  const q = new URLSearchParams(hash.split("?").slice(1).join("?"));
+  if (area === "selecao") q.delete("area");
+  else q.set("area", area);
+  // `pn=` é a aba interna do painel do Relatório — estado DELE, não da Gestão.
+  // Sem esta limpeza, sair do Relatório levaria um `pn=producao` órfão para a
+  // URL das outras áreas (fitofármacos inclusive), e um link copiado de lá
+  // mentiria sobre onde aponta.
+  if (area !== "relatorio") q.delete("pn");
+  const qs = q.toString();
+  window.history.replaceState(null, "", `#${path}${qs ? `?${qs}` : ""}`);
+}
 
 /** Portal da comissão: dashboard, avaliação e classificação — dentro do site. */
 export default function Gestao() {
@@ -73,16 +127,49 @@ export default function Gestao() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [events, setEvents] = useState<EvaluationEvent[]>([]);
   const [tab, setTab] = useState<Tab>("visao");
+  const [area, setArea] = useState<Area>(() => areaDaHash());
   const [openApp, setOpenApp] = useState<Application | null>(null);
   const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    document.title = "Gestão de Seleções | INCT-CONEXAO";
+    // Restaura o título anterior ao sair da rota — sem isto a aba continuava
+    // dizendo "Gestão …" na home. Mesmo padrão de MeuAno e do MapaPage.
+    const anterior = document.title;
+    document.title =
+      area === "relatorio"
+        ? "Gestão · Relatório Anual | INCT-CONEXAO"
+        : area === "fitofarmas"
+          ? "Gestão · Workshop Fitofarmas | INCT-CONEXAO"
+          : area === "curso"
+            ? "Gestão · Curso Do átomo à ação biológica | INCT-CONEXAO"
+            : area === "contas"
+              ? "Gestão · Administração de Contas | INCT-CONEXAO"
+              : "Gestão de Seleções | INCT-CONEXAO";
+    return () => {
+      document.title = anterior;
+    };
+  }, [area]);
+
+  // Link para #/gestao?area=... clicado com a Gestão já montada: o App não
+  // remonta a rota (é a mesma), então a área é resincronizada aqui. O
+  // `replaceState` de gravarAreaNaHash não dispara hashchange — sem eco.
+  useEffect(() => {
+    const sync = () => setArea(areaDaHash());
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
   }, []);
 
-  const isStaff = auth.profile?.role === "admin" || auth.profile?.role === "avaliador";
-  const isAdmin = auth.profile?.role === "admin";
+  const trocarArea = (proxima: Area) => {
+    setArea(proxima);
+    gravarAreaNaHash(proxima);
+  };
+
+  // Herança de papéis (espelha is_admin()/is_staff() da migração 012):
+  // superadmin conta como admin em toda a UI, e soma a área de Contas.
+  const isSuper = auth.profile?.role === "superadmin";
+  const isAdmin = isSuper || auth.profile?.role === "admin";
+  const isStaff = isAdmin || auth.profile?.role === "avaliador";
 
   useEffect(() => {
     if (!platformEnabled || !isStaff) return;
@@ -130,7 +217,7 @@ export default function Gestao() {
   // ---------------------------------------------------------------- guards
   if (!platformEnabled) {
     return (
-      <Shell>
+      <Shell area={area}>
         <div className="plat-card plat-notice">
           <Lock size={20} aria-hidden="true" />
           <div>
@@ -149,7 +236,7 @@ export default function Gestao() {
   }
   if (auth.loading) {
     return (
-      <Shell>
+      <Shell area={area}>
         <div className="plat-loading">
           <Loader2 size={22} aria-hidden="true" /> Carregando…
         </div>
@@ -158,21 +245,21 @@ export default function Gestao() {
   }
   if (auth.recovery) {
     return (
-      <Shell email={auth.session?.user.email} onSignOut={auth.signOut}>
+      <Shell area={area} email={auth.session?.user.email} onSignOut={auth.signOut}>
         <PasswordCard title="Definir nova senha" cta="Salvar nova senha" onSubmit={auth.updatePassword} />
       </Shell>
     );
   }
   if (!auth.session) {
     return (
-      <Shell>
+      <Shell area={area}>
         <AuthCard auth={auth} role="committee" />
       </Shell>
     );
   }
   if (!isStaff) {
     return (
-      <Shell email={auth.session.user.email} onSignOut={auth.signOut}>
+      <Shell area={area} email={auth.session.user.email} onSignOut={auth.signOut}>
         <div className="plat-card plat-notice">
           <Lock size={20} aria-hidden="true" />
           <div>
@@ -190,7 +277,7 @@ export default function Gestao() {
   // ------------------------------------------------------------------ UI
   if (showPw) {
     return (
-      <Shell email={auth.session.user.email} onSignOut={auth.signOut}>
+      <Shell area={area} email={auth.session.user.email} onSignOut={auth.signOut}>
         <div className="plat-eval">
           <button className="plat-back plat-back-btn" onClick={() => setShowPw(false)}>
             <ArrowLeft size={15} aria-hidden="true" /> Voltar ao painel
@@ -202,7 +289,112 @@ export default function Gestao() {
   }
 
   return (
-    <Shell email={auth.session.user.email} onSignOut={auth.signOut} onChangePassword={() => setShowPw(true)}>
+    <Shell area={area} email={auth.session.user.email} onSignOut={auth.signOut} onChangePassword={() => setShowPw(true)}>
+      {/* Seletor de ÁREA — um nível acima das abas. "Processo Seletivo" é todo
+          o portal da comissão, exatamente como era; "Relatório Anual" é a área
+          nova, em chunk próprio. */}
+      {/* SEM "plat-tabs" junto: a regra genérica `.plat-tabs button` (fundo
+          branco, borda) tem especificidade maior que `.plat-area-btn` e vencia
+          o visual do seletor — o botão INATIVO ficava branco e elevado, mais
+          protagonista que o ativo. O seletor de área tem linguagem própria. */}
+      <nav className="plat-areas" aria-label="Área da gestão">
+        <button
+          className={area === "selecao" ? "plat-area-btn active" : "plat-area-btn"}
+          onClick={() => trocarArea("selecao")}
+        >
+          <GraduationCap size={15} aria-hidden="true" /> Processo Seletivo
+        </button>
+        <button
+          className={area === "relatorio" ? "plat-area-btn active" : "plat-area-btn"}
+          onClick={() => trocarArea("relatorio")}
+        >
+          <ClipboardList size={15} aria-hidden="true" /> Relatório Anual
+        </button>
+        <button
+          className={area === "fitofarmas" ? "plat-area-btn active" : "plat-area-btn"}
+          onClick={() => trocarArea("fitofarmas")}
+        >
+          <Leaf size={15} aria-hidden="true" /> Fitofarmas
+        </button>
+        <button
+          className={area === "curso" ? "plat-area-btn active" : "plat-area-btn"}
+          onClick={() => trocarArea("curso")}
+        >
+          <Atom size={15} aria-hidden="true" /> Curso
+        </button>
+        {/* Só superadmin VÊ o botão; quem chegar por link direto sem o papel
+            cai no aviso de acesso restrito (e a RLS da 012 não entrega dado). */}
+        {isSuper ? (
+          <button
+            className={area === "contas" ? "plat-area-btn active" : "plat-area-btn"}
+            onClick={() => trocarArea("contas")}
+          >
+            <UserCog size={15} aria-hidden="true" /> Contas
+          </button>
+        ) : null}
+      </nav>
+
+      {area === "relatorio" ? (
+        <Suspense
+          fallback={
+            <div className="plat-loading">
+              <Loader2 size={22} aria-hidden="true" /> Carregando o painel do Relatório Anual…
+            </div>
+          }
+        >
+          <PainelRelatorio email={auth.session.user.email} />
+        </Suspense>
+      ) : area === "fitofarmas" ? (
+        <Suspense
+          fallback={
+            <div className="plat-loading">
+              <Loader2 size={22} aria-hidden="true" /> Carregando o painel do workshop…
+            </div>
+          }
+        >
+          {/* `isAdmin` decide só a MENSAGEM: a permissão real é a RLS da 008,
+              que devolve zero linhas (não erro) a quem não é admin — e uma
+              tabela vazia sem explicação diria "ninguém respondeu" a quem não
+              podia ver. */}
+          <PainelFitofarmas isAdmin={isAdmin} />
+        </Suspense>
+      ) : area === "curso" ? (
+        <Suspense
+          fallback={
+            <div className="plat-loading">
+              <Loader2 size={22} aria-hidden="true" /> Carregando o painel do curso…
+            </div>
+          }
+        >
+          {/* `isAdmin` decide só a MENSAGEM: a permissão real é a RLS da 013,
+              que devolve zero linhas (não erro) a quem não é admin. */}
+          <PainelCurso isAdmin={isAdmin} />
+        </Suspense>
+      ) : area === "contas" ? (
+        isSuper ? (
+          <Suspense
+            fallback={
+              <div className="plat-loading">
+                <Loader2 size={22} aria-hidden="true" /> Carregando a administração de contas…
+              </div>
+            }
+          >
+            <PainelContas myId={auth.session.user.id} />
+          </Suspense>
+        ) : (
+          <div className="plat-card plat-notice">
+            <Lock size={20} aria-hidden="true" />
+            <div>
+              <strong>Painel restrito</strong>
+              <p>
+                A Administração de Contas é exclusiva de contas com papel SuperAdministrador(a).
+                Se você precisa de alteração de acesso, fale com a coordenação do projeto.
+              </p>
+            </div>
+          </div>
+        )
+      ) : (
+        <>
       <div className="plat-toolbar">
         <label>
           Processo seletivo
@@ -229,17 +421,12 @@ export default function Gestao() {
               <FileSearch size={15} aria-hidden="true" /> Auditoria
             </button>
           ) : null}
-          {isAdmin ? (
-            <button className={tab === "equipe" ? "active" : ""} onClick={() => setTab("equipe")}>
-              <UserCog size={15} aria-hidden="true" /> Equipe
-            </button>
-          ) : null}
+          {/* A antiga aba Equipe virou a área Contas (superadmin) — a gerência
+              de contas é do site inteiro, não de um processo seletivo. */}
         </nav>
       </div>
 
-      {tab === "equipe" && isAdmin ? (
-        <EquipeView myId={auth.session.user.id} />
-      ) : !edital ? (
+      {!edital ? (
         <div className="plat-loading">
           <Loader2 size={22} aria-hidden="true" /> Carregando processo seletivo…
         </div>
@@ -282,6 +469,8 @@ export default function Gestao() {
             }
           }}
         />
+      )}
+        </>
       )}
     </Shell>
   );
@@ -682,7 +871,7 @@ function RankingView({
       {isAdmin && pendentes > 0 && edital.status !== "homologado" ? (
         <p className="plat-hint plat-warn">
           {pendentes} {pendentes > 1 ? "inscrições ainda sem avaliação" : "inscrição ainda sem avaliação"}. Conclua
-          todas as avaliações antes de homologar, do contrário, essas inscrições ficariam sem resultado final.
+          todas as avaliações antes de homologar; do contrário, essas inscrições ficariam sem resultado final.
         </p>
       ) : null}
       {edital.config.regraGenero ? <p className="plat-hint">{edital.config.regraGenero} Ajustes automáticos aparecem marcados com ♀ e devem ser referendados pela comissão.</p> : null}
@@ -752,8 +941,8 @@ function AuditoriaView({
           <ShieldAlert size={18} aria-hidden="true" /> Auditoria de justiça das avaliações
         </h3>
         <p className="plat-hint">
-          A avaliação é aberta (todo avaliador pontua qualquer inscrição). A integridade é verificada aqui, depois:
-          baixe os dois arquivos e investigue, o <strong>JSON</strong> reúne as métricas, pseudonimizado, em formato
+          A avaliação é aberta (todo avaliador pontua qualquer inscrição). A integridade é verificada depois, aqui:
+          baixe os dois arquivos e investigue. O <strong>JSON</strong>, pseudonimizado, reúne as métricas em formato
           próprio para análise. Sinais são <strong>pistas para revisão humana</strong>, nunca acusação.
         </p>
         {audit.rows.length === 0 ? (
@@ -775,9 +964,9 @@ function AuditoriaView({
               </button>
             </div>
             <p className="plat-hint plat-warn">
-              <strong>LGPD:</strong> o <em>CSV interno</em> contém nome, CPF e pareceres: é a ata da comissão,
+              <strong>LGPD:</strong> o <em>CSV interno</em> contém nome, CPF e pareceres. É a ata da comissão:
               <strong> não compartilhe</strong>. O <em>JSON</em> é pseudonimizado (não anônimo): em estados de 1 vaga,
-              estado + curso + sexo podem reidentificar um candidato, trate como dado pessoal e use só para auditoria.
+              estado + curso + sexo podem reidentificar um candidato; trate como dado pessoal e use só para auditoria.
               A ausência de sinais <strong>não é prova de justiça</strong>: {s.pct_decididas_por_unico}% das inscrições
               foram decididas por um único avaliador, sem segunda opinião.
             </p>
@@ -821,180 +1010,7 @@ function AuditoriaView({
   );
 }
 
-// ----------------------------------------------------- definir/trocar senha --
-// ----------------------------------------------------------------- equipe --
-const ROLE_LABEL: Record<Profile["role"], string> = {
-  admin: "Administrador(a)",
-  avaliador: "Avaliador(a)",
-  candidato: "Candidato(a)",
-};
-
-function EquipeView({ myId }: { myId: string }) {
-  const [profiles, setProfiles] = useState<Profile[] | null>(null);
-  const [allowlist, setAllowlist] = useState<StaffAllowlistEntry[]>([]);
-  const [paste, setPaste] = useState("");
-  const [pasteRole, setPasteRole] = useState<StaffAllowlistEntry["role"]>("avaliador");
-  const [pasteBusy, setPasteBusy] = useState(false);
-  const [pasteMsg, setPasteMsg] = useState("");
-  const [q, setQ] = useState("");
-  const [msg, setMsg] = useState("");
-
-  useEffect(() => {
-    listProfiles().then(setProfiles).catch((e) => setMsg(e instanceof Error ? e.message : "Falha ao carregar."));
-    listAllowlist().then(setAllowlist).catch(() => setAllowlist([]));
-  }, []);
-
-  const addEmails = async () => {
-    const { valid, invalid } = parseEmailList(paste);
-    if (!valid.length) {
-      setPasteMsg(invalid.length ? `Nenhum e-mail válido: confira: ${invalid.join(", ")}` : "Cole ao menos um e-mail.");
-      return;
-    }
-    setPasteBusy(true);
-    try {
-      const promoted = await addToAllowlist(valid, pasteRole);
-      setAllowlist(await listAllowlist());
-      setProfiles(await listProfiles());
-      setPaste("");
-      setPasteMsg(
-        `${valid.length} e-mail(s) pré-autorizados como ${ROLE_LABEL[pasteRole]}` +
-          (promoted ? `; ${promoted} conta(s) existente(s) promovida(s)` : "") +
-          (invalid.length ? `. Ignorados (inválidos): ${invalid.join(", ")}` : "."),
-      );
-    } catch (e) {
-      setPasteMsg(e instanceof Error ? e.message : "Falha ao salvar a lista.");
-    } finally {
-      setPasteBusy(false);
-    }
-  };
-
-  const rows = (profiles ?? []).filter(
-    (p) => !q || `${p.email} ${p.full_name ?? ""}`.toLowerCase().includes(q.toLowerCase()),
-  );
-
-  return (
-    <div className="plat-eval">
-      <div className="plat-card">
-        <h3>
-          <UserPlus size={18} aria-hidden="true" /> Pré-autorizar avaliadores
-        </h3>
-        <p className="plat-hint">
-          Cole os e-mails da comissão (um por linha, ou separados por vírgula). Quem estiver na lista cria a
-          própria conta em <strong>#/gestao → “Primeiro acesso? Criar conta”</strong> e já nasce com o papel
-          escolhido: sem senha temporária e sem painel do Supabase. Quem já tinha conta é promovido na hora.
-        </p>
-        <textarea
-          className="plat-paste"
-          rows={4}
-          placeholder={"avaliadora1@instituicao.br\navaliador2@instituicao.br"}
-          value={paste}
-          onChange={(e) => setPaste(e.target.value)}
-        />
-        <div className="plat-nav">
-          <select
-            className="plat-role-select"
-            value={pasteRole}
-            onChange={(e) => setPasteRole(e.target.value as StaffAllowlistEntry["role"])}
-            aria-label="Papel para os e-mails colados"
-          >
-            <option value="avaliador">Avaliador(a)</option>
-            <option value="admin">Administrador(a)</option>
-          </select>
-          <button className="button primary" onClick={addEmails} disabled={pasteBusy}>
-            {pasteBusy ? "Salvando…" : "Adicionar à lista"} <UserPlus size={15} aria-hidden="true" />
-          </button>
-        </div>
-        {pasteMsg ? <p className="plat-ok">{pasteMsg}</p> : null}
-        {allowlist.length ? (
-          <ul className="plat-allowlist">
-            {allowlist.map((a) => (
-              <li key={a.email}>
-                <span>
-                  {a.email} <small>({ROLE_LABEL[a.role]})</small>
-                </span>
-                <button
-                  className="plat-linkbtn"
-                  title="Remover da lista (não rebaixa quem já criou conta)"
-                  onClick={async () => {
-                    await removeFromAllowlist(a.email);
-                    setAllowlist((prev) => prev.filter((x) => x.email !== a.email));
-                  }}
-                >
-                  <Trash2 size={14} aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="plat-empty">Nenhum e-mail pré-autorizado ainda.</p>
-        )}
-      </div>
-
-      <div className="plat-card">
-      <h3>Equipe e papéis</h3>
-      <p className="plat-hint">
-        Contas criadas e seus papéis. Ajustes pontuais podem ser feitos aqui; ninguém altera o próprio papel.
-        Todo avaliador pode pontuar qualquer inscrição, a integridade é verificada depois, na aba Auditoria.
-      </p>
-      <div className="plat-filters">
-        <input placeholder="Buscar por e-mail ou nome…" value={q} onChange={(e) => setQ(e.target.value)} />
-      </div>
-      {msg ? <p className="plat-error">{msg}</p> : null}
-      {profiles === null ? (
-        <p className="plat-empty">Carregando…</p>
-      ) : rows.length === 0 ? (
-        <p className="plat-empty">Nenhum perfil encontrado.</p>
-      ) : (
-        <div className="edital-table-wrap">
-          <table className="edital-table">
-            <thead>
-              <tr>
-                <th>E-mail</th>
-                <th>Nome</th>
-                <th>Papel</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((p) => (
-                <tr key={p.id}>
-                  <td data-label="E-mail">{p.email}</td>
-                  <td data-label="Nome">{p.full_name || "n/d"}</td>
-                  <td data-label="Papel">
-                    {p.id === myId ? (
-                      <span title="Você não pode alterar o próprio papel.">{ROLE_LABEL[p.role]} (você)</span>
-                    ) : (
-                      <select
-                        className="plat-role-select"
-                        value={p.role}
-                        onChange={async (e) => {
-                          const role = e.target.value as Profile["role"];
-                          try {
-                            await setProfileRole(p.id, role);
-                            setProfiles((prev) => prev?.map((x) => (x.id === p.id ? { ...x, role } : x)) ?? null);
-                            setMsg("");
-                          } catch (err) {
-                            setMsg(err instanceof Error ? err.message : "Falha ao salvar o papel.");
-                          }
-                        }}
-                      >
-                        {(Object.keys(ROLE_LABEL) as Profile["role"][]).map((r) => (
-                          <option key={r} value={r}>
-                            {ROLE_LABEL[r]}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      </div>
-    </div>
-  );
-}
+// A antiga EquipeView vive agora em PainelContas.tsx (área Contas, superadmin).
 
 // ------------------------------------------------------------------ shell --
 function Shell({
@@ -1002,18 +1018,29 @@ function Shell({
   email,
   onSignOut,
   onChangePassword,
+  area = "selecao",
 }: {
   children: React.ReactNode;
   email?: string | undefined;
   onSignOut?: () => void;
   onChangePassword?: () => void;
+  /** Muda só o cabeçalho: quem chega por #/gestao?area=relatorio lê o assunto certo já na porta. */
+  area?: Area;
 }) {
+  const relatorio = area === "relatorio";
+  const contas = area === "contas";
   return (
     <main className="plat-page" id="conteudo" tabIndex={-1}>
       <section className="section-band plat-band">
         <div className="section-inner plat-inner plat-inner--wide">
-          <p className="eyebrow dark">Gestão de seleções · Comissão INCT-CONEXAO</p>
-          <h1>Avaliação de inscrições</h1>
+          <p className="eyebrow dark">
+            {contas
+              ? "Gestão · Contas e acessos INCT-CONEXAO"
+              : relatorio
+                ? "Gestão · Equipe INCT-CONEXAO"
+                : "Gestão de seleções · Comissão INCT-CONEXAO"}
+          </p>
+          <h1>{contas ? "Administração de Contas" : relatorio ? "Relatório Anual" : "Avaliação de inscrições"}</h1>
           {email ? (
             <p className="plat-session">
               Conectado como <strong>{email}</strong>

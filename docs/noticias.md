@@ -84,10 +84,17 @@ Três regras que o teste cobra:
   matéria é lida em lugares onde a internet é cara.
 
 **Recorte o arquivo, não só o CSS.** O player ocupa a largura da coluna numa
-janela **5:4**. Vídeo de celular vem vertical (9:16), então grave o arquivo já
-recortado em 5:4 no ffmpeg. Se o recorte ficar só no CSS, metade do bitrate vai
-para pixels que o navegador descarta e o que sobra aparece ampliado e borrado —
-foi exatamente o que aconteceu na primeira versão do sobrevoo.
+janela **5:4** por padrão. Vídeo de celular vem vertical (9:16), então grave o
+arquivo já recortado em 5:4 no ffmpeg. Se o recorte ficar só no CSS, metade do
+bitrate vai para pixels que o navegador descarta e o que sobra aparece ampliado
+e borrado — foi exatamente o que aconteceu na primeira versão do sobrevoo.
+
+**Material panorâmico usa `proporcao: "16/9"`.** Imagem de drone e de câmera
+nasce em 16:9, e espremê-la em 5:4 joga fora um terço da composição — justo o
+que faz a paisagem funcionar. Nesse caso declare o formato no bloco e entregue o
+arquivo **em 16:9**; o campo muda a janela do player, não recorta nada. A regra
+acima continua valendo: quem enquadra é o ffmpeg. Sem o campo, o padrão segue
+5:4 e nada muda nas matérias antigas.
 
 ```bash
 # 1. descubra a resolução da origem

@@ -1,0 +1,2982 @@
+{
+  "_meta": {
+    "schema": "inct-laboratorios/1",
+    "geradoEm": "2026-08-04",
+    "total": 28,
+    "oQueEUmRegistro": "Um registro = um Laboratório Associado, identificado pelo seu Líder (LLA) e pela instituição em que ele atua. A proposta NÃO nomeia os laboratórios; ela nomeia as 28 pessoas registradas na categoria PICC 'Líder de Laboratório Associado'. Por isso a identidade do registro é a dupla (LLA, instituição), e os campos 'nome' e 'sigla' do laboratório ficam nulos até que a coordenação os informe.",
+    "decisaoDoDono": "São 28 Laboratórios Associados. O número oficial é 28, que bate com o Quadro Geral do PICC (28 'Líder de Laboratório Associado'). O RESUMO da proposta diz 26; o 28 vence.",
+    "fontePrimaria": {
+      "documento": "CNPq Proposta submetida INCT 2024.pdf (50 páginas, protocolo 5670452047161226, envio 07/12/2024)",
+      "secao": "EQUIPE, categoria 'Líder de Laboratório Associado', páginas 27 a 32",
+      "metodo": "extração por coordenada (pypdf visitor_text, x/y por trecho). As colunas da tabela de equipe ficam em x=39 (NOME), 232 (FORMAÇÃO/TITULAÇÃO), 340 (RESPONSABILIDADE), 395 (INSTITUIÇÃO) e 628 (ÁREAS). O nome foi lido pela coluna x=39, não por tokenização do texto colado — a extração linear cola as palavras quebradas em duas linhas ('Alex Sander RodriguesCangussu').",
+      "validacao": "o mesmo parser reproduziu as 13 categorias do Quadro Geral do PICC com os 209 registros exatos (Pesquisador 74, LLA 28, Colaborador 23, Pesq. Estrangeiro 22, Pesq. Colaborador 21, Aluno 13, Aluno de Pós 9, Comitê Gestor 8, Administrativa 5, Técnico 3, Apoio Técnico 1, Téc. de Laboratório 1, Vice-Coordenador 1). Bater 209 por categoria é a prova de que o corte da categoria LLA em 28 está certo."
+    },
+    "fontesSecundarias": [
+      "src/content/rede.ts — grafia oficial e UF das instituições (o campo 'instituicao' segue esta grafia)",
+      "supabase/migrations/001_platform.sql — lista de orientadores do edital de IC 2026; 19 dos 28 LLAs aparecem lá e confirmam o nome de forma independente da proposta",
+      "src/content/relato/proposta-inct-2024.json — governanca.quadroGeralPicc (28) e governanca.llas (26)"
+    ],
+    "comoLerConfianca": "Cada registro traz 'confianca' (vale para a identidade: quem é o LLA e em que instituição) e 'camposAusentes' (a lista dos campos que a fonte não fornece e que NÃO foram preenchidos por inferência). O nível de confiança campo a campo está em _meta.confiancaPorCampo.",
+    "confiancaPorCampo": {
+      "lla": "ALTA — copiado literalmente da coluna NOME da proposta, com acentos, sem normalização",
+      "llaLattesId": "ALTA — 27 dos 28 têm URL do Lattes na proposta; Pablo Ariel Martinez não tem (o campo URL DO CURRÍCULO dele está vazio na fonte)",
+      "instituicao / instituicaoSigla / uf / regiao / amazoniaLegal": "ALTA — a célula INSTITUIÇÃO/DEPARTAMENTO traz sigla, UF e país; todas as 22 instituições constam também da lista 'Laboratório Associado' de INSTITUIÇÕES ENVOLVIDAS e de rede.ts",
+      "nome": "VERIFICADA (2026-08-07) — preenchido por verificação com fonte citada, registro a registro (campo 'verificacao'); 1 registro segue sem nome (ver _meta.verificacaoNomes.semNome)",
+      "sigla": "VERIFICADA (2026-08-07) — idem 'nome'; nula onde nenhuma fonte usa sigla",
+      "eets": "AUSENTE — não existe na proposta nenhum mapa laboratório→EET nem LLA→EET. Os códigos EET-1..EET-8 só aparecem na definição das 8 etapas e na narrativa de CONTEXTOS METODOLÓGICOS. Preenchimento é decisão do CGES.",
+      "rotulo": "DERIVADO — string montada por este arquivo para a lista do formulário; não é o nome oficial do laboratório (rotuloProvisorio: true)"
+    },
+    "contagens": {
+      "total": 28,
+      "porRegiao": {
+        "Centro-Oeste": 2,
+        "Nordeste": 4,
+        "Norte": 14,
+        "Sudeste": 8
+      },
+      "porUf": {
+        "AM": 2,
+        "AP": 1,
+        "CE": 1,
+        "MA": 2,
+        "MG": 3,
+        "MS": 1,
+        "MT": 1,
+        "PA": 2,
+        "RO": 7,
+        "RR": 1,
+        "SE": 1,
+        "SP": 5,
+        "TO": 1
+      },
+      "porInstituicao": {
+        "FIOCRUZ/CE": 1,
+        "FSCBH": 1,
+        "IFRO": 1,
+        "ILMD": 1,
+        "UEMA": 1,
+        "UFAM": 1,
+        "UFGD": 1,
+        "UFMA": 1,
+        "UFMG": 1,
+        "UFMT": 1,
+        "UFOPA": 1,
+        "UFPA": 1,
+        "UFRR": 1,
+        "UFS": 1,
+        "UFSCar": 1,
+        "UFSJ": 1,
+        "UFT": 1,
+        "UNESP": 2,
+        "UNIFAP": 1,
+        "UNIFESP": 1,
+        "UNIR": 6,
+        "USP": 1
+      },
+      "naAmazoniaLegal": 17,
+      "foraDaAmazoniaLegal": 11,
+      "instituicoesDistintas": 22
+    },
+    "divergencias": [
+      {
+        "assunto": "quantos Laboratórios Associados existem",
+        "aFonteDiz": "a mesma proposta diz três números: 28 (Quadro Geral do PICC, categoria 'Líder de Laboratório Associado'), 27 (INSTITUIÇÕES ENVOLVIDAS, grupo 'Laboratório Associado' — as mesmas 27 publicadas em rede.ts) e 26 (RESUMO e seção DISPONIBILIDADE E INFRAESTRUTURA: 'todos os 26 Laboratórios Associados')",
+        "oQueEsteArquivoFaz": "adota 28, por decisão do dono, e declara os outros dois números aqui em vez de escondê-los — mesmo precedente de src/content/rede.ts (81 catalogadas × naProposta: 86)",
+        "porQueOsNumerosDiferem": "28 são PESSOAS (líderes) em 22 instituições; 27 são INSTITUIÇÕES classificadas como Laboratório Associado. Não são a mesma unidade de contagem, então nunca iam bater."
+      },
+      {
+        "assunto": "distribuição regional dos LLAs",
+        "aFonteDiz": "RESUMO: '26 pesquisadores Líderes de Laboratórios Associados (LLAs), sendo 2 do NE, 1 do CE, 5 do SE e 18 LLAs da Amazônia Legal'",
+        "oQueFoiContado": "dos 28 registrados no PICC: 17 em UF da Amazônia Legal e 11 fora; por região IBGE, Norte 14, Sudeste 8, Nordeste 4, Centro-Oeste 2",
+        "naoFecha": "sim. O Sudeste observado é 8 (5 SP + 3 MG) contra 5 declarados, e a Amazônia Legal observada é 17 contra 18 declarados. Nenhuma combinação de critério regional reconcilia 28 com 18/5/2/1. Não foi forçado; fica reportado.",
+        "observacao": "MA conta como Amazônia Legal pela Lei Complementar 124/2007 (mesma lista de UFS_AMAZONIA_LEGAL em rede.ts). Sem MA, seriam 15 na Amazônia Legal."
+      },
+      {
+        "assunto": "5 instituições classificadas 'Laboratório Associado' sem nenhum LLA no PICC",
+        "quais": [
+          "Instituto Aggeu Magalhães — IAM, PE (tem Norma Lucena Cavalcanti Licinio da Silva, categoria Pesquisador)",
+          "Universidade Estadual da Paraíba — UEPB, PB (Karla Patrícia de Oliveira Luna, Pesquisador)",
+          "Universidade Federal de Uberlândia — UFU, MG (Carlos Henrique Gomes Martins, Membro do Comitê Gestor; Renata Santos Rodrigues, Pesquisador Colaborador)",
+          "Pontifícia Universidade Católica do Paraná — PUC/PR, PR (Andréa Novais Moreno Amaral e Selene Elifio Esposito, ambas Pesquisador)",
+          "Fundação Universidade Federal de Ciências da Saúde de Porto Alegre — UFCSPA, RS (Rodrigo Ligabue Braun, Pesquisador)"
+        ],
+        "consequencia": "se a coordenação considerar que esses 5 também são Laboratórios Associados com líder, o cadastro passa de 28 para 33 registros. Nenhuma dessas pessoas foi cadastrada aqui como LLA: a proposta as registrou em OUTRA categoria do PICC, e promover alguém a líder sem documento é exatamente o erro que este arquivo se recusa a cometer."
+      },
+      {
+        "assunto": "grafia de nome divergente entre fontes do próprio projeto",
+        "quais": [
+          "Estevao Rafael Fernandes (proposta) × Estevão Rafael Fernandes (001_platform.sql)",
+          "Luis Andre Morais Mariuba (proposta) × Luis André Morais Mariúba (001_platform.sql)"
+        ],
+        "oQueEsteArquivoFaz": "mantém a grafia da proposta em 'lla' (é a fonte de autoridade) e guarda a outra em 'llaGrafiaVariante', para o casamento por nome não falhar no convite"
+      },
+      {
+        "assunto": "duplicidade de pessoa",
+        "verificado": "nenhuma. Os 28 nomes são distintos entre si, e nenhum deles reaparece em outra das 13 categorias do PICC (checagem por nome normalizado sobre os 209 registros). Nenhum LLA lidera dois laboratórios e nenhuma instituição tem dois registros com o mesmo LLA.",
+        "observacao": "6 LLAs estão na UNIR e 5 em instituições de SP; isso é concentração institucional, não duplicidade — são pessoas diferentes, cada uma com seu laboratório."
+      }
+    ],
+    "avisosDeImplementacao": [
+      "O campo 'rotulo' existe para a lista do formulário funcionar hoje. Assim que a coordenação informar nome e sigla reais, preencher 'nome'/'sigla' e virar 'rotuloProvisorio' para false.",
+      "'eets' está vazio de propósito em todos os 28. A regra 4.2 da especificação (laboratório → EET → objetivos → metas) NÃO funciona enquanto esse campo estiver vazio; é o primeiro dado que o CGES precisa entregar.",
+      "Pablo Ariel Martinez é o único sem ID Lattes na proposta — não é erro de extração, o campo está vazio na fonte.",
+      "Não há LLA na instituição executora (FIOCRUZ/RO): ela é 'Executora/Sede', não 'Laboratório Associado'. A coordenação e o CGES não se vinculam a laboratório (ver §2.2 da especificação: laboratorio_id é obrigatório exceto para coordenação/CGES)."
+    ],
+    "conferenciaDeGrafia": "Grafia conferida em 2026-08-04 contra a lista de orientadores revisada em 001_platform.sql (que vence) e, subsidiariamente, contra o texto da proposta. 2 corrigida(s); 17 confirmada(s); 9 sem par em nenhuma das duas fontes — estas precisam de conferencia do CGES antes do convite.",
+    "nomesSemConferencia": [
+      "Carolina Rodrigues da Costa Doria",
+      "Emerson Galvani",
+      "Flavio Henrique da Silva",
+      "Margarete Cristiane de Costa Trindade Amorim",
+      "Mirian Akemi Furuie Hayashi",
+      "Renata Carolina Zanetti Lofrano",
+      "Renata Toscano Simões",
+      "Renee Laufer Amorim",
+      "Walter Luís Garrido Cavalcante"
+    ],
+    "verificacaoNomes": {
+      "em": "2026-08-07",
+      "metodo": "28 verificações independentes (uma por LLA): proposta CNPq (texto completo do PDF) + busca web com fonte primária exigida (páginas do próprio laboratório/instituição, dgp.cnpq.br, espelhos do Lattes — o Lattes direto está atrás de captcha). Regra dura: sem fonte que ligue a PESSOA à unidade, o campo fica vazio; citação literal registrada em cada registro (campo 'verificacao').",
+      "resultado": "27 nomeados (24 confiança alta, 3 média), 1 sem nome",
+      "semNome": [
+        "Gabriel Zazeri"
+      ],
+      "atencao": "papel='membro' significa que a fonte liga a pessoa ao laboratório sem afirmar que ela o coordena — a coordenação do INCT deve confirmar esses casos com a própria pessoa. A grafia oficial da sigla é a da fonte mais oficial (ex.: o laboratório do LLA Bastos se chama LBGQA-WCP no site próprio; a proposta o cita como LABIGEOQ — registrado em alternativas)."
+    },
+    "expansao2026_08": "Em 2026-08-08, por decisao da coordenacao, a lista foi expandida com 70 laboratorios/grupos levantados por busca em fontes publicas. TODOS os niveis de confianca entraram (confirmado, provavel, indicio): a lista e um cardapio de selecao — o pesquisador escolhe o proprio laboratorio e o que ninguem escolher nao e usado. `confianca` e `observacao` preservam a origem de cada linha. Os 28 Laboratorios Associados formais (com `lla`) permanecem no topo. Siglas duplicadas ou vazias foram anuladas (Postgres nao trata '' como NULL no unique)."
+  },
+  "laboratorios": [
+    {
+      "id": "lab-uft-alex-cangussu",
+      "sigla": "LabVac",
+      "nome": "Laboratório de Biomoléculas e Vacinas",
+      "rotulo": "LabVac — Laboratório de Biomoléculas e Vacinas · Alex Sander Rodrigues Cangussu (UFT/TO)",
+      "rotuloProvisorio": false,
+      "lla": "Alex Sander Rodrigues Cangussu",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "5020204291901063",
+      "instituicao": "Universidade Federal do Tocantins",
+      "instituicaoSigla": "UFT",
+      "uf": "TO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 27,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://portfolio.bionorte.org.br/alex-sander-rodrigues-cangussu/",
+          "https://www.escavador.com/sobre/4613285/alex-sander-rodrigues-cangussu",
+          "https://bionorte.org.br/uploads/2023/p98/F708127789636.pdf",
+          "https://ww2.uft.edu.br/ultimas-noticias/15353-gurupi-laboratorio-avanca-no-desenvolvimento-de-vacinas-voltadas-as-infeccoes-zoonoticas",
+          "proposta.pdf linhas 3169-3190 e 4794-4799"
+        ],
+        "evidencia": "\"Nome do Laboratório: LABORATÓRIO DE BIOMOLÉCULAS E VACINAS\" / \"Sigla: LABVAC\" / \"Instituição/SIGLA: UNIVERSIDADE FEDERAL DO TOCANTINS/UFT\" (Portfólio Bionorte, página pessoal do pesquisador). Lattes (espelho Escavador): \"Líder de grupo de pesquisa no CNPq de PD de vacinas e de biomoléculas de interesse veterinário e de relevância em Saúde Pública.\"",
+        "alternativas": [
+          "LABVAC",
+          "LaBVac",
+          "LabVac-UFT",
+          "LaBVac/UFT"
+        ]
+      }
+    },
+    {
+      "id": "lab-unir-alexandre-silva",
+      "sigla": "LaBEIn",
+      "nome": "Laboratório de Bioecologia de Insetos",
+      "rotulo": "LaBEIn — Laboratório de Bioecologia de Insetos · Alexandre de Almeida e Silva (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Alexandre de Almeida e Silva",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "6440720566226268",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 27,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://sigaa.unir.br/sigaa/public/docente/portal.jsf?siape=1530806",
+          "https://labein2.unir.br/noticia/exibir/9584",
+          "proposta.pdf linha 3195-3212 (nao nomeia laboratorio)"
+        ],
+        "evidencia": "Em 2008, criamos o Laboratório de Bioecologia de Insetos (LABEIN) na UNIR.",
+        "alternativas": [
+          "LABEIN"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufopa-ana-gomes",
+      "sigla": "GP.CAA",
+      "nome": "Grupo de Pesquisa Ciências Atmosféricas na Amazônia",
+      "rotulo": "GP.CAA — Grupo de Pesquisa Ciências Atmosféricas na Amazônia · Ana Carla dos Santos Gomes (UFOPA/PA)",
+      "rotuloProvisorio": false,
+      "lla": "Ana Carla dos Santos Gomes",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "7570030284513470",
+      "instituicao": "Universidade Federal do Oeste do Pará",
+      "instituicaoSigla": "UFOPA",
+      "uf": "PA",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 27,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://ieg.ufopa.edu.br/ieg/comunica/noticias/projeto-cuidadores-do-ar-realiza-treinamento-e-atividades-praticas-sobre-mudancas-climaticas-na-regiao-oeste-do-para/",
+          "https://www.ufopa.edu.br/ufopa/comunica/noticias/biometeorologia-estatistica-pesquisas-investigam-os-efeitos-do-clima-na-saude-humana/",
+          "proposta.pdf linhas 3217-3231 (entrada da equipe, sem laboratorio nomeado)"
+        ],
+        "evidencia": "O GP.CAA é coordenado pela docente Ana Carla Gomes, do Instituto de Engenharia e Geociências (IEG/Ufopa).",
+        "alternativas": [
+          "Ciências Atmosféricas na Amazônia (GP.CAA)",
+          "Grupo de pesquisa Ciências Atmosféricas na Amazônia, cadastrado no CNPq"
+        ]
+      }
+    },
+    {
+      "id": "lab-unir-carolina-doria",
+      "sigla": "LIP",
+      "nome": "Laboratório de Ictiologia e Pesca",
+      "rotulo": "LIP — Laboratório de Ictiologia e Pesca · Carolina Rodrigues da Costa Doria (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Carolina Rodrigues da Costa Doria",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "6716883529427154",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 28,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://colecoesbiologicas.unir.br/pagina/exibir/10557",
+          "https://ppgren.unir.br/pagina/exibir/14062",
+          "proposta-completa.txt linhas 3231-3253 (entrada da equipe, sem laboratorio nomeado)"
+        ],
+        "evidencia": "\"Coordenadora: Carolina Rodrigues da Costa Doria\" (colecoesbiologicas.unir.br, pagina \"Laboratório de Ictiologia e Pesca - LIP\"); \"Responsável e curadora: Drª Carolina Rodrigues da Costa Doria\" e \"O Laboratório de Ictiologia e Pesca da UNIR (LIP-UNIR) é formado por um conjunto de laboratórios que desenvolvem pesquisas em diversas linhas\" (ppgren.unir.br)",
+        "alternativas": [
+          "LIP-UNIR",
+          "Laboratório de Ictiologia e Pesca da UNIR",
+          "Laboratório de Ictiologia e Pesca e Coleção Ictiológica da UNIR"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufgd-charlei-silva",
+      "sigla": "LGF",
+      "nome": "Laboratório de Geografia Física",
+      "rotulo": "LGF — Laboratório de Geografia Física · Charlei Aparecido da Silva (UFGD/MS)",
+      "rotuloProvisorio": false,
+      "lla": "Charlei Aparecido da Silva",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "1949183981749520",
+      "instituicao": "Universidade Federal da Grande Dourados",
+      "instituicaoSigla": "UFGD",
+      "uf": "MS",
+      "regiao": "Centro-Oeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 28,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://portal.ufgd.edu.br/pos-graduacao/mestrado-doutorado-geografia/nucleo-laboratorio-de-pesquisa",
+          "https://abclima.net.br/abclima/grupos-de-pesquisa",
+          "proposta.pdf linhas 3260-3276 (identidade via Lattes 1949183981749520; nenhum laboratório nomeado)"
+        ],
+        "evidencia": "\"O laboratório é coordenado pelo professor Charlei Aparecido da Silva tem como professor associado o pesquisador André Geraldo Berezuk.\" (página do PPGG-UFGD, entrada \"LGF - Laboratório de Geografia Física\"); ABClima: \"Laboratório de Geografia Física (UFGD) — Coordenador(a): Charlei Aparecido da Silva\"",
+        "alternativas": [
+          "LGF-UFGD (canal do laboratório no YouTube: @lgfufgd)"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Bruno de Souza Lima",
+        "Lorrane Barbosa Alves",
+        "Rafael Brugnolli Medeiros"
+      ]
+    },
+    {
+      "id": "lab-ufma-eduardo-almeida",
+      "sigla": "LEB",
+      "nome": "Laboratório de Estudos Botânicos",
+      "rotulo": "LEB — Laboratório de Estudos Botânicos · Eduardo Bezerra de Almeida Junior (UFMA/MA)",
+      "rotuloProvisorio": false,
+      "lla": "Eduardo Bezerra de Almeida Junior",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "3142116071365323",
+      "instituicao": "Universidade Federal do Maranhão",
+      "instituicaoSigla": "UFMA",
+      "uf": "MA",
+      "regiao": "Nordeste",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 28,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://lebufma.com.br/eduardo-b-almeida-jr/",
+          "https://lebufma.com.br/",
+          "https://sigaa.ufma.br/sigaa/public/docente/portal.jsf?siape=1859999",
+          "proposta.pdf linhas 3243-3291 (nenhum laboratorio nomeado)"
+        ],
+        "evidencia": "\"Coordenador do LEB\" — titulo atribuido a Eduardo B. de Almeida Jr. na pagina do proprio laboratorio (lebufma.com.br), que se apresenta como \"Laboratório de Estudos Botânicos\" da Universidade Federal do Maranhão (UFMA).",
+        "alternativas": [
+          "LEB-UFMA",
+          "Laboratório de Estudos Botânicos (LEB) - UFMA"
+        ]
+      }
+    },
+    {
+      "id": "lab-uema-eliana-lago",
+      "sigla": "BIONANO",
+      "nome": "Grupo de Inovação em Biotecnologia e Nanosaúde (BIONANO)",
+      "rotulo": "BIONANO — Grupo de Inovação em Biotecnologia e Nanosaúde (BIONANO) · Eliana Campêlo Lago (UEMA/MA)",
+      "rotuloProvisorio": false,
+      "lla": "Eliana Campêlo Lago",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "2913451575350769",
+      "instituicao": "Universidade Estadual do Maranhão",
+      "instituicaoSigla": "UEMA",
+      "uf": "MA",
+      "regiao": "Nordeste",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 28,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "membro",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhorh/2913451575350769",
+          "https://sis.sig.uema.br/sigaa/public/docente/portal.jsf?siape=7403",
+          "proposta.pdf linhas 3248 e 3298-3311"
+        ],
+        "evidencia": "Grupos de pesquisa em que atua — Nome do grupo: \"Grupo de Inovação em Biotecnologia e Nanosaúde- BIONANO\" | Instituição: \"UEMA\" | Perfil: \"Pesquisador\" (dgp.cnpq.br/dgp/espelhorh/2913451575350769)",
+        "alternativas": []
+      }
+    },
+    {
+      "id": "lab-unir-elisabete-nascimento",
+      "sigla": "LABLIM",
+      "nome": "Laboratório de Limnologia e Microbiologia",
+      "rotulo": "LABLIM — Laboratório de Limnologia e Microbiologia · Elisabete Lourdes do Nascimento (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Elisabete Lourdes do Nascimento",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "9724703168940206",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 28,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://sigaa.unir.br/sigaa/public/docente/portal.jsf?siape=1822046",
+          "https://www.unir.br/cartao/exibir/136",
+          "proposta.pdf linhas 3324-3330"
+        ],
+        "evidencia": "Coordenadora do Laboratório de Limnologia e Microbiologia-LABLIM.",
+        "alternativas": [
+          "Lablim",
+          "Grupo de Pesquisa em Águas Superficiais e Subterrâneas (GPEASS), grupo vinculado ao laboratório"
+        ]
+      }
+    },
+    {
+      "id": "lab-usp-emerson-galvani",
+      "sigla": "LCB",
+      "nome": "Laboratório de Climatologia e Biogeografia (Departamento de Geografia, FFLCH-USP)",
+      "rotulo": "LCB — Laboratório de Climatologia e Biogeografia (Departamento de Geografia, FFLCH-USP) · Emerson Galvani (USP/SP)",
+      "rotuloProvisorio": false,
+      "lla": "Emerson Galvani",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "2026434763745090",
+      "instituicao": "Universidade de São Paulo",
+      "instituicaoSigla": "USP",
+      "uf": "SP",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "membro",
+        "confianca": "alta",
+        "fontes": [
+          "https://lcb.fflch.usp.br/docentes",
+          "https://lcb.fflch.usp.br/emerson-galvani",
+          "proposta.pdf linha 3338"
+        ],
+        "evidencia": "Coordenadora: Prof.ª Dr.ª Sueli Ângelo Furlan [...] Vice-coordenador Prof. Dr. Emerson Galvani egalvani@usp.br",
+        "alternativas": [
+          "Laboratório de CLIMATOLOGIA E BIOGEOGRAFIA",
+          "LCB-USP"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Jakeline Baratto",
+        "Maria Cristina Celuppi",
+        "Nádia Gilma Beserra de Lima",
+        "Rogério Rozolen Alves",
+        "Valéria Machado Emiliano"
+      ]
+    },
+    {
+      "id": "lab-unir-estevao-fernandes",
+      "sigla": "LabLat",
+      "nome": "Laboratório Amazônico de Estudos em América Latina",
+      "rotulo": "LabLat — Laboratório Amazônico de Estudos em América Latina · Estevão Rafael Fernandes (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Estevão Rafael Fernandes",
+      "llaGrafiaVariante": "Estevão Rafael Fernandes",
+      "llaLattesId": "9325979084800204",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhogrupo/3451725054717810",
+          "https://cienciassociais.unir.br/pagina/exibir/1885",
+          "proposta-completa.txt linhas 3342-3367 (sem laboratorio nomeado)"
+        ],
+        "evidencia": "Grupo de pesquisa: Laboratório Amazônico de Estudos em América Latina — \"Situação do grupo: Certificado ... Líder(es) do grupo: Estevao Rafael Fernandes / Rafael Ademir Oliveira de Andrade ... Instituição do grupo: Universidade Federal de Rondônia - UNIR\" (dgp.cnpq.br/dgp/espelhogrupo/3451725054717810)",
+        "alternativas": [
+          "LABLAT",
+          "Laboratório Amazônico de Estudos em América Latina (LabLat)"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Estevao Rafael Fernandes"
+      ]
+    },
+    {
+      "id": "lab-ufmt-evandro-dalloglio",
+      "sigla": "CALPQPN",
+      "nome": "Central Analítica do Laboratório de Pesquisas em Química de Produtos Naturais e Novas Metodologias Sintéticas em Química Orgânica",
+      "rotulo": "CALPQPN — Central Analítica do Laboratório de Pesquisas em Química de Produtos Naturais e Novas Metodologias Sintéticas em Química Orgânica · Evandro Luiz Dall'Oglio (UFMT/MT)",
+      "rotuloProvisorio": false,
+      "lla": "Evandro Luiz Dall'Oglio",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "0288804659104012",
+      "instituicao": "Universidade Federal de Mato Grosso",
+      "instituicaoSigla": "UFMT",
+      "uf": "MT",
+      "regiao": "Centro-Oeste",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "membro",
+        "confianca": "alta",
+        "fontes": [
+          "https://www.ufmt.br/unidade/calpqpn/equipe",
+          "https://portfolio.bionorte.org.br/leonardo-gomes-de-vasconcelos-e-evandro-luiz-dallolgio/",
+          "https://fotocatmt.com.br/",
+          "https://www.ufmt.br/unidade/dq/pagina/grupos-de-pesquisa-1647279158/7801",
+          "https://www.ufmt.br/curso/ppgq/pagina/pesquisa/6642"
+        ],
+        "evidencia": "Página oficial da unidade (ufmt.br/unidade/calpqpn/equipe): \"Central Analítica do Laboratório de Pesquisas em Química de Produtos Naturais e Novas Metodologias Sintéticas em Química Orgânica\" — equipe: \"Evandro Luiz Dall'Oglio — Pesquisador\"; \"Leonardo Gomes de Vasconcelos — Coordenador Geral/Pesquisador\"",
+        "alternativas": [
+          "CA-LPQPN",
+          "Central Analítica - Laboratório de Pesquisa em Química dos Produtos Naturais",
+          "Central Analítica do Laboratório de Pesquisas em Química de Produtos Naturais",
+          "CALPQPN Central Analítica - Laboratório de Pesquisa e Análises Físico-Químicas"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Leonardo Gomes de Vasconcelos"
+      ]
+    },
+    {
+      "id": "lab-ufscar-flavio-silva",
+      "sigla": "LBM",
+      "nome": "Laboratório de Biologia Molecular",
+      "rotulo": "LBM — Laboratório de Biologia Molecular · Flavio Henrique da Silva (UFSCar/SP)",
+      "rotuloProvisorio": false,
+      "lla": "Flavio Henrique da Silva",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "1757309852446263",
+      "instituicao": "Universidade Federal de São Carlos",
+      "instituicaoSigla": "UFSCar",
+      "uf": "SP",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://www.dge.ufscar.br/docentes/docentes-atuais/flavio-henrique-silva",
+          "https://www.dge.ufscar.br/laboratorios/laboratorios",
+          "proposta.pdf linhas 3388-3398"
+        ],
+        "evidencia": "É coordenador do Laboratório de Biologia Molecular (LBM)",
+        "alternativas": [
+          "Laboratório de Biologia Molecular - LBM (DGE/UFSCar)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufrr-gabriel-zazeri",
+      "sigla": null,
+      "nome": null,
+      "rotulo": "UFRR (RR) — Gabriel Zazeri",
+      "rotuloProvisorio": true,
+      "lla": "Gabriel Zazeri",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "4523821762412955",
+      "instituicao": "Universidade Federal de Roraima",
+      "instituicaoSigla": "UFRR",
+      "uf": "RR",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "sigla",
+        "nome",
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "resultado": "nenhuma fonte nomeou uma unidade ligada à pessoa",
+        "observacao": "Nenhuma fonte nomeia laboratorio, grupo de pesquisa ou nucleo ligado a Gabriel Zazeri na UFRR. A proposta CNPq so traz o texto de responsabilidade (sem lab) e a secao de infraestrutura RORAIMA-UFRR lista equipamentos sem nomear laboratorios. O espelho do Lattes (Escavador) mostra: professor Adjunto no Departamento de Fisica (Campus Paricarana), Presidente da Comissao de Pesquisa da UFRR (cargo administrativo, nao lab) e coordenador do projeto de pesquisa \"PI4756-2024 - Investigacao de sistemas biologicos utilizando conceitos de Fisica Biologica e Biofisica Molecular\" (projeto, nao unidade). E docente do PPG BIONORTE. Buscas no DGP/CNPq nao acharam grupo com ele como lider. sigaa.ufrr.br e ufrr.br estavam inacessiveis (DNS) no momento da checagem; vale reconferir o portal SIGAA do docente quando o dominio voltar. Se for preciso preencher algo no site, o mais honesto seria \"Departamento de Fisica (UFRR)\"."
+      },
+      "pesquisadoresLigados": [
+        "Michel Watanabe",
+        "Renata Toscano Simões",
+        "Renee Laufer Amorim",
+        "Roberto Nicolete"
+      ]
+    },
+    {
+      "id": "lab-unifap-irlon-ferreira",
+      "sigla": "BIORG",
+      "nome": "Laboratório de Biocatálise e Síntese Orgânica Aplicada",
+      "rotulo": "BIORG — Laboratório de Biocatálise e Síntese Orgânica Aplicada · Irlon Maciel Ferreira (UNIFAP/AP)",
+      "rotuloProvisorio": false,
+      "lla": "Irlon Maciel Ferreira",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "9897023410899133",
+      "instituicao": "Universidade Federal do Amapá",
+      "instituicaoSigla": "UNIFAP",
+      "uf": "AP",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://www2.unifap.br/ppgcf/laboratorios/",
+          "https://www.bionorte.org.br/laboratorios/detalhes.html?idl=28",
+          "proposta.pdf linha 4809-4810 (tmp/proposta-completa.txt)"
+        ],
+        "evidencia": "Laboratório de Biocatalise e Síntese Orgânica Aplicada (BIORG) [...] Responsável: Prof. Dr. Irlon Ferreira Maciel",
+        "alternativas": [
+          "Grupo de Biocatálise e Síntese Orgânica Aplicada (nome na Rede BIONORTE)",
+          "Laboratório de Biocatálise e Síntese Orgânica Aplicada (UNIFAP) (nome na proposta CNPq, seção infraestrutura)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ilmd-luis-mariuba",
+      "sigla": "DCDIA",
+      "nome": "Laboratório de Diagnóstico e Controle de Doenças Infecciosas na Amazônia",
+      "rotulo": "DCDIA — Laboratório de Diagnóstico e Controle de Doenças Infecciosas na Amazônia · Luis André Morais Mariúba (ILMD/AM)",
+      "rotuloProvisorio": false,
+      "lla": "Luis André Morais Mariúba",
+      "llaGrafiaVariante": "Luis André Morais Mariúba",
+      "llaLattesId": "4784959431673419",
+      "instituicao": "Instituto Leônidas e Maria Deane",
+      "instituicaoSigla": "ILMD",
+      "uf": "AM",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 29,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "membro",
+        "confianca": "alta",
+        "fontes": [
+          "https://www.portalmarcossantos.com.br/2025/07/04/inpi-concede-primeira-patente-ao-ilmd-fiocruz-amazonia-referente-a-equipamento-de-analise-de-material-genetico-em-amostras-biologicas/",
+          "https://portalamazonia.com/educacao/1-patente-fiocruz-amazonia-inpi/",
+          "https://amazonia.fiocruz.br/?page_id=21425",
+          "proposta.pdf linhas 3445-3458"
+        ],
+        "evidencia": "Coordenador do Núcleo de Inovação Tecnológica (NIT), da Fiocruz Amazônia, o pesquisador em Saúde Pública do Laboratório de Diagnóstico e Controle de Doenças Infecciosas na Amazônia (DCDIA), Luís André Mariúba",
+        "alternativas": [
+          "Laboratório DCDIA",
+          "Laboratory of Diagnosis and Control of Infectious Diseases in the Amazon"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Caio Coutinho de Souza",
+        "Juliane Corrêa Glória",
+        "Késsia Caroline Souza Alves",
+        "Luis Andre Morais Mariuba",
+        "Maria Edilene Martins de Almeida"
+      ]
+    },
+    {
+      "id": "lab-unesp-margarete-amorim",
+      "sigla": "GAIA",
+      "nome": "Grupo de Pesquisa Interações na Superfície Terrestre, Água e Atmosfera (GAIA)",
+      "rotulo": "GAIA — Grupo de Pesquisa Interações na Superfície Terrestre, Água e Atmosfera (GAIA) · Margarete Cristiane de Costa Trindade Amorim (UNESP/SP)",
+      "rotuloProvisorio": false,
+      "lla": "Margarete Cristiane de Costa Trindade Amorim",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "6644811083291335",
+      "instituicao": "Universidade Estadual Paulista Júlio de Mesquita Filho",
+      "instituicaoSigla": "UNESP",
+      "uf": "SP",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhogrupo/0732896052620226",
+          "https://revista.fct.unesp.br/index.php/cpg/article/view/6206",
+          "https://www.fct.unesp.br/#!/departamentos/geografia/laboratorios-e-grupos-de-pesquisa/gaia/",
+          "proposta.pdf linhas 3460-3473 (nao nomeia laboratorio; so areas de atuacao)"
+        ],
+        "evidencia": "Líder(es) do grupo: Margarete Cristiane de Costa Trindade Amorim [...] João Osvaldo Rodrigues Nunes. Instituição do grupo: Universidade Estadual Paulista Júlio de Mesquita Filho - UNESP. Unidade: Departamento de Geografia.",
+        "alternativas": [
+          "Interações na superfície terrestre, água e atmosfera (nome no DGP/CNPq)",
+          "Grupo de Pesquisa Interações da Superfície Terrestre, Água e Atmosfera (variante no cabeçalho do artigo)",
+          "Laboratório de Climatologia (um dos 4 laboratórios que dão suporte ao GAIA na FCT/UNESP)"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Alessandro Donaire de Santana",
+        "Danielle Cardozo Frasca Teixeira",
+        "Igor Vinícius Barbosa Duchini",
+        "Luis Flávio de Araújo",
+        "Monique Cocco Teixeira",
+        "William Miyakava"
+      ]
+    },
+    {
+      "id": "lab-unir-michel-watanabe",
+      "sigla": null,
+      "nome": "Grupo de Estudos e Pesquisas em Geoprocessamento e Hidrossedimentologia na Amazônia",
+      "rotulo": "Grupo de Estudos e Pesquisas em Geoprocessamento e Hidrossedimentologia na Amazônia · Michel Watanabe (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Michel Watanabe",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "2210782014123027",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "sigla",
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "proposta-completa.txt linhas 3485-3493 (responsabilidade associada ao Lattes 2210782014123027)",
+          "https://propesq.unir.br/pagina/exibir/1387",
+          "https://geografia.unir.br/pagina/exibir/792"
+        ],
+        "evidencia": "Proposta CNPq: \"Líder do Grupo de Estudos e Pesquisas em Geoprocessamento e Hidrossedimentologia na Amazônia. Pesquisador do Grupo de Pesquisa GEOPLAM no Laboratório de Geografia e Planejamento Ambiental - LABOGEOPA.\" / PROPESQ-UNIR (Grupos de Pesquisa Certificados DGP/CNPq): \"GRUPO DE ESTUDOS E PESQUISAS EM GEOPROCESSAMENTO E HIDROSSEDIMENTOLOGIA NA AMAZÔNIA ... Michel Watanabe | Geociências\"",
+        "alternativas": [
+          "Geoprocessamento e Hidrossedimentologia na Amazônia (forma curta usada na listagem da PROPESQ/UNIR)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufpa-milton-silva",
+      "sigla": "LABCROL",
+      "nome": "Laboratório de Cromatografia Líquida",
+      "rotulo": "LABCROL — Laboratório de Cromatografia Líquida · Milton Nascimento da Silva (UFPA/PA)",
+      "rotuloProvisorio": false,
+      "lla": "Milton Nascimento da Silva",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "6742390457977989",
+      "instituicao": "Universidade Federal do Pará",
+      "instituicaoSigla": "UFPA",
+      "uf": "PA",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://ufpa.br/orgaos/laboratorio-de-cromatografia-liquida/",
+          "https://ppgq.propesp.ufpa.br/index.php/br/pesquisa/laboratorios",
+          "https://labcrolufpa.webnode.page/grupo-de-pesquisa/",
+          "proposta.pdf linhas 3498-3512 (perfil confirmado, nenhum laboratório nomeado)"
+        ],
+        "evidencia": "Coordenador(a): Milton Nascimento da Silva",
+        "alternativas": [
+          "LabCrol",
+          "Labcrol",
+          "Laboratório de Cromatografia Líquida da UFPA"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "Consuelo Yumiko Yoshioka e Silva",
+        "Paulo Wender Portal Gomes",
+        "Wandson Braamcamp de Souza Pinheiro"
+      ]
+    },
+    {
+      "id": "lab-unifesp-mirian-hayashi",
+      "sigla": "FarmoLAB",
+      "nome": "Laboratório de Neurofarmacologia Molecular (FarmoLAB) — Departamento de Farmacologia, Escola Paulista de Medicina (EPM), UNIFESP",
+      "rotulo": "FarmoLAB — Laboratório de Neurofarmacologia Molecular (FarmoLAB) — Departamento de Farmacologia, Escola Paulista de Medicina (EPM), UNIFESP · Mirian Akemi Furuie Hayashi (UNIFESP/SP)",
+      "rotuloProvisorio": false,
+      "lla": "Mirian Akemi Furuie Hayashi",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "5559309395232147",
+      "instituicao": "Universidade Federal de São Paulo",
+      "instituicaoSigla": "UNIFESP",
+      "uf": "SP",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "proposta.pdf linha 3524 (RESPONSABILIDADE NO PROJETO de Mirian Akemi Furuie Hayashi)",
+          "proposta.pdf linha 3517-3528 (UNIFESP, PQ 1C, lattes 5559309395232147)",
+          "proposta.pdf linha 4972 (UNIFESP como Laboratório Associado)",
+          "proposta.pdf linhas 4746-4815 (DISPONIBILIDADE E INFRAESTRUTURA — não cita a UNIFESP)",
+          "https://www.fapesp.br/oportunidades/estudo-dos-mecanismos-moleculares-e-celulares-em-transtornos-mentais:-estudos-clinicos-e-modelos-animais/6792/"
+        ],
+        "evidencia": "FAPESP Oportunidades (bolsa 6792), transcrição literal: \"O Laboratório de Neurofarmacologia Molecular do Departamento de Farmacologia da Escola Paulista de Medicina (EPM) da Universidade Federal de São Paulo (UNIFESP) tem uma (01) bolsa de pós-doutorado aberta para desenvolvimento do projeto 'Estudo dos mecanismos moleculares e celulares em transtornos mentais: estudos clínicos e modelos animais'.",
+        "alternativas": [
+          "FarmoLAB",
+          "Laboratório de Neurofarmacologia Molecular do Departamento de Farmacologia da Escola Paulista de Medicina (EPM) da Universidade Federal de São Paulo (UNIFESP)",
+          "Laboratório de Neurofarmacologia Molecular e Celular"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufam-natacha-aleixo",
+      "sigla": "HIDROGEO",
+      "nome": "Laboratório de Hidrogeografia, Climatologia e Análise Ambiental da Amazônia",
+      "rotulo": "HIDROGEO — Laboratório de Hidrogeografia, Climatologia e Análise Ambiental da Amazônia · Natacha Cintia Regina Aleixo (UFAM/AM)",
+      "rotuloProvisorio": false,
+      "lla": "Natacha Cintia Regina Aleixo",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "9509290240626293",
+      "instituicao": "Universidade Federal do Amazonas",
+      "instituicaoSigla": "UFAM",
+      "uf": "AM",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "media",
+        "fontes": [
+          "proposta.pdf linha 4799-4800 (tmp/proposta-completa.txt: infraestrutura UFAM nomeia o HIDROGEO)",
+          "https://abclima.net.br/abclima/grupos-de-pesquisa",
+          "https://www.hidrogeo.ufam.edu.br/pesquisadores.html",
+          "https://www.hidrogeo.ufam.edu.br/coordenacao.html",
+          "https://emergenciaclimaticaam.com.br/publicacoes-da-equipe"
+        ],
+        "evidencia": "Laboratório de Hidrogeografia, Climatologia e Análise Ambiental da Amazônia - HIDROGEO (UFAM) / Site: --- / Coordenador(a): Natacha Cíntia Regina Aleixo",
+        "alternativas": [
+          "HidroGeo",
+          "Laboratório HIDROGEO",
+          "Laboratório de Hidrogeografia, Climatologia e Análise Ambiental da Amazônia (HIDROGEO)"
+        ]
+      },
+      "pesquisadoresLigados": [
+        "João Cândido André da Silva Neto"
+      ]
+    },
+    {
+      "id": "lab-ufs-pablo-martinez",
+      "sigla": "PIBi Lab",
+      "nome": "Laboratório de Pesquisas Integrativas em Biodiversidade",
+      "rotulo": "PIBi Lab — Laboratório de Pesquisas Integrativas em Biodiversidade · Pablo Ariel Martinez (UFS/SE)",
+      "rotuloProvisorio": false,
+      "lla": "Pablo Ariel Martinez",
+      "llaGrafiaVariante": null,
+      "llaLattesId": null,
+      "instituicao": "Universidade Federal de Sergipe",
+      "instituicaoSigla": "UFS",
+      "uf": "SE",
+      "regiao": "Nordeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets",
+        "llaLattesId"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 30,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://ciencia.ufs.br/conteudo/73963-mudancas-climaticas-aumentam-risco-de-acidentes-com-serpentes-alerta-estudo",
+          "https://species.wikimedia.org/wiki/Pablo_Ariel_Martinez",
+          "https://www.researchgate.net/lab/PIBi-Lab-Laboratorio-de-Pesquisas-Integrativas-em-Biodiversidade-Pablo-Ariel-Martinez",
+          "proposta.pdf linhas 3547-3554"
+        ],
+        "evidencia": "O professor do Departamento de Biologia e coordenador do Laboratório de Pesquisas Integrativas em Biodiversidade da Universidade Federal de Sergipe, Pablo Ariel Martinez, liderou a pesquisa internacional com cinco estudantes de graduação e pós-graduação da UFS, em parceria com pesquisadores da Espanha, Alemanha e Costa Rica.",
+        "alternativas": [
+          "PIBi Lab — Laboratório de Pesquisas Integrativas em Biodiversidade (grafia usada por Wikispecies/ResearchGate)",
+          "PIBILab — Laboratório de Pesquisa Integrativa Em Biodiversidade (grafia da página do Facebook do laboratório)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufsj-renata-lofrano",
+      "sigla": "POLNECON",
+      "nome": "Núcleo de Pesquisas em Polímeros, Oleoquímicos, Emulsões, Nanotecnologia e Compósitos",
+      "rotulo": "POLNECON — Núcleo de Pesquisas em Polímeros, Oleoquímicos, Emulsões, Nanotecnologia e Compósitos · Renata Carolina Zanetti Lofrano (UFSJ/MG)",
+      "rotuloProvisorio": false,
+      "lla": "Renata Carolina Zanetti Lofrano",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "5561482457720983",
+      "instituicao": "Universidade Federal de São João Del-Rei",
+      "instituicaoSigla": "UFSJ",
+      "uf": "MG",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "membro",
+        "confianca": "media",
+        "fontes": [
+          "https://www.escavador.com/sobre/7502222/renata-carolina-zanetti-lofrano",
+          "https://bv.fapesp.br/pt/pesquisador/178820/renata-carolina-zanetti-lofrano/",
+          "https://ufsj.edu.br/portal-repositorio/File/prope/Grupos_de_pesquisa_ago2018.pdf",
+          "https://ufsj.edu.br/portal2-repositorio/File/prope/Grupos_de_pesquisa_nov2019.pdf",
+          "https://ufsj.edu.br/ppgeq/corpo_docente.php"
+        ],
+        "evidencia": "Participa do Grupos de Pesquisa no Brasil (DGP) do Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) POLNECON (Núcleo de Pesquisas em Polímeros, Oleoquímicos, Emulsões, Nanotecnologia e Compósitos).",
+        "alternativas": [
+          "POLNECOM",
+          "Grupo de pesquisas em polímeros, oleoquímica, nanoestruturas, emulsões e compósitos (POLNECOM)",
+          "Processos e Produtos Limpos/PROLIMP"
+        ]
+      }
+    },
+    {
+      "id": "lab-fscbh-renata-simoes",
+      "sigla": null,
+      "nome": "Laboratório de Biologia Molecular e Biomarcadores da Faculdade Santa Casa BH",
+      "rotulo": "Laboratório de Biologia Molecular e Biomarcadores da Faculdade Santa Casa BH · Renata Toscano Simões (FSCBH/MG)",
+      "rotuloProvisorio": false,
+      "lla": "Renata Toscano Simões",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "3112803094228207",
+      "instituicao": "Faculdade Santa Casa BH",
+      "instituicaoSigla": "FSCBH",
+      "uf": "MG",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "sigla",
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "membro",
+        "confianca": "media",
+        "fontes": [
+          "https://faculdadesantacasabh.org.br/glioblastoma-multiforme-pesquisa-inedita/",
+          "https://bhaz.com.br/noticias/bh/santa-casa-bh-busca-voluntarios-para-pesquisa-para-tratamento-de-tumor/",
+          "https://faculdadesantacasabh.org.br/doutorado-em-medicina-biomedicina/",
+          "proposta.pdf linhas 3573-3588"
+        ],
+        "evidencia": "\"A pesquisa é conduzida pelo Departamento de Neurocirurgia da Santa Casa BH e pelo Laboratório de Biologia Molecular e Biomarcadores da Faculdade Santa Casa BH\" ... \"As coordenadoras dessa frente de pesquisa são a docente e pesquisadora Dra. Cristina Moraes Junta, bióloga molecular e geneticista, e a docente e pesquisadora Dra. Renata Simões, biomédica e patologista molecular.\" (faculdadesantacasa",
+        "alternativas": [
+          "Laboratório de Biologia Molecular e Biomarcadores da Faculdade Santa Casa"
+        ]
+      }
+    },
+    {
+      "id": "lab-unesp-renee-amorim",
+      "sigla": null,
+      "nome": "Grupo de Pesquisa Biomarcadores preditivos do câncer: estudo comparativo",
+      "rotulo": "Grupo de Pesquisa Biomarcadores preditivos do câncer: estudo comparativo · Renee Laufer Amorim (UNESP/SP)",
+      "rotuloProvisorio": false,
+      "lla": "Renee Laufer Amorim",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "9795829022108105",
+      "instituicao": "Universidade Estadual Paulista Júlio de Mesquita Filho",
+      "instituicaoSigla": "UNESP",
+      "uf": "SP",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "sigla",
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhogrupo/6847695695180905",
+          "proposta.pdf linhas 3593-3603 (tabela de equipe; nenhum laboratorio nomeado)",
+          "https://bv.fapesp.br/pt/pesquisador/4431/renee-laufer-amorim/",
+          "https://www.unesp.br/portaldocentes/docentes/67838?lang=pt_BR",
+          "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi (afiliações PubMed de Laufer-Amorim R)"
+        ],
+        "evidencia": "Grupo de pesquisa Biomarcadores preditivos do câncer: estudo comparativo [...] Situação do grupo: Certificado [...] Líder(es) do grupo: Renee Laufer Amorim / Carlos Eduardo Fonseca Alves [...] Instituição do grupo: Universidade Estadual Paulista Júlio de Mesquita Filho - UNESP / Unidade: Faculdade de Medicina Veterinária e Zootecnia de Botucatu [...] Contato do grupo: renee.laufer-amorim@unesp.br",
+        "alternativas": [
+          "Biomarcadores prognósticos do câncer: estudo comparativo (variante usada no texto de repercussões do próprio grupo no DGP)",
+          "linha de pesquisa: ONCOLOGIA COMPARADA E TRANSLACIONAL"
+        ]
+      }
+    },
+    {
+      "id": "lab-fiocruz-ce-roberto-nicolete",
+      "sigla": null,
+      "nome": "Plataforma de Nanotecnologia da Fiocruz Ceará",
+      "rotulo": "Plataforma de Nanotecnologia da Fiocruz Ceará · Roberto Nicolete (FIOCRUZ/CE/CE)",
+      "rotuloProvisorio": false,
+      "lla": "Roberto Nicolete",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "0447073555893530",
+      "instituicao": "Fundação Oswaldo Cruz - Ceará",
+      "instituicaoSigla": "FIOCRUZ/CE",
+      "uf": "CE",
+      "regiao": "Nordeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "sigla",
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "outro",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "https://ceara.fiocruz.br/portal/index.php/inovacao-conheca-as-pesquisas-e-os-produtos-da-plataforma-de-nanotecnologia-da-fiocruz-ceara/ (acessado via snapshot web.archive.org de 2026-05-11; URL ao vivo instável)",
+          "https://www.escavador.com/sobre/1542182/roberto-nicolete (espelho do Lattes, coletado 13/04/2026)",
+          "https://plataformas.fiocruz.br/index/servicos/97__283",
+          "https://ceara.fiocruz.br/portal/index.php/pesquisa/biotecnologia/pesquisadores/",
+          "proposta.pdf linhas 3581 e 3608-3618 (nao nomeia laboratorio)"
+        ],
+        "evidencia": "Lattes (via Escavador): \"2021 - Atual — Fundação Oswaldo Cruz - unidade Ceará — Vínculo: Servidor público, Enquadramento Funcional: gerente da platforma de Nanotecnologia, Carga horária: 10\". Portal Fiocruz Ceará: \"Os estudos são concebidos e coordenados pelo pesquisador Roberto Nicolete, farmacêutico e doutor em Biociências\" (sobre a plataforma de Nanotecnologia; \"Batizada de Nanofight Virus, a p",
+        "alternativas": [
+          "Nanofight Virus (nome batizado da plataforma científico-tecnológica)",
+          "Plataforma NanoassemblrTM - Benchtop (denominação na Rede de Plataformas Tecnológicas Fiocruz - RPT)",
+          "plataforma de Nanotecnologia (grafia do Lattes)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufmg-walter-cavalcante",
+      "sigla": "LFJT",
+      "nome": "Laboratório de Farmacologia da Junção Neuromuscular e Toxinologia",
+      "rotulo": "LFJT — Laboratório de Farmacologia da Junção Neuromuscular e Toxinologia · Walter Luís Garrido Cavalcante (UFMG/MG)",
+      "rotuloProvisorio": false,
+      "lla": "Walter Luís Garrido Cavalcante",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "2046394525786539",
+      "instituicao": "Universidade Federal de Minas Gerais",
+      "instituicaoSigla": "UFMG",
+      "uf": "MG",
+      "regiao": "Sudeste",
+      "amazoniaLegal": false,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": false
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://depto.icb.ufmg.br/dfar/index.php/laboratorio-de-farmacologia-da-juncao-neuromuscular-e-toxinologia/",
+          "http://depto.icb.ufmg.br/dfar/index.php/laboratorios/",
+          "https://depto.icb.ufmg.br/dfar/index.php/professores/",
+          "https://repositorio.ufmg.br/server/api/core/bitstreams/b4fcb2cf-943b-45cb-8d45-9a9d9321acf9/content",
+          "https://repositorio.ufmg.br/server/api/core/bitstreams/7d355d5f-4f5c-47c6-9427-21c6ed631d00/content"
+        ],
+        "evidencia": "\"Meu profundo agradecimento ao Prof. Dr. Walter Cavalcante, que abriu as portas do LFJT para mim, que não poupou esforços para me ensinar, que foi para a bancada, que sempre esteve disponível para sanar as dúvidas e pela compreensão.\" (dissertação de mestrado do PPG Fisiologia e Farmacologia ICB/UFMG, cuja folha de rosto traz \"Orientador: Prof. Dr. Walter Luís Garrido Cavalcante\"). Na mesma disser",
+        "alternativas": [
+          "LFJT",
+          "Laboratório de Junção Neuromuscular e Toxinologia (nome usado no Instagram oficial @labfjt)"
+        ]
+      }
+    },
+    {
+      "id": "lab-unir-wanderley-bastos",
+      "sigla": "LBGQA-WCP",
+      "nome": "Laboratório de Biogeoquímica Ambiental Wolfgang C. Pfeiffer",
+      "rotulo": "LBGQA-WCP — Laboratório de Biogeoquímica Ambiental Wolfgang C. Pfeiffer · Wanderley Rodrigues Bastos (UNIR/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Wanderley Rodrigues Bastos",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "4028993334703256",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "laboratorio",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhogrupo/10080",
+          "https://biogeoquimica-unir.org/equipe",
+          "https://biogeoquimica-unir.org/historico",
+          "https://biogeoquimica-unir.org/sobre",
+          "proposta.pdf linha 4766 (tmp/proposta-completa.txt)"
+        ],
+        "evidencia": "Líder(es) do grupo: Wanderley Rodrigues Bastos    Ronaldo de Almeida [...] Instituição do grupo: Universidade Federal de Rondônia - UNIR (dgp.cnpq.br, grupo \"Biogeoquímica Ambiental - LABIOGEOQ\"); \"Vice-Coordenador: Dr. Wanderley Bastos\" (biogeoquimica-unir.org)",
+        "alternativas": [
+          "LABIGEOQ (grafia usada na proposta CNPq, linha 4766: \"Laboratório de Biogeoquimica Ambiental ? LABIGEOQ\")",
+          "Biogeoquímica Ambiental - LABIOGEOQ (nome do grupo no DGP/CNPq)",
+          "Laboratório de BioGeoQuímica Ambiental (grafia do próprio site)"
+        ]
+      }
+    },
+    {
+      "id": "lab-ifro-xenia-barbosa",
+      "sigla": "NEHLI",
+      "nome": "Núcleo de Estudos Históricos e Literários",
+      "rotulo": "NEHLI — Núcleo de Estudos Históricos e Literários · Xênia de Castro Barbosa (IFRO/RO)",
+      "rotuloProvisorio": false,
+      "lla": "Xênia de Castro Barbosa",
+      "llaGrafiaVariante": null,
+      "llaLattesId": "2736450812832214",
+      "instituicao": "Instituto Federal de Educação, Ciência e Tecnologia de Rondônia",
+      "instituicaoSigla": "IFRO",
+      "uf": "RO",
+      "regiao": "Norte",
+      "amazoniaLegal": true,
+      "eets": [],
+      "confianca": "alta",
+      "camposAusentes": [
+        "eets"
+      ],
+      "fonte": {
+        "documento": "CNPq Proposta submetida INCT 2024.pdf",
+        "secao": "EQUIPE",
+        "categoriaPicc": "Líder de Laboratório Associado",
+        "pagina": 31,
+        "confirmadoEm001PlatformSql": true
+      },
+      "verificacao": {
+        "em": "2026-08-07",
+        "tipo": "grupo_pesquisa",
+        "papel": "coordena",
+        "confianca": "alta",
+        "fontes": [
+          "http://dgp.cnpq.br/dgp/espelhogrupo/33606",
+          "https://portal.ifro.edu.br/images/Pro-reitorias/Propesp/Lista_de_Grupos_de_Pesquisa_Certificados_pelo_IFRO_10.pdf",
+          "http://dgp.cnpq.br/dgp/espelhorh/2736450812832214",
+          "https://periodicos.unemat.br/index.php/ppgedu/article/view/6103",
+          "https://portal.ifro.edu.br/calama/noticias/10619"
+        ],
+        "evidencia": "NÚCLEO DE ESTUDOS HISTÓRICOS E LITERÁRIOS — Líder(es) do grupo: Xênia de Castro Barbosa; Márcia Letícia Gomes — Instituição do grupo: Instituto Federal de Educação Ciência e Tecnologia de Rondônia - IFRO",
+        "alternativas": [
+          "NEHLI/IFRO",
+          "Grupo de Pesquisa Núcleo de Estudos Históricos e Literários"
+        ]
+      }
+    },
+    {
+      "id": "lab-ufal-lamma",
+      "sigla": "LAMMA",
+      "nome": "Laboratório de Meteorologia Aplicada e Meio Ambiente",
+      "lla": null,
+      "lider": "José Francisco de Oliveira Júnior",
+      "instituicao": "Universidade Federal de Alagoas",
+      "instituicaoSigla": "UFAL",
+      "uf": "AL",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Dimas de Barros Santiago",
+        "José Francisco de Oliveira Júnior",
+        "Micejane da Silva Costa",
+        "Washington Luiz Félix Correia Filho"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Artigo na Revista Brasileira de Geografia Física (periodicos.ufpe.br) cujas afiliações trazem literalmente 'Laboratório de Meteorologia Aplicada e Meio Ambiente – LAMMA, Instituto de Ciências Atmosféricas (ICAT)' e identificam José Francisco de Oliveira Júnior como 'Diretor do LAMMA'; Washington Luiz Félix Correia Filho aparece com a mesma afiliação",
+      "fonteUrl": "https://periodicos.ufpe.br/revistas/rbgfe/article/view/249751",
+      "confianca": "confirmado",
+      "observacao": "O laboratório e a liderança estão confirmados. Vínculos: Oliveira Júnior = confirmado (diretor); Washington Correia Filho = confirmado (afiliação em artigo); Micejane da Silva Costa = provável (descrita como integrante do grupo LAMMA em resumo de currículo, e é docente do ICAT/UFAL); Dimas de Barros Santiago = INDÍCIO apenas — é coautor recorrente do LAMMA, mas o perfil dele no ResearchGate o dá atualmente na UFCG (Unidade Acadêmica de Ciências Atmosféricas), enquanto a proposta o registra na UFAL. Os dois alunos da UFAL do cluster (Kelvy Rosalvo Alencar Cardoso e Elania Barros da Silva) têm a mesma responsabilidade declarada, mas não achei nenhuma fonte que os nomeie — foram para pessoasSemLab de propósito."
+    },
+    {
+      "id": "lab-ilmd-dmais",
+      "sigla": "DMAIS",
+      "nome": "Laboratório de Diversidade Microbiana da Amazônia com Importância para a Saúde",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Instituto Leônidas e Maria Deane (Fiocruz Amazônia)",
+      "instituicaoSigla": "ILMD",
+      "uf": "AM",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Priscila Ferreira de Aquino"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Currículo/memorial de Priscila Ferreira de Aquino hospedado no domínio amazonia.fiocruz.br e material institucional do ILMD: pesquisadora do Laboratório DMAIS e coordenadora do PPGBIO-Interação. O ILMD mantém página própria 'Laboratório DMAIS'.",
+      "fonteUrl": "https://amazonia.fiocruz.br/?page_id=21414",
+      "confianca": "provavel",
+      "observacao": "O nome por extenso ('...com Importância para a Saúde') veio de material institucional indexado, mas a página do laboratório não abriu (site em manutenção), então o nome exato não foi lido na fonte primária. Confere com a área declarada dela na proposta (proteômica de microrganismos, fungos filamentosos). Priscila NÃO é do DCDIA."
+    },
+    {
+      "id": "lab-unifap-nanofito",
+      "sigla": "NanoFito",
+      "nome": "Laboratório de Nanobiotecnologia Fitofarmacêutica",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade Federal do Amapá",
+      "instituicaoSigla": "UNIFAP",
+      "uf": "AP",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Rodrigo Alves Soares Cruz"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site institucional do próprio laboratório no domínio da UNIFAP (www2.unifap.br/nanofito), que descreve as linhas de pesquisa e localiza o laboratório no Prédio da Farmácia, Departamento de Ciências Biológicas e da Saúde; Rodrigo Alves Soares Cruz aparece como pesquisador do NanoFito",
+      "fonteUrl": "https://www2.unifap.br/nanofito/linhas-de-pesquisa/",
+      "confianca": "confirmado",
+      "observacao": "A proposta do INCT já cita 'Laboratório de Nanobiotecnologia Fitofarmacêutica' na infraestrutura da UNIFAP (ver campo 'lacunas' de laboratorios.json) — esta rodada amarra o nome a uma pessoa da equipe. Não consegui confirmar quem coordena (por isso 'lideres' vazio)."
+    },
+    {
+      "id": "lab-unifap-pharmedchem",
+      "sigla": "PharMedChem",
+      "nome": "PharMedChem — grupo de pesquisa em Química Farmacêutica e Medicinal",
+      "lla": null,
+      "lider": "Lorane Izabel da Silva Hage Melim",
+      "instituicao": "Universidade Federal do Amapá",
+      "instituicaoSigla": "UNIFAP",
+      "uf": "AP",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Lorane Izabel da Silva Hage Melim"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página do Laboratório Computacional de Química Farmacêutica da USP anunciando parceria: 'Parceria com o grupo de pesquisa PharMedChem – UNIFAP', coordenado pela Profa. Dra. Lorane Hage Melim; fundado em 2016, vinculado ao curso de Farmácia da UNIFAP e aos PPG em Ciências Farmacêuticas e Inovação Farmacêutica",
+      "fonteUrl": "https://sites.usp.br/lcqf/parceria-com-o-grupo-de-pesquisa-pharmedcem-unifap/",
+      "confianca": "provavel",
+      "observacao": "A proposta do INCT cita 'PharMedChem' na seção DISPONIBILIDADE E INFRAESTRUTURA da UNIFAP, o que reforça. Mas: (a) é descrito como GRUPO DE PESQUISA, não como laboratório; (b) a fonte é a USP, não a UNIFAP — o SIGAA/UNIFAP de Lorane não cita laboratório algum, e a página de laboratórios do PPGCF/UNIFAP não lista o PharMedChem. O nome longo em português é reconstrução minha a partir da descrição; confirmar com a própria."
+    },
+    {
+      "id": "lab-ufc-laboratorio-de-venenos-e-toxinas-animais",
+      "sigla": null,
+      "nome": "Laboratório de Venenos e Toxinas Animais",
+      "lla": null,
+      "lider": "Alice Maria Costa Martins",
+      "instituicao": "Universidade Federal do Ceará",
+      "instituicaoSigla": "UFC",
+      "uf": "CE",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Alice Maria Costa Martins"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial de laboratórios do Programa de Pós-Graduação em Ciências Farmacêuticas da UFC: 'Laboratório de venenos e toxinas animais — Profa. Alice Maria Costa Martins', com lista de equipamentos",
+      "fonteUrl": "https://www.ppgcf.ufc.br/index.php/pt-br/laboratorios/43-2-laboratorio-de-venenos-e-toxinas-animais",
+      "confianca": "confirmado",
+      "observacao": "Fonte institucional direta e inequívoca. Não tem sigla divulgada. Alice é Colaboradora (não LLA); vinculada ao Departamento de Análises Clínicas e Toxicológicas (DACT) da Faculdade de Farmácia, Odontologia e Enfermagem da UFC."
+    },
+    {
+      "id": "lab-ufc-lafavet",
+      "sigla": "LAFAVET",
+      "nome": "Laboratório de Farmacologia de Venenos, Toxinas e Lectinas",
+      "lla": null,
+      "lider": "Helena Serra Azul Monteiro",
+      "instituicao": "Universidade Federal do Ceará",
+      "instituicaoSigla": "UFC",
+      "uf": "CE",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Helena Serra Azul Monteiro",
+        "Roberta Jeane Bezerra Jorge"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Comunidade 'Laboratório de Farmacologia de Venenos, Toxinas e Lectinas' no Repositório Institucional da UFC (nome por extenso + sigla LAFAVET, coordenação de Helena Serra Azul Monteiro); Roberta Jeane Bezerra Jorge é docente do Departamento de Fisiologia e Farmacologia da UFC e aparece entre os responsáveis pelo NPDM",
+      "fonteUrl": "https://repositorio.ufc.br/handle/riufc/63647",
+      "confianca": "provavel",
+      "observacao": "O laboratório LAFAVET está CONFIRMADO (nome e sigla, fonte institucional). O que é apenas PROVÁVEL é o vínculo de Roberta Jeane Bezerra Jorge a ele: a página dela no fisfar.ufc.br não cita laboratório nenhum, e ela não aparece na lista de autores do repositório que consultei. A ligação vem da coincidência de linha (farmacologia renal + venenos e toxinas de animais peçonhentos, que é exatamente a linha do LAFAVET) e da co-responsabilidade pelo NPDM. Helena Serra Azul Monteiro NÃO é da equipe do INCT — entra aqui só como líder do laboratório."
+    },
+    {
+      "id": "lab-ufc-nurof-ufc",
+      "sigla": "NUROF-UFC",
+      "nome": "Núcleo Regional de Ofiologia da UFC",
+      "lla": null,
+      "lider": "Robson Waldemar Ávila",
+      "instituicao": "Universidade Federal do Ceará",
+      "instituicaoSigla": "UFC",
+      "uf": "CE",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Robson Waldemar Ávila"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site oficial do NUROF (nurof.ufc.br, seção Histórico): 'Prof. Robson W. Ávila foi designado diretor do NUROF-UFC' após a aposentadoria da Profa. Diva em 2019; página do PPGSis/UFC lista o NUROF entre seus laboratórios de pesquisa",
+      "fonteUrl": "https://nurof.ufc.br/pt/historico/",
+      "confianca": "confirmado",
+      "observacao": "Bate com a responsabilidade declarada dele na proposta (herpetologia, toxinologia, serpentário). Infraestrutura: prédio próprio de ~407 m² com serpentário e coleção herpetológica registrada no SiBBr."
+    },
+    {
+      "id": "lab-icmbio-cepam",
+      "sigla": "CEPAM",
+      "nome": "Centro Nacional de Pesquisa e Conservação da Biodiversidade Amazônica",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Instituto Chico Mendes de Conservação da Biodiversidade",
+      "instituicaoSigla": "ICMBio",
+      "uf": "DF",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Ronald Sodre Martins"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Portal gov.br/ICMBio, pagina do centro 'Biodiversidade Amazonica', e comunicacao oficial do ICMBio: 'O Centro Nacional de Pesquisa e Conservacao da Biodiversidade Amazonica (CEPAM)', criado em 2006, sediado em Manaus (AM), no campus da UFAM. Ronald Sodre aparece como analista do centro em cobertura oficial do ICMBio na COP30 (painel 'Restauracao florestal na Amazonia'). O vinculo pessoa-unidade tambem vem da propria proposta, campo instituicaoDepartamento.",
+      "fonteUrl": "https://www.gov.br/icmbio/pt-br/assuntos/centros-de-pesquisa/biodiversidade-amazonica",
+      "confianca": "confirmado",
+      "observacao": "UNIDADE NOVA — mas ATENCAO: e um CENTRO NACIONAL DE PESQUISA do ICMBio, nao um laboratorio no sentido do restante da lista. Registrado porque e a unidade exata que a proposta atribui a Ronald Sodre Martins. A proposta o registra com UF=DF (sede do ICMBio em Brasilia), mas o CEPAM fica em MANAUS/AM — divergencia real, o dono decide qual UF vale. Nao achei nome de laboratorio interno do CEPAM ao qual ele estaria ligado."
+    },
+    {
+      "id": "lab-unb-laboratorio-de-toxinologia",
+      "sigla": null,
+      "nome": "Laboratório de Toxinologia",
+      "lla": null,
+      "lider": "Osmindo Rodrigues Pires Júnior",
+      "instituicao": "Universidade de Brasília",
+      "instituicaoSigla": "UnB",
+      "uf": "DF",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Osmindo Rodrigues Pires Júnior"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "DPI/UnB — pagina 'Laboratorios de Pesquisa' das Ciencias da Vida e Biologicas (pesquisa.unb.br): Laboratorio de Toxinologia, vinculado ao Instituto de Ciencias Biologicas (IB), coordenado por Osmindo Rodrigues Pires Junior; descricao de infraestrutura (modulo de quimica com MALDI-TOF e quatro HPLCs, modulo de processamento animal para obtencao de venenos, modulo de farmacologia). Confirmado tambem pelo perfil institucional UnB Pesquisa (pesquisar.unb.br) que o situa no IB.",
+      "fonteUrl": "http://pesquisa.unb.br/ciencias-vida-biologicas/lab-pesquisa-ciencias-biologicas?menu=799",
+      "confianca": "confirmado",
+      "observacao": "LABORATORIO NOVO. Osmindo Rodrigues Pires Junior e a unica pessoa da UnB na equipe. Nenhuma fonte usa sigla para este laboratorio — sigla deixada null de proposito. Nao confundir com o C-Biotech (PCTEC/UnB), do qual ele tambem participa. A fonte principal (pesquisa.unb.br) devolveu erro de certificado no WebFetch direto; o conteudo veio pelo indice de busca — vale o dono reabrir a pagina no navegador antes de gravar."
+    },
+    {
+      "id": "lab-ufsj-grupo-laboratorio-de-biotecnologia-bioquimica-de-proteinas-",
+      "sigla": null,
+      "nome": "Grupo/Laboratório de Biotecnologia (Bioquímica de Proteínas e Biomateriais) — UFSJ",
+      "lla": null,
+      "lider": "Paulo Afonso Granjeiro",
+      "instituicao": "Universidade Federal de São João del-Rei",
+      "instituicaoSigla": "UFSJ",
+      "uf": "MG",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Paulo Afonso Granjeiro"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página UFSJ 'repbiotec/our_team' + Escavador: lidera pesquisa em purificação de macromoléculas, biossurfactantes e biomateriais; foi coord. do bacharelado em Bioquímica da UFSJ",
+      "fonteUrl": "https://www.ufsj.edu.br/paginas/repbiotec/our_team.php",
+      "confianca": "indicio",
+      "observacao": "Paulo Afonso Granjeiro (Colaborador, UFSJ/MG). NENHUMA fonte deu o NOME OFICIAL exato do laboratório dele — só a linha de pesquisa e a equipe 'repbiotec'. Registrado como INDÍCIO; precisa perguntar a ele o nome/sigla. NÃO inventar nome."
+    },
+    {
+      "id": "lab-ufjf-labcaa",
+      "sigla": "LabCAA",
+      "nome": "Laboratório de Climatologia e Análise Ambiental (LabCAA)",
+      "lla": null,
+      "lider": "Fabio de Oliveira Sanches",
+      "instituicao": "Universidade Federal de Juiz de Fora — Departamento de Geociências",
+      "instituicaoSigla": "UFJF",
+      "uf": "MG",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Fabio de Oliveira Sanches"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial do LabCAA/UFJF: 'Laboratório de Climatologia e Análise Ambiental' — coordenado por Fábio de Oliveira Sanches e Cássia de Castro Martins Ferreira",
+      "fonteUrl": "https://www2.ufjf.br/labcaa/grupo-de-pesquisa/labcaa/",
+      "confianca": "confirmado",
+      "observacao": "ATENÇÃO: Fábio de Oliveira Sanches (Pesquisador, UFJF/MG) FALECEU em 28/01/2025 (nota de pesar do PPGEO-UFJF). O laboratório existe e ele o coordenava; a coordenação de referência hoje é a Profa. Cássia de Castro Martins Ferreira. Decidir com o dono como tratar o registro."
+    },
+    {
+      "id": "lab-ufu-labitox",
+      "sigla": "LaBiTox",
+      "nome": "Laboratório de Bioquímica e Toxinas Animais (LaBiTox)",
+      "lla": null,
+      "lider": "Renata Santos Rodrigues",
+      "instituicao": "Universidade Federal de Uberlândia — Instituto de Biotecnologia (IBTEC)",
+      "instituicaoSigla": "UFU",
+      "uf": "MG",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Renata Santos Rodrigues"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial PPG Genética e Bioquímica IBTEC/UFU: 'Laboratório de Bioquímica e Toxinas Animais - LaBiTox'; Renata foi coordenadora 2020-2024",
+      "fonteUrl": "https://ppggb.ibtec.ufu.br/laboratorios-de-pesquisa/laboratorio-de-bioquimica-e-toxinas-animais-labitox",
+      "confianca": "confirmado",
+      "observacao": "Renata Santos Rodrigues (Pesquisador Colaborador, UFU/MG). Trabalha com transcriptômica/proteômica de venenos de serpentes e formigas. Coordenou o LaBiTox de 2020 a 2024 — confirmar se segue coordenando."
+    },
+    {
+      "id": "lab-ufu-lea",
+      "sigla": "LEA",
+      "nome": "Laboratório de Ensaios Antimicrobianos (LEA)",
+      "lla": null,
+      "lider": "Carlos Henrique Gomes Martins",
+      "instituicao": "Universidade Federal de Uberlândia — Instituto de Ciências Biomédicas (ICBIM)",
+      "instituicaoSigla": "UFU",
+      "uf": "MG",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Carlos Henrique Gomes Martins"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial ICBIM/UFU: 'Coordena o Laboratório de Ensaios Antimicrobianos (LEA/ICBIM)'",
+      "fonteUrl": "https://icbim.ufu.br/pessoas/docentes/carlos-henrique-gomes-martins",
+      "confianca": "confirmado",
+      "observacao": "Carlos Henrique Gomes Martins (Membro do Comitê Gestor, UFU/MG). UFU já é citada como instituição 'Laboratório Associado' na proposta, mas sem LLA — ver divergência dos 5 labs institucionais sem líder no _meta de laboratorios.json."
+    },
+    {
+      "id": "lab-ufopa-atmos",
+      "sigla": "ATMOS",
+      "nome": "Laboratório de Física e Química da Atmosfera",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade Federal do Oeste do Pará",
+      "instituicaoSigla": "UFOPA",
+      "uf": "PA",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Raphael Pablo Tapajós Silva"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "SIGAA/UFOPA, portal público do docente Raphael Pablo Tapajos Silva: endereço profissional 'Laboratório de Física e Química da Atmosfera - ATMOS', Instituto de Engenharia e Geociências (IEG), campus Tapajós",
+      "fonteUrl": "https://sigaa.ufopa.edu.br/sigaa/public/docente/portal.jsf?siape=2160992",
+      "confianca": "confirmado",
+      "observacao": "O SIGAA registra o laboratório como endereço profissional — confirma vínculo, não confirma que ele o coordena. Por isso 'lideres' vazio."
+    },
+    {
+      "id": "lab-ufpa-cimazon",
+      "sigla": "CIMAZON",
+      "nome": "Centro Integrado de Metabolômica da Amazônia",
+      "lla": null,
+      "lider": "Paulo Wender Portal Gomes",
+      "instituicao": "Universidade Federal do Pará",
+      "instituicaoSigla": "UFPA",
+      "uf": "PA",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Paulo Wender Portal Gomes"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil de autor no sciprofiles (MDPI): 'Leader of the Research Group in Mass Spectrometry and Applied Metabolomics at the Integrated Center for Metabolomics of the Amazon (CIMAZON, UFPA)'",
+      "fonteUrl": "https://sciprofiles.com/profile/1535830",
+      "confianca": "indicio",
+      "observacao": "NÃO CONFIRMADO. A sigla CIMAZON aparece só em perfil de autor (auto-declarado) e em inglês; não achei nenhuma página do domínio ufpa.br que confirme o centro nem o nome em português — o nome em português aqui é tradução minha da forma inglesa, ou seja, PODE ESTAR ERRADO. Não usar sem checar com o próprio pesquisador. Se o dono preferir, descartar e manter Paulo Wender só no LABCROL, que está confirmado."
+    },
+    {
+      "id": "lab-ufopa-observatorio-atmosferico-da-amazonia",
+      "sigla": null,
+      "nome": "Observatório Atmosférico da Amazônia",
+      "lla": null,
+      "lider": "Lucas Vaz Peres",
+      "instituicao": "Universidade Federal do Oeste do Pará",
+      "instituicaoSigla": "UFOPA",
+      "uf": "PA",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Lucas Vaz Peres"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Notícia institucional da UFOPA sobre manutenção dos equipamentos (Espectrofotômetro Brewer) — identifica o Observatório Atmosférico da Amazônia, vinculado ao Instituto de Engenharia e Geociências (IEG), na Fazenda Experimental da Ufopa em Santarém, e cita Prof. Dr. Lucas Vaz Peres como o docente responsável pelo acompanhamento",
+      "fonteUrl": "https://www.ufopa.edu.br/ufopa/comunica/noticias/equipamentos-que-analisam-a-radiacao-solar-na-amazonia-passam-por-manutencao/",
+      "confianca": "confirmado",
+      "observacao": "Bate exatamente com a RESPONSABILIDADE declarada de Lucas Vaz Peres na proposta ('aerossóis atmosféricos, Espectrofotômetro Brewer e radiação ultravioleta'). Não achei sigla oficial (aparece 'OAA' em textos de terceiros, não confirmei em fonte institucional, por isso sigla=null). É infraestrutura/observatório, não laboratório de bancada."
+    },
+    {
+      "id": "lab-uepb-labvenom",
+      "sigla": "LabVenom",
+      "nome": "LabVenom — Laboratório de Venômica",
+      "lla": null,
+      "lider": "Karla Patrícia de Oliveira Luna",
+      "instituicao": "Universidade Estadual da Paraíba",
+      "instituicaoSigla": "UEPB",
+      "uf": "PB",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Karla Patrícia de Oliveira Luna"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil de autora no sciprofiles (MDPI) com afiliação literal 'State University of Paraíba, LabVenom, Campina Grande, Brazil'; resumo do currículo Lattes indexado descrevendo-a como coordenadora do LabVenom (toxinas animais, produtos naturais, biossensores, nanotecnologia)",
+      "fonteUrl": "https://sciprofiles.com/profile/257716",
+      "confianca": "provavel",
+      "observacao": "A SIGLA LabVenom está bem sustentada (afiliação em publicação). O nome por extenso 'Laboratório de Venômica' vem de resumo indexado, não de página institucional — a página de laboratórios do DEPBIO/UEPB devolveu HTTP 410 (removida) e o sciprofiles devolveu 403 na leitura direta. Confirmar o nome por extenso com a própria."
+    },
+    {
+      "id": "lab-iam-lig",
+      "sigla": "LIG",
+      "nome": "Laboratório de Imunogenética",
+      "lla": null,
+      "lider": "Norma Lucena Cavalcanti Licinio da Silva",
+      "instituicao": "Instituto Aggeu Magalhães (Fiocruz Pernambuco)",
+      "instituicaoSigla": "IAM",
+      "uf": "PE",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Norma Lucena Cavalcanti Licinio da Silva"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial de infraestrutura do Departamento de Imunologia do IAM/Fiocruz-PE, que lista quatro laboratórios (LIE, LIG, LIMP, LIBM) e atribui o LIG a Norma Lucena, com descrição idêntica à responsabilidade declarada dela na proposta",
+      "fonteUrl": "https://www.cpqam.fiocruz.br/institucional/departamentos/imunologia/infraestrutura",
+      "confianca": "confirmado",
+      "observacao": "Casamento perfeito: o texto da página institucional ('mecanismos envolvidos na regulação da resposta imune humana frente a exposição a agentes infecciosos, na doença autoimune e neoplasias') é o mesmo da RESPONSABILIDADE dela na proposta. Ela publica como 'Norma Lucena-Silva'. Única pessoa do IAM no cluster."
+    },
+    {
+      "id": "lab-puc-pr-lem",
+      "sigla": "LEM",
+      "nome": "Laboratório Experimental Multiusuário",
+      "lla": null,
+      "lider": "Selene Elifio-Esposito",
+      "instituicao": "Pontifícia Universidade Católica do Paraná",
+      "instituicaoSigla": "PUC/PR",
+      "uf": "PR",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Andréa Novais Moreno Amaral",
+        "Selene Elifio Esposito",
+        "Selene Elifio-Esposito"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Pagina oficial da Escola de Medicina e Ciencias da Vida da PUCPR: 'Laboratorio Experimental Multiusuario (LEM)', vinculado ao Programa de Pos-Graduacao em Ciencias da Saude (PPGCS), area superior a 750 m2 no terreo do Bloco 11. Coordenadora: Selene Elifio-Esposito. Comite gestor/pesquisadores: Andrea Novais Moreno, Marcelo Tavora Mira, Selene Elifio-Esposito, Paula Cristina Trevilatto, Ricardo Aurino de Pinho, Roberto Hirochi Herai, Vanessa Santos Sotomaior.",
+      "fonteUrl": "https://www.pucpr.br/escola-de-medicina-e-ciencias-da-vida/lem/",
+      "confianca": "confirmado",
+      "observacao": "LABORATORIO NOVO. Cobre AS DUAS pessoas da PUC/PR na equipe do INCT de uma vez: Selene Elifio Esposito (coordenadora do LEM) e Andrea Novais Moreno Amaral (comite gestor). A proposta grafa 'Andrea Novais Moreno Amaral'; a PUCPR usa 'Andrea Novais Moreno' e 'Andrea Novais Moreno-Amaral' — mesma pessoa (PPGCS/Escola de Medicina). O LEM tambem consta da PNIPE/MCTI (laboratorio 5864). Areas do LEM: Genetica, Bioquimica, Imunologia, Biologia Celular e Molecular."
+    },
+    {
+      "id": "lab-ufrrj-lfbion",
+      "sigla": "LFBioN",
+      "nome": "Laboratório de Farmacognosia (LFBioN)",
+      "lla": null,
+      "lider": "Douglas Siqueira de Almeida Chaves",
+      "instituicao": "Universidade Federal Rural do Rio de Janeiro — Departamento de Ciências Farmacêuticas",
+      "instituicaoSigla": "UFRRJ",
+      "uf": "RJ",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Douglas Siqueira de Almeida Chaves"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Rural Pesquisa/UFRRJ + ResearchGate: chefe do Laboratório de Farmacognosia (LFBioN), Depto de Ciências Farmacêuticas; presidente da Soc. Bras. de Farmacognosia",
+      "fonteUrl": "https://institucional.ufrrj.br/ruralpesquisa/douglas-siqueira-de-almeida-chaves/",
+      "confianca": "confirmado",
+      "observacao": "Douglas Siqueira de Almeida Chaves (Pesquisador, UFRRJ/RJ). Sigla LFBioN vista na fonte; conferir grafia oficial (há também menção a 'LQBioN' em página antiga da UFRRJ)."
+    },
+    {
+      "id": "lab-cecierj-mccac",
+      "sigla": "MCCAC",
+      "nome": "Grupo de Pesquisa Museus e Centros de Ciências Acessíveis (MCCAC)",
+      "lla": null,
+      "lider": "Jessica Norberto Rocha",
+      "instituicao": "Fundação Centro de Ciências e Educação Superior à Distância do Estado do Rio de Janeiro",
+      "instituicaoSigla": "CECIERJ",
+      "uf": "RJ",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Jessica Norberto Rocha"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site do grupo (grupomccac.org) + ResearchGate: coordenadora do grupo de pesquisa 'Museus e Centros de Ciências Acessíveis (MCCAC)', premiado pelo CIMUSET/ICOM 2023",
+      "fonteUrl": "https://grupomccac.org/cienciaparatodos/",
+      "confianca": "confirmado",
+      "observacao": "Jessica Norberto Rocha (Pesquisador, CECIERJ/RJ). É um GRUPO DE PESQUISA (CNPq) de divulgação científica/acessibilidade, não um laboratório de bancada. Ela também é docente do PPG da Fiocruz."
+    },
+    {
+      "id": "lab-ufrn-leac",
+      "sigla": "LEAC",
+      "nome": "Laboratório de Estudos Avançados do Clima",
+      "lla": null,
+      "lider": "David Mendes",
+      "instituicao": "Universidade Federal do Rio Grande do Norte",
+      "instituicaoSigla": "UFRN",
+      "uf": "RN",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "David Mendes"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil docente institucional de David Mendes (docente.ufrn.br), conforme indexado pelo buscador: 'coordena o Grupo de Pesquisa em Modelagem de Sistemas Complexos da UFRN e lidera o Laboratório de Estudos Avançados do Clima (LEAC)'. O SIGAA/UFRN confirma o grupo de pesquisa e o vínculo com DCAC e PPGCC, mas não cita o laboratório.",
+      "fonteUrl": "https://docente.ufrn.br/201900372309/perfil",
+      "confianca": "indicio",
+      "observacao": "REBAIXADO A INDÍCIO DE PROPÓSITO. A página docente.ufrn.br devolveu HTTP 504 nas duas tentativas, o catálogo de laboratórios da UFRN veio como PDF binário ilegível, e a seção 'Laboratórios e Equipamentos' do PPGCC não abriu. Ou seja: li o nome só no índice do buscador, não na fonte. O que ESTÁ confirmado por fonte institucional (SIGAA/UFRN) é o 'Grupo de Pesquisa em Modelagem de Sistemas Complexos da UFRN' — se o dono quiser algo seguro, use esse. Atenção: existem pelo menos dois outros 'LEAC' no Brasil (UVA-CE e UFC), então a sigla é ambígua. As 8 pessoas restantes da UFRN no cluster (7 alunos/apoio técnico do Centro de Ciências Exatas + a pesquisadora Monica Cristina Damiao Mendes) têm todas a mesma responsabilidade declarada ('Modelagem Atmosférica e Aprendizagem de máquinas'), o que sugere fortemente que estão todos neste mesmo grupo — mas NENHUMA fonte os nomeia, então foram para pessoasSemLab em vez de eu presumir."
+    },
+    {
+      "id": "lab-unir-bioclam",
+      "sigla": "BIOCLAM",
+      "nome": "Grupo de Pesquisas em Bioclimatologia e Mudanças Climáticas na Amazônia",
+      "lla": null,
+      "lider": "João Paulo Assis Gobo",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Adriana Cristina da Silva Nunes",
+        "Aldani Braz Carvalho",
+        "Caio Ismael de Jesus Lasmar",
+        "Daiana Cristina Batista Floresta",
+        "Dorisvalder Dias Nunes",
+        "Francisco Ivam Castro do Nascimento",
+        "Glenda Natália Bezerra Passos",
+        "Graziela Tosini Tejas",
+        "Jaina Rodrigues Evangelista",
+        "João Paulo Assis Gobo",
+        "Michel Watanabe",
+        "Reginaldo Martins da Silva de Souza"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site próprio do grupo, hospedado no domínio institucional da UNIR: página 'Pesquisadores e Pesquisadoras' com o roster completo (23 nomes entre docentes, doutorandos, mestrandos e graduandos) + página de laboratórios/grupos do Depto. de Geografia da UNIR, que registra BIOCLAM com líder Prof. Dr. João Paulo Assis Gobo.",
+      "fonteUrl": "https://bioclam.unir.br/pagina/exibir/22600",
+      "confianca": "confirmado",
+      "observacao": "O ACHADO MAIS PRODUTIVO DO CLUSTER: 12 das 75 pessoas do cluster estão neste único grupo, incluindo o Vice-Coordenador do INCT (Gobo, líder) e um Membro do Comitê Gestor (Dorisvalder). O próprio site do BIOCLAM noticia a aprovação do projeto INCT-CONEXÃO com participação de pesquisadores do grupo — ou seja, o vínculo é assumido publicamente pelo grupo. Reginaldo Souza e Graziela Tejas são do IFRO mas figuram como pesquisadores do BIOCLAM/UNIR."
+    },
+    {
+      "id": "lab-fiocruz-ro-cebio",
+      "sigla": "CEBio",
+      "nome": "Centro de Estudos de Biomoléculas Aplicadas à Saúde",
+      "lla": null,
+      "lider": "Leonardo de Azevedo Calderon",
+      "instituicao": "Fundação Oswaldo Cruz Rondônia (mantido em conjunto com a Universidade Federal de Rondônia)",
+      "instituicaoSigla": "FIOCRUZ/RO",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Ana Paula de Azevedo dos Santos",
+        "Anderson Makoto Kayano",
+        "Leonardo de Azevedo Calderon",
+        "Rafaela Diniz Sousa"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Ficha do laboratório no portal da Rede BIONORTE (nome, sigla, instituição FIOCRUZ-RO e coordenador Leonardo de Azevedo Calderon) + página do CEBio no site da Fiocruz Rondônia e página espelho no Depto. de Medicina da UNIR + perfis no Escavador de Rafaela Diniz Sousa ('pesquisadora colaboradora do CEBio, Fiocruz-RO') e Anderson Makoto Kayano ('CEBio Fiocruz-RO').",
+      "fonteUrl": "https://www.bionorte.org.br/laboratorios/detalhes.html?idl=119",
+      "confianca": "confirmado",
+      "observacao": "NOVO e provavelmente o laboratório mais central da temática do INCT (toxinas animais e extratos vegetais da biodiversidade amazônica). É interinstitucional UNIR + Fiocruz RO. O líder Leonardo de Azevedo Calderon NÃO está em equipe.json — confira se isso é esperado. Ana Paula de Azevedo dos Santos consta como colaboradora da Fiocruz RO na área de leishmania (vínculo com o CEBio é PROVÁVEL, não confirmado). ATENÇÃO: rondonia.fiocruz.br devolve 403 a qualquer acesso automatizado, então tudo da Fiocruz RO aqui vem de espelhos e snippets."
+    },
+    {
+      "id": "lab-unir-cegea",
+      "sigla": "CEGEA",
+      "nome": "Centro de Estudos Geográficos e Sócio-Ambientais da Amazônia Aziz Ab'Saber",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Michel Watanabe"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Campo RESPONSABILIDADE do próprio Michel Watanabe na proposta submetida ao CNPq: 'É pesquisador do Centro de Estudos Geográficos e Sócio-Ambientais da Amazônia Aziz Ab-Saber (CEGEA)'.",
+      "fonteUrl": null,
+      "confianca": "provavel",
+      "observacao": "A fonte é a própria proposta (autodeclaração do pesquisador), o que é forte para o vínculo mas não achei página institucional que descreva o CEGEA nem quem o lidera. Não sei se é estrutura da UNIR ou interinstitucional. Não invente liderança."
+    },
+    {
+      "id": "lab-sser-cepem",
+      "sigla": "CEPEM",
+      "nome": "Centro de Pesquisa em Medicina Tropical de Rondônia",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Centro de Pesquisa em Medicina Tropical de Rondônia (unidade de saúde, ensino e pesquisa da Secretaria de Estado da Saúde - SESAU/RO)",
+      "instituicaoSigla": "SSER",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Anderson Makoto Kayano",
+        "Sergio de Almeida Basano"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Portal do Governo de Rondônia (CEPEM como unidade de saúde, ensino e pesquisa da Sesau, com projetos em malária, hepatites, dengue e parasitoses) + perfis de Sergio de Almeida Basano (ex-diretor-geral adjunto do CEMETRON, publicações com afiliação CEPEM) e de Anderson Makoto Kayano ('farmacêutico-pesquisador do Centro de Pesquisa em Medicina Tropical, SESAU-RO').",
+      "fonteUrl": "https://rondonia.ro.gov.br/centro-de-pesquisa-de-medicina-tropical-de-rondonia-mantem-ambulatorio-de-atendimento-a-malaria-na-capital/",
+      "confianca": "confirmado",
+      "observacao": "CORREÇÃO DE NOMENCLATURA ÚTIL: em equipe.json a sigla desta instituição está gravada como 'SSER', mas o nome institucional 'Centro de Pesquisa em Medicina Tropical de Rondônia' corresponde ao CEPEM, que é a sigla usada em toda a literatura e citada na seção DISPONIBILIDADE E INFRAESTRUTURA da própria proposta ('CEPEM (FIOCRUZ RO)'). O CEPEM abriga também o Laboratório de Microbiologia da Fiocruz Rondônia. Elieth Afonso de Mesquita (UNIR) coordenou o laboratório de quimioterapia do CEPEM por 10 anos — vínculo histórico."
+    },
+    {
+      "id": "lab-unir-cibebi",
+      "sigla": "CIBEBI",
+      "nome": "Centro Interdepartamental de Biologia Experimental e Biotecnologia",
+      "lla": null,
+      "lider": "Adriana Cristina da Silva Nunes",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Adriana Cristina da Silva Nunes",
+        "Elieth Afonso de Mesquita"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial de grupos de pesquisa do Departamento Acadêmico de Biologia da UNIR ('Centro Interdepartamental De Biologia Experimental E Biotecnologia — líder Profa. Dra. Adriana Cristina da Silva') + perfil da pesquisadora no Escavador, que descreve o CIBEBI (criado em 1999) e sua coordenação.",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/5285",
+      "confianca": "confirmado",
+      "observacao": "IMPORTANTE: o CIBEBI é um dos três nomes de infraestrutura da UNIR citados nominalmente na seção DISPONIBILIDADE E INFRAESTRUTURA da proposta (LABOGEOPA, CIBEBI e LABIGEOQ) — a lacuna registrada em laboratorios.json dizia justamente que não se sabia qual pessoa responde pelo CIBEBI. É Adriana Cristina da Silva Nunes, Pesquisadora do INCT. Isso fecha uma das lacunas documentadas."
+    },
+    {
+      "id": "lab-unir-genteh",
+      "sigla": "GENTEH",
+      "nome": "Grupo de Pesquisa Geografia, Natureza e Territorialidades Humanas",
+      "lla": null,
+      "lider": "Adnilson de Almeida Silva",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Adnilson de Almeida Silva"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial de laboratórios e grupos de pesquisa do Departamento de Geografia da UNIR, que nomeia o líder.",
+      "fonteUrl": "https://geografia.unir.br/pagina/exibir/792",
+      "confianca": "confirmado",
+      "observacao": "NOVO. Adnilson de Almeida Silva é Pesquisador do INCT e atuará na comissão de clima e comunidades originárias."
+    },
+    {
+      "id": "lab-unir-geoplam",
+      "sigla": "GEOPLAM",
+      "nome": "Geografia e Planejamento Ambiental",
+      "lla": null,
+      "lider": "Dorisvalder Dias Nunes",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Dorisvalder Dias Nunes",
+        "Michel Watanabe"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial de laboratórios e grupos do Departamento de Geografia da UNIR (GEOPLAM, líder Dorisvalder Dias Nunes, vice-líder Michel Watanabe).",
+      "fonteUrl": "https://geografia.unir.br/pagina/exibir/792",
+      "confianca": "confirmado",
+      "observacao": "É o GRUPO DE PESQUISA associado ao LABOGEOPA (o laboratório é a estrutura física, o GEOPLAM é o grupo no DGP). Listei separado porque a página institucional os lista como duas entradas; se a lista final for só de laboratórios, funda-se no LABOGEOPA."
+    },
+    {
+      "id": "lab-unir-gep-hist",
+      "sigla": "GEP-HIST",
+      "nome": "Grupo de Estudos e Pesquisas em Histoanálises",
+      "lla": null,
+      "lider": "Elieth Afonso de Mesquita",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Elieth Afonso de Mesquita"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial de grupos de pesquisa do Departamento Acadêmico de Biologia da UNIR, que registra o GEP-HIST como vinculado ao CIBEBI e nomeia a líder.",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/5285",
+      "confianca": "confirmado",
+      "observacao": "NOVO. É o grupo de pesquisa correspondente ao LabHis (Laboratório de Histoanálise), mesma líder."
+    },
+    {
+      "id": "lab-unir-grupo-de-estudos-da-biodiversidade-da-amazonia-sul-ocidenta",
+      "sigla": null,
+      "nome": "Grupo de Estudos da Biodiversidade da Amazônia Sul-Ocidental",
+      "lla": null,
+      "lider": "Carolina Rodrigues da Costa Doria",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Carolina Rodrigues da Costa Doria"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial de grupos de pesquisa do Departamento Acadêmico de Biologia da UNIR, que nomeia a líder ('Profª Drª Carolina Rodrigues da Costa Dórea').",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/5285",
+      "confianca": "confirmado",
+      "observacao": "NOVO. Grupo de pesquisa da mesma LLA do LIP; sem sigla na página institucional. A página grafa o sobrenome como 'Dórea', a proposta usa 'Doria' — é a mesma pessoa."
+    },
+    {
+      "id": "lab-unir-labdin",
+      "sigla": "LaBDIn",
+      "nome": "Laboratório de Biologia e Diversidade de Insetos",
+      "lla": null,
+      "lider": "Maria Aurea Pinheiro de Almeida Silveira",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Maria Aurea Pinheiro de Almeida Silveira",
+        "Paulo Vilela Cruz"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial dos laboratórios do DBIO/UNIR aponta Maria Áurea Pinheiro de Almeida Silveira como coordenadora; a página das Coleções Biológicas lista o LaBDIn como laboratório associado à Coleção Entomológica, da qual ela é curadora. Paulo Vilela Cruz consta como Coordenador do LaBDIn e curador da Coleção Entomológica em seu perfil no Escavador/ResearchGate.",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/24965",
+      "confianca": "confirmado",
+      "observacao": "Laboratório NOVO e importante: DUAS pessoas da equipe (Maria Aurea Silveira e Paulo Vilela Cruz) aparecem como coordenadores em fontes diferentes — pode ser sucessão de coordenação ou coordenação compartilhada. Quem responde hoje precisa ser confirmado por eles."
+    },
+    {
+      "id": "lab-unir-labgembb",
+      "sigla": "LABGEMBB",
+      "nome": "Laboratório de Genética Molecular \"Prof. Dr. Bernardo Beiguelman\"",
+      "lla": null,
+      "lider": "Rubiani de Cassia Pagotto",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Rubiani de Cassia Pagotto"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial dos laboratórios de pesquisa do DBIO/UNIR, que nomeia a coordenadora. Escavador confirma que ela dirige o laboratório.",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/24965",
+      "confianca": "confirmado",
+      "observacao": "Laboratório NOVO para a lista. Rubiani de Cassia Pagotto está em equipe.json como Pesquisador (UNIR), sem laboratório atribuído."
+    },
+    {
+      "id": "lab-unir-labhis",
+      "sigla": "LabHis",
+      "nome": "Laboratório de Histoanálise",
+      "lla": null,
+      "lider": "Elieth Afonso de Mesquita",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Elieth Afonso de Mesquita"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial dos laboratórios de pesquisa do DBIO/UNIR, que nomeia a coordenadora.",
+      "fonteUrl": "https://dbio.unir.br/pagina/exibir/24965",
+      "confianca": "confirmado",
+      "observacao": "Laboratório NOVO. Elieth Afonso de Mesquita também coordenou por 10 anos o laboratório de quimioterapia do CEPEM/RO (vínculo histórico, não atual)."
+    },
+    {
+      "id": "lab-fiocruz-ro-labioprot",
+      "sigla": "LABIOPROT",
+      "nome": "Laboratório de Biotecnologia de Proteínas e Compostos Bioativos",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Fundação Oswaldo Cruz Noroeste - Unidade de Rondônia",
+      "instituicaoSigla": "FIOCRUZ/RO",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Aleff Ferreira Francisco",
+        "Anderson Makoto Kayano"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página do LABIOPROT no site da Fiocruz Rondônia (laboratório criado em 2020; Aleff Ferreira Francisco listado como colaborador, com afiliação à UNIR) + perfil de Anderson Makoto Kayano, cuja afiliação declarada é 'CEPEM/SESAU e LABIOPROT, Fiocruz Rondônia'.",
+      "fonteUrl": "https://rondonia.fiocruz.br/laboratorio/biotecnologia-de-proteinas-e-compostos-bioativos-labioprot/",
+      "confianca": "provavel",
+      "observacao": "NOVO. Confiança 'provável' e não 'confirmado' porque a página só pôde ser lida por snippet indexado — o servidor bloqueia leitura direta (403). O nome exato do laboratório e quem o chefia precisam de conferência humana. Aleff Ferreira Francisco é o próprio dono desta tarefa e pode confirmar em um segundo."
+    },
+    {
+      "id": "lab-unir-labmasto",
+      "sigla": "LabMasto",
+      "nome": "Laboratório de Mastozoologia e Vertebrados Terrestres",
+      "lla": null,
+      "lider": "Malu Messias",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Malu Messias"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Lista oficial dos laboratórios do DBIO/UNIR (coordenadora: Mariluce Rezende Messias) e página da Coleção Mastozoológica das Coleções Biológicas da UNIR, que a nomeia curadora e indica o LabMasto como laboratório associado.",
+      "fonteUrl": "https://colecoesbiologicas.unir.br/pagina/exibir/10505",
+      "confianca": "confirmado",
+      "observacao": "Laboratório NOVO. 'Malu Messias' (grafia de equipe.json) é Mariluce Rezende Messias. Ela é curadora das coleções de Mastofauna, Herpetofauna e Avifauna da UNIR."
+    },
+    {
+      "id": "lab-unir-labogeopa",
+      "sigla": "LABOGEOPA",
+      "nome": "Laboratório de Geografia e Planejamento Ambiental",
+      "lla": null,
+      "lider": "Dorisvalder Dias Nunes",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Dorisvalder Dias Nunes",
+        "Graziela Tosini Tejas",
+        "Michel Watanabe"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial de laboratórios e grupos do Departamento de Geografia da UNIR (LABOGEOPA, líder Prof. Dr. Dorisvalder Dias Nunes) + notícia institucional da UNIR sobre o laboratório + o próprio campo RESPONSABILIDADE de Dorisvalder na proposta ('coordena desde 1998 o Laboratório de Geografia e Planejamento Ambiental - LABOGEOPA').",
+      "fonteUrl": "https://geografia.unir.br/pagina/exibir/792",
+      "confianca": "confirmado",
+      "observacao": "NOVO e citado nominalmente na seção DISPONIBILIDADE E INFRAESTRUTURA da proposta. Michel Watanabe declara-se pesquisador do LABOGEOPA na própria proposta; Graziela Tosini Tejas (IFRO) consta como pesquisadora colaboradora do LABOGEOPA. Dorisvalder Dias Nunes é Membro do Comitê Gestor do INCT, não LLA — por isso este laboratório não estava na lista dos 28."
+    },
+    {
+      "id": "lab-fiocruz-ro-laboratorio-de-engenharia-de-anticorpos",
+      "sigla": null,
+      "nome": "Laboratório de Engenharia de Anticorpos",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Fundação Oswaldo Cruz Noroeste - Unidade de Rondônia",
+      "instituicaoSigla": "FIOCRUZ/RO",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Marcos Barros Luiz"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página do Laboratório de Engenharia de Anticorpos da Fiocruz Rondônia (desenvolve nanobodies de camelídeos para inovação terapêutica e diagnóstica) + perfil de Marcos Barros Luiz, que declara atuação no 'Laboratório de Engenharia de Anticorpos da Fundação Oswaldo Cruz - Rondônia (2012-2018)'.",
+      "fonteUrl": "https://rondonia.fiocruz.br/laboratorio/laboratorio-de-engenharia-de-anticorpos/",
+      "confianca": "indicio",
+      "observacao": "INDÍCIO E VÍNCULO PASSADO: Marcos Barros Luiz esteve neste laboratório entre 2012 e 2018; desde 2017 é professor do IFRO e desde 2018 chefe do DEPESP no campus Guajará-Mirim. Não achei laboratório atual dele no IFRO. Se a lista é de vínculos ATUAIS, este registro provavelmente não entra."
+    },
+    {
+      "id": "lab-fiocruz-ro-laboratorio-de-entomologia",
+      "sigla": null,
+      "nome": "Laboratório de Entomologia",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Fundação Oswaldo Cruz Noroeste - Unidade de Rondônia (origem no IPEPATRO)",
+      "instituicaoSigla": "FIOCRUZ/RO",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Luiz Herman Soares Gil"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página do Laboratório de Entomologia da Fiocruz Rondônia (o laboratório 'surgiu no fim dos anos 1990 junto com o IPEPATRO'; pesquisadora responsável atual Genimar Rebouças Julião) + referências que descrevem Luiz Herman Soares Gil como pesquisador do IPEPATRO e chefe do Laboratório de Entomologia.",
+      "fonteUrl": "https://rondonia.fiocruz.br/laboratorio/laboratorio-de-entomologia/",
+      "confianca": "provavel",
+      "observacao": "NOVO. equipe.json registra Luiz Herman Soares Gil como Técnico do IPEPATRO — e o IPEPATRO é justamente a origem institucional deste laboratório, hoje sob a Fiocruz Rondônia. A chefia atual atribuída a ele NÃO está confirmada por página institucional corrente; a responsável nomeada hoje é outra pessoa (Genimar Rebouças Julião, que não está na equipe do INCT). Confirmar com ele qual é o vínculo atual."
+    },
+    {
+      "id": "lab-unir-laboratorio-de-patologia-animal",
+      "sigla": null,
+      "nome": "Laboratório de Patologia Animal",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade Federal de Rondônia — Campus de Rolim de Moura",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Wilson Gómez Manrique"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Resumo de busca sobre o Departamento Acadêmico de Medicina Veterinária de Rolim de Moura (UNIR), do qual Wilson Gómez Manrique é chefe (Portaria 575/2024/GR/UNIR), associando-o ao Laboratório de Patologia Animal. Não abri página institucional que nomeie o laboratório e seu responsável.",
+      "fonteUrl": "https://damvrm.unir.br/pagina/exibir/15911",
+      "confianca": "indicio",
+      "observacao": "INDÍCIO, não confirme sem checar. A página damvrm.unir.br tem um item de menu 'Laboratórios de Ensino e Pesquisa' que não consegui abrir — é ali que está a resposta, e resolveria também Angelo Laurence Covatti Terra, que é do mesmo departamento e ficou sem laboratório. Wilson Gómez Manrique é o único da equipe sem lattesId em equipe.json."
+    },
+    {
+      "id": "lab-ecopore-nucleo-de-inovacao-em-restauracao-de-ecossistemas",
+      "sigla": null,
+      "nome": "Núcleo de Inovação em Restauração de Ecossistemas",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Ação Ecológica Guaporé",
+      "instituicaoSigla": "ECOPORÉ",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Marcelo Lucian Ferronato"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Campo instituicaoDepartamento/instituicaoRaw da própria proposta submetida ao CNPq: 'Ação Ecológica Guaporé / Núcleo de Inovação em Restauração de Ecossistemas-ECOPORÉ-RO-Brasil'.",
+      "fonteUrl": null,
+      "confianca": "confirmado",
+      "observacao": "Único registro do cluster cujo departamento/núcleo já vinha preenchido na proposta. É estrutura de ONG, não laboratório acadêmico — decida se cabe na lista de laboratórios."
+    },
+    {
+      "id": "lab-fiocruz-ro-plataforma-de-bioensaios-em-malaria-e-leishmanioses",
+      "sigla": null,
+      "nome": "Plataforma de Bioensaios em Malária e Leishmanioses",
+      "lla": null,
+      "lider": "Carolina Bioni Garcia Teles",
+      "instituicao": "Fundação Oswaldo Cruz Noroeste - Unidade de Rondônia",
+      "instituicaoSigla": "FIOCRUZ/RO",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Carolina Bioni Garcia Teles"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil profissional e página da plataforma no site da Fiocruz Rondônia: Carolina Bioni Garcia Teles é chefe da Plataforma de Bioensaios em Malária e Leishmanioses, integrante da Rede de Plataformas Tecnológicas Fiocruz.",
+      "fonteUrl": "https://rondonia.fiocruz.br/laboratorios/plataforma-de-bioensaios-em-malaria-e-leishmanioses",
+      "confianca": "provavel",
+      "observacao": "NOVO. É PLATAFORMA TECNOLÓGICA da Rede Fiocruz, não 'laboratório' no sentido estrito — decida se entra na lista com esse rótulo. Carolina Bioni é Membro do Comitê Gestor do INCT. Confiança 'provável' pelo mesmo motivo dos demais registros da Fiocruz RO (403 no servidor)."
+    },
+    {
+      "id": "lab-unir-ron",
+      "sigla": "RON",
+      "nome": "Herbário Rondoniense \"João Geraldo Kuhlmann\"",
+      "lla": null,
+      "lider": "Narcísio Costa Bigio",
+      "instituicao": "Universidade Federal de Rondônia",
+      "instituicaoSigla": "UNIR",
+      "uf": "RO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Antônio Laffayete Pires da Silveira",
+        "Narcísio Costa Bigio",
+        "Osvanda Silva de Moura"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página das Coleções Biológicas da UNIR (Herbário RON como laboratório associado à Coleção Botânica; curador Narcísio da Costa Bigio) + artigo revisado por pares na Revista CPC/USP sobre as coleções biológicas da UNIR + registro do herbário RON no specieslink e no GBIF/REFLORA.",
+      "fonteUrl": "https://specieslink.net/col/RON/",
+      "confianca": "confirmado",
+      "observacao": "NOVO. Narcísio Bigio é confirmado como fundador e curador. Osvanda Silva de Moura aparece como co-curadora e Antônio Laffayete Pires da Silveira como chefe/diretor de departamento apenas em resumo de busca, não em página institucional aberta — trate esses dois como INDÍCIO até o herbário confirmar."
+    },
+    {
+      "id": "lab-ufrr-gpbiomed",
+      "sigla": "GPBIOMED",
+      "nome": "Grupo de Pesquisa em Biologia Química, Produtos Naturais e Medicinais",
+      "lla": null,
+      "lider": "Cléria Mendonça de Moraes",
+      "instituicao": "Universidade Federal de Roraima",
+      "instituicaoSigla": "UFRR",
+      "uf": "RR",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Cléria Mendonça de Moraes"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Resumo do currículo Lattes indexado (Escavador/Google Scholar): líder do GPBIOMED e vice-líder do GPBAASE (Grupo de Pesquisa em Biologia Animal da Amazônia Setentrional); docente permanente do PPG em Química da UFRR",
+      "fonteUrl": "https://www.escavador.com/sobre/7277461/cleria-mendonca-de-moraes",
+      "confianca": "indicio",
+      "observacao": "NÃO CONFIRMADO. O Escavador devolveu 403 nesta rodada e o sigaa.ufrr.br está com DNS fora do ar, então li apenas o resumo indexado pelo buscador. A SIGLA GPBIOMED é sólida; o NOME POR EXTENSO é reconstrução a partir desse resumo e pode estar errado. Além disso é grupo de pesquisa no DGP, não necessariamente um laboratório físico. Cléria é Membro do Comitê Gestor, não LLA."
+    },
+    {
+      "id": "lab-ufsm-lacas",
+      "sigla": "LACAS",
+      "nome": "Laboratório de Climatologia em Ambientes Subtropicais",
+      "lla": null,
+      "lider": "Cássio Arthur Wollmann",
+      "instituicao": "Universidade Federal de Santa Maria",
+      "instituicaoSigla": "UFSM",
+      "uf": "RS",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Cássio Arthur Wollmann"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Pagina oficial do grupo na UFSM: 'Laboratorio de Climatologia em Ambientes Subtropicais (LACAS)' — 'Prof. Dr. Cassio Arthur Wollmann', predio 17, sala 1018, cassio@ufsm.br. Ativo desde 2012, em Climatologia Geografica, Climatologia Urbana e conforto termico.",
+      "fonteUrl": "https://www.ufsm.br/grupos/lacas",
+      "confianca": "confirmado",
+      "observacao": "LABORATORIO NOVO — nao esta em laboratorios.json. Cassio Arthur Wollmann e a unica pessoa da UFSM na equipe (categoria Pesquisador, nao LLA), e o tema do LACAS bate exatamente com a responsabilidade declarada dele na proposta (climatologia urbana, conforto termico, eventos extremos). Ha variacao de grafia na imprensa ('Laboratorio de Climatologia Ambiental e Subtropical'); a pagina institucional usa 'em Ambientes Subtropicais'."
+    },
+    {
+      "id": "lab-ufcspa-lammasu",
+      "sigla": "LAMMASU",
+      "nome": "Laboratório de Modelagem Molecular Aplicada à Saúde Única",
+      "lla": null,
+      "lider": "Rodrigo Ligabue-Braun",
+      "instituicao": "Fundação Universidade Federal de Ciências da Saúde de Porto Alegre",
+      "instituicaoSigla": "UFCSPA",
+      "uf": "RS",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Rodrigo Ligabue Braun",
+        "Rodrigo Ligabue-Braun"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site proprio do laboratorio (lammasu.org): 'Laboratorio de Modelagem Molecular Aplicada a Saude Unica' / 'LAMMASU'. Vinculo ao Departamento de Farmacociencias da UFCSPA e a lideranca de Rodrigo Ligabue-Braun aparecem em material da Escola Gaucha de Bioinformatica (EGB 2025) e no perfil ResearchGate dele (UFCSPA, Department of Pharmacosciences).",
+      "fonteUrl": "https://www.lammasu.org/",
+      "confianca": "provavel",
+      "observacao": "LABORATORIO NOVO. Rodrigo Ligabue Braun e a unica pessoa da UFCSPA na equipe; area declarada na proposta (Bioinformatica, Quimica Farmaceutica Medicinal) bate com o LAMMASU. Marcado como PROVAVEL e nao confirmado porque a home do lammasu.org so exibe nome e sigla — nao consegui ler nele uma pagina de equipe que diga literalmente que Ligabue-Braun o dirige; a atribuicao vem de fontes de terceiros. Ele tambem coordena o PPG-Biociencias da UFCSPA e integra o 'Grupo de Bioinformatica Estrutural'."
+    },
+    {
+      "id": "lab-usp-base-de-pesquisa-do-icb-usp-em-monte-negro-nucleo-avancado-d",
+      "sigla": null,
+      "nome": "Base de Pesquisa do ICB-USP em Monte Negro / Núcleo Avançado de Pesquisa de Monte Negro (ICB5)",
+      "lla": null,
+      "lider": "Luís Marcelo Aranha Camargo",
+      "instituicao": "Universidade de São Paulo — Instituto de Ciências Biomédicas (ICB)",
+      "instituicaoSigla": "USP",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Luís Marcelo Aranha Camargo"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "FAPESP-BV + Jornal da USP: coordenador do ICB5, base permanente do ICB-USP em Monte Negro (RO) desde 2000; medicina tropical/entomologia médica",
+      "fonteUrl": "https://bv.fapesp.br/en/pesquisador/33602/luis-marcelo-aranha-camargo/",
+      "confianca": "confirmado",
+      "observacao": "Luís Marcelo Aranha Camargo (Membro do Comitê Gestor, USP/SP — proposta registra dept 'Núcleo Avançado de Pesquisa de Monte Negro'). É uma base/unidade avançada do ICB-USP fisicamente em Monte Negro-RO, mas institucionalmente USP/SP. Não é 'laboratório' no sentido estrito — é um núcleo/base. Conferir se entra como laboratório associado."
+    },
+    {
+      "id": "lab-usp-iag-usp-departamento-de-ciencias-atmosfericas-incline-lapat",
+      "sigla": null,
+      "nome": "IAG/USP — Departamento de Ciências Atmosféricas (INCLINE / LAPAt)",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade de São Paulo — Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)",
+      "instituicaoSigla": "USP",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Fábio Luiz Teixeira Gonçalves"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "INCLINE-USP (membro) + IAG/USP: professor do Depto de Ciências Atmosféricas; biometeorologia humana e bioaerossóis",
+      "fonteUrl": "https://www.incline.iag.usp.br/en/membros/detalhes/17/fabio-luiz-teixeira-goncalves.html",
+      "confianca": "indicio",
+      "observacao": "Fábio Luiz Teixeira Gonçalves (Pesquisador, USP/SP — dept da proposta: IAG). É membro do INCLINE (centro interdisciplinar de clima) e o Depto tem o LAPAt, mas NENHUMA fonte confirma um laboratório próprio dele com nome específico. INDÍCIO — conferir."
+    },
+    {
+      "id": "lab-unesp-laboratorio-de-biofisica-molecular-estrutural-laboratory-o",
+      "sigla": null,
+      "nome": "Laboratório de Biofísica Molecular Estrutural (Laboratory of Structural Molecular Biophysics)",
+      "lla": null,
+      "lider": "Marcos Roberto de Mattos Fontes",
+      "instituicao": "Universidade Estadual Paulista Júlio de Mesquita Filho — Instituto de Biociências de Botucatu (IBB)",
+      "instituicaoSigla": "UNESP",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Angelo José Magro",
+        "Carlos Alexandre Henrique Fernandes",
+        "Marcos Roberto de Mattos Fontes"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Portal de Docentes UNESP + Escavador: 'responsável pelo Laboratório de Biofísica Molecular Estrutural' no IBB/Botucatu; cristalografia de proteínas e toxinologia",
+      "fonteUrl": "https://unesp.br/portaldocentes/docentes/67691/repositorio?lang=pt_BR",
+      "confianca": "confirmado",
+      "observacao": "Líder Marcos R. M. Fontes (Colaborador, UNESP/SP) — CONFIRMADO. Angelo José Magro (Pesquisador, UNESP Botucatu/FCA) e Carlos Alexandre Henrique Fernandes (Pesquisador, UNESP) atuam no MESMO campo (biofísica molecular estrutural/cristalografia de toxinas), mas a fonte não confirma que sejam do mesmo laboratório — ligação em nível de INDÍCIO, conferir com eles."
+    },
+    {
+      "id": "lab-ibu-laboratorio-de-bioquimica-e-biofisica",
+      "sigla": null,
+      "nome": "Laboratório de Bioquímica e Biofísica",
+      "lla": null,
+      "lider": "Daniel Carvalho Pimenta",
+      "instituicao": "Instituto Butantan",
+      "instituicaoSigla": "IBU",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Daniel Carvalho Pimenta"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "ResearchGate (perfil do pesquisador, unidade 'Laboratório de Bioquímica e Biofísica') + Escavador/Lattes: atuou ~20 anos no Laboratório de Bioquímica do Butantan",
+      "fonteUrl": "https://www.researchgate.net/profile/Daniel-Pimenta-2",
+      "confianca": "provavel",
+      "observacao": "Daniel Carvalho Pimenta (Pesquisador, IBU/SP). O Butantan reorganizou laboratórios em Centros (CDI); o nome/estrutura atual exato deve ser confirmado com o pesquisador. Docente do PPG Toxinologia (Butantan)."
+    },
+    {
+      "id": "lab-unesp-laboratorio-de-materiais-avancados-e-nanotecnologia-grupo-",
+      "sigla": null,
+      "nome": "Laboratório de Materiais Avançados e Nanotecnologia (Grupo de Física Aplicada à Medicina e Nanotecnologia)",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade Estadual Paulista Júlio de Mesquita Filho — Faculdade de Ciências, Câmpus de Bauru (Depto de Física)",
+      "instituicaoSigla": "UNESP",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Marina Piacenti da Silva"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Escavador/Lattes: atua no 'Laboratório de Materiais Avançados e Nanotecnologia' do Grupo de Física Aplicada à Medicina e Nanotecnologia, UNESP Bauru; física médica/radiações e biometeorologia",
+      "fonteUrl": "https://www.escavador.com/sobre/449497/marina-piacenti-da-silva",
+      "confianca": "provavel",
+      "observacao": "Marina Piacenti da Silva (Pesquisador, UNESP Bauru/SP). Fonte é espelho de Lattes (não página institucional própria do laboratório) — por isso 'provável'. Conferir nome/sigla oficiais com a pesquisadora."
+    },
+    {
+      "id": "lab-inpe-lac",
+      "sigla": "LAC",
+      "nome": "Laboratório Associado de Computação e Matemática Aplicada (LAC)",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Instituto Nacional de Pesquisas Espaciais",
+      "instituicaoSigla": "INPE",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Haroldo Fraga de Campos Velho",
+        "Juliana Aparecida Anochi"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial LAC/INPE + ResearchGate: ambos vinculados ao 'Laboratório Associado de Computação e Matemática Aplicada (LAC)' (também grafado LABAC)",
+      "fonteUrl": "http://www.lac.inpe.br/pessoal/recursos_haroldo.php",
+      "confianca": "confirmado",
+      "observacao": "Haroldo Fraga de Campos Velho e Juliana Aparecida Anochi (ambos Pesquisador, INPE/SP). O LAC é um laboratório associado do INPE (não é laboratório de um único líder). Grafias: LAC / LABAC."
+    },
+    {
+      "id": "lab-ibu-leds",
+      "sigla": "LEDS",
+      "nome": "Laboratório Especial de Dor e Sinalização (LEDS)",
+      "lla": null,
+      "lider": "Gisele Picolo",
+      "instituicao": "Instituto Butantan",
+      "instituicaoSigla": "IBU",
+      "uf": "SP",
+      "regiao": null,
+      "amazoniaLegal": false,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Gisele Picolo"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Página oficial Butantan CDI: 'Laboratório de Dor e Sinalização' — Gisele Picolo é diretora do laboratório (independente desde 2010, hoje no CDI)",
+      "fonteUrl": "https://cdi.butantan.gov.br/laboratorios/laboratorio-de-dor-e-sinalizacao",
+      "confianca": "confirmado",
+      "observacao": "Gisele Picolo (Pesquisador, IBU/SP). Também PI do CeTICS/CEPID e colaboradora do CENTD. Nome pode aparecer como 'Laboratório Especial de Dor e Sinalização' ou 'Laboratório de Dor e Sinalização'."
+    },
+    {
+      "id": "lab-antigen-antigen",
+      "sigla": "Antigen",
+      "nome": "Laboratório Antigen (Antigen Desenvolvimento de Tecnologias de Vacinas e Serviços LTDA)",
+      "lla": null,
+      "lider": "Alex Sander Rodrigues Cangussu",
+      "instituicao": "Antigen Desenvolvimento de Tecnologias de Vacinas e Serviços LTDA",
+      "instituicaoSigla": "Antigen",
+      "uf": "TO",
+      "regiao": null,
+      "amazoniaLegal": true,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Alex Sander Rodrigues Cangussu",
+        "Keoma Dias Pires Cangussu"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site da própria empresa; matéria da Prefeitura de Gurupi sobre entrega de área no Parque Agroindustrial (PAIG) citando a empresa e seus sócios; notícia da UFT sobre o laboratório de vacinas em Gurupi. A seção DISPONIBILIDADE E INFRAESTRUTURA da proposta cita 'Laboratório ANTIGEN (Gurupi-TO)'.",
+      "fonteUrl": "https://www.antigen.com.br/",
+      "confianca": "provavel",
+      "observacao": "É empresa privada (spin-off ligada ao LabVac/UFT), não laboratório acadêmico. Keoma Dias Pires Cangussu é a única pessoa da equipe com vínculo Antigen e sua área declarada é gestão/administração — a ligação com o laboratório é de sócia/gestora, não de bancada. Decidir se entra como 'laboratório' ou como 'instituição parceira'."
+    },
+    {
+      "id": "lab-ikiam-biomolecules-discovery-group",
+      "sigla": null,
+      "nome": "Biomolecules Discovery Group",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidad Regional Amazónica Ikiam",
+      "instituicaoSigla": "IKIAM",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "José Rafael de Almeida"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Afiliacao declarada nas publicacoes recentes dele ('Biomolecules Discovery Group, Universidad Regional Amazonica Ikiam, Tena, Ecuador' — ver artigos em IJMS/Antibiotics/Molecules) e perfis institucionais (sciprofiles, ResearchGate: Associate Professor, Life Sciences, IKIAM).",
+      "fonteUrl": "https://sciprofiles.com/profile/276979",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Equador). Grupo sem sigla propria. Tema: venomica, envenenamento ofidico, descoberta de produtos naturais e antivenenos de nova geracao — casa direto com o objeto do INCT."
+    },
+    {
+      "id": "lab-cedic-cedic",
+      "sigla": "CEDIC",
+      "nome": "Centro para el Desarrollo de la Investigación Científica",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Centro para el Desarrollo de la Investigación Científica",
+      "instituicaoSigla": "CEDIC",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Ana Fidelina Gómez Garay",
+        "Jorge Javier Alfonso Ruiz Diaz"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site institucional do CEDIC (cedic.org.py / cedicpy.com) e fichas do CONACYT Paraguai: centro sem fins lucrativos criado em 2006 por parceria entre a Fundacion Moises Bertoni e o Laboratorio Diaz Gill Medicina Laboratorial S.A., em Assuncao; infraestrutura para estudos molecular-geneticos e genomicos, biologia molecular e cultura celular. Ana Fidelina Gomez Garay tem CV publico no CONACYT; Jorge Javier Alfonso Ruiz Diaz assina publicacoes recentes com afiliacao CEDIC.",
+      "fonteUrl": "https://www.cedicpy.com/nosotros",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Paraguai). Cobre AS DUAS pessoas do CEDIC na equipe. NAO encontrei subunidade/laboratorio nomeado dentro do CEDIC — o proprio centro e a unidade laboratorial. Linhas de ambos, pela proposta: moleculas com potencial farmacologico e alvos em Trypanosoma cruzi, Leishmania spp. e Plasmodium falciparum."
+    },
+    {
+      "id": "lab-unachi-ceiitoxquia",
+      "sigla": "CEIITOXQUIA",
+      "nome": "Centro de Información e Investigaciones Toxicológicas y Químicas Aplicadas",
+      "lla": null,
+      "lider": "Aristides Quintero Rueda",
+      "instituicao": "Universidad Autónoma de Chiriquí",
+      "instituicaoSigla": "UNACHI",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Aristides Quintero Rueda"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil profissional e ficha no CONECTO/SENACYT (Panama) descrevem Aristides Quintero Rueda como 'Director e investigador del CEIITOXQUIA, Profesor Titular Departamento de Quimica, UNACHI'. Noticias oficiais da UNACHI (unachi.ac.pa) o apresentam como cientifico toxicologo premiado (ACT International Grant 2015). A PROPRIA PROPOSTA, no campo responsabilidade, diz 'Universidad Autonoma de Chiriqui (UNACHI), David, PANAMA'.",
+      "fonteUrl": "http://conecto.senacyt.gob.pa/conecto/display/n8154",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (Panama). DIVERGENCIA A RESOLVER: equipe.json registra a instituicao dele como 'Universidad de Panama (U.PANAMA)', mas a propria celula de responsabilidade da proposta e todas as fontes externas dizem UNACHI (Universidad Autonoma de Chiriqui, David). PROVAVEL e nao confirmado porque a atribuicao da direcao do CEIITOXQUIA vem de perfil autodeclarado e de diretorio da SENACYT, nao de pagina do proprio centro."
+    },
+    {
+      "id": "lab-sdsu-climate-lab-department-of-geography",
+      "sigla": null,
+      "nome": "Climate Lab — Department of Geography",
+      "lla": null,
+      "lider": "Fernando de Sales",
+      "instituicao": "San Diego State University",
+      "instituicaoSigla": "SDSU",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Fernando Henrique de Sales",
+        "Fernando de Sales"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site proprio do laboratorio na SDSU (climatelab.sdsu.edu, pagina 'People'): 'Climate Lab', Department of Geography, San Diego State University; Fernando De Sales, Ph.D., Associate Professor, dirige o laboratorio ('Land-atmosphere biophysical interactions and their role on climate'). Perfil institucional em geography.sdsu.edu confirma o cargo.",
+      "fonteUrl": "https://climatelab.sdsu.edu/people.html",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (EUA). ATENCAO A UM ERRO NA PROPOSTA: equipe.json registra a titulacao dele como 'Graduacao' — ele e PhD e Associate Professor de Climate Science na SDSU. O grupo tambem se apresenta com o nome 'Climate and Land' num segundo site (fdesales.sdsu.edu). Bate com a responsabilidade declarada (bioclimatologia e biometeorologia)."
+    },
+    {
+      "id": "lab-harvard-department-of-environmental-health-programa-exposure-epi",
+      "sigla": null,
+      "nome": "Department of Environmental Health (programa Exposure, Epidemiology and Risk)",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Harvard T.H. Chan School of Public Health",
+      "instituicaoSigla": "HARVARD",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Carolina Letícia Zilli Vieira"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfis profissionais e artigos recentes a registram como Instructor / Research Associate in Environmental Health no Department of Environmental Health da Harvard T.H. Chan School of Public Health; o programa 'Exposure, Epidemiology and Risk (EER)' e a subunidade do departamento em que esse grupo trabalha.",
+      "fonteUrl": null,
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (EUA). NAO E UM LABORATORIO com nome proprio: e departamento (+ programa). Marcado PROVAVEL: o departamento esta bem estabelecido, mas nao consegui uma pagina oficial de Harvard que a nomeie dentro do programa EER — as confirmacoes vieram de perfis de terceiros e de creditos de autoria em artigos. Se o dono quiser rigor, este registro pode ser descartado e ela ir para pessoasSemLab."
+    },
+    {
+      "id": "lab-ecmwf-earth-system-modelling-section-destination-earth-forecast-",
+      "sigla": null,
+      "nome": "Earth System Modelling Section / Destination Earth — Forecast Department",
+      "lla": null,
+      "lider": null,
+      "instituicao": "European Centre for Medium-Range Weather Forecasts",
+      "instituicaoSigla": "ECMWF",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Nils Wed"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil de staff no site oficial do ECMWF: Dr Nils P. Wedi entrou no ECMWF em 1995, e Digital Technology Lead do Destination Earth e antes liderava a 'Earth System Modelling section' do centro; ResearchGate o registra no Forecast Department do ECMWF.",
+      "fonteUrl": "https://www.ecmwf.int/en/about/who-we-are/staff-profiles/nils-wedi",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (Reino Unido/Reading). NAO E LABORATORIO: e secao/departamento de um centro intergovernamental. DUAS CORRECOES PARA O DONO: (a) o nome na proposta esta truncado — 'Nils Wed' e, na verdade, Nils P. Wedi; (b) a sigla na proposta esta invertida — 'ECMRWF' deveria ser ECMWF. O texto de responsabilidade em equipe.json e copia literal do perfil dele no ECMWF, o que reforca a identificacao."
+    },
+    {
+      "id": "lab-unmsm-gi-toxiven",
+      "sigla": "GI-TOXIVEN",
+      "nome": "Laboratorio de Biología Molecular / Grupo de Investigación en Toxinas de Origen Animal y sus Antivenenos (GI-TOXIVEN), Facultad de Ciencias Biológicas",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidad Nacional Mayor de San Marcos",
+      "instituicaoSigla": "UNMSM",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Dan Erick Vivas Ruiz"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Portal institucional de investigacao da UNMSM (siis.unmsm.edu.pe): pagina do grupo 'Grupo de investigacion en toxinas de origen animal y sus antivenenos' e ficha pessoal de Dan Erick Vivas Ruiz; resultados de convocatorias do Vicerrectorado de Investigacion (vrip.unmsm.edu.pe) o listam como responsavel de projeto por esse grupo, na Facultad de Ciencias Biologicas. Referencias a ele como colaborador do Laboratorio de Biologia Molecular (FCB-UNMSM).",
+      "fonteUrl": "https://siis.unmsm.edu.pe/es/organisations/grupo-de-investigaci%C3%B3n-en-toxinas-de-origen-animal-y-sus-antivene",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (Peru). Marcado PROVAVEL porque o registro mistura duas coisas que as fontes indexadas nao separam com clareza: o Laboratorio de Biologia Molecular da FCB-UNMSM (estrutura fisica) e o GI-TOXIVEN (grupo de pesquisa). A pagina do SIIS/UNMSM devolveu 404 no WebFetch direto; o conteudo veio do indice de busca. O dono deve escolher qual dos dois nomes usar."
+    },
+    {
+      "id": "lab-ucr-icp",
+      "sigla": "ICP",
+      "nome": "Serpentario do Instituto Clodomiro Picado",
+      "lla": null,
+      "lider": "Aarón Gómez Argüello",
+      "instituicao": "Universidad de Costa Rica",
+      "instituicaoSigla": "UCR",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Aarón Gómez Argüello"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Pagina oficial de pesquisadores do Instituto Clodomiro Picado (icp.ucr.ac.cr): perfil de Aaron Gomez Arguello. Perfil ResearchGate o registra como 'Head of Department — Serpentario', UCR. O ICP e unidade de pesquisa da Facultad de Microbiologia da UCR, criada em 1970, responsavel pela producao de soros antiofidicos.",
+      "fonteUrl": "https://www.icp.ucr.ac.cr/en/researchers/aaron-gomez-arguello",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Costa Rica). A sigla ICP e a do instituto; o serpentario e a secao que ele coordena. Bate com a responsabilidade na proposta (herpetologia, coleta/extracao de venenos)."
+    },
+    {
+      "id": "lab-cnrs-ipmc",
+      "sigla": "IPMC",
+      "nome": "Physiopathologie moléculaire des phospholipases A2 et de leurs médiateurs — Institut de Pharmacologie Moléculaire et Cellulaire (IPMC)",
+      "lla": null,
+      "lider": "Gérard Lambeau",
+      "instituicao": "Centre National de la Recherche Scientifique",
+      "instituicaoSigla": "CNRS",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Gérard Lambeau"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Paginas oficiais do IPMC/CNRS: perfil 'Gerard LAMBEAU' (Directeur de Recherche CNRS, team leader) e pagina da equipe 'Physiopathologie moleculaire des phospholipases A2 et de leurs mediateurs'. IPMC fica em Valbonne Sophia Antipolis (CNRS / Universite Cote d'Azur).",
+      "fonteUrl": "https://www.ipmc.cnrs.fr/en/team/physiopathologie-moleculaire-des-phospholipases-a2-et-de-leurs-mediateurs/",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Franca). Registro obvio e bem documentado: a maioria das sPLA2 e o receptor PLA2R1 foram clonados nesta equipe. A 'sigla' preenchida e a do instituto (IPMC); a equipe em si nao tem sigla."
+    },
+    {
+      "id": "lab-unne-labinpro",
+      "sigla": "LabInPro",
+      "nome": "Laboratorio de Investigación en Proteínas",
+      "lla": null,
+      "lider": "Laura Cristina Ana Leiva",
+      "instituicao": "Universidad Nacional del Nordeste",
+      "instituicaoSigla": "UNNE",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Laura Cristina Ana Leiva",
+        "Luciano Sebastian Fusco"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Pagina institucional da UNNE (Investigacion y Desarrollo): 'Laboratorio de Investigacion en Proteinas (LabInPro)', coordenadora Leiva, Laura Cristina Ana, integrado ao IQUIBA-NEA (Inst. de Quimica Basica y Aplicada del Nordeste Argentino, CONICET-UNNE), na FaCENA. Luciano Fusco e identificado como investigador do LabInPro/IQUIBA-NEA em materias da propria UNNE e do CONICET sobre desenvolvimento de antivenenos.",
+      "fonteUrl": "https://investigacionydesarrollo.unne.edu.ar/laboratorio-de-investigacion-en-proteinas-labinpro/",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Argentina). Cobre AS DUAS pessoas da UNNE na equipe. Linhas: toxinas de venenos de serpentes sobre a hemostasia, protocolos alternativos de imunizacao, enzimas de visceras de peixes do NEA. Em 2015 o grupo foi cofundador do IQUIBA-NEA."
+    },
+    {
+      "id": "lab-u-porto-laqv-requimte",
+      "sigla": "LAQV/REQUIMTE",
+      "nome": "LAQV@REQUIMTE — Departamento de Química e Bioquímica, Faculdade de Ciências",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Universidade do Porto",
+      "instituicaoSigla": "U.PORTO",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Ana Luísa Novo de Oliveira"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfil dela na pagina institucional do LAQV REQUIMTE: 'Ana Luisa Novo de Oliveira' — investigadora e professora auxiliar convidada no Departamento de Quimica e Bioquimica da Faculdade de Ciencias da Universidade do Porto; area: sistemas biomoleculares por quimica quantica, simulacoes classicas e modelagem molecular.",
+      "fonteUrl": "https://laqv.requimte.pt/people/2707-ana_luisa_novo_de_oliveira",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Portugal). E uma UNIDADE DE INVESTIGACAO (Laboratorio Associado para a Quimica Verde, rede REQUIMTE), nao um laboratorio de bancada com nome proprio. Bate com a responsabilidade na proposta (biologia estrutural, bioinformatica, simulacoes e interacoes moleculares)."
+    },
+    {
+      "id": "lab-silwood-park-nhli",
+      "sigla": "NHLI",
+      "nome": "National Heart and Lung Institute, Faculty of Medicine",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Imperial College London",
+      "instituicaoSigla": "SILWOOD PARK",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Vânia Maria Martim Braga"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfis academicos e afiliacoes de artigos a situam no National Heart and Lung Institute (NHLI), Faculty of Medicine, Imperial College London; linha de pesquisa em sinalizacao por GTPases Rho no controle da adesao celula-celula e do citoesqueleto epitelial.",
+      "fonteUrl": "https://www.imperial.ac.uk/nhli/research/research-sections/cardio-respiratory-interface/research-in-detail/",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (Reino Unido). NAO E LABORATORIO NOMEADO: e o instituto/departamento. DIVERGENCIA A RESOLVER: equipe.json registra 'Imperial College London - Silwood Park Campus' — o Silwood Park e o campus de ciencias ambientais em Ascot; o NHLI fica em South Kensington/Hammersmith. Uma das duas informacoes esta errada e so o dono (ou ela) pode dizer qual."
+    },
+    {
+      "id": "lab-cnrs-sys2diag",
+      "sigla": "Sys2Diag",
+      "nome": "Sys2Diag — Modélisation et Ingénierie des Systèmes Complexes Biologiques pour le Diagnostic (UMR 9005 CNRS/ALCEDIAG)",
+      "lla": null,
+      "lider": "Franck Raphael Molina",
+      "instituicao": "Centre National de la Recherche Scientifique",
+      "instituicaoSigla": "CNRS",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Franck Raphael Molina"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site oficial da unidade (sys2diag.cnrs.fr, paginas de contatos e mentions legales) e ficha CNRS de Franck Molina: UMR 9005 CNRS/ALCEDIAG, Parc Euromedecine – Cap Delta, 1682 rue de la Valsiere, 34184 Montpellier. Franck Molina e diretor desde 01/01/2015 (unidade criada como FRE em 2015 e estabilizada como UMR em 2017); vice-diretora Dinah Weissmann. Medalha da Inovacao do CNRS 2020.",
+      "fonteUrl": "https://www.sys2diag.cnrs.fr/fr/infos/contacts/",
+      "confianca": "confirmado",
+      "observacao": "Estrangeiro (Franca). Bate com a responsabilidade declarada na proposta ('biophysics and biocomputing analyses for drug discovery')."
+    },
+    {
+      "id": "lab-u-guyana-tbip",
+      "sigla": "TBIP",
+      "nome": "Tropical Biome and Immunophysiopathology (UMR TBIP / CIIL)",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Université de Guyane",
+      "instituicaoSigla": "U.GUYANA",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Hatem Kallel"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Pagina oficial de laboratorios da Universite de Guyane: 'UMR TBIP CIIL' (Tropical Biome and Immunophysiopathology), com um polo em Lille e outro em Caiena, reunindo pessoal universitario e hospitalar. Hatem Kallel assina artigos com afiliacao ao servico de reanimacao do Centre Hospitalier de Cayenne e ao TBIP.",
+      "fonteUrl": "https://www.univ-guyane.fr/en/appui-a-la-recherche/laboratoires/umr-tbip-ciil/",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro. DIVERGENCIA A RESOLVER: equipe.json diz 'University Of Guyana' (Guiana, Georgetown, pais anglofono). Todas as fontes situam Hatem Kallel na GUIANA FRANCESA — Universite de Guyane / Centre Hospitalier de Cayenne. Provavel confusao de nome na proposta. PROVAVEL e nao confirmado porque a filiacao dele ao TBIP vem de assinaturas de artigos, nao de uma lista de membros da unidade."
+    },
+    {
+      "id": "lab-upcite-umr-s-1144",
+      "sigla": "UMR-S 1144",
+      "nome": "Service de biologie médicale, HIA Bégin — UMR-S 1144, Université Paris Cité",
+      "lla": null,
+      "lider": null,
+      "instituicao": "Université Paris-Cité",
+      "instituicaoSigla": "UPCité",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Sebastién Larreché"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Perfis profissionais e afiliacoes de artigos: medico biologista do Service de biologie medicale do Hopital d'instruction des armees Begin (Saint-Mande) e pesquisador na UMR-S 1144 da Universite Paris Cite; doutorado sobre fisiopatologia, diagnostico e tratamento dos disturbios da hemostasia nas envenenacoes por Viperidae. Pagina do departamento de biologia medica do HIA Begin traz o perfil dele.",
+      "fonteUrl": "https://biologie-medicale-begin.docvitae.fr/a-propos-de-seacutebastien-larreche.html",
+      "confianca": "provavel",
+      "observacao": "Estrangeiro (Franca). A grafia na proposta e 'Sebastien Larreche' (equipe.json: 'Sebastién Larreché'); o correto e 'Sebastien Larreche' / 'Sebastien Larreche'. PROVAVEL: o vinculo com a Universite Paris Cite esta em perfis e afiliacoes de artigos, mas nao li uma pagina da propria UMR-S 1144 listando-o."
+    },
+    {
+      "id": "lab-uc-urra-lab-laboratory-of-metabolic-plasticity-and-bioenergetics",
+      "sigla": null,
+      "nome": "Urra Lab — Laboratory of Metabolic Plasticity and Bioenergetics, Instituto de Ciencias Biomédicas (ICBM), Facultad de Medicina",
+      "lla": null,
+      "lider": "Félix A. Urra",
+      "instituicao": "Universidad de Chile",
+      "instituicaoSigla": "UC",
+      "uf": null,
+      "regiao": null,
+      "amazoniaLegal": null,
+      "eets": [],
+      "pesquisadoresLigados": [
+        "Félix A. Urra"
+      ],
+      "origem": "busca-2026-08",
+      "fonte": "Site proprio do laboratorio (urralab.cl) e noticias da Facultad de Medicina da Universidad de Chile: Dr. Felix Urra, academico do ICBM, dirige o 'Laboratory of Metabolic Plasticity and Bioenergetics'; a linha inclui moleculas bioativas com acao mitocondrial, entre elas toxinas de venenos de serpentes e secrecoes de anfibios.",
+      "fonteUrl": "https://urralab.cl/",
+      "confianca": "indicio",
+      "observacao": "Estrangeiro (Chile). REGISTRO FRAGIL DE PROPOSITO — NAO USAR SEM CONFERIR. O registro em equipe.json traz apenas o primeiro nome, 'Felix' (Pesquisador Estrangeiro, Doutorado, Universidad de Chile), com areas 'Metabolismo e Bioenergetica, Bioquimica, Quimica Farmaceutica Medicinal' e responsabilidade em 'Bioquimica, Biologia Celular e Molecular, Toxinologia, Bioenergetica'. Isso casa com Felix A. Urra ponto por ponto, mas NAO ha prova de que seja a mesma pessoa. Deixei pesquisadoresLigados VAZIO justamente por isso: o laboratorio existe e esta bem documentado; o que nao esta provado e o vinculo com a pessoa da proposta. O dono precisa confirmar o nome completo do 'Felix' com o coordenador."
+    }
+  ],
+  "lacunas": [
+    {
+      "campo": "nome",
+      "quantosRegistrosAfetados": 28,
+      "oQueFalta": "o nome oficial de cada Laboratório Associado",
+      "ondeProvavelmenteEsta": "não está na proposta. Está com o CGES / com cada LLA, e parcialmente nos termos de anuência institucional assinados pelos dirigentes (citados na seção DISPONIBILIDADE E INFRAESTRUTURA), que não fazem parte do PDF submetido.",
+      "comoResolver": "a tela L1 do formulário do laboratório (#/meu-laboratorio) pode pedir ao próprio LLA que confirme/corrija o nome do laboratório no primeiro acesso. É a pessoa certa e custa 10 segundos."
+    },
+    {
+      "campo": "sigla",
+      "quantosRegistrosAfetados": 28,
+      "oQueFalta": "a sigla de cada laboratório",
+      "ondeProvavelmenteEsta": "a seção DISPONIBILIDADE E INFRAESTRUTURA da proposta cita LABOGEOPA, CIBEBI e LABIGEOQ (UNIR), HIDROGEO (UFAM), PharMedChem e Laboratório de Biocatálise e Síntese Orgânica Aplicada e Laboratório de Nanobiotecnologia Fitofarmacêutica (UNIFAP), CEPEM (FIOCRUZ RO) e o Laboratório ANTIGEN (Gurupi-TO) — mas sem dizer qual LLA responde por qual. Há indícios no texto de RESPONSABILIDADE do próprio pesquisador (Michel Watanabe se declara pesquisador do LABOGEOPA; Elisabete Lourdes do Nascimento cita o Laboratório de Biogeoquímica Ambiental-UNIR como colaboradora), e indício não é atribuição.",
+      "comoResolver": "mesma tela L1. Enquanto isso, 'rotulo' identifica o laboratório pelo LLA, que é como a rede se refere a ele na prática."
+    },
+    {
+      "campo": "eets",
+      "quantosRegistrosAfetados": 28,
+      "oQueFalta": "quais das 8 Etapas Estratégicas Transversais cada laboratório executa",
+      "ondeProvavelmenteEsta": "não está na proposta em forma de tabela. A proposta afirma que 'cada etapa estratégica conta com pelo menos 2 LLAs associados aos seus grupos', o que garante que o mapa existe na cabeça do CGES — mas o documento não o escreve. Derivar EET a partir das áreas de atuação de cada LLA seria inventar um dado que o CNPq pode auditar.",
+      "comoResolver": "o CGES preenche uma vez, 28 linhas, antes de abrir a coleta. Restrição de conferência: cada EET-1..EET-8 deve terminar com pelo menos 2 laboratórios, senão a própria afirmação da proposta é contrariada.",
+      "impactoSeNaoResolver": "sem isto, a cadeia laboratório→EET→objetivos→metas da §4.2 da especificação não roda, e a classificação automática de produções e fatos por meta não acontece — o membro teria que responder a que meta pertence o que fez, que é exatamente o que a especificação proíbe."
+    },
+    {
+      "campo": "llaLattesId",
+      "quantosRegistrosAfetados": 1,
+      "quais": [
+        "lab-ufs-pablo-martinez"
+      ],
+      "oQueFalta": "o ID Lattes de Pablo Ariel Martinez",
+      "ondeProvavelmenteEsta": "o campo URL DO CURRÍCULO dele está vazio na proposta submetida. Pesquisador argentino radicado na UFS; o currículo existe, só não foi informado ao CNPq nesta submissão.",
+      "comoResolver": "pedir na Tela 1 do formulário individual, que já pré-preenche e permite corrigir o ID Lattes."
+    },
+    {
+      "campo": "email",
+      "quantosRegistrosAfetados": 28,
+      "oQueFalta": "o e-mail de cada LLA — sem ele não há convite e sem convite não há coleta",
+      "ondeProvavelmenteEsta": "não está na proposta: 209 blocos de equipe, 190 URLs do Lattes, ZERO endereços de e-mail. Está com a coordenação.",
+      "comoResolver": "§1.7 da especificação já trata isso como bloqueante. O convite do laboratório sai 15 dias antes do individual, então a lista dos 28 e-mails é o primeiro item do caminho crítico."
+    },
+    {
+      "campo": "identidade dos 5 laboratórios institucionais sem LLA",
+      "quantosRegistrosAfetados": 0,
+      "oQueFalta": "decidir se IAM/PE, UEPB/PB, UFU/MG, PUC/PR e UFCSPA/RS entram como Laboratórios Associados com líder próprio",
+      "ondeProvavelmenteEsta": "decisão da coordenação. As pessoas dessas instituições existem na proposta, mas em outras categorias do PICC (ver _meta.divergencias).",
+      "comoResolver": "se a resposta for sim, o cadastro vai a 33 e a decisão '28' precisa ser revista pelo dono. Enquanto for 28, este arquivo está coerente com o Quadro Geral do PICC."
+    }
+  ]
+}

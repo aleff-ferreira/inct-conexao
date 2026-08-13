@@ -129,11 +129,11 @@ export function BlocoView({ bloco, slug }: { bloco: Bloco; slug: string }) {
       const capa = bloco.poster ? noticiaAsset(slug, bloco.poster) : undefined;
       return (
         <figure className="art-figura art-video">
-          {/* Os vídeos são verticais (celular/drone) e, no tamanho original,
-              ficariam como uma tira estreita no meio da coluna. O palco é uma
-              janela com a largura do texto, e o vídeo a preenche recortado no
-              centro (ver .art-video-palco em styles.css). */}
-          <div className="art-video-palco">
+          {/* O palco é uma janela com a largura do texto; o vídeo a preenche
+              recortado no centro (ver .art-video-palco em styles.css). O padrão
+              5/4 serve ao vídeo de celular; `proporcao: "16/9"` atende o
+              material panorâmico, que perderia a composição num recorte 5/4. */}
+          <div className="art-video-palco" style={{ aspectRatio: bloco.proporcao ?? "5 / 4" }}>
             {/* preload="none": o arquivo só é baixado se a pessoa apertar play */}
             <video controls playsInline preload="none" poster={capa} aria-label={bloco.descricao}>
               <source src={noticiaAsset(slug, bloco.arquivo)} type="video/mp4" />

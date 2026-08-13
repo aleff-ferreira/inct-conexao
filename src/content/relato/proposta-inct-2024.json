@@ -1,0 +1,2262 @@
+{
+  "_meta": {
+    "fonte": "CNPq Proposta submetida INCT 2024.pdf (50 páginas), protocolo 5670452047161226, submetida em 07/12/2024",
+    "chamada": "MCTI/CNPq/SECTICS/MS/CAPES/FAPs nº 46/2024 — Programa Institutos Nacionais de Ciência e Tecnologia (INCT)",
+    "temaEstrategico": "Biotecnologia e Uso Sustentável da Biodiversidade",
+    "temasAderentes": [
+      "Mudanças Climáticas",
+      "Doenças Negligenciadas e Doenças Crônicas de Alta Relevância para a Saúde no Brasil"
+    ],
+    "instituicaoExecutora": "FIOCRUZ RO (sede física LABOGEOPA/UNIR)",
+    "coordenador": "Andreimar Martins Soares",
+    "metodoExtracao": "layout coordenado (pypdf visitor_text, x/y por trecho). A coluna OBJETIVOS ESPECÍFICOS ASSOCIADOS foi lida por posição na coluna x≈628-632, um número por linha — NÃO por tokenização do texto colado. Zero metas ambíguas.",
+    "paginas": {
+      "objetivoGeral": 32,
+      "objetivosEspecificos": "32-35",
+      "metas": "35-37",
+      "governancaEEets": "37-38",
+      "planoDivulgacao": 40,
+      "indicadores": 46,
+      "orcamento": "46-49",
+      "bolsas": "48-49"
+    }
+  },
+  "objetivoGeral": "O INCT-CONEXAO tem como objetivo compreender, prever, mitigar e gerir os impactos das mudanças climáticas na biodiversidade e saúde única, promovendo a resiliência das populações e comunidades amazônicas vulneráveis. A proposta visa subsidiar processos bioprospectivos, biotecnológicos e bioeconômicos, capacitando o poder público para fomentar e fortalecer os arranjos ecoprodutivos locais (AEPLs) e os “povos da floresta” como agentes permanentes na preservação ambiental, atendendo aos objetivos de desenvolvimento sustentável (ODS). A proposta contribui para os ODS com foco na saúde (3 - vida saudável e bem-estar), educação (4 – educação inclusiva e equitativa), desenvolvimento econômico sustentável (8 – crescimento econômico sustentável), comunidades sustentáveis (11 – Cidades e comunidades sustentáveis) e mudanças climáticas (13 – Ação contra a mudança global do clima) para a Amazônia. A missão do INCT é promover o desenvolvimento científico, tecnológico, social e inovador de processos de Biotecnologia e Uso Sustentável da Biodiversidade na Amazônia. Isso será realizado a partir do monitoramento biometeorológico humano, animal e vegetal; da agregação de valor à formação de pessoas; e da bioprospecção com aplicações farmacológicas, fortalecendo os AEPLs e contribuindo para a transformação social, educacional, ambiental e científica, com ênfase na saúde única e bioeconomia. O projeto está alinhado a importantes políticas públicas, como a Política Nacional de Mudança do Clima (a partir da nova contribuição determinada, NDC/COP29), o Plano de Ação Nacional de Uma Só Saúde (promovendo o trabalho integrado e cooperativo entre instituições para a prevenção e controle das ameaças à saúde única) e o Programa Nacional de Plantas Medicinais e Fitoterápicos (promovendo e reconhecendo as práticas populares e tradicionais de uso de plantas medicinais da Amazônia no SUS, e, a inclusão da agricultura familiar, abrangendo os povos originários nos AEPLs).",
+  "objetivosEspecificos": [
+    {
+      "numero": 1,
+      "texto": "Diagnosticar a dinâmica espaço-temporal e a magnitude das ilhas de calor, ondas de calor, estresse hídrico e dispersão de poluentes em localidades da Amazônia Legal",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 2,
+      "texto": "Estabelecer o grau de vulnerabilidade climática das populações urbanas e rurais da Amazônia Legal Brasileira, com base em indicadores socioeconômicos, epidemiológicos e climáticos",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 3,
+      "texto": "Identificar e analisar as interações espaço-temporais entre as condições climáticas, a vulnerabilidade socioambiental e a saúde da população, especialmente sobre as Doenças Tropicais Negligenciadas (DTNs) e/ou Doenças Crônicas Não-Transmissíveis (DCNTs), na Amazônia Legal Brasileira",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 4,
+      "texto": "Implantar um sistema de monitoramento contínuo das condições climáticas, especialmente da qualidade do ar, do calor e do estresse hídrico, para as cidades e comunidades do estudo",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 5,
+      "texto": "Desenvolver modelos de previsão e análise de risco relacionados às condições climáticas e de saúde, utilizando modelagem numérica e inteligência artificial, com foco na antecipação de riscos para a saúde pública",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 6,
+      "texto": "Criar uma plataforma de bioprognose que integre dados climáticos, de poluição do ar e saúde humana, fornecendo previsões em tempo real e emitindo alertas para a população e autoridades sanitárias da Amazônia Legal",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 7,
+      "texto": "Obter autorizações e licenças de acesso ao patrimônio genético da biodiversidade, ao conhecimento tradicional de comunidades originárias e aos comitês de ética em pesquisa para estudar a Biodiversidade, a Bioprospecção e a Biotecnologia de Venenos/Toxinas, Plantas Medicinais e Biomoléculas de Interesse presentes no Bioma Amazônico, criando um banco de material genético de amostras animais/vegetais da Amazônia",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 8,
+      "texto": "Pré-selecionar espécies de animais, de vegetais Oleaginosas (gerando óleos vegetais e/ou seus concentrados e Bio-óleos), de plantas medicinais e/ou de fitoplâncton com base na Etanofarmacologia e Estado da Arte para posterior potenciais coletas e uso nos ensaios de bioprospecção de biomoléculas com elevado potencial antimicrobiano, anti-adesão de biofilme, antiparasitário, antitumoral e antiveneno",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 9,
+      "texto": "Realizar levantamentos Climáticos, Socioterritoriais, Etnobotânicos, Etnoecológicos e Ecotoxicológicos, identificando os conhecimentos tradicionais associados a eles e analisando os impactos sociais, econômicos e ambientais decorrentes da presença e manejo dessas espécies de animais peçonhentos e/ou venenosos e vegetais (plantas medicinais e/ou tóxicas)",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 10,
+      "texto": "Mapear a incidência, morbidade e dinâmica espaço-temporal das Doenças Tropicais Negligenciadas (DTNs), com foco aos acidentes com animais peçonhentos/venenosos, e Doenças Crônicas Não Transmissíveis (DCNTs) na Amazônia Legal",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 11,
+      "texto": "Identificar as espécies animais e vegetais de interesse associando aos levantamentos taxonômicos, dos conhecimentos tradicionais da ecotoxicologia de animais peçonhentos/venenosos e da etnofarmacologia de Plantas Medicinais, e dos aspectos epidemiológicos e entomológicos relacionados às principais DTNs e DCNTs de interesse (como leshimaniose, doença de chagas, ofidismo, doenças cardio-respeiratórias, câncer e outras relacionadas)",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 12,
+      "texto": "Realizar expedições científicas de campo com equipes interdisciplinares, acessando os territórios de interesse (REBIO, RESEX, FLONAS e/ou PARNAS), visitando comunidades originárias, tradicionais, rurais e periurbanas, coletando espécies representadas por, no mínimo, três espécimes, tombando nos herbários e/ou coleções zoológicas dos estados da Amazônia Legal",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 13,
+      "texto": "Catalogar e gerar um banco de dados físico e digital a partir da biodiversidade da flora amazônica, nas unidades de conservação e territórios selecionados em cada estado participante da Amazônia Legal, contendo informações geográficas, ecológicas, etnobotânicas, ecotoxicológicas, etnoecológicas, químicas e etnofarmacológicas de plantas medicinais usadas pelas comunidades tradicionais contra os animais venenosos/peçonhentos, DTNs e/ou DCNTs",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 14,
+      "texto": "Catologar e gerar um banco de dados físico e digital a partir da biodiversidade da fauna amazônica, pelos meios de buscas ativas e/ou passivas de animais venenosos/peçonhentos, analisando a diversidade, dominância, riqueza, abundância, similaridade, e a preferência de substrato utilizado nos locais das expedições, criando-se uma lista comentada das espécies encontradas nas áreas de estudo, com foco à observação e identificação de novos indivíduos e novas ocorrências de espécies conhecidas",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 15,
+      "texto": "Catologar e gerar um banco de dados físico e digital socio-epidemiológico a partir da aplicação de inquéritos e/ou questionários de cidadania e de saúde da Amazônia Legal, caracterizando a situação social e as doenças e agravos mais frequentes nas populações e comunidades originárias/tradicionais, especialmente aquelas negligenciadas, avaliando as formas de enfrentamento destas DTNs e/ou DCNTs, baseadas nos seus conhecimentos tradicionais etnobotânicos e etnozológicos",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 16,
+      "texto": "Promover ações de conscientização, preservação e conservação da biodiversidade dos animais peçonhentos, plantas medicinais e de seus habitats, bem como valorizar o conhecimento tradicional das comunidades locais da Amazônia Legal, desenvolvendo soluções inovadoras para problemas de saúde pública loco-regionais",
+      "missao": "Transferência de Conhecimentos para a Sociedade"
+    },
+    {
+      "numero": 17,
+      "texto": "Promover a ciência cidadã, participativa, treinando líderes de comunidades originárias/tradicionais para a seleção e abordagem de outros membros da comunidade capacitando-os para a logística de coleta, herborização e identificação/caracterização botânica, fitoquímica e nutricional das plantas medicinais, com foco especial ao registro do conhecimento das mulheres destas comunidades sobre o uso de plantas medicinais e implantação de arranjos ecoprodutivos locais (AEPLs)",
+      "missao": "Transferência de Conhecimentos para a Sociedade"
+    },
+    {
+      "numero": 18,
+      "texto": "Extrair e coletar os venenos por coleta manual in situ, congelados, secos e/ou liofilizados para fornecer amostras aos laboratórios associados da rede de pesquisa para avaliação farmacológica e biológica (ensaios citotóxicos, antimicrobianos, anti-adesão de biofilme, antitumorais e antiparasitários e outras de interesse)",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 19,
+      "texto": "Analisar a composição fisicoquímica de venenos/peçonhas animais via técnicas cromatográficas, eletroforéticas, bioquímicas e biofísicas, realizando o fracionamento via HPLC, FPLC, cromatografias tradicionais e outras para obtenção de componentes isolados, assim como a quantificação de proteínas/peptídeos para o envio de amostras à rede de pesquisa",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 20,
+      "texto": "Realizar a caracterização bioquímica de toxinas, proteínas e/ou peptídeos de interesse por técnicas eletroforéticas mono e bidimensional (ponto isoelétrico e massa molecular), determinação da massa molecular por MS MALDI-TOF e de estrutura primária parcial por sequenciador automatizado e/ou MS e outras técnicas diponíveis nos Laboratórios Associados",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 21,
+      "texto": "Caracterizar enzimaticamente e/ou farmacologicamente as toxinas/proteínas quanto às atividades proteolítica (fibrinogenolítica, colagenolítica), coagulante, inflamatória, hemorrágica, neurotóxica, fosfolipásica, miotóxica, citotóxica, oxidásica e outras de acordo com a classe da biomolécula isolada",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 22,
+      "texto": "Preparar os extratos vegetais de plantas não oleaginosas por extração aquosa e/ou etanólica, fracionadas com hexano, clorofórmio, acetato de etila e/ou metanol, para análises da composição química via fitoquímica tradicional, FT-IR, LC-MS, GC-MS, RMN e outras tecnologias, fornecendo amostras aos laboratórios associados da rede de pesquisa para avaliação farmacológica e biológica (ensaios citotóxicos, genotóxicos, antimicrobianos, antitumorais e antiparasitários e outras de interesse)",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 23,
+      "texto": "Isolar e purificar por meio de cromatografia preparativa, as substâncias majoritárias presentes nos extratos vegetais que apresentaram bioatividades de interesse, elucidando as estruturas químicas de substâncias puras via métodos fisicos-químicos de espectroscópias de análise usuais como, infravermelho, ultravioleta, ressonância magnética nuclear e/ou espectrometria de massas e outros aplicados à Química de Produtos Naturais",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 24,
+      "texto": "Obter alvos moleculares de parasitas de DTNs por meio de plasmídeo recombinante contendo a sequência gênica da Fosforilase de Nucleotídeos Purina de P. falciparum (PfPNP), Tripanotiona redutase (LbTR), Peridina Redutase 1 (LbPTR1) e Dihidrofolato redutase-Timidilato Sintase (LbDHFR-TS) de Leishmania braziliensis para expressão e isolamento das proteínas recombinantes de interesse aplicados na bioprospecção de potenciais inibidores a partir dos venenos e/ou extratos de plantas",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 25,
+      "texto": "Produzir anticorpos recombinantes SCFV via imunização de galinhas com venenos e/ou toxinas de interesse para o desenvolvimento de potencial diagnóstico e/ou terapia complementar ao ofidismo e/ou escorpionismo com avaliação do reconhecimento dos anticorpos por citometria de fluxo e testes de potencial inibitório in vitro/in vivo com possibilidade de transferência de conhecimento para empresas (como a Antigen em Tocantis, Brasil)",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 26,
+      "texto": "Realizar estudos estruturais, modelagem molecular, interação e/ou dinâmica molecular e predição de estruturas, domínios e/ou grupos funcionais de maior atividade utilizando ferramentas fisicoquímicas e in silico via técnicas de cristalografia de proteínas, espalhamento de raios X e de luz dinâmico, Dicroísmo Circular, Espectrometria Infravermelha; predição ADMET in silico; simulações de atracamento molecular e reverso complexadas com metabólitos secundários (inibidores)",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 27,
+      "texto": "Analisar os ensaios de interação molecular in silico entre os alvos moleculares de interesse (PfPNP ou LbTR, LbPTR1 e LbDHFR-TS) e os biocompostos ativos isolados para a construção do banco de peptídeos derivados de toxina de serpente e/ou estruturas químicas de metabólitos secundários de plantas via estudos de virtual screening entre os peptídeos e a alvos moleculares de parasitas por Análises de docagem molecular e Modelagem Molecular com AlphaFold ou RoseTTAFold",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 28,
+      "texto": "Realizar bioensaios e ensaios in vitro das peçonhas, venenos e/ou toxinas e plantas medicinais em parceria com as instituições colaboradoras participantes com foco nas atividades inflamatória, nociceptiva, coagulante (e sobre hemostasia), citotóxica, bioinseticida contra vetores, microbicida (bactericida, fungicida, plasmonicida, leishmanicida, antichagásica e outros), antitumoral in vitro, biocurativos voltados para o tratamento de lesões cutâneas e anti-adesão e disruptora de biofilme",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 29,
+      "texto": "Produzir formulações nanoencapsuladas de biocompostos isolados de venenos e/ou plantas medicinais para ensaios bioprospectivos farmacológicos citados anteriormente junto aos Laboratórios Associados",
+      "missao": "Pesquisa"
+    },
+    {
+      "numero": 30,
+      "texto": "Aplicar tecnologias de Saúde Pública de Precisão (SPP) para o Enfrentamento dos Acidentes com Animais Peçonhentos, prevendo a adequabilidade climática das espécies de maior relevância na Amazônia ao longo dos anos, realizando os Modelos Dinâmicos de Distribuição de Espécies (MDDEs) via coleta de dados epidemiológicos, climáticos e de satélites com análises de séries temporais e redes neurais recorrentes para desenvolver modelos preditivos associados a IA para auxiliar nas Políticas Públicas.",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 31,
+      "texto": "Realizar cursos de capacitação e/ou educomunicativos para comunidades originárias e sociedade (Ciência Itinerante nas Escolas, Clubes de Ciências, Educação Ambiental, Científica e em Saúde): consolidar o conhecimento acerca de acidentes com animais peçonhentos, venômica/antivenômica e plantas medicinais/tóxicas ressaltando os aspectos da clínica-médica, vigilância em saúde e as parcerias público-privado, considerando a diversidade humana, educação inclusiva e as QSC (Questões Sócio-Científicas)",
+      "missao": "Transferência de Conhecimentos para a Sociedade"
+    },
+    {
+      "numero": 32,
+      "texto": "Realizar a interação Academia (IES/ICTs) e Setores Público (SEDEC, SESAU, SEDAM, SEDUC e FAPERO)/Privado (Amazonzyme AM e Antigen TO) e Sociedade (ECOPORÉ, TI Karipunas e Paiter Suruí), com diálogos deliberativos com pesquisadores, gestores, empresários, representantes da sociedade e demais atores do ecossistema, para fortalecimento da bioeconomia local, dos arranjos ecoprodutivos nos Núcleos Marapuama-AM, Unha de Gato-RO e Uxí-PA das RedesFITO, e criação destes Núcleos no AP e RR",
+      "missao": "Transferência de Conhecimentos para a Sociedade"
+    },
+    {
+      "numero": 33,
+      "texto": "Estimular diálogos deliberativos com a criação de grupos de trabalhos técnicos-científicos (GTTC) para implantação e/ou consolidação de Centros de Informações e Assistência Toxicológica (CIATOX): A implantação do Núcleo de Evidências em Saúde (NEv RO), e, possível, discussões de criação do Centro de Informações e Assistência Toxicológicas (CIATOX) nos estados da Amazônia Legal que ainda não possuem, como, Rondônia, Amapá, Roraima e Acre",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 34,
+      "texto": "Realizar as ações de capacitação e formação de pessoas em Empreendedorismo e Inovação, com cursos/oficinas/workshops - Da ideia ao produto, contendo ideação, diferenças entre modelo de negócios e plano de negócios, vantagens desleais, conhecimentos de startups e spin off, competições de Pitch, hackatown e outras modalidades nos temas do INCT-CONEXAO",
+      "missao": "Formação de Recursos Humanos"
+    },
+    {
+      "numero": 35,
+      "texto": "Estimular a divulgação técnica-científica e a conexão entre empresas, sociedade e academia com discussões práticas sobre as potenciais solicitações de registros de patentes envolvendo toxinas e/ou metabólitos em (nano)formulações, atividades farmacológicas e/ou biotecnológicas de interesse e produção de antivenenos recombinantes",
+      "missao": "Divulgação científica e popularização da ciência"
+    },
+    {
+      "numero": 36,
+      "texto": "Executar ações educativas ambientais e etnoepidemiológicas via projetos Casa Verde, Smartscópio e a construção conjunta, participativa e colaborativa, com foco na adaptação dos materiais às necessidades culturais e linguísticas das comunidades indígenas atendidas pelas CASAI e/ou pelos DSEI, assim como demais interações com outras comunidades originárias (Quilombolas e Ribeirinhos) e sociedade amazônica (nas Escolas com os estudantes e professores do Ensino Básico, Técnico e/ou Superior)",
+      "missao": "Divulgação científica e popularização da ciência"
+    },
+    {
+      "numero": 37,
+      "texto": "Propiciar momentos de potenciais rodadas de investimentos e reuniões entre atores do ecossistema local de inovação de Porto Velho para alinhamento de ações estratégias, visando o desenvolvimento regional e a apresentação do portfólio e dos produtos alcançados pela rede de pesquisa INCT-CONEXAO",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 38,
+      "texto": "Recomendar subsídios ao poder público para o desenvolvimento e aplicação de políticas que visem intervenções adequadas para a gestão, prevenção, e mitigação dos impactos climáticos na saúde das populações amazônicas, incluindo o enfrentamento aos acidentes com animais peçonhentos/venenosos e o arranjo ecoprodutivo local das plantas medicinais alinhadas ao Sistema Único de Saúde (SUS)",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 39,
+      "texto": "Contribuir para formação de recursos humanos em nível de ensino básico, graduação e pós-graduação (iniciação científica júnior, iniciação científica e tecnológica, especialização, mestrado, doutorado e pós-doutorado) nas áreas de atuação dessa proposta interdisciplinar integrando os mais de 15 Programas de Pós-graduação stricto sensu (PPGs) participantes por meio de eventos, cursos, oficinas, intercâmbios (inter)nacionais e atividades comuns à rede de pesquisa INCT-CONEXAO",
+      "missao": "Formação de Recursos Humanos"
+    },
+    {
+      "numero": 40,
+      "texto": "Propiciar a consolidação da Rede Internacional de Pesquisa e Conhecimento de Excelência na/da/para Amazônia Ocid(Ori)ental (RED-CONEXAO) fortalecendo as áreas de Biotecnologia, Biometeorologia, Biodiversidade, Bioeconomia e Toxicologia Aplicadas à Saúde Única nos 15 países participantes e estimular novas adesões e intercâmbios internacionais para contribuir com a transformação social da Amazônia pelos caminhos CT&I, Educação, Saúde e Políticas Públicas, aumentando as ações de internacionalização",
+      "missao": "Internacionalização"
+    },
+    {
+      "numero": 41,
+      "texto": "Desenvolver Ações Assertivas e Estratégicas de Políticas Informadas por Evidências (PIEs) e de Educação Ambiental, Científica e em Saúde junto às Comunidades Originárias e Sociedade Amazônica para consolidar a interação Academia ¿ Sociedade ¿ Setores Públicos e Privados",
+      "missao": "Transferência de Conhecimento para o Setor empresarial e/ou para o Setor Público"
+    },
+    {
+      "numero": 42,
+      "texto": "Desenvolver e executar o Plano de Comunicação e Divulgação Científica do INCT-CONEXAO, dando maior visibilidade ao mesmo e as suas produções via mídias sociais, como WEB, instagram do INCT, dos pesquisadores, dos PPGs, das instituições participantes, entre outros meios de comunicação audiovisuais, físicos e eletrônicos para a população em geral [CONEXAO -SAÚDE, -AMBIENTE, -CIÊNCIA, -EDUCAÇÃO, CONEXAO-BIOECONOMIA, dentre outros temas e ações] e CONEXAO-EVENTOS híbridos e/ou presenciais.",
+      "missao": "Divulgação científica e popularização da ciência"
+    },
+    {
+      "numero": 43,
+      "texto": "Produzir novos conhecimentos, produtos e/ou processos sociais-técnicos-científicos nas áreas do estudo (e áreas afins), incluindo boletins informativos, cartilhas, portifólios, diretrizes de planejamentos estratégicos, relatórios técnicos, entrevistas, diálogos deliberativos PPPs, publicações em mídias sociais e de artigos internacionais e/ou nacionais com impacto maior que 3, capítulos de livros ou livros, apresentações e/ou resumos de trabalhos em eventos científicos, dentre outros",
+      "missao": "Transferência de Conhecimentos para a Sociedade"
+    }
+  ],
+  "metas": [
+    {
+      "numero": 1,
+      "descricao": "Desenvolvimento de 1 caraterização analítica espaço-temporal das condições biometeorológicas da Amazônia Legal e suas repercussões regionais e locais em tempo real",
+      "descricaoLinhasOriginais": [
+        "Desenvolvimento de 1 caraterização analítica espaço-temporal das",
+        "condições biometeorológicas da Amazônia Legal e suas repercussões",
+        "regionais e locais em tempo real"
+      ],
+      "objetivosAssociados": [
+        9,
+        38,
+        39,
+        40,
+        41
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "caracterização analítica espaço-temporal das condições biometeorológicas da Amazônia Legal",
+          "min": 1,
+          "max": 1,
+          "unidade": "caracterização"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "descricao": "Realizar 1 mapeamento da incidência de doenças cardiovasculares, respiratórias (DCNTs) e DTNs na Amazônia Legal, espacialmente analisadas na perspectiva da vulnerabilidade socioambiental das populações da área de estudo",
+      "descricaoLinhasOriginais": [
+        "Realizar 1 mapeamento da incidência de doenças cardiovasculares,",
+        "respiratórias (DCNTs) e DTNs na Amazônia Legal, espacialmente analisadas",
+        "na perspectiva da vulnerabilidade socioambiental das populações da área",
+        "de estudo"
+      ],
+      "objetivosAssociados": [
+        38,
+        39,
+        40,
+        41,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "mapeamento da incidência de doenças cardiovasculares, respiratórias (DCNTs) e DTNs",
+          "min": 1,
+          "max": 1,
+          "unidade": "mapeamento"
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "descricao": "Instalação de 8 estações de qualidade do ar e 14 estações meteorológicas nas localidades de estudo, assegurando a cobertura da investigação em tempo real nas áreas urbanas e rurais",
+      "descricaoLinhasOriginais": [
+        "Instalação de 8 estações de qualidade do ar e 14 estações meteorológicas",
+        "nas localidades de estudo, assegurando a cobertura da investigação em",
+        "tempo real nas áreas urbanas e rurais"
+      ],
+      "objetivosAssociados": [
+        38,
+        40,
+        41,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "60%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "100%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "estações de qualidade do ar instaladas",
+          "min": 8,
+          "max": 8,
+          "unidade": "estação"
+        },
+        {
+          "oQue": "estações meteorológicas instaladas",
+          "min": 14,
+          "max": 14,
+          "unidade": "estação"
+        }
+      ]
+    },
+    {
+      "numero": 4,
+      "descricao": "Implementação e validação de 1 modelo preditivo da interação clima e saúde humana, baseado em dados de monitoramento climático para previsão de eventos extremos de chuva, temperatura e poluição atmosférica",
+      "descricaoLinhasOriginais": [
+        "Implementação e validação de 1 modelo preditivo da interação clima e",
+        "saúde humana, baseado em dados de monitoramento climático para previsão",
+        "de eventos extremos de chuva, temperatura e poluição atmosférica"
+      ],
+      "objetivosAssociados": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "modelo preditivo da interação clima e saúde humana implementado e validado",
+          "min": 1,
+          "max": 1,
+          "unidade": "modelo"
+        }
+      ]
+    },
+    {
+      "numero": 5,
+      "descricao": "Desenvolvimento de 1 plataforma de bioprognose para monitoramento de qualidade do ar, clima e saúde, alcançando pelo menos 1.000 usuários",
+      "descricaoLinhasOriginais": [
+        "Desenvolvimento de 1 plataforma de bioprognose para monitoramento de",
+        "qualidade do ar, clima e saúde, alcançando pelo menos 1.000 usuários"
+      ],
+      "objetivosAssociados": [
+        6,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "20%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "80%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "plataforma de bioprognose desenvolvida",
+          "min": 1,
+          "max": 1,
+          "unidade": "plataforma"
+        },
+        {
+          "oQue": "usuários alcançados pela plataforma",
+          "min": 1000,
+          "max": null,
+          "unidade": "usuário"
+        }
+      ]
+    },
+    {
+      "numero": 6,
+      "descricao": "Realizar 4 a 9 cadastros e solicitar 4 a 9 autorizações SISBIO, CEP, CEUA, SISGEN, FUNAI, com potencial de criação de 1 banco amazônico de material genético de interesse",
+      "descricaoLinhasOriginais": [
+        "Realizar 4 a 9 cadastros e solicitar 4 a 9 autorizações SISBIO, CEP,",
+        "CEUA, SISGEN, FUNAI, com potencial de criação de 1 banco amazônico de",
+        "material genético de interesse"
+      ],
+      "objetivosAssociados": [
+        7
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "45%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "90%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "cadastros realizados",
+          "min": 4,
+          "max": 9,
+          "unidade": "cadastro"
+        },
+        {
+          "oQue": "autorizações solicitadas (SISBIO, CEP, CEUA, SISGEN, FUNAI)",
+          "min": 4,
+          "max": 9,
+          "unidade": "autorização"
+        },
+        {
+          "oQue": "banco amazônico de material genético criado",
+          "min": 1,
+          "max": 1,
+          "unidade": "banco"
+        }
+      ]
+    },
+    {
+      "numero": 7,
+      "descricao": "Realizar até 50 expedições científicas em até 10 comunidades tradicionais de 3 a 6 Unidades de Conservação (UC), identificando, catalogando e registrando informações de espécies animais/vegetais e aplicando 1000 inquéritos/questionários socioterritoriais e epidemiológicos, para compreender as interações entre as populações locais e as espécies, identificando de 18 a 36 conhecimentos tradicionais",
+      "descricaoLinhasOriginais": [
+        "Realizar até 50 expedições científicas em até 10 comunidades",
+        "tradicionais de 3 a 6 Unidades de Conservação (UC), identificando,",
+        "catalogando e registrando informações de espécies animais/vegetais e",
+        "aplicando 1000 inquéritos/questionários socioterritoriais e",
+        "epidemiológicos, para compreender as interações entre as populações",
+        "locais e as espécies, identificando de 18 a 36 conhecimentos",
+        "tradicionais"
+      ],
+      "objetivosAssociados": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "expedições científicas realizadas",
+          "min": null,
+          "max": 50,
+          "unidade": "expedição"
+        },
+        {
+          "oQue": "comunidades tradicionais visitadas",
+          "min": null,
+          "max": 10,
+          "unidade": "comunidade"
+        },
+        {
+          "oQue": "Unidades de Conservação (UC) acessadas",
+          "min": 3,
+          "max": 6,
+          "unidade": "UC"
+        },
+        {
+          "oQue": "inquéritos/questionários socioterritoriais e epidemiológicos aplicados",
+          "min": 1000,
+          "max": 1000,
+          "unidade": "inquérito"
+        },
+        {
+          "oQue": "conhecimentos tradicionais identificados",
+          "min": 18,
+          "max": 36,
+          "unidade": "conhecimento"
+        }
+      ]
+    },
+    {
+      "numero": 8,
+      "descricao": "Determinar os limites taxonômicos de 4 a 10 espécies de animais peçonhentos que ocorrem na Amazônia, integrando dados de Barcoding (COI) e morfometria geométrica. Realizar 2 a 5 análises genômicas das diferentes espécies para relações filogenéticas. A partir da limitação das espécies pretende-se gerar 1 a 2 Modelos de Distribuição Dinâmicos (MDD) (mensais) destas espécies na Amazônia brasileira",
+      "descricaoLinhasOriginais": [
+        "Determinar os limites taxonômicos de 4 a 10 espécies de animais",
+        "peçonhentos que ocorrem na Amazônia, integrando dados de Barcoding (COI)",
+        "e morfometria geométrica. Realizar 2 a 5 análises genômicas das",
+        "diferentes espécies para relações filogenéticas. A partir da limitação",
+        "das espécies pretende-se gerar 1 a 2 Modelos de Distribuição Dinâmicos",
+        "(MDD) (mensais) destas espécies na Amazônia brasileira"
+      ],
+      "objetivosAssociados": [
+        7,
+        8,
+        12,
+        14,
+        16,
+        18,
+        30,
+        33
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "espécies de animais peçonhentos com limites taxonômicos determinados",
+          "min": 4,
+          "max": 10,
+          "unidade": "espécie"
+        },
+        {
+          "oQue": "análises genômicas realizadas",
+          "min": 2,
+          "max": 5,
+          "unidade": "análise"
+        },
+        {
+          "oQue": "Modelos de Distribuição Dinâmicos (MDD) mensais gerados",
+          "min": 1,
+          "max": 2,
+          "unidade": "modelo"
+        }
+      ]
+    },
+    {
+      "numero": 9,
+      "descricao": "Realizar contatos com 6 a 12 lideranças comunitárias e 2 a 4 governamentais para alinhamentos e/ou liberação da pesquisa nas comunidades e acessos aos territórios, buscando disseminar e documentar 6 a 10 boas práticas de métodos de detecção e evitação dos animais peçonhentos, bem como os usos medicinais, rituais ou culinários atribuídos a esses vegetais/animais por 6 a 12 comunidades locais",
+      "descricaoLinhasOriginais": [
+        "Realizar contatos com 6 a 12 lideranças comunitárias e 2 a 4",
+        "governamentais para alinhamentos e/ou liberação da pesquisa nas",
+        "comunidades e acessos aos territórios, buscando disseminar e documentar",
+        "6 a 10 boas práticas de métodos de detecção e evitação dos animais",
+        "peçonhentos, bem como os usos medicinais, rituais ou culinários",
+        "atribuídos a esses vegetais/animais por 6 a 12 comunidades locais"
+      ],
+      "objetivosAssociados": [
+        7,
+        11,
+        12,
+        16,
+        17,
+        31,
+        32,
+        35,
+        36,
+        37,
+        42
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "lideranças comunitárias contatadas",
+          "min": 6,
+          "max": 12,
+          "unidade": "liderança"
+        },
+        {
+          "oQue": "lideranças governamentais contatadas",
+          "min": 2,
+          "max": 4,
+          "unidade": "liderança"
+        },
+        {
+          "oQue": "boas práticas de detecção/evitação documentadas",
+          "min": 6,
+          "max": 10,
+          "unidade": "boa prática"
+        },
+        {
+          "oQue": "comunidades locais com usos medicinais/rituais/culinários documentados",
+          "min": 6,
+          "max": 12,
+          "unidade": "comunidade"
+        }
+      ]
+    },
+    {
+      "numero": 10,
+      "descricao": "Realizar de 15 a 30 coletas de amostras vegetais, esses dados serão usados para desenvolver 2 a 4 novos tratamentos e/ou terapias para casos de envenenamento por animais peçonhentos e outras enfermidades de interesse (DTNs e DCNTs), além de contribuir para a compreensão da biodiversidade e do potencial biotecnológico dessas espécies de plantas medicinais",
+      "descricaoLinhasOriginais": [
+        "Realizar de 15 a 30 coletas de amostras vegetais, esses dados serão",
+        "usados para desenvolver 2 a 4 novos tratamentos e/ou terapias para casos",
+        "de envenenamento por animais peçonhentos e outras enfermidades de",
+        "interesse (DTNs e DCNTs), além de contribuir para a compreensão da",
+        "biodiversidade e do potencial biotecnológico dessas espécies de plantas",
+        "medicinais"
+      ],
+      "objetivosAssociados": [
+        7,
+        8,
+        11,
+        12,
+        13,
+        16,
+        17,
+        22,
+        28,
+        29,
+        32,
+        35,
+        36,
+        38
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "45%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "90%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "coletas de amostras vegetais realizadas",
+          "min": 15,
+          "max": 30,
+          "unidade": "coleta"
+        },
+        {
+          "oQue": "novos tratamentos e/ou terapias desenvolvidos",
+          "min": 2,
+          "max": 4,
+          "unidade": "tratamento"
+        }
+      ]
+    },
+    {
+      "numero": 11,
+      "descricao": "Contribuir para o aumento de 10 a 20% de dados epidemiológicos, do quantitativo 15 a 30% de venenos e/ou toxinas, extratos de plantas e/ou frações que serão utilizados nos ensaios de bioprospecção de moléculas com potencial farmacológico e/ou biotecnológico",
+      "descricaoLinhasOriginais": [
+        "Contribuir para o aumento de 10 a 20% de dados epidemiológicos, do",
+        "quantitativo 15 a 30% de venenos e/ou toxinas, extratos de plantas e/ou",
+        "frações que serão utilizados nos ensaios de bioprospecção de moléculas",
+        "com potencial farmacológico e/ou biotecnológico"
+      ],
+      "objetivosAssociados": [
+        10,
+        11,
+        18,
+        22
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "aumento de dados epidemiológicos",
+          "min": 10,
+          "max": 20,
+          "unidade": "%"
+        },
+        {
+          "oQue": "aumento do quantitativo de venenos/toxinas, extratos e/ou frações",
+          "min": 15,
+          "max": 30,
+          "unidade": "%"
+        }
+      ]
+    },
+    {
+      "numero": 12,
+      "descricao": "Catologar, garantir rastreabilidade e enviar para 15 a 25 grupos de pesquisa do INCT-CONEXAO cerca de 6 a 8 venenos, 15 a 25 extratos, 12 a 24 frações e/ou substâncias isoladas de venenos e/ou plantas para os ensaios farmacológicos in vitro, bioensaios e nanoformulações",
+      "descricaoLinhasOriginais": [
+        "Catologar, garantir rastreabilidade e enviar para 15 a 25 grupos de",
+        "pesquisa do INCT-CONEXAO cerca de 6 a 8 venenos, 15 a 25 extratos, 12 a",
+        "24 frações e/ou substâncias isoladas de venenos e/ou plantas para os",
+        "ensaios farmacológicos in vitro, bioensaios e nanoformulações"
+      ],
+      "objetivosAssociados": [
+        7,
+        11,
+        13,
+        14,
+        18,
+        22,
+        28,
+        29,
+        39,
+        40,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "grupos de pesquisa do INCT-CONEXAO destinatários",
+          "min": 15,
+          "max": 25,
+          "unidade": "grupo"
+        },
+        {
+          "oQue": "venenos catalogados/enviados",
+          "min": 6,
+          "max": 8,
+          "unidade": "veneno"
+        },
+        {
+          "oQue": "extratos catalogados/enviados",
+          "min": 15,
+          "max": 25,
+          "unidade": "extrato"
+        },
+        {
+          "oQue": "frações e/ou substâncias isoladas catalogadas/enviadas",
+          "min": 12,
+          "max": 24,
+          "unidade": "fração"
+        }
+      ]
+    },
+    {
+      "numero": 13,
+      "descricao": "Realizar de 2 a 4 estudos ômicos das espécies mais promissoras (venômica e/ou antivenômica). Produzir 2 a 4 alvos moleculares de parasitas; 1 a 2 Anticorpos e/ou Toxinas Recombinantes e 3 a 6 peptídeos sintéticos. Preparar de 2 a 4 nanoencapsulamentos e/ou biossensores de compostos bioativos para ensaios de bioprospecção de moléculas com potencial biotecnológico",
+      "descricaoLinhasOriginais": [
+        "Realizar de 2 a 4 estudos ômicos das espécies mais promissoras (venômica",
+        "e/ou antivenômica). Produzir 2 a 4 alvos moleculares de parasitas; 1 a 2",
+        "Anticorpos e/ou Toxinas Recombinantes e 3 a 6 peptídeos sintéticos.",
+        "Preparar de 2 a 4 nanoencapsulamentos e/ou biossensores de compostos",
+        "bioativos para ensaios de bioprospecção de moléculas com potencial",
+        "biotecnológico"
+      ],
+      "objetivosAssociados": [
+        19,
+        20,
+        21,
+        24,
+        25,
+        26,
+        28,
+        29,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "30%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "estudos ômicos (venômica e/ou antivenômica)",
+          "min": 2,
+          "max": 4,
+          "unidade": "estudo"
+        },
+        {
+          "oQue": "alvos moleculares de parasitas produzidos",
+          "min": 2,
+          "max": 4,
+          "unidade": "alvo"
+        },
+        {
+          "oQue": "anticorpos e/ou toxinas recombinantes produzidos",
+          "min": 1,
+          "max": 2,
+          "unidade": "item"
+        },
+        {
+          "oQue": "peptídeos sintéticos produzidos",
+          "min": 3,
+          "max": 6,
+          "unidade": "peptídeo"
+        },
+        {
+          "oQue": "nanoencapsulamentos e/ou biossensores preparados",
+          "min": 2,
+          "max": 4,
+          "unidade": "item"
+        }
+      ]
+    },
+    {
+      "numero": 14,
+      "descricao": "Contribuir com 1 levantamento e 1 mapeamento para a implantação/reativação de pelo menos 5 AEPLs de plantas medicinais, Núcleos Estaduais da RedesFITO e implementação de 1 núcleo da RedesÓLEOS da Amazônia que irão contribuir para o fortalecimento da Cadeia local e interação/integração entre INCT-EPIAMO, INCT-PROBIAM e INCT-CONEXAO",
+      "descricaoLinhasOriginais": [
+        "Contribuir com 1 levantamento e 1 mapeamento para a",
+        "implantação/reativação de pelo menos 5 AEPLs de plantas medicinais,",
+        "Núcleos Estaduais da RedesFITO e implementação de 1 núcleo da Redes",
+        "ÓLEOS da Amazônia que irão contribuir para o fortalecimento da Cadeia",
+        "local e interação/integração entre INCT-EPIAMO, INCT-PROBIAM e INCT-",
+        "CONEXAO"
+      ],
+      "objetivosAssociados": [
+        16,
+        17,
+        32,
+        37,
+        38,
+        41,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "levantamento para implantação/reativação de AEPLs",
+          "min": 1,
+          "max": 1,
+          "unidade": "levantamento"
+        },
+        {
+          "oQue": "mapeamento para implantação/reativação de AEPLs",
+          "min": 1,
+          "max": 1,
+          "unidade": "mapeamento"
+        },
+        {
+          "oQue": "AEPLs de plantas medicinais implantados/reativados",
+          "min": 5,
+          "max": null,
+          "unidade": "AEPL"
+        },
+        {
+          "oQue": "núcleo da RedesÓLEOS da Amazônia implementado",
+          "min": 1,
+          "max": 1,
+          "unidade": "núcleo"
+        }
+      ]
+    },
+    {
+      "numero": 15,
+      "descricao": "Ofertar de 10 a 18 cursos de capacitações para agricultores, produtores e empresários envolvidos na cadeia produtiva Plantas Medicinais e de oleaginosas e seus resíduos, assim como, 9 a 18 oficinas sobre Bioeconomia e Empreendedorismo na Amazônia Legal. Promovendo 5 a 10 oficinas e minicursos de Boas Práticas de Fabricação (BPF) de Produtos Tradicionais, conforme RDC 13 (ANVISA) e Farmácias Vivas.",
+      "descricaoLinhasOriginais": [
+        "Ofertar de 10 a 18 cursos de capacitações para agricultores, produtores",
+        "e empresários envolvidos na cadeia produtiva Plantas Medicinais e de",
+        "oleaginosas e seus resíduos, assim como, 9 a 18 oficinas sobre",
+        "Bioeconomia e Empreendedorismo na Amazônia Legal. Promovendo 5 a 10",
+        "oficinas e minicursos de Boas Práticas de Fabricação (BPF) de Produtos",
+        "Tradicionais, conforme RDC 13 (ANVISA) e Farmácias Vivas."
+      ],
+      "objetivosAssociados": [
+        16,
+        31,
+        32,
+        34,
+        37,
+        39,
+        40,
+        42
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "cursos de capacitação ofertados a agricultores, produtores e empresários",
+          "min": 10,
+          "max": 18,
+          "unidade": "curso"
+        },
+        {
+          "oQue": "oficinas sobre Bioeconomia e Empreendedorismo",
+          "min": 9,
+          "max": 18,
+          "unidade": "oficina"
+        },
+        {
+          "oQue": "oficinas e minicursos de Boas Práticas de Fabricação (BPF)",
+          "min": 5,
+          "max": 10,
+          "unidade": "oficina"
+        }
+      ]
+    },
+    {
+      "numero": 16,
+      "descricao": "Elaborar 1 a 2 Sínteses de Evidências ou Revisões Sistemáticas dos Acidentes por Animais Peçonhentos/Venenosos e Ecotoxicologia Ambiental associadas às mudanças climáticas, e Conhecimento Tradicional e Uso de Plantas Medicinais contra DTNs e doenças crônicas, apresentando 1 minuta de Diretriz de Políticas Públicas para o enfrentamento municipal e/ou estadual dessas enfermidades",
+      "descricaoLinhasOriginais": [
+        "Elaborar 1 a 2 Sínteses de Evidências ou Revisões Sistemáticas dos",
+        "Acidentes por Animais Peçonhentos/Venenosos e Ecotoxicologia Ambiental",
+        "associadas às mudanças climáticas, e Conhecimento Tradicional e Uso de",
+        "Plantas Medicinais contra DTNs e doenças crônicas, apresentando 1 minuta",
+        "de Diretriz de Políticas Públicas para o enfrentamento municipal e/ou",
+        "estadual dessas enfermidades"
+      ],
+      "objetivosAssociados": [
+        32,
+        33,
+        38,
+        41,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "25%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "50%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "Sínteses de Evidências ou Revisões Sistemáticas elaboradas",
+          "min": 1,
+          "max": 2,
+          "unidade": "síntese"
+        },
+        {
+          "oQue": "minuta de Diretriz de Políticas Públicas apresentada",
+          "min": 1,
+          "max": 1,
+          "unidade": "minuta"
+        }
+      ]
+    },
+    {
+      "numero": 17,
+      "descricao": "Desenvolver predições baseadas em Inteligência Artificial (IA), criando 1 Aplicativo (app) que permita tomar decisões de curto prazo, no intuito de prevenir, controlar e mitigar acidentes com serpentes (e/ou escorpiões), utilizando diferentes algoritmos de séries temporais baseados em IA para predizer a probabilidade de ocorrência destes acidentes, Ofídio-Venom-Saúde-IA (OVS-IA)",
+      "descricaoLinhasOriginais": [
+        "Desenvolver predições baseadas em Inteligência Artificial (IA), criando",
+        "1 Aplicativo (app) que permita tomar decisões de curto prazo, no intuito",
+        "de prevenir, controlar e mitigar acidentes com serpentes (e/ou",
+        "escorpiões), utilizando diferentes algoritmos de séries temporais",
+        "baseados em IA para predizer a probabilidade de ocorrência destes",
+        "acidentes, Ofídio-Venom-Saúde-IA (OVS-IA)"
+      ],
+      "objetivosAssociados": [
+        30,
+        33,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "25%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "50%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "aplicativo (app) de predição por IA criado — Ofídio-Venom-Saúde-IA (OVS-IA)",
+          "min": 1,
+          "max": 1,
+          "unidade": "aplicativo"
+        }
+      ]
+    },
+    {
+      "numero": 18,
+      "descricao": "Realizar de 2 a 4 diálogos em 2 dimensões: (i) a tecnologia de ponta da Inteligência Artificial (IA), ferramentas de proteômica, genômica, venômica, epidemiologia, etnofarmacologia e ecologia, e (ii) a ciência cidadã vinculada à vigilância popular em saúde para apoiar de 2 a 4 processos de tomada de decisão em relação aos acidentes por animais peçonhentos na Amazônia Legal",
+      "descricaoLinhasOriginais": [
+        "Realizar de 2 a 4 diálogos em 2 dimensões: (i) a tecnologia de ponta da",
+        "Inteligência Artificial (IA), ferramentas de proteômica, genômica,",
+        "venômica, epidemiologia, etnofarmacologia e ecologia, e (ii) a ciência",
+        "cidadã vinculada à vigilância popular em saúde para apoiar de 2 a 4",
+        "processos de tomada de decisão em relação aos acidentes por animais",
+        "peçonhentos na Amazônia Legal"
+      ],
+      "objetivosAssociados": [
+        17,
+        30,
+        33,
+        38
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "diálogos em 2 dimensões realizados",
+          "min": 2,
+          "max": 4,
+          "unidade": "diálogo"
+        },
+        {
+          "oQue": "processos de tomada de decisão apoiados",
+          "min": 2,
+          "max": 4,
+          "unidade": "processo"
+        }
+      ]
+    },
+    {
+      "numero": 19,
+      "descricao": "Determinar 12 a 20 Concentrações Inibitórias (IC50 e CIM), 12 a 20 bactericidas (CBM), e 12 a 20 Índices de Seletividade (IS) para cada 3 a 6 parasitas, 6 a 12 bactérias (incluindo cepas resistentes), 4 a 6 linhagens de células normais e 6 a 12 tumorais. Estudando 3 a 6 mecanismos de ação em dois tipos celulares, e testar 3 a 6 potenciais inibidores",
+      "descricaoLinhasOriginais": [
+        "Determinar 12 a 20 Concentrações Inibitórias (IC50 e CIM), 12 a 20",
+        "bactericidas (CBM), e 12 a 20 Índices de Seletividade (IS) para cada 3 a",
+        "6 parasitas, 6 a 12 bactérias (incluindo cepas resistentes), 4 a 6",
+        "linhagens de células normais e 6 a 12 tumorais. Estudando 3 a 6",
+        "mecanismos de ação em dois tipos celulares, e testar 3 a 6 potenciais",
+        "inibidores"
+      ],
+      "objetivosAssociados": [
+        21,
+        28,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "Concentrações Inibitórias determinadas (IC50 e CIM)",
+          "min": 12,
+          "max": 20,
+          "unidade": "determinação"
+        },
+        {
+          "oQue": "Concentrações Bactericidas Mínimas (CBM) determinadas",
+          "min": 12,
+          "max": 20,
+          "unidade": "determinação"
+        },
+        {
+          "oQue": "Índices de Seletividade (IS) determinados",
+          "min": 12,
+          "max": 20,
+          "unidade": "índice"
+        },
+        {
+          "oQue": "parasitas testados",
+          "min": 3,
+          "max": 6,
+          "unidade": "parasita"
+        },
+        {
+          "oQue": "bactérias testadas (incluindo cepas resistentes)",
+          "min": 6,
+          "max": 12,
+          "unidade": "bactéria"
+        },
+        {
+          "oQue": "linhagens de células normais testadas",
+          "min": 4,
+          "max": 6,
+          "unidade": "linhagem"
+        },
+        {
+          "oQue": "linhagens tumorais testadas",
+          "min": 6,
+          "max": 12,
+          "unidade": "linhagem"
+        },
+        {
+          "oQue": "mecanismos de ação estudados",
+          "min": 3,
+          "max": 6,
+          "unidade": "mecanismo"
+        },
+        {
+          "oQue": "potenciais inibidores testados",
+          "min": 3,
+          "max": 6,
+          "unidade": "inibidor"
+        }
+      ]
+    },
+    {
+      "numero": 20,
+      "descricao": "Avaliar embriotoxicidade e bioatividade de 4 a 8 extratos de plantas amazônicas ou toxinas em zebrafish. Realizar bioensaios e caracterizações in vitro de 2 a 8 compostos selecionados, para definir propriedades farmacêuticas. Determinar de 12 a 24 testes de toxicidade in vitro (citotoxicidade e genotoxicidade) e/ou in vivo em modelo animal (toxidade aguda e subguda) de 6 a 12 venenos/toxinas.",
+      "descricaoLinhasOriginais": [
+        "Avaliar embriotoxicidade e bioatividade de 4 a 8 extratos de plantas",
+        "amazônicas ou toxinas em zebrafish. Realizar bioensaios e",
+        "caracterizações in vitro de 2 a 8 compostos selecionados, para definir",
+        "propriedades farmacêuticas. Determinar de 12 a 24 testes de toxicidade",
+        "in vitro (citotoxicidade e genotoxicidade) e/ou in vivo em modelo animal",
+        "(toxidade aguda e subguda) de 6 a 12 venenos/toxinas."
+      ],
+      "objetivosAssociados": [
+        28,
+        29,
+        39,
+        40,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "25%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "50%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "extratos de plantas amazônicas ou toxinas avaliados em zebrafish",
+          "min": 4,
+          "max": 8,
+          "unidade": "extrato"
+        },
+        {
+          "oQue": "compostos selecionados caracterizados in vitro",
+          "min": 2,
+          "max": 8,
+          "unidade": "composto"
+        },
+        {
+          "oQue": "testes de toxicidade determinados (in vitro e/ou in vivo)",
+          "min": 12,
+          "max": 24,
+          "unidade": "teste"
+        },
+        {
+          "oQue": "venenos/toxinas submetidos a toxicidade aguda e subaguda",
+          "min": 6,
+          "max": 12,
+          "unidade": "veneno/toxina"
+        }
+      ]
+    },
+    {
+      "numero": 21,
+      "descricao": "Realizar cerca 12 a 24 atividades enzimáticas e/ou farmacológicas de interesse, de acordo com a classe química dos 6 a 12 compostos provenientes dos venenos, toxinas, óleos, Bio-óleos, extratos de plantas e bioativos isolados. Caracterizar e formular de 3 a 6 nanoencapsulamentos dos 3 a 6 compostos ativos para os 2 a 4 testes biológicos e/ou farmacológicos",
+      "descricaoLinhasOriginais": [
+        "Realizar cerca 12 a 24 atividades enzimáticas e/ou farmacológicas de",
+        "interesse, de acordo com a classe química dos 6 a 12 compostos",
+        "provenientes dos venenos, toxinas, óleos, Bio-óleos, extratos de plantas",
+        "e bioativos isolados. Caracterizar e formular de 3 a 6",
+        "nanoencapsulamentos dos 3 a 6 compostos ativos para os 2 a 4 testes",
+        "biológicos e/ou farmacológicos"
+      ],
+      "objetivosAssociados": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        28,
+        29,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "atividades enzimáticas e/ou farmacológicas realizadas",
+          "min": 12,
+          "max": 24,
+          "unidade": "atividade"
+        },
+        {
+          "oQue": "compostos provenientes de venenos, toxinas, óleos e extratos",
+          "min": 6,
+          "max": 12,
+          "unidade": "composto"
+        },
+        {
+          "oQue": "nanoencapsulamentos caracterizados e formulados",
+          "min": 3,
+          "max": 6,
+          "unidade": "nanoencapsulamento"
+        },
+        {
+          "oQue": "compostos ativos nanoencapsulados",
+          "min": 3,
+          "max": 6,
+          "unidade": "composto"
+        },
+        {
+          "oQue": "testes biológicos e/ou farmacológicos",
+          "min": 2,
+          "max": 4,
+          "unidade": "teste"
+        }
+      ]
+    },
+    {
+      "numero": 22,
+      "descricao": "Produzir de 4 a 8 Modelos Estruturais de interesse e 6 a 12 interações moleculares entre 2 a 4 alvos e 6 a 12 potenciais inibidores. Realizar de 1 a 3 Modelagem matemática e 2 a 4 simulação dos processos de extração de óleos vegetais via prensagem mecânica e extração sólido-líquido, com o software ASPEN-HYSYS",
+      "descricaoLinhasOriginais": [
+        "Produzir de 4 a 8 Modelos Estruturais de interesse e 6 a 12 interações",
+        "moleculares entre 2 a 4 alvos e 6 a 12 potenciais inibidores. Realizar",
+        "de 1 a 3 Modelagem matemática e 2 a 4 simulação dos processos de",
+        "extração de óleos vegetais via prensagem mecânica e extração sólido-",
+        "líquido, com o software ASPEN-HYSYS"
+      ],
+      "objetivosAssociados": [
+        23,
+        26,
+        27,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "25%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "50%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "Modelos Estruturais produzidos",
+          "min": 4,
+          "max": 8,
+          "unidade": "modelo"
+        },
+        {
+          "oQue": "interações moleculares produzidas",
+          "min": 6,
+          "max": 12,
+          "unidade": "interação"
+        },
+        {
+          "oQue": "alvos moleculares",
+          "min": 2,
+          "max": 4,
+          "unidade": "alvo"
+        },
+        {
+          "oQue": "potenciais inibidores",
+          "min": 6,
+          "max": 12,
+          "unidade": "inibidor"
+        },
+        {
+          "oQue": "modelagens matemáticas realizadas",
+          "min": 1,
+          "max": 3,
+          "unidade": "modelagem"
+        },
+        {
+          "oQue": "simulações de processos de extração de óleos vegetais (ASPEN-HYSYS)",
+          "min": 2,
+          "max": 4,
+          "unidade": "simulação"
+        }
+      ]
+    },
+    {
+      "numero": 23,
+      "descricao": "Formar de 18 a 36 alunos de iniciação científica (ICJ e IC), 9 a 18 alunos de mestrado e 9 a 12 alunos de doutorado. Capacitar técnica-científicamente de 9 a 18 Líderes de comunidades originárias/tradicionais, 90 a 180 integrantes de comunidades originárias/tradicionais, 270 a 540 profissionais, 900 a 2.700 alunos/professores, 45 a 90 gestores em Saúde, Ambiente, Educação e CT&I na Amazônia",
+      "descricaoLinhasOriginais": [
+        "Formar de 18 a 36 alunos de iniciação científica (ICJ e IC), 9 a 18",
+        "alunos de mestrado e 9 a 12 alunos de doutorado. Capacitar técnica-",
+        "científicamente de 9 a 18 Líderes de comunidades",
+        "originárias/tradicionais, 90 a 180 integrantes de comunidades",
+        "originárias/tradicionais, 270 a 540 profissionais, 900 a 2.700",
+        "alunos/professores, 45 a 90 gestores em Saúde, Ambiente, Educação e CT&I",
+        "na Amazônia"
+      ],
+      "objetivosAssociados": [
+        16,
+        31,
+        39
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "alunos de iniciação científica (ICJ e IC) formados",
+          "min": 18,
+          "max": 36,
+          "unidade": "aluno"
+        },
+        {
+          "oQue": "alunos de mestrado formados",
+          "min": 9,
+          "max": 18,
+          "unidade": "aluno"
+        },
+        {
+          "oQue": "alunos de doutorado formados",
+          "min": 9,
+          "max": 12,
+          "unidade": "aluno"
+        },
+        {
+          "oQue": "líderes de comunidades originárias/tradicionais capacitados",
+          "min": 9,
+          "max": 18,
+          "unidade": "líder"
+        },
+        {
+          "oQue": "integrantes de comunidades originárias/tradicionais capacitados",
+          "min": 90,
+          "max": 180,
+          "unidade": "pessoa"
+        },
+        {
+          "oQue": "profissionais capacitados",
+          "min": 270,
+          "max": 540,
+          "unidade": "profissional"
+        },
+        {
+          "oQue": "alunos/professores capacitados",
+          "min": 900,
+          "max": 2700,
+          "unidade": "pessoa"
+        },
+        {
+          "oQue": "gestores em Saúde, Ambiente, Educação e CT&I capacitados",
+          "min": 45,
+          "max": 90,
+          "unidade": "gestor"
+        }
+      ]
+    },
+    {
+      "numero": 24,
+      "descricao": "Integração de 9 a 18 programas de pós-graduação (PPG-SS) e 9 a 18 Grupos de Pesquisa na Amazônia Legal com outros 12 PPGs no Brasil e no Exterior, consolidando 1 Rede Internacional de Pesquisa e Conhecimento de Excelência da Amazônia (INCT-CONEXAO) com +170 pesquisadores de 15 países, incluindo instituições de todos os 9 estados da Amazônia em gestão compartilhada, sob a coordenação geral em RO",
+      "descricaoLinhasOriginais": [
+        "Integração de 9 a 18 programas de pós-graduação (PPG-SS) e 9 a 18 Grupos",
+        "de Pesquisa na Amazônia Legal com outros 12 PPGs no Brasil e no",
+        "Exterior, consolidando 1 Rede Internacional de Pesquisa e Conhecimento",
+        "de Excelência da Amazônia (INCT-CONEXAO) com +170 pesquisadores de 15",
+        "países, incluindo instituições de todos os 9 estados da Amazônia em",
+        "gestão compartilhada, sob a coordenação geral em RO"
+      ],
+      "objetivosAssociados": [
+        34,
+        35,
+        37,
+        39,
+        40,
+        42
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "programas de pós-graduação (PPG-SS) integrados",
+          "min": 9,
+          "max": 18,
+          "unidade": "PPG"
+        },
+        {
+          "oQue": "Grupos de Pesquisa da Amazônia Legal integrados",
+          "min": 9,
+          "max": 18,
+          "unidade": "grupo"
+        },
+        {
+          "oQue": "outros PPGs no Brasil e no exterior integrados",
+          "min": 12,
+          "max": 12,
+          "unidade": "PPG"
+        },
+        {
+          "oQue": "Rede Internacional de Pesquisa e Conhecimento de Excelência consolidada",
+          "min": 1,
+          "max": 1,
+          "unidade": "rede"
+        },
+        {
+          "oQue": "pesquisadores na rede",
+          "min": 170,
+          "max": null,
+          "unidade": "pesquisador"
+        },
+        {
+          "oQue": "países na rede",
+          "min": 15,
+          "max": 15,
+          "unidade": "país"
+        },
+        {
+          "oQue": "estados da Amazônia representados",
+          "min": 9,
+          "max": 9,
+          "unidade": "estado"
+        }
+      ]
+    },
+    {
+      "numero": 25,
+      "descricao": "Idealizar, elaborar e compartilhar 15 a 30 materiais de educação em saúde, ambiental e científico (folders, livro, cartilha, jogos, Gibi de Educação e Popularização de C&T em autoria colaborativa, promovendo 6 a 12 diálogos interculturais entre cientistas e membros das comunidades originárias, produzindo 1 compêndio de conhecimentos científicos e tradicionais relacionados ao objetivo do INCT.",
+      "descricaoLinhasOriginais": [
+        "Idealizar, elaborar e compartilhar 15 a 30 materiais de educação em",
+        "saúde, ambiental e científico (folders, livro, cartilha, jogos, Gibi de",
+        "Educação e Popularização de C&T em autoria colaborativa, promovendo 6 a",
+        "12 diálogos interculturais entre cientistas e membros das comunidades",
+        "originárias, produzindo 1 compêndio de conhecimentos científicos e",
+        "tradicionais relacionados ao objetivo do INCT."
+      ],
+      "objetivosAssociados": [
+        35,
+        41,
+        42,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "25%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "materiais de educação em saúde, ambiental e científica compartilhados",
+          "min": 15,
+          "max": 30,
+          "unidade": "material"
+        },
+        {
+          "oQue": "diálogos interculturais promovidos",
+          "min": 6,
+          "max": 12,
+          "unidade": "diálogo"
+        },
+        {
+          "oQue": "compêndio de conhecimentos científicos e tradicionais produzido",
+          "min": 1,
+          "max": 1,
+          "unidade": "compêndio"
+        }
+      ]
+    },
+    {
+      "numero": 26,
+      "descricao": "Desenvolver 1 Projeto Casa verde (Conscientizar a comunidade sobre a importância da proteção e conservação ambiental), 1 Projeto Smartscópio (fomentar a curiosidade e o interesse pela ciência) e realizar 1 levantamento da biodiversidade Ictica na bacia Amazônica, incluindo genômica das espécies, associada a educação ambiental e os impactos das ações antrópicas nos Igarapés afetando a saúde única.",
+      "descricaoLinhasOriginais": [
+        "Desenvolver 1 Projeto Casa verde (Conscientizar a comunidade sobre a",
+        "importância da proteção e conservação ambiental), 1 Projeto Smartscópio",
+        "(fomentar a curiosidade e o interesse pela ciência) e realizar 1",
+        "levantamento da biodiversidade Ictica na bacia Amazônica, incluindo",
+        "genômica das espécies, associada a educação ambiental e os impactos das",
+        "ações antrópicas nos Igarapés afetando a saúde única."
+      ],
+      "objetivosAssociados": [
+        9,
+        11,
+        14,
+        16,
+        17,
+        36,
+        37,
+        42,
+        43
+      ],
+      "objetivosAssociadosAmbiguo": false,
+      "progresso": [
+        {
+          "prazo": "2º ano",
+          "percentual": "35%"
+        },
+        {
+          "prazo": "4º ano",
+          "percentual": "70%"
+        },
+        {
+          "prazo": "5º ano",
+          "percentual": "100%"
+        }
+      ],
+      "numerosPactuados": [
+        {
+          "oQue": "Projeto Casa Verde desenvolvido",
+          "min": 1,
+          "max": 1,
+          "unidade": "projeto"
+        },
+        {
+          "oQue": "Projeto Smartscópio desenvolvido",
+          "min": 1,
+          "max": 1,
+          "unidade": "projeto"
+        },
+        {
+          "oQue": "levantamento da biodiversidade íctica na bacia Amazônica realizado",
+          "min": 1,
+          "max": 1,
+          "unidade": "levantamento"
+        }
+      ]
+    }
+  ],
+  "indicadores": [
+    {
+      "numero": 1,
+      "ano": 1,
+      "descricao": "Diagnóstico biometeorológico dos últimos 10 anos e de saúde pública para a região do estudo, fornecendo base para o treinamento da PINN gerando o sistema de bioprognose (SIMBAM)"
+    },
+    {
+      "numero": 2,
+      "ano": 1,
+      "descricao": "Produção de um relatório anual sobre o desenvolvimento técnico-científico da proposta, focado em gestores públicos e sociedade para a replicação e possível ampliação da rede para outras regiões."
+    },
+    {
+      "numero": 3,
+      "ano": 1,
+      "descricao": "Fortalecimento do ecossistema de CT&I da Amazônia Legal integrando 35 instituições dos 9 estados com outras 45 instituições nacionais e internacionais em 13 países"
+    },
+    {
+      "numero": 4,
+      "ano": 1,
+      "descricao": "Aumentar os acervos etnobotânico e etnoecológico nas Coleções Biológicas da Amazônia Legal nas áreas de estudos do INCT-CONEXAO"
+    },
+    {
+      "numero": 5,
+      "ano": 1,
+      "descricao": "Desenvolver e implementar programas de divulgação e educação ambiental, científica e em saúde junto às comunidades tradicionais e à sociedade em geral"
+    },
+    {
+      "numero": 6,
+      "ano": 2,
+      "descricao": "Boletins para divulgação de avisos sobre a ocorrência de DTNs/DCNTs baseada na produção operacional da previsão biometeorológica e de acidentes com animais operacionalizadas em IA e redes neurais PINN"
+    },
+    {
+      "numero": 7,
+      "ano": 2,
+      "descricao": "Promover a integração de 9 a 15 Programas de Pós Graduação Stricto Sensu da Amazônia Legal com PPGs de outras regiões nacionais e internacionais via disciplinas eletivas, bancas e eventos anualmente"
+    },
+    {
+      "numero": 8,
+      "ano": 2,
+      "descricao": "Produzir dados sobre conhecimento tradicional, enfrentamento de acidentes com animais peçonhentos, DTNs/DCNTs e uso de plantas medicinais via vivência de mulheres das comunidades originárias"
+    },
+    {
+      "numero": 9,
+      "ano": 2,
+      "descricao": "Realização de 1o Encontro Estratégico Inovador do INCT-CONEXAO com pesquisadores, instituições, setores públicos/privados e sociedade"
+    },
+    {
+      "numero": 10,
+      "ano": 3,
+      "descricao": "Produzir aplicativo de celular de domínio público das informações geradas como ferramenta prática de ciência cidadã e uso por gestores na prevenção e monitoramento de doenças e da saúde única"
+    },
+    {
+      "numero": 11,
+      "ano": 3,
+      "descricao": "Produção de um relatório anual sobre o desenvolvimento técnico-científico da proposta, focado em gestores públicos e sociedade para a replicação e possível ampliação da rede para outras regiões"
+    },
+    {
+      "numero": 12,
+      "ano": 3,
+      "descricao": "Produção de um relatório anual sobre o desenvolvimento técnico-científico da proposta, focado em gestores públicos e sociedade para a replicação e possível ampliação da rede para outras regiões"
+    },
+    {
+      "numero": 13,
+      "ano": 3,
+      "descricao": "Estimular a implantação e manutenção das Hortas de Farmácia Viva Comunitárias ativas e produtivas nas comunidades amazônicas fortalecendo os arranjos ecoprodutivos locais, a bioeconomia e o SUS"
+    },
+    {
+      "numero": 14,
+      "ano": 3,
+      "descricao": "Apresentação de trabalhos em eventos científicos e Defesas de trabalhos de conclusão de curso, dissertações de mestrado e/ou teses de doutorado de integrantes da rede"
+    },
+    {
+      "numero": 15,
+      "ano": 4,
+      "descricao": "Aumentar os Diálogos Deliberativos, as Políticas Informadas por Evidências, os núcleos regionais de evidências científicas e de fitoterapia, CIATOX e os Clubes de Ciências nas Escolas da Amazônia"
+    },
+    {
+      "numero": 16,
+      "ano": 4,
+      "descricao": "Produzir fitoterápicos a partir das plantas medicinais, com início de projeto de comercialização e geração de renda em cada comunidade a partir dos Arranjos Ecoprodutivos Locais na Amazônia"
+    },
+    {
+      "numero": 17,
+      "ano": 4,
+      "descricao": "Publicação de artigos internacionais, capítulos de livros, boletins técnicos e realização de cursos/oficinas de capacitação nos temas do INCT-CONEXAO"
+    },
+    {
+      "numero": 18,
+      "ano": 4,
+      "descricao": "Apresentar 1 Plano de Ação para Diagnóstico Situacional das DTNs da Amazônia Legal e 1 Diretriz Municipal e/ou Estadual de Políticas Públicas de Saúde, Educação e CT&I relacionados aos temas do INCT"
+    },
+    {
+      "numero": 19,
+      "ano": 4,
+      "descricao": "Realização de 2o Encontro Estratégico Inovador e Empreendedor do INCT-CONEXAO com pesquisadores, instituições, setores públicos/privados e sociedade"
+    },
+    {
+      "numero": 20,
+      "ano": 5,
+      "descricao": "Aumentar a integração da Academia, Setores Públicos e Privados, Sociedade para conhecer, conscientizar, preservar e bioprospectar a natureza de forma sustentável para a transformação socioeconômica"
+    },
+    {
+      "numero": 21,
+      "ano": 5,
+      "descricao": "Disponibilizar o Ofídio-Venom-Saúde-IA (OVS-IA), sistema de predições que permite tomar decisões de curto prazo para prevenir, controlar e mitigar acidentes com animais peçonhentos na Amazônia"
+    },
+    {
+      "numero": 22,
+      "ano": 5,
+      "descricao": "Disponibilizar o SIMBAM, o sistema de monitoramento, modelagem e bioprognose para órgãos do poder público federal via INPE"
+    },
+    {
+      "numero": 23,
+      "ano": 5,
+      "descricao": "Apresentação de trabalhos em eventos científicos e Defesas de trabalhos de conclusão de curso, dissertações de mestrado e/ou teses de doutorado de integrantes da rede"
+    },
+    {
+      "numero": 24,
+      "ano": 5,
+      "descricao": "Aumentar o qualitativo/quantitativo dos indicadores de CT&I da Amazônia Legal no cenário (inter)nacional (produção científica, recursos humanos, bolsas de formação, patentes e inovação)"
+    }
+  ],
+  "eets": [
+    {
+      "codigo": "EET-1",
+      "titulo": "Investigação, monitoramento e análise das interações entre o clima, o meio ambiente e a sociedade e seus impactos sobre a saúde única da população na Amazônia Legal"
+    },
+    {
+      "codigo": "EET-2",
+      "titulo": "Levantamentos e Análises de dados Climáticos, Socioterritoriais, Etnobotânicos, Etnoecológicos, Ecotoxicológicos e Epidemiológicos com potencial Diagnóstico Situacional da Amazônia Legal"
+    },
+    {
+      "codigo": "EET-3",
+      "titulo": "Estudo da Biodiversidade, Bioprospecção e Biotecnologia de Venenos/Toxinas, Plantas Medicinais e Biomoléculas de Interesse presentes no Bioma Amazônico"
+    },
+    {
+      "codigo": "EET-4",
+      "titulo": "Estimulo da Bioeconomia, Empreendedorismo, Inovação e Políticas Públicas em CT&I aplicadas aos arranjos ecoprodutivos locais (AEPL) de Plantas Medicinais e Toxinas na Amazônia"
+    },
+    {
+      "codigo": "EET-5",
+      "titulo": "Bioinformática e Tecnologias de Saúde Pública de Precisão (SPP) Aplicadas ao Enfrentamento dos Acidentes com Animais Peçonhentos/Venenosos e Mudanças Climáticas"
+    },
+    {
+      "codigo": "EET-6",
+      "titulo": "Biologia Estrutural, Química Medicinal, Bioensaios e Ensaios in vitro e in silico aplicados às Plantas Medicinais, Toxinas e Biomoléculas"
+    },
+    {
+      "codigo": "EET-7",
+      "titulo": "Formação de Pessoas, Redes de Pesquisa e Divulgação Científica na Amazônia Legal fortalecendo as áreas de Biotecnologia, Biodiversidade, Biometeorologia e Bioeconomia"
+    },
+    {
+      "codigo": "EET-8",
+      "titulo": "Ações Estratégicas de Políticas Informadas por Evidências e de Educação Ambiental, Científica e em Saúde junto às Comunidades Originárias e Sociedade Amazônica"
+    }
+  ],
+  "governanca": {
+    "cges": {
+      "nome": "Comitê Gestor",
+      "sigla": "CGES",
+      "membros": 9,
+      "composicao": "9 pesquisadores (4 RO, 1 AM, 1 AP, 1 PA, 1 RR e 1 SP)",
+      "papel": "define as diretrizes estratégicas, acompanha a implementação e gerencia os recursos"
+    },
+    "llas": {
+      "nome": "Líderes de Laboratórios Associados",
+      "sigla": "LLA",
+      "quantidade": 26,
+      "distribuicao": "18 na Amazônia Legal, 5 no SE, 2 no NE, 1 no CE",
+      "papel": "equipe executiva que acompanha e executa as atividades do projeto",
+      "observacao": "o Quadro Geral do PICC registra 28 'Líder de Laboratório Associado'; o RESUMO afirma 26"
+    },
+    "membrosDeEquipe": {
+      "papel": "Pessoas e profissionais capacitados trabalhando em colaboração no modelo de interação entre academia, governo, empresas e sociedade"
+    },
+    "comitesTecnicos": [
+      {
+        "sigla": "CEXPECIAL",
+        "nome": "Comitê de Expedições Científicas na Amazônia Legal"
+      },
+      {
+        "sigla": "CCCO",
+        "nome": "Comitê de Clima e Comunidades Originárias"
+      },
+      {
+        "sigla": "CTC",
+        "nome": "Comitê Técnico-Científico"
+      },
+      {
+        "sigla": "CDIV",
+        "nome": "Comitê de Divulgação e Comunicação Científica"
+      },
+      {
+        "sigla": "CPIE",
+        "nome": "Comitê de Políticas Públicas, Inovação e Empreendedorismo"
+      },
+      {
+        "sigla": "CINTER",
+        "nome": "Comitê de Internacionalização"
+      }
+    ],
+    "ritoDeAcompanhamento": "acompanhamento via relatórios parciais anuais e/ou semestrais (resultados alcançados e dificuldades e oportunidades encontradas), visitas técnicas e/ou intercâmbios presenciais ou remotos, reuniões remotas tri ou semestrais, mensuração do percentual atingido das metas pactuadas e entrega dos produtos, reportando o desenvolvimento e as atualizações aos LLAs, CTs e CGES",
+    "quadroGeralPicc": [
+      {
+        "categoria": "Pesquisador",
+        "quantidade": 74
+      },
+      {
+        "categoria": "Líder de Laboratório Associado",
+        "quantidade": 28
+      },
+      {
+        "categoria": "Colaborador",
+        "quantidade": 23
+      },
+      {
+        "categoria": "Pesquisador Estrangeiro",
+        "quantidade": 22
+      },
+      {
+        "categoria": "Pesquisador Colaborador",
+        "quantidade": 21
+      },
+      {
+        "categoria": "Aluno",
+        "quantidade": 13
+      },
+      {
+        "categoria": "Aluno de Pós-Graduação",
+        "quantidade": 9
+      },
+      {
+        "categoria": "Membro do Comitê Gestor",
+        "quantidade": 8
+      },
+      {
+        "categoria": "Administrativa",
+        "quantidade": 5
+      },
+      {
+        "categoria": "Técnico",
+        "quantidade": 3
+      },
+      {
+        "categoria": "Apoio Técnico",
+        "quantidade": 1
+      },
+      {
+        "categoria": "Técnico de Laboratório",
+        "quantidade": 1
+      },
+      {
+        "categoria": "Vice-Coordenador",
+        "quantidade": 1
+      }
+    ],
+    "quadroGeralPiccTotal": 209
+  },
+  "bolsas": [
+    {
+      "modalidade": "Iniciação Científica - IC",
+      "sigla": "IC",
+      "quantidade": 18,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 700.0,
+      "subtotalBRL": 151200.0
+    },
+    {
+      "modalidade": "ITI A",
+      "sigla": "ITI-A",
+      "quantidade": 18,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 700.0,
+      "subtotalBRL": 151200.0
+    },
+    {
+      "modalidade": "SET-C",
+      "sigla": "SET-C",
+      "quantidade": 3,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 5850.0,
+      "subtotalBRL": 210600.0
+    },
+    {
+      "modalidade": "SET-B",
+      "sigla": "SET-B",
+      "quantidade": 2,
+      "duracaoMeses": 24,
+      "mensalidadeBRL": 6500.0,
+      "subtotalBRL": 312000.0
+    },
+    {
+      "modalidade": "ADC-1A",
+      "sigla": "ADC-1A",
+      "quantidade": 2,
+      "duracaoMeses": 36,
+      "mensalidadeBRL": 5200.0,
+      "subtotalBRL": 374400.0
+    },
+    {
+      "modalidade": "DTI-A",
+      "sigla": "DTI-A",
+      "quantidade": 6,
+      "duracaoMeses": 36,
+      "mensalidadeBRL": 5200.0,
+      "subtotalBRL": 1123200.0
+    },
+    {
+      "modalidade": "DTI-B",
+      "sigla": "DTI-B",
+      "quantidade": 8,
+      "duracaoMeses": 24,
+      "mensalidadeBRL": 3900.0,
+      "subtotalBRL": 748800.0
+    },
+    {
+      "modalidade": "DTI-C",
+      "sigla": "DTI-C",
+      "quantidade": 8,
+      "duracaoMeses": 24,
+      "mensalidadeBRL": 1430.0,
+      "subtotalBRL": 274560.0
+    },
+    {
+      "modalidade": "SET-F",
+      "sigla": "SET-F",
+      "quantidade": 2,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 3900.0,
+      "subtotalBRL": 93600.0
+    },
+    {
+      "modalidade": "EXP - 3",
+      "sigla": "EXP-3",
+      "quantidade": 3,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 1045.89,
+      "subtotalBRL": 37652.04
+    },
+    {
+      "modalidade": "EV-1",
+      "sigla": "EV-1",
+      "quantidade": 8,
+      "duracaoMeses": 6,
+      "mensalidadeBRL": 6500.0,
+      "subtotalBRL": 432000.0
+    },
+    {
+      "modalidade": "Pós-Doutorado Junior - PDJ",
+      "sigla": "PDJ",
+      "quantidade": 2,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 5200.0,
+      "subtotalBRL": 136320.0
+    },
+    {
+      "modalidade": "ADC-1C",
+      "sigla": "ADC-1C",
+      "quantidade": 6,
+      "duracaoMeses": 24,
+      "mensalidadeBRL": 1430.0,
+      "subtotalBRL": 205920.0
+    },
+    {
+      "modalidade": "SET-E",
+      "sigla": "SET-E",
+      "quantidade": 1,
+      "duracaoMeses": 24,
+      "mensalidadeBRL": 4550.0,
+      "subtotalBRL": 109200.0
+    },
+    {
+      "modalidade": "SET-G",
+      "sigla": "SET-G",
+      "quantidade": 2,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 3250.0,
+      "subtotalBRL": 78000.0
+    },
+    {
+      "modalidade": "EXP - 1",
+      "sigla": "EXP-1",
+      "quantidade": 3,
+      "duracaoMeses": 12,
+      "mensalidadeBRL": 3169.37,
+      "subtotalBRL": 114097.32
+    },
+    {
+      "modalidade": "EV-3",
+      "sigla": "EV-3",
+      "quantidade": 6,
+      "duracaoMeses": 6,
+      "mensalidadeBRL": 3250.0,
+      "subtotalBRL": 147000.0
+    }
+  ],
+  "bolsasTotais": {
+    "modalidades": 17,
+    "quotas": 98,
+    "valorTotalBRL": 4699749.36
+  },
+  "orcamento": {
+    "custeioBRL": 4618000.0,
+    "capitalBRL": 4163000.0,
+    "bolsaBRL": 4699749.36,
+    "totalGeralBRL": 13480749.36,
+    "custeioItens": [
+      {
+        "item": "Terceiros (Pessoa jurídica)",
+        "valorBRL": 785000.0
+      },
+      {
+        "item": "Material de consumo",
+        "valorBRL": 1898000.0
+      },
+      {
+        "item": "Diárias",
+        "valorBRL": 960000.0,
+        "detalhe": "3000 diárias em 5 anos para +100 pessoas"
+      },
+      {
+        "item": "Passagens",
+        "valorBRL": 815000.0
+      },
+      {
+        "item": "Terceiros (Pessoa física)",
+        "valorBRL": 80000.0
+      },
+      {
+        "item": "Despesas acessórias com importação",
+        "valorBRL": 80000.0
+      }
+    ],
+    "capitalItens": [
+      {
+        "item": "Equipamentos e Material permanente",
+        "valorBRL": 3563000.0
+      },
+      {
+        "item": "Material permanente importado",
+        "valorBRL": 600000.0
+      }
+    ],
+    "divulgacaoCientifica": "cerca de 10% do orçamento destinado ao PCDC-CONEXAO"
+  },
+  "numerosDaRede": {
+    "instituicoes": 86,
+    "paises": 16,
+    "listaPaises": [
+      "Brasil",
+      "Alemanha",
+      "Argentina",
+      "Chile",
+      "Colômbia",
+      "Costa Rica",
+      "Estados Unidos",
+      "Equador",
+      "França",
+      "Guiana Francesa",
+      "Inglaterra",
+      "México",
+      "Paraguai",
+      "Panamá",
+      "Peru",
+      "Portugal"
+    ],
+    "instituicoesAmazoniaLegal": 35,
+    "instituicoesRondonia": 21,
+    "instituicoesSudeste": 13,
+    "instituicoesNordeste": 7,
+    "instituicoesCentroOeste": 5,
+    "instituicoesEstrangeiras": 16,
+    "pesquisadoresEstrangeiros": 22,
+    "membrosEquipeAmazoniaLegal": 136,
+    "percentualPesquisadoresAmazoniaLegal": 71.5,
+    "pesquisadores": 190,
+    "pesquisadoresObs": "190 pesquisadores cadastrados na plataforma PICC/CNPq",
+    "bolsistasPqDt": 31,
+    "bolsistasPqDtDetalhe": "10 PQ-1 e 21 PQ/PD-2",
+    "llas": 26,
+    "laboratoriosAssociados": 26,
+    "estadosAmazoniaLegal": 9,
+    "programasPosGraduacao": "mais de 15 PPGs stricto sensu participantes (objetivo 39)",
+    "redConexaoAtual": "83 instituições participantes em 15 países (RED-CONEXAO, situação declarada na proposta)"
+  },
+  "planoDivulgacao": {
+    "sigla": "PCDC-CONEXAO",
+    "orcamento": "cerca de 10% do orçamento total",
+    "acoes": [
+      "site",
+      "contas de Facebook e Instagram",
+      "conteúdos audiovisuais interativos",
+      "resumos e histórias visuais",
+      "cursos temáticos",
+      "expedições científicas compartilhadas",
+      "jogos educativos",
+      "eventos híbridos anuais (simpósios e workshops)",
+      "atividades presenciais em escolas e ICTs",
+      "feiras de ciências e palestras (POP/SNCT)",
+      "clubes de ciências em municípios da Amazônia Legal",
+      "Resumos Executivos a autoridades locais e nacionais",
+      "Boletim Informativo Semestral"
+    ]
+  },
+  "achadosCriticos": [
+    "NENHUMA das 26 metas tem marco no 1º ano: todas medem progresso apenas no 2º, 4º e 5º ano. O relatório de 1 ano não pode cobrar percentual de meta — deve coletar linha de base e evidência de execução.",
+    "Os únicos compromissos com prazo no 1º ano são os indicadores 1 a 5.",
+    "Os prazos de progresso são idênticos em todas as 26 metas (2º ano / 4º ano / 5º ano); só variam os percentuais.",
+    "A coluna OBJETIVOS ESPECÍFICOS ASSOCIADOS foi resolvida por posição no layout do PDF. Nenhuma meta ficou ambígua.",
+    "Os objetivos específicos 1, 2, 3, 4 e 5 (todo o bloco de diagnóstico climático/biometeorológico) NÃO estão associados a nenhuma das 26 metas. Só aparecem via indicadores — em especial o indicador 1, que é justamente de 1º ano. Um formulário organizado só por metas deixaria esse bloco inteiro sem coleta.",
+    "38 dos 43 objetivos específicos são cobertos por pelo menos uma meta; os 5 restantes são os citados acima."
+  ],
+  "inconsistenciasNaProposta": [
+    "Tamanho da rede: RESUMO diz 86 instituições em 16 países; o indicador 3 (1º ano) diz 35 + 45 = 80 instituições em 13 países; a p.38 diz que a RED-CONEXAO tem hoje 83 instituições em 15 países; o orçamento fala em 80 instituições; a meta 24 e o objetivo 40 falam em 15 países.",
+    "Pesquisadores: RESUMO diz 190 (PICC/CNPq); a meta 24 diz '+170 pesquisadores'; o orçamento fala em '+100 pesquisadores'.",
+    "LLAs: RESUMO diz 26; o Quadro Geral do PICC registra 28 'Líder de Laboratório Associado'; a infraestrutura fala em 26 Laboratórios Associados.",
+    "CGES: o texto diz 9 pesquisadores; o Quadro Geral registra 8 'Membro do Comitê Gestor' + 1 Vice-Coordenador (+ o coordenador).",
+    "Indicadores 2 (1º ano), 11 e 12 (3º ano) têm exatamente o mesmo texto ('relatório anual sobre o desenvolvimento técnico-científico'). Os indicadores 14 (3º ano) e 23 (5º ano) também são idênticos entre si.",
+    "O 3º ano tem DOIS indicadores idênticos de relatório anual (11 e 12) — provável erro de digitação da proposta.",
+    "No texto de governança a sexta etapa aparece grafada 'EE-6' e não 'EET-6'.",
+    "Bolsas: a proposta pactua 17 modalidades e 98 quotas. Listagens parciais que citam 14 modalidades omitem SET-G (2), EXP-1 (3) e EV-3 (6) — 11 quotas."
+  ]
+}

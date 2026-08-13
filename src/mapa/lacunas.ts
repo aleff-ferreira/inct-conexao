@@ -110,5 +110,5 @@ export function varrerLacunas(camadas: Camada[]): Lacunas {
 export function frasePreenchimento(l: Lacunas): string {
   const pct = Math.round((l.ufsComFicha / l.ufsTotal) * 100);
   return `${l.ufsComFicha} das ${l.ufsTotal} unidades federativas têm ficha publicada (${pct}%). ` +
-    `Ausência de ficha significa cadastro não feito — não ausência de risco ou de atividade.`;
+    `Ausência de ficha significa cadastro não feito, e não ausência de risco ou de atividade.`;
 }

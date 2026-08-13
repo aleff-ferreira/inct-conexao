@@ -80,7 +80,7 @@ export function frasePosicao(p: Posto, camada: Camada): string {
     p.recorte === "Brasil" ? "no Brasil"
     : p.recorte === "Amazônia Legal" ? "na Amazônia Legal"
     : `no ${p.recorte}`;
-  return `${p.posicao}º entre os ${p.de} estados com dado publicado ${onde} — ${camada.label}.`;
+  return `${p.posicao}º entre os ${p.de} estados com dado publicado ${onde}, em ${camada.label}.`;
 }
 
 /**

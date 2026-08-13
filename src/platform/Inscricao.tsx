@@ -306,7 +306,7 @@ export default function Inscricao({ slug }: { slug: string }) {
             <strong>Não foi possível carregar sua inscrição</strong>
             <p>
               Houve uma instabilidade momentânea. <a href="#/inscricao/selecao-ic-2026" onClick={() => location.reload()}>Recarregue a página</a> para continuar
-              com segurança: não crie uma nova inscrição para evitar duplicidade.
+              com segurança. Não crie uma nova inscrição, para evitar duplicidade.
             </p>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function Inscricao({ slug }: { slug: string }) {
           <ShieldCheck size={20} aria-hidden="true" />
           <div>
             <strong>Inscrição recebida: protocolo {existing.protocolo}</strong>
-            <p>O período de edição encerrou; acompanhe o resultado pelo cronograma do processo seletivo.</p>
+            <p>O período de edição encerrou. Acompanhe o resultado pelo cronograma do processo seletivo.</p>
           </div>
         </div>
       ) : (
@@ -505,7 +505,7 @@ export default function Inscricao({ slug }: { slug: string }) {
                           }
                           if (file.size > (DOC_MAX_BYTES[d.kind] ?? 1024 * 1024)) {
                             setErrorMsg(
-                              `O PDF de "${d.label.split(" (")[0]}" deve ter no máximo ${docMaxLabel(d.kind)}, comprima o arquivo (ex.: ilovepdf.com/compress_pdf) e tente de novo.`,
+                              `O PDF de "${d.label.split(" (")[0]}" deve ter no máximo ${docMaxLabel(d.kind)}; comprima o arquivo (ex.: ilovepdf.com/compress_pdf) e tente de novo.`,
                             );
                             return;
                           }
@@ -535,7 +535,7 @@ export default function Inscricao({ slug }: { slug: string }) {
                           >
                             ver o arquivo
                           </button>{" "}
-                         : escolha um novo para substituir
+                         · escolha um novo para substituir
                         </small>
                       ) : null}
                     </label>
@@ -746,7 +746,7 @@ function Comprovante({
       </div>
 
       <p className="comprovante-foot">
-        Guarde este comprovante. Ele confirma o recebimento da sua inscrição; não representa aprovação. A inscrição
+        Guarde este comprovante. Ele confirma o recebimento da sua inscrição, mas não representa aprovação. A inscrição
         pode ser revisada com o mesmo e-mail até {fmtData(edital.fecha_em)}. O resultado será divulgado conforme o
         cronograma do processo seletivo.
       </p>

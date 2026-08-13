@@ -118,14 +118,27 @@ gestão é e-mail + senha (sem depender de e-mail para entrar).
    Create new user** — e-mail do(a) avaliador(a) + uma senha temporária
    forte; marque **Auto Confirm User**.
 2. Envie a senha temporária por um canal seguro (WhatsApp etc.).
-3. No site, `#/gestao` → aba **Equipe** → mude o papel da pessoa para
+3. No site, `#/gestao` → área **Contas** (painel **Administração de
+   Contas**, `#/gestao?area=contas`) → mude o papel da pessoa para
    **Avaliador(a)** (ou Administrador(a)).
 4. A pessoa entra com e-mail + senha temporária e clica **"Trocar senha"**
    no topo do painel.
 
-Observação: ninguém consegue alterar o próprio papel na aba Equipe (nem
-mesmo o admin) — isso evita perda de acesso acidental; o papel dos outros
-só é editável por administradores (política RLS no banco).
+### Quem gere contas: SuperAdministradores (migração 012)
+Desde a migração `012_superadmin.sql`, a gerência de contas — pré-autorizar
+e-mails e trocar papéis — saiu da antiga aba Equipe (que era por processo
+seletivo e de qualquer admin) e virou o painel **Administração de Contas**
+(`#/gestao?area=contas`), exclusivo do papel **SuperAdministrador(a)**:
+
+- Só superadmins veem o painel; para os demais a RLS devolve zero linhas da
+  allowlist e nega escrita de papéis — a restrição é no banco, não na tela.
+- Superadmin herda TODOS os poderes de edição de admin no site inteiro
+  (`is_admin()` da 012 inclui superadmin — seleções, relatório anual,
+  fitofármacos), e soma a gerência de contas.
+- Os únicos e-mails com esse status (bootstrap da 012): labioprot.toxin,
+  alefffx, andreimarsoares, akayano (gmail.com) e mateus.sousa@fiocruz.br.
+- Ninguém altera o próprio papel (nem superadmin), e o banco impede rebaixar
+  o ÚLTIMO superadmin — o site nunca fica sem quem possa gerir contas.
 
 ## Operação
 

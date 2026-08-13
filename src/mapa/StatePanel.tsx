@@ -228,7 +228,7 @@ export function StatePanel({ uf, conteudo, camada, secaoAberta, leve, onAbrirSec
 
         {mostrar("animais") && (
           <Secao titulo="Animais peçonhentos" icon={Bug}>
-            <p className="map-section-lede">Animais <em>peçonhentos</em> inoculam veneno (picada/ferrão); diferentes de <em>venenosos</em> (tóxicos se ingeridos/tocados). Fotos servem só de referência: a identificação segura em campo exige cautela.</p>
+            <p className="map-section-lede">Animais <em>peçonhentos</em> inoculam veneno (picada/ferrão), diferentes dos <em>venenosos</em> (tóxicos se ingeridos/tocados). Fotos servem só de referência: a identificação segura em campo exige cautela.</p>
             {conteudo?.animais?.length ? (
               conteudo.animais.map((a, i) => <AnimalCard key={i} a={a} leve={leve} />)
             ) : (
@@ -239,7 +239,7 @@ export function StatePanel({ uf, conteudo, camada, secaoAberta, leve, onAbrirSec
 
         {mostrar("doencas") && (
           <Secao titulo="Doenças tropicais e negligenciadas" icon={Activity}>
-            <p className="map-section-lede">Conteúdo <strong>educativo</strong>. Não substitui avaliação profissional; o site não diagnostica nem prescreve.</p>
+            <p className="map-section-lede">Conteúdo <strong>educativo</strong>. Não substitui avaliação profissional. O site não diagnostica nem prescreve.</p>
             {conteudo?.doencas?.length ? (
               <DoencasSecao doencas={conteudo.doencas} uf={uf.nome} />
             ) : (
@@ -276,7 +276,7 @@ export function StatePanel({ uf, conteudo, camada, secaoAberta, leve, onAbrirSec
                 <li key={i}><strong>{s.nome}</strong>: {s.url ? <a href={s.url} target="_blank" rel="noreferrer">{s.contato}</a> : s.contato} {s.nota ? <span className="map-muted">{s.nota}</span> : null}</li>
               ))}
             </ul>
-            <p className="map-note"><Info size={14} aria-hidden /> Telefones nacionais oficiais. A rede de referência para soroterapia varia por município, confirme com a Vigilância em Saúde local.</p>
+            <p className="map-note"><Info size={14} aria-hidden /> Telefones nacionais oficiais. A rede de referência para soroterapia varia por município. Confirme com a Vigilância em Saúde local.</p>
           </Secao>
         )}
 
@@ -384,8 +384,8 @@ function DoencasSecao({ doencas, uf }: { doencas: Doenca[]; uf: string }) {
           ) : null}
           <p className="map-burden-nota">
             <Info size={13} aria-hidden /> {sistema ? `${sistema}. ` : ""}
-            Notificação não é o mesmo que caso confirmado, e o número também depende da intensidade da vigilância —
-            use como ordem de grandeza, não como comparação exata.
+            Notificação não é o mesmo que caso confirmado, e o número também depende da intensidade da vigilância.
+            Use como ordem de grandeza, não como comparação exata.
           </p>
         </div>
       ) : null}
@@ -443,7 +443,7 @@ function DoencaCard({ d, maxValor, defaultOpen }: { d: Doenca; maxValor: number;
         </div>
       ) : null}
       {d.tratamento?.length ? <Bloco icon={HeartPulse} titulo="Primeiros cuidados" itens={d.tratamento} /> : null}
-      {d.manejoServicos ? <p className="map-manejo"><Info size={14} aria-hidden /> <strong>Nos serviços de saúde:</strong> {d.manejoServicos} <em>(informação geral, não é orientação de tratamento individual.)</em></p> : null}
+      {d.manejoServicos ? <p className="map-manejo"><Info size={14} aria-hidden /> <strong>Nos serviços de saúde:</strong> {d.manejoServicos} <em>(informação geral, não é orientação de tratamento individual).</em></p> : null}
       <Fontes fontes={d.fontes} />
     </details>
   );

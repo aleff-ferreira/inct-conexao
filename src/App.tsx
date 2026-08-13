@@ -7,6 +7,7 @@ import {
   Building2,
   CalendarClock,
   CheckCircle2,
+  ChevronDown,
   CloudSun,
   Compass,
   Dna,
@@ -39,7 +40,7 @@ import {
 } from "lucide-react";
 import { partners, REDE, paisesEstrangeiros, type Partner } from "./content/rede";
 import { NumeroQueConta } from "./ui/NumeroQueConta";
-import { useHashRoute, HUB_HREF, GROUPS_HREF, EDITAL_HREF, RESULTADO_IC_HREF, MAPA_HREF, NOTICIAS_HREF, eventHref } from "./webinars/router";
+import { useHashRoute, pareceRetornoDeAuth, rotaTrataAuth, HUB_HREF, GROUPS_HREF, EDITAL_HREF, RESULTADO_IC_HREF, MAPA_HREF, NOTICIAS_HREF, FITOFARMAS_HREF, CURSO_HREF, eventHref } from "./webinars/router";
 import { EditalIC2026 } from "./EditalIC2026";
 
 // Plataforma de Seleções: carregada sob demanda para não pesar o site público.
@@ -57,6 +58,29 @@ const NoticiasHub = lazy(() => import("./noticias/NoticiasHub"));
 const NoticiaPage = lazy(() => import("./noticias/NoticiaPage"));
 const NoticiasTeaser = lazy(() => import("./noticias/NoticiasTeaser"));
 const MapaTeaser = lazy(() => import("./mapa/MapaTeaser"));
+/* Relatório Anual: dois formulários longos (metadados de DOI/ORCID, dedupe,
+   i18n) que só interessam a quem recebeu o convite por e-mail. Chunk próprio,
+   fora do bundle da home — e fora do menu, porque são rotas de convite. Os
+   ARQUIVOS mantêm o nome legado (MeuAno/MeuLaboratorio) de propósito: renomear
+   arquivo mexeria em todos os imports de uma vez, e estabilidade vale mais. */
+const MeuAno = lazy(() => import("./relato/MeuAno"));
+const MeuLaboratorio = lazy(() => import("./relato/MeuLaboratorio"));
+/* Formulário pré-evento do I Workshop Conexão Fitofarmas (25 e 27/08/2026).
+   Chunk próprio por dois motivos: puxa o SDK do Supabase (que não pode entrar
+   no bundle da home) e é página de CAMPANHA COM PRAZO — depois de setembro ela
+   não pode continuar custando bytes a quem só quer ler o site. */
+const FitofarmasPreEvento = lazy(() => import("./fitofarmas/FormularioPreEvento"));
+/* CONEXAO-BIOINFORMÁTICA — curso "Do átomo à ação biológica" (#/curso): página
+   de apresentação + inscrição do curso do IFRO Campus Jaru. Chunk próprio pelos
+   mesmos dois motivos do Fitofarmas — puxa o SDK do Supabase (fora do bundle da
+   home) e é página de campanha com prazo. A rota e o QR impresso permanecem. */
+const CursoPage = lazy(() => import("./curso/CursoPage"));
+/* Definir nova senha: a rota `#/nova-senha` E a rede de segurança montada por
+   cima de qualquer outra rota. Lazy porque o módulo puxa o SDK do Supabase
+   inteiro — e é essa a razão de o App.tsx decidir pela URL (`pareceRetornoDeAuth`,
+   parse de string) em vez de chamar `useAuth` aqui: importar o hook na home
+   colocaria o SDK no bundle inicial de quem só quer ler o site. */
+const NovaSenha = lazy(() => import("./platform/NovaSenha"));
 
 /**
  * Fundo do hero em vídeo (montagem leve das expedições, ~27s em loop).
@@ -258,7 +282,15 @@ function ActionVideo({ highlight }: { highlight: InstagramHighlight }) {
   );
 }
 
-type NavItem = { label: string; href: string; icon: typeof Microscope; routes?: string[] };
+type NavItem = {
+  label: string;
+  /** Ausente quando o item é um grupo (dropdown) — aí `children` é que vale. */
+  href?: string;
+  icon: typeof Microscope;
+  routes?: string[];
+  /** Se presente, o item vira um menu suspenso com estes filhos (ex.: Eventos). */
+  children?: NavItem[];
+};
 
 const navItems: NavItem[] = [
   { label: "Pesquisa", href: "#pesquisa", icon: Microscope },
@@ -267,7 +299,21 @@ const navItems: NavItem[] = [
   { label: "Mapa", href: MAPA_HREF, icon: Map, routes: ["mapa"] },
   { label: "Notícias", href: NOTICIAS_HREF, icon: Newspaper, routes: ["noticias", "noticia"] },
   { label: "Oportunidades", href: "#editais", icon: Download },
-  { label: "Webinars", href: HUB_HREF, icon: Radio, routes: ["hub", "event"] },
+  /* EVENTOS — menu suspenso (decisão do dono, 2026-08-12) que reúne Webinars,
+     Fitofarmas e o curso CONEXAO-BIOINFORMÁTICA num só item. Cada filho mantém a
+     própria rota (e o QR/cartaz impresso continua valendo); depois de um evento,
+     tirar a linha do filho é o caminho de saída. */
+  {
+    label: "Eventos",
+    icon: CalendarClock,
+    children: [
+      { label: "Webinars", href: HUB_HREF, icon: Radio, routes: ["hub", "event"] },
+      { label: "Fitofarmas", href: FITOFARMAS_HREF, icon: Leaf, routes: ["fitofarmas"] },
+      { label: "CONEXAO-BIOINFORMÁTICA", href: CURSO_HREF, icon: Atom, routes: ["curso"] },
+    ],
+  },
+  /* Grupos ainda não está finalizado, mas volta ao menu por decisão do dono
+     (2026-08-12); a rota #/grupos já resolve. */
   { label: "Grupos", href: GROUPS_HREF, icon: UsersRound, routes: ["groups", "group"] },
   { label: "Contato", href: "#contato", icon: Mail },
   { label: "Gestão", href: "#/gestao", icon: ShieldCheck, routes: ["gestao"] },
@@ -307,7 +353,7 @@ const fieldStories = [
   {
     title: "Dados climáticos para decisão pública",
     eyebrow: "Observatório",
-    text: "Monitoramento ambiental, modelagem preditiva e alertas precoces aproximam ciência de gestão, prevenção e cuidado.",
+    text: "Monitoramento ambiental, modelagem preditiva e alertas precoces aproximam a ciência da gestão, da prevenção e do cuidado.",
     image: assetPath("clima-amazonia.jpg"),
     meta: "Clima, saúde e precisão",
     icon: Map,
@@ -714,7 +760,7 @@ const cgesDistribution = [
 
 const governanceCadence = [
   "Relatórios parciais anuais e/ou semestrais com resultados, dificuldades e oportunidades.",
-  "Reuniões remotas tri ou semestrais entre LLAs, CTs e CGES.",
+  "Reuniões remotas trimestrais ou semestrais entre LLAs, CTs e CGES.",
   "Visitas técnicas, intercâmbios presenciais ou remotos e acompanhamento das metas pactuadas.",
   "Orientação legal para autorizações, envio, identificação e rastreabilidade de amostras.",
 ];
@@ -781,6 +827,15 @@ type Notice = {
 };
 
 const notices: Notice[] = [
+  {
+    status: "Inscrições abertas",
+    title: "CONEXAO-BIOINFORMÁTICA: Do átomo à ação biológica · IFRO Campus Jaru",
+    date: "19, 20 e 21 de agosto de 2026 · presencial",
+    text: "Bioinformática estrutural, inteligência artificial, docking e ADMET para estudantes de Veterinária e Agronomia e docentes. Monte um percurso de 7 horas escolhendo um horário de cada conteúdo. Não é necessário saber programar.",
+    href: CURSO_HREF,
+    linkLabel: "Conhecer o curso e se inscrever",
+    featured: true,
+  },
   {
     status: "Resultado publicado",
     title: "Resultado do Processo Seletivo Simplificado Nº 04/2026, Bolsas de IC/CNPq",
@@ -1038,6 +1093,89 @@ const partnerLogos: Record<string, string> = {
 
 const partnerGroups = ["Todos", ...Array.from(new Set(partners.map((partner) => partner.group)))];
 
+/**
+ * Item de menu com filhos = menu suspenso ("Eventos"). Padrão DISCLOSURE (não
+ * `role="menu"`): um botão com `aria-expanded` revela uma região com LINKS
+ * normais (em ordem de tabulação), o que é mais robusto que um menu ARIA sem
+ * gerência completa de teclado. Abre no hover e no clique/foco; fecha no Escape
+ * (devolvendo o foco ao botão), no clique fora, ao escolher um filho e na troca
+ * de rota. Quando fechado, o painel fica `visibility: hidden` (CSS) — logo, fora
+ * da ordem de tabulação e da árvore de acessibilidade.
+ */
+function NavDropdown({ item, routeName }: { item: NavItem; routeName: string }) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const filhos = item.children ?? [];
+  const painelId = `nav-dd-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
+  const grupoAtivo = filhos.some((c) => c.routes?.includes(routeName));
+
+  // Fecha ao trocar de rota (a pessoa clicou num filho ou navegou de outro jeito).
+  useEffect(() => {
+    setOpen(false);
+  }, [routeName]);
+
+  // Enquanto aberto: Escape fecha e devolve o foco; clique fora fecha.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        btnRef.current?.focus();
+      }
+    };
+    const onDown = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onDown);
+    };
+  }, [open]);
+
+  return (
+    <div
+      className="nav-dropdown"
+      ref={wrapRef}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        ref={btnRef}
+        type="button"
+        className={grupoAtivo ? "nav-dropdown-btn is-active" : "nav-dropdown-btn"}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls={painelId}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {item.label}
+        <ChevronDown className="nav-dropdown-chevron" size={15} aria-hidden="true" />
+      </button>
+      <div id={painelId} className={open ? "nav-dropdown-panel is-open" : "nav-dropdown-panel"}>
+        {filhos.map((c) => {
+          const ativo = c.routes?.includes(routeName) ?? false;
+          const Icone = c.icon;
+          return (
+            <a
+              key={c.label}
+              href={c.href}
+              className={ativo ? "is-active" : ""}
+              aria-current={ativo ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              <Icone size={17} aria-hidden="true" />
+              {c.label}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const route = useHashRoute();
   const prevRouteName = useRef(route.name);
@@ -1049,6 +1187,20 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeSection, setActiveSection] = useState("inicio");
   const [headerLifted, setHeaderLifted] = useState(false);
+  /* REDE DE SEGURANÇA DO LINK DE REDEFINIÇÃO DE SENHA.
+     O link do e-mail aponta para `#/nova-senha`, mas o retorno pode chegar sem
+     a hash: o GoTrue sobrescreve o fragmento quando devolve erro no fluxo
+     implícito, e um `redirect_to` recusado pela allowlist do projeto cai no
+     Site URL — a home. Foi esse o defeito relatado: o e-mail abria a página
+     inicial e não havia tela nenhuma para definir a senha.
+     A leitura é feita UMA vez, no primeiro render, porque o SDK apaga o
+     "?code=" da URL assim que o troca por sessão; e é só parse de string, para
+     a home não pagar nada por isto. Quem decide se a tela aparece é o próprio
+     módulo (pelo `auth.recovery`): aqui só se decide se vale carregá-lo. */
+  const [retornoDeAuth] = useState(() =>
+    typeof window === "undefined" ? false : pareceRetornoDeAuth(window.location.href),
+  );
+  const redeDeSenha = retornoDeAuth && !rotaTrataAuth(route.name);
 
   useEffect(() => {
     document.body.classList.toggle("is-mobile-menu-open", menuOpen);
@@ -1061,7 +1213,12 @@ function App() {
   useEffect(() => {
     if (route.name !== "home") return;
 
-    const sectionIds = ["inicio", ...navItems.filter((item) => !item.routes).map((item) => item.href.slice(1))];
+    // Só os itens que são âncora da home (sem rota e sem filhos) viram alvo do
+    // scroll-spy; o grupo "Eventos" e os itens de rota ficam de fora.
+    const sectionIds = [
+      "inicio",
+      ...navItems.filter((item) => !item.routes && !item.children && item.href).map((item) => item.href!.slice(1)),
+    ];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
@@ -1202,13 +1359,14 @@ function App() {
 
         <nav className="desktop-nav" aria-label="Navegação principal">
           {navItems.map((item) => {
+            if (item.children) return <NavDropdown key={item.label} item={item} routeName={route.name} />;
             const active = item.routes
               ? item.routes.includes(route.name)
-              : route.name === "home" && activeSection === item.href.slice(1);
+              : route.name === "home" && activeSection === (item.href ?? "").slice(1);
 
             return (
               <a
-                key={item.href}
+                key={item.label}
                 href={item.href}
                 className={active ? "is-active" : ""}
                 aria-current={active ? "page" : undefined}
@@ -1256,8 +1414,34 @@ function App() {
         {navItems.map((item) => {
           const Icon = item.icon;
 
+          // Grupo (Eventos): um rótulo de seção + os filhos, todos visíveis no
+          // drawer (sem recolher — a lista vertical tem espaço de sobra).
+          if (item.children) {
+            return (
+              <div key={item.label} className="drawer-group">
+                <p className="drawer-group-label">
+                  <Icon size={18} aria-hidden="true" /> {item.label}
+                </p>
+                {item.children.map((c) => {
+                  const CIcon = c.icon;
+                  return (
+                    <a
+                      key={c.label}
+                      href={c.href}
+                      className="drawer-group-item"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <CIcon size={20} aria-hidden="true" />
+                      {c.label}
+                    </a>
+                  );
+                })}
+              </div>
+            );
+          }
+
           return (
-            <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+            <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>
               <Icon size={20} aria-hidden="true" />
               {item.label}
             </a>
@@ -1303,6 +1487,36 @@ function App() {
       {route.name === "noticia" ? (
         <Suspense fallback={<PlatformFallback />}>
           <NoticiaPage slug={route.slug} />
+        </Suspense>
+      ) : null}
+      {route.name === "relatorio-anual" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <MeuAno />
+        </Suspense>
+      ) : null}
+      {route.name === "relatorio-laboratorio" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <MeuLaboratorio />
+        </Suspense>
+      ) : null}
+      {route.name === "curso" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <CursoPage />
+        </Suspense>
+      ) : null}
+      {route.name === "fitofarmas" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <FitofarmasPreEvento />
+        </Suspense>
+      ) : null}
+      {route.name === "nova-senha" ? (
+        <Suspense fallback={<PlatformFallback />}>
+          <NovaSenha />
+        </Suspense>
+      ) : null}
+      {redeDeSenha ? (
+        <Suspense fallback={null}>
+          <NovaSenha rede />
         </Suspense>
       ) : null}
 

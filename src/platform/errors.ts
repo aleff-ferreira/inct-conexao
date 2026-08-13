@@ -15,7 +15,7 @@ export function friendlyError(e: unknown): string {
   // Protocolo não gerado (trigger ausente/indisponível) — não deixar vazar o
   // erro cru do Postgres; orientar a tentar de novo / avisar a coordenação.
   if (m.includes("not-null") || m.includes("null value in column \"protocolo\"") || m.includes("violates not-null"))
-    return "Não foi possível gerar o protocolo agora. Tente enviar novamente em instantes; se persistir, contate a coordenação.";
+    return "Não foi possível gerar o protocolo agora. Tente enviar novamente em instantes. Se persistir, contate a coordenação.";
 
   // Janela do edital (trigger enforce_edital_window).
   if (m.includes("fora do período") || m.includes("edital não está aberto"))

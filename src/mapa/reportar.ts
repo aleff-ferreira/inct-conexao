@@ -57,14 +57,14 @@ export type ContextoErro = {
  */
 export function linkDeErro(c: ContextoErro): string {
   const rotulo = CATEGORIAS.find((x) => x.id === c.categoria)?.label ?? "Outro";
-  const assunto = `[mapa] ${rotulo} — ${c.camada.label}${c.uf ? ` — ${c.uf.sigla}` : ""}`;
+  const assunto = `[mapa] ${rotulo}: ${c.camada.label}${c.uf ? `, ${c.uf.sigla}` : ""}`;
 
   const l: string[] = [
     "Descreva o que está errado (e, se puder, qual seria o valor certo):",
     "",
     "",
     "---",
-    "Contexto preenchido automaticamente — não apague, é o que permite localizar o dado:",
+    "Contexto preenchido automaticamente. Não apague, é o que permite localizar o dado:",
     `Camada: ${c.camada.label} (${c.camada.id})`,
     `Maturidade: ${c.camada.escopo.maturidade} · cobertura ${c.camada.escopo.cobertura.medidas} de ${c.camada.escopo.cobertura.total}`,
     `Fonte: ${c.camada.fonte.titulo}${c.camada.fonte.data ? ` (${c.camada.fonte.data})` : ""}`,

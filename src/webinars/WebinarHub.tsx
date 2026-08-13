@@ -123,7 +123,7 @@ export function WebinarHub() {
                     {featuredStatus === "live"
                       ? "Assistir ao vivo"
                       : featuredStatus === "upcoming"
-                        ? "Ver detalhes e se preparar"
+                        ? "Ver detalhes"
                         : featured.replay
                           ? "Assistir à gravação"
                           : "Ver detalhes"}

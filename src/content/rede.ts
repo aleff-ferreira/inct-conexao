@@ -287,7 +287,7 @@ export const partners: Partner[] = [
     acronym: "FIOCRUZ/Pantanal",
     group: "Colaboradora Nacional",
     location: "MS, Brasil",
-    focus: "Colaboração em saúde, ambiente, Pantanal e integração centro-oeste/Amazônia.",
+    focus: "Colaboração em saúde, ambiente, Pantanal e integração Centro-Oeste/Amazônia.",
   },
   {
     name: "Universidade Federal do Rio Grande do Norte",

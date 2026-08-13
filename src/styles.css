@@ -213,7 +213,7 @@ img {
 
 .site-header.is-on-hero .brand-copy strong,
 .site-header.is-on-hero .brand-copy small,
-.site-header.is-on-hero .desktop-nav a {
+.site-header.is-on-hero .desktop-nav > a {
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -226,9 +226,10 @@ img {
   box-shadow: none;
 }
 
-/* 10 itens precisam caber ao lado da marca sem sobrepô-la: o espaçamento é
+/* 11 itens precisam caber ao lado da marca sem sobrepô-la: o espaçamento é
    fluido (clamp) e encolhe conforme a janela estreita, até o ponto em que a
-   navegação recolhe para o menu lateral (ver a media query mais abaixo). */
+   navegação recolhe para o menu lateral (a media query de 1500px, mais
+   abaixo — o valor acompanha o NÚMERO de itens; ver o comentário de lá). */
 .desktop-nav {
   display: flex;
   justify-self: end;
@@ -238,13 +239,17 @@ img {
   padding: 0;
 }
 
-.desktop-nav a {
+.desktop-nav > a {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 44px;
   padding: 0 1px;
+  /* Um item de duas palavras ("Curso Jaru") não pode quebrar em duas linhas no
+     meio dos itens de uma palavra — ficaria mais alto que a fila. A largura que
+     ele soma é o que a media query de recolhimento (abaixo) leva em conta. */
+  white-space: nowrap;
   color: #41524f;
   font-size: 0.86rem;
   font-weight: 900;
@@ -254,7 +259,7 @@ img {
     transform 160ms ease;
 }
 
-.desktop-nav a::after {
+.desktop-nav > a::after {
   position: absolute;
   right: 0;
   bottom: 5px;
@@ -270,27 +275,170 @@ img {
     transform 160ms ease;
 }
 
-.desktop-nav a:hover {
+.desktop-nav > a:hover {
   color: var(--river);
   transform: translateY(-1px);
 }
 
-.desktop-nav a.is-active {
+.desktop-nav > a.is-active {
   color: var(--forest);
 }
 
-.site-header.is-on-hero .desktop-nav a:hover,
-.site-header.is-on-hero .desktop-nav a.is-active {
+.site-header.is-on-hero .desktop-nav > a:hover,
+.site-header.is-on-hero .desktop-nav > a.is-active {
   color: #fff;
 }
 
-.site-header.is-on-hero .desktop-nav a::after {
+.site-header.is-on-hero .desktop-nav > a::after {
   background: var(--acid);
 }
 
-.desktop-nav a.is-active::after {
+.desktop-nav > a.is-active::after {
   opacity: 1;
   transform: scaleX(1);
+}
+
+/* ---- Menu suspenso "Eventos" (desktop) -----------------------------*/
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+/* Botão do grupo: mesma linguagem dos links da nav. */
+.nav-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 1px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #41524f;
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: inherit;
+  transition: color 160ms ease, transform 160ms ease;
+}
+.nav-dropdown-btn:hover,
+.nav-dropdown-btn[aria-expanded="true"] {
+  color: var(--river);
+}
+.nav-dropdown-btn.is-active {
+  color: var(--forest);
+}
+.site-header.is-on-hero .nav-dropdown-btn {
+  color: rgba(255, 255, 255, 0.9);
+}
+.site-header.is-on-hero .nav-dropdown-btn:hover,
+.site-header.is-on-hero .nav-dropdown-btn[aria-expanded="true"],
+.site-header.is-on-hero .nav-dropdown-btn.is-active {
+  color: #fff;
+}
+.nav-dropdown-chevron {
+  transition: transform 180ms ease;
+}
+.nav-dropdown-btn[aria-expanded="true"] .nav-dropdown-chevron {
+  transform: rotate(180deg);
+}
+/* O painel. FECHADO = `visibility: hidden` → fora da ordem de tabulação e da
+   árvore de acessibilidade (a `visibility` entra na transição com atraso, para
+   só sumir depois do fade). `top: 100%` cola o painel na base do botão, sem vão,
+   para o `mouseleave` só disparar quando o ponteiro sai de botão+painel. */
+.nav-dropdown-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 60;
+  min-width: 234px;
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 0s linear 160ms;
+}
+/* Ponte invisível sobre o `margin-top`, para o hover não cair no vão. */
+.nav-dropdown-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+.nav-dropdown-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 0s;
+}
+.nav-dropdown-panel a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: none;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 140ms ease, color 140ms ease;
+}
+.nav-dropdown-panel a svg {
+  color: var(--leaf);
+  flex: none;
+}
+.nav-dropdown-panel a:hover,
+.nav-dropdown-panel a:focus-visible {
+  background: rgba(31, 140, 165, 0.1);
+  color: var(--river-ink);
+  outline: none;
+}
+.nav-dropdown-panel a.is-active {
+  background: rgba(95, 143, 69, 0.12);
+  color: var(--forest);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown-panel,
+  .nav-dropdown-chevron {
+    transition: none;
+  }
+}
+
+/* ---- Grupo "Eventos" no drawer (mobile) ----------------------------*/
+.drawer-group {
+  display: contents;
+}
+.drawer-group-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 10px 0 2px;
+  padding: 0 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.drawer-group-label svg {
+  color: var(--leaf);
+}
+.mobile-drawer a.drawer-group-item {
+  padding-left: 18px;
 }
 
 .button {
@@ -3618,11 +3766,16 @@ h3 {
   background: var(--paper);
 }
 
-/* A navegação tem 10 itens. Abaixo de 1360px ela recolhe para o menu lateral
-   (o drawer já contém todos os itens), evitando sobreposição com a marca.
-   Acima disso, o `gap` fluido do .desktop-nav dá conta de encaixar os itens
-   (verificado em 1366px, largura de notebook mais comum, com folga). */
-@media (max-width: 1360px) {
+/* A navegação tem 10 itens (Governança, Mapa, Grupos e Contato voltaram em
+   2026-08-12). O rótulo longo do curso saiu da fila — agora vive dentro do
+   dropdown "Eventos" —, então a fila é feita de rótulos curtos e ocupa no máximo
+   ~915px, cabendo folgada ao lado da marca: a 1885px o respiro marca↔nav é 490px
+   e a 1405px ainda são 69px, bem acima dos 44px que o grid promete. 1400px segue
+   como corte; abaixo dele recolhe para o drawer (que traz todos os itens, com o
+   grupo Eventos e seus filhos). O valor foi MEDIDO e ACOMPANHA O NÚMERO/TAMANHO
+   dos itens: era 1760px com 12 itens e o título por extenso (209px), 1500px com
+   11 itens curtos. */
+@media (max-width: 1400px) {
   .desktop-nav {
     display: none;
   }
@@ -8792,4 +8945,3967 @@ select.admin-input {
 
 @media print {
   .map-indice, .map-regua-trilho { display: none !important; }
+}
+
+/* ==========================================================================
+   RELATO ANUAL DO INCT — família .rel-*
+   ==========================================================================
+   Telas de #/meu-ano e #/meu-laboratorio (docs/relato-anual.md §3).
+
+   O QUE ESTE BLOCO NÃO FAZ: não redefine nada acima dele. Tudo aqui é novo e
+   tem prefixo .rel-, exceto os ganchos de estado (.is-on, .is-erro, .is-fora,
+   .is-feito), que só existem qualificados por uma classe .rel-*.
+
+   REUSO. A família .plat-* já resolve muita coisa e continua valendo dentro
+   destas telas: .plat-card, .plat-error, .plat-ok, .plat-hint, .plat-muted,
+   .plat-notice, .plat-loading, .plat-empty, .plat-consent, .plat-linkbtn,
+   .plat-back, .plat-protocolo, .plat-file, .plat-list, .plat-steps, .button,
+   .button.primary, .button.plat-ghost e .sr-only. Só entrou aqui o que não
+   existia.
+
+   TAMANHO DE ALVO. Todo elemento clicável desta família tem min-height: 44px.
+   Onde o controle real é um <input type="radio"> escondido, quem carrega os
+   44px é o <label>.
+
+   FOCO. Nenhuma regra deste bloco escreve `outline: none`. As regras de
+   :focus-visible daqui só REFORÇAM o anel global (:focus-visible do topo do
+   arquivo), porque sobre cartão claro tingido ele fica fraco.
+
+   CONTRASTE. Texto pequeno nunca usa --river (3,0:1) nem --leaf (3,8:1) sobre
+   claro. Usa --river-ink (5,4:1), #3c6428 (6,9:1) para verde, #7c2418 para
+   erro, #7a4e00 / #6b4400 para atenção. Todos ≥ 4,5:1 sobre --surface e sobre
+   os fundos tingidos deste bloco.
+
+   COLUNA ÚNICA. .rel-inner tem 720px de medida de leitura e todos os campos
+   empilham. As duas únicas grades com mais de uma coluna são .rel-escolhas
+   (os 3 alvos de um mesmo item, que são uma escolha só) e .rel-fichas (o
+   seletor de tipo de fato do LLA) — e ambas viram 1 coluna no celular.
+   ========================================================================== */
+
+/* ------------------------------------------------------------ o invólucro */
+.rel-band {
+  position: relative;
+  /* topo: cabeçalho fixo de ~108px + respiro. base: a .rel-salvo é fixa no
+     rodapé e cobriria o último botão sem esta folga. */
+  padding: 152px 0 128px;
+  min-height: 70vh;
+  background: var(--paper);
+}
+
+.rel-inner {
+  display: grid;
+  gap: 16px;
+  width: min(720px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* IMUNIDADE DE COLUNA — medida, não decorativa.
+   O tamanho mínimo automático de um item de grade é o seu `min-content`. Um
+   único filho indivisível (um selo com `white-space: nowrap`, um DOI colado,
+   o nome de uma instituição estrangeira) estica a coluna inteira, e como
+   `.site-shell` tem `overflow-x: clip`, o estouro não vira barra de rolagem:
+   vira conteúdo cortado que ninguém vê. Medido em 375px de largura, um
+   `.rel-chip--fora` com frase levava a coluna de 347px para 398px e comia
+   51px de cada tela. `min-width: 0` devolve a decisão ao contêiner. */
+.rel-inner > *,
+.rel-tela > *,
+.rel-porta > *,
+.rel-item > * {
+  min-width: 0;
+}
+
+/* Só para a conferência do LLA (L4), onde há tabela de verdade. */
+.rel-inner--largo {
+  width: min(1080px, calc(100% - 40px));
+}
+
+.rel-inner > h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  line-height: 1.08;
+  color: var(--forest);
+}
+
+/* `hidden` tem de ganhar de `display: grid`/`flex` declarados abaixo. Sem
+   isto, esconder uma tela do assistente com o atributo padrão não funciona. */
+.rel-band [hidden] {
+  display: none !important;
+}
+
+/* --------------------------------------------------- porta (sem sessão) */
+.rel-porta {
+  display: grid;
+  gap: 16px;
+  padding: 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 18px 58px rgba(13, 48, 43, 0.07);
+}
+.rel-porta h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  line-height: 1.08;
+  color: var(--forest);
+}
+.rel-porta p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.97rem;
+  line-height: 1.62;
+}
+.rel-porta p strong {
+  color: var(--ink);
+  font-weight: 850;
+}
+/* O link de escape ("se você é membro e não líder, seu formulário é o outro")
+   herdava o --muted do parágrafo e ficava sem sublinhado: lia-se como texto
+   corrido, e quem entrou na tela errada não via que havia caminho de volta.
+   É o único link dentro da porta, e é justamente o que precisa ser óbvio. */
+.rel-porta a {
+  color: var(--river-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.rel-porta a:hover { text-decoration-thickness: 2px; }
+/* As três linhas da porta são leitura obrigatória, não rodapé: ficam com o
+   mesmo peso do corpo e separadas por uma régua fina, não por nada. */
+.rel-porta hr {
+  width: 100%;
+  height: 1px;
+  margin: 2px 0;
+  border: 0;
+  background: var(--line);
+}
+
+/* ------------------------------------------------------------- progresso */
+/* Em minutos, nunca em porcentagem (spec §3). A barra é redundante: o estado
+   verdadeiro está no texto, para satisfazer o item 10 do §6.1. */
+.rel-progresso {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+.rel-progresso p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.rel-progresso p strong {
+  color: var(--forest);
+  font-weight: 900;
+}
+.rel-progresso-trilho {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(17, 33, 31, 0.09);
+  overflow: hidden;
+}
+.rel-progresso-preenchida {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--river);
+  transition: width 220ms ease;
+}
+
+/* ------------------------------------------------------ a tela e a cabeça */
+.rel-tela {
+  display: grid;
+  gap: 18px;
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 18px 58px rgba(13, 48, 43, 0.07);
+}
+
+.rel-cabeca {
+  display: grid;
+  gap: 6px;
+}
+.rel-cabeca h1,
+.rel-cabeca h2 {
+  margin: 0;
+  color: var(--forest);
+  font-size: clamp(1.32rem, 2.6vw, 1.7rem);
+  font-weight: 950;
+  line-height: 1.18;
+}
+.rel-cabeca p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ---------------------------------------------------------------- campos */
+.rel-campo {
+  display: grid;
+  gap: 6px;
+  /* o resumo de erros do topo move o foco para cá; o campo não pode parar sob
+     o cabeçalho fixo */
+  scroll-margin-top: 132px;
+}
+/* .rel-campo pode SER o <fieldset> de um grupo de rádio. Fieldset tem
+   min-width intrínseco e padding/borda de agente: sem este reset ele estoura
+   a coluna. */
+fieldset.rel-campo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.rel-campo > label,
+.rel-campo > legend {
+  padding: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+.rel-campo input,
+.rel-campo select,
+.rel-campo textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+}
+.rel-campo textarea {
+  min-height: 132px;
+  line-height: 1.55;
+  resize: vertical;
+}
+/* Erro identificado também pela borda, mas NUNCA só por ela — a mensagem em
+   texto é .rel-erro (WCAG 1.4.1 e 3.3.1). */
+.rel-campo input[aria-invalid="true"],
+.rel-campo select[aria-invalid="true"],
+.rel-campo textarea[aria-invalid="true"] {
+  border-color: #c0392b;
+  box-shadow: inset 0 0 0 1px rgba(192, 57, 43, 0.4);
+}
+/* Depois das regras acima de propósito: caixa e rádio não têm 46px de altura. */
+.rel-campo input[type="radio"],
+.rel-campo input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0;
+  margin: 0;
+  flex: none;
+  accent-color: var(--river);
+}
+/* O alvo de 44px de um rádio é o rótulo, não o disco de 20px. */
+.rel-campo label:has(> input[type="radio"]),
+.rel-campo label:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rel-erro {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: #7c2418;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+.rel-erro svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.rel-dica {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+/* -------------------------------------------------- details "opcional" ----
+   O padrão "recolhido opcional" dos formulários (Quer detalhar?, JCR/Qualis,
+   Ajustar o texto público, Definir uma senha, Mais tipos). Era só a fonte de
+   dica — 0,88rem apagada, sem cara de controle — e o dono apontou (10/08):
+   "muito discreto e de difícil acesso". Agora é um CONTROLE: moldura, resumo
+   clicável em 0,95rem com cor de ação, hover, foco visível e conteúdo com
+   respiro. A classe continua .rel-dica no markup; o seletor details.rel-dica
+   é que muda o traje — parágrafos e smalls com .rel-dica seguem como eram. */
+details.rel-dica {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+details.rel-dica > summary {
+  cursor: pointer;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  color: var(--river-ink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+details.rel-dica > summary:hover {
+  background: rgba(31, 140, 165, 0.07);
+}
+details.rel-dica > summary:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+details.rel-dica[open] {
+  padding: 0 14px 12px;
+}
+details.rel-dica[open] > summary {
+  margin: 0 -14px 10px;
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+details.rel-dica textarea {
+  display: block;
+  width: 100%;
+  min-height: 92px;
+  font: inherit;
+  font-size: 0.95rem;
+}
+/* ------------------------------------------- objetivos por frente (Q20) ----
+   Redesign de 10/08 (pedido do dono: bloco "carregado", EET sem cor própria).
+   Cada frente é um details recolhível; o objetivo é LINHA de checklist, não
+   chip — texto à esquerda, peso normal, separado por fio, marcado com fundo. */
+.rel-eet > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink);
+  font-weight: 700;
+}
+/* display:flex no summary come o marcador nativo; o ▸/▾ devolve o affordance. */
+.rel-eet > summary::before {
+  content: "▸";
+  flex: none;
+  color: var(--river);
+}
+.rel-eet[open] > summary::before {
+  content: "▾";
+}
+/* O pedido literal: a EET com FONTE DE COR DIFERENTE do resto do texto. */
+.rel-eet-cod {
+  flex: none;
+  color: var(--river);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+.rel-eet-placar {
+  flex: none;
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.rel-objetivo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.rel-objetivo + .rel-objetivo {
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+}
+.rel-objetivo:hover {
+  background: rgba(31, 140, 165, 0.06);
+}
+.rel-objetivo:has(input:checked) {
+  background: rgba(31, 140, 165, 0.08);
+}
+.rel-objetivo:has(input:focus-visible) {
+  outline: 3px solid var(--river);
+  outline-offset: 1px;
+}
+.rel-objetivo input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  accent-color: var(--river);
+}
+.rel-objetivo strong {
+  color: var(--river-ink);
+}
+/* O aviso "isto vai direto ao Comitê Gestor / isto pode virar público" muda a
+   resposta e por isso não pode ter o peso de nota de rodapé (spec §6.2). */
+.rel-dica--privacidade {
+  padding: 10px 12px;
+  border: 1px solid rgba(31, 140, 165, 0.3);
+  border-radius: var(--radius);
+  background: rgba(31, 140, 165, 0.07);
+  color: var(--river-ink);
+  font-weight: 700;
+}
+
+/* Marca-se o OPCIONAL, nunca o obrigatório (spec §3). */
+.rel-opcional {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(17, 33, 31, 0.07);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  vertical-align: 2px;
+}
+/* O PLACAR vivo da seção de marcáveis ("2 marcadas"): diz à pessoa que a
+   marcação pegou e diz à gestão que o dado agregável está entrando — as
+   contagens destas opções são exatamente o que o painel soma em Vozes da
+   rede. Cor de ação, para distinguir do selo neutro "(marque o que houver)". */
+.rel-escolhas-placar {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(31, 140, 165, 0.12);
+  color: var(--river-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  vertical-align: 2px;
+}
+
+.rel-contador {
+  justify-self: end;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.rel-contador.is-erro {
+  color: #7c2418;
+}
+
+/* ------------------------------------------- item (produção ou fato) */
+.rel-item {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+/* Item com data fora do Ciclo 1: aceito com a data verdadeira, marcado, fora
+   da contagem (decisão 3). Ouro, não vermelho — não é erro de quem preencheu. */
+.rel-item.is-fora {
+  border-color: rgba(216, 154, 43, 0.45);
+  border-left: 4px solid var(--gold);
+  background: rgba(216, 154, 43, 0.05);
+}
+.rel-item.is-feito {
+  border-color: rgba(95, 143, 69, 0.45);
+  background: rgba(95, 143, 69, 0.05);
+}
+
+/* Os artigos vindos do Google Acadêmico (Tela 2): um grupo à parte, com um
+   filete no topo que os separa da lista do ORCID acima. Rotulados na tela como
+   "do seu Google Acadêmico" — a fonte nunca fica implícita. */
+.rel-scholar {
+  display: grid;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.rel-item-titulo {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 850;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.rel-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.rel-item-meta code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.94em;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------- os três alvos de toque de cada item */
+.rel-escolhas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+/* A PERGUNTA da seção — em cor e corpo de título, não de nota de rodapé
+   (era 0,82rem em --muted; o dono apontou em 10/08: "fontes muito pequenas e
+   cor inadequada"). É o texto mais importante do bloco: é ele que a pessoa
+   responde. */
+.rel-escolhas > legend {
+  padding: 0 0 8px;
+  color: var(--forest);
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+/* `grid-column: 1 / -1` e não `float`: se o motor tratar a <legend> como item
+   de grade, ela atravessa as 3 colunas; se a renderizar do jeito especial do
+   fieldset (fora da caixa de conteúdo), a declaração é ignorada sem estrago.
+   Com `float` seria o contrário — o HTML manda tirar a legenda do modo
+   especial quando ela flutua, e aí ela vira um item de 1 coluna. */
+.rel-escolhas > legend {
+  grid-column: 1 / -1;
+}
+@media (min-width: 620px) {
+  .rel-escolhas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* O "Quer detalhar?" é FILHO do grid de opções: sem isto ele caía numa célula
+   de 1/3 de largura, espremido ao lado dos chips — o defeito do print de
+   10/08. O details ocupa a linha inteira, embaixo das opções, sempre. O mesmo
+   vale para a dica (small) e para a régua de notas (.rel-notas): conteúdo de
+   seção nunca disputa célula com chip. */
+.rel-escolhas > details,
+.rel-escolhas > small,
+.rel-escolhas > .rel-notas {
+  grid-column: 1 / -1;
+}
+
+/* --------------------------------------------- satisfação 1..5 (Q31) ------
+   Redesign de 10/08: a escala é um controle próprio — 5 quadrados com os
+   extremos escritos nas pontas; o ativo é preenchido, não sublinhado. */
+.rel-notas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rel-nota {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  min-height: 48px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+.rel-nota:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  background: rgba(31, 140, 165, 0.06);
+}
+.rel-nota[aria-pressed="true"] {
+  border-color: var(--river);
+  background: var(--river);
+  color: #fff;
+}
+.rel-nota:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+.rel-notas-extremo {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------ anexo do relato (Q32) ---
+   O input nativo sai da tela (o botão pt-BR .rel-anexo-botao é quem aparece);
+   o botão não estica na coluna do .rel-campo. O seletor leva .rel-campo na
+   frente DE PROPÓSITO: `.rel-campo input` (largura 100%) tem especificidade
+   0-1-1 e vencia a classe sozinha — medido: o input ficava com 1195px. */
+.rel-campo .rel-anexo-input,
+.rel-doc .rel-anexo-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+/* ------------------------------------ documento obrigatório (Tela 2) ------
+   Redesign de 13/08 (decisão do dono): o anexo saiu da revisão, virou
+   OBRIGATÓRIO e ganhou dropzone — arrastar-e-soltar com estado visual, cartão
+   de arquivo, e o selo "obrigatório" em cor de ação (o par do .rel-opcional). */
+.rel-obrigatorio {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(31, 140, 165, 0.14);
+  color: var(--river-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  vertical-align: 2px;
+}
+.rel-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 26px 18px;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    transform 140ms ease;
+}
+.rel-drop strong {
+  font-size: 1rem;
+  font-weight: 800;
+}
+.rel-drop span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.rel-drop svg {
+  color: var(--river);
+}
+.rel-drop:hover,
+.rel-drop--ativo {
+  border-color: var(--river);
+  background: rgba(31, 140, 165, 0.06);
+}
+.rel-drop--ativo {
+  transform: scale(1.01);
+}
+.rel-drop:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+.rel-drop--compacto {
+  flex-direction: row;
+  justify-content: center;
+  padding: 12px 16px;
+}
+.rel-drop--compacto strong {
+  font-size: 0.92rem;
+}
+.rel-drop[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.75;
+}
+@keyframes rel-drop-gira {
+  to { transform: rotate(360deg); }
+}
+.rel-drop-girando {
+  animation: rel-drop-gira 1s linear infinite;
+}
+.rel-doc-lista {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rel-doc-arquivo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border: 1px solid rgba(95, 143, 69, 0.45);
+  border-radius: var(--radius);
+  background: rgba(95, 143, 69, 0.07);
+}
+.rel-doc-icone {
+  flex: none;
+  color: var(--river);
+}
+.rel-doc-nome {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.rel-doc-nome small {
+  color: var(--muted);
+  font-weight: 600;
+}
+.rel-doc-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: #3f6d2d;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.rel-doc-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.rel-anexo-botao {
+  justify-self: start;
+}
+/* O checkbox da DECLARAÇÃO não pode encolher: é um item flex e o navegador o
+   espremia (medido: 14,8px de largura com 18px declarados). Numa declaração
+   com consequência legal, o quadradinho é o protagonista. */
+.plat-consent input[type="checkbox"] {
+  flex: none;
+  width: 18px;
+}
+/* Dentro de .plat-fields, `label { display: grid }` (regra da seleção de IC)
+   vence o flex do .plat-consent por especificidade — e o checkbox ia parar
+   NUMA LINHA ACIMA do texto da declaração (print do dono, 10/08). Devolve o
+   flex com um seletor mais forte, sem tocar na regra da seleção. */
+.plat-fields label.plat-consent {
+  display: flex;
+}
+/* Ainda no grid dos labels de .plat-fields: o selo "(opcional)" virava item
+   de grid e ESTICAVA numa barra cinza de largura inteira. Pílula tem tamanho
+   de pílula. */
+.plat-fields label > .rel-opcional {
+  justify-self: start;
+}
+
+.rel-escolha {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  /* 0,95rem: era 0,88 e o dono apontou fonte pequena nos marcáveis (10/08). */
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+.rel-escolha:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  background: rgba(31, 140, 165, 0.06);
+}
+/* Se o alvo for um <label> com rádio dentro, o rádio some e o rótulo inteiro
+   vira o alvo. O anel de foco volta pela regra :has(:focus-visible) abaixo. */
+.rel-escolha input[type="radio"],
+.rel-escolha input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.rel-escolha:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+/* Regra separada de propósito: :has() desconhecido invalidaria a lista toda. */
+.rel-escolha:has(input:focus-visible) {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+/* Estado escolhido. Três seletores, três regras separadas — o componente pode
+   ser <button aria-pressed>, <button class="is-on"> ou <label> com rádio. */
+.rel-escolha.is-on {
+  border-color: var(--river);
+  background: rgba(31, 140, 165, 0.13);
+  color: var(--river-ink);
+}
+.rel-escolha[aria-pressed="true"] {
+  border-color: var(--river);
+  background: rgba(31, 140, 165, 0.13);
+  color: var(--river-ink);
+}
+.rel-escolha:has(input:checked) {
+  border-color: var(--river);
+  background: rgba(31, 140, 165, 0.13);
+  color: var(--river-ink);
+}
+/* O ✓ explícito no chip marcado: o checkbox real está recortado da tela
+   (clip-path acima), então sem isto o único sinal de "marcado" era a tintura
+   de fundo — fraca para daltônicos e invisível em foto de tela. O ::before
+   entra como primeiro item do flex, antes do rótulo. */
+.rel-escolha:has(input:checked)::before {
+  content: "✓";
+  flex: none;
+  color: var(--river);
+  font-weight: 900;
+}
+/* Variantes semânticas: "é minha e é do CONEXÃO" é a afirmação, as outras
+   duas são descarte. A cor só reforça o texto; nunca o substitui. */
+.rel-escolha--sim.is-on,
+.rel-escolha--sim[aria-pressed="true"] {
+  border-color: #3c6428;
+  background: rgba(95, 143, 69, 0.16);
+  color: #3c6428;
+}
+.rel-escolha--sim:has(input:checked) {
+  border-color: #3c6428;
+  background: rgba(95, 143, 69, 0.16);
+  color: #3c6428;
+}
+.rel-escolha--nao.is-on,
+.rel-escolha--nao[aria-pressed="true"],
+.rel-escolha--alheia.is-on,
+.rel-escolha--alheia[aria-pressed="true"] {
+  border-color: rgba(17, 33, 31, 0.42);
+  background: rgba(17, 33, 31, 0.07);
+  color: var(--ink);
+}
+.rel-escolha--nao:has(input:checked),
+.rel-escolha--alheia:has(input:checked) {
+  border-color: rgba(17, 33, 31, 0.42);
+  background: rgba(17, 33, 31, 0.07);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ selos */
+/* Um selo é rótulo curto: uma ou duas palavras, e por isso `nowrap`. Quem
+   precisar de frase usa .rel-chip--fora, que quebra linha. `max-width: 100%`
+   é o cinto de segurança para quando alguém desobedecer. */
+.rel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(31, 140, 165, 0.13);
+  color: var(--river-ink);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rel-chip svg {
+  flex: none;
+}
+.rel-chip--comite {
+  background: rgba(13, 48, 43, 0.09);
+  color: var(--forest);
+}
+.rel-chip--eet {
+  background: rgba(95, 143, 69, 0.17);
+  color: #3c6428;
+}
+.rel-chip--ok {
+  background: rgba(95, 143, 69, 0.17);
+  color: #3c6428;
+}
+.rel-chip--aviso {
+  background: rgba(216, 154, 43, 0.16);
+  color: #7a4e00;
+}
+/* "Fora do período": não é reprovação. Guardamos para o próximo relatório.
+   É o único selo que carrega frase inteira, então é o único que quebra linha
+   — daí `white-space: normal` e o alinhamento à esquerda. */
+.rel-chip--fora {
+  border: 1px solid rgba(216, 154, 43, 0.45);
+  background: rgba(216, 154, 43, 0.14);
+  color: #7a4e00;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.35;
+}
+
+/* -------------------------------------- fichas de tipo de fato (LLA, L2) */
+.rel-fichas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media (min-width: 700px) {
+  .rel-fichas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.rel-ficha {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+.rel-ficha:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  background: rgba(31, 140, 165, 0.05);
+}
+.rel-ficha:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+.rel-ficha > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--river);
+}
+.rel-ficha > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.rel-ficha strong {
+  display: block;
+  color: var(--forest);
+  font-size: 0.97rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+.rel-ficha span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+/* Ficha que já tem fatos declarados. O número fica no .rel-chip, à direita. */
+.rel-ficha.is-on {
+  border-color: var(--river);
+  background: rgba(31, 140, 165, 0.07);
+}
+.rel-ficha .rel-chip {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+/* ------------------------------------- fila de propostas dos membros (L3) */
+.rel-fila {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rel-fila > li {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.rel-fila > li > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.rel-fila > li strong {
+  color: var(--ink);
+  font-weight: 850;
+}
+/* Confirmar / fundir / rejeitar: alvos reais, não links de 12px. */
+.rel-fila > li .button,
+.rel-fila > li button {
+  min-height: 44px;
+}
+
+/* ----------------------------------------------- tabela de conferência */
+.rel-tabela-rolo {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.rel-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.rel-tabela caption {
+  padding: 12px 15px 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: left;
+}
+.rel-tabela th,
+.rel-tabela td {
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.rel-tabela thead th {
+  background: rgba(13, 48, 43, 0.05);
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rel-tabela tbody th {
+  color: var(--ink);
+  font-weight: 850;
+}
+.rel-tabela tbody tr:last-child td,
+.rel-tabela tbody tr:last-child th {
+  border-bottom: none;
+}
+.rel-tabela .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rel-tabela td.num {
+  color: var(--forest);
+  font-weight: 850;
+}
+
+/* --------------------------- projeção contra o marco do 2º ano (LLA, L4) */
+/* Nenhuma das 26 metas vence no 1º ano (decisão 4): isto é PROJEÇÃO, e a
+   palavra tem de estar na tela, não só na cabeça de quem programou. */
+.rel-projecao {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  border: 1px solid rgba(31, 140, 165, 0.3);
+  border-radius: var(--radius);
+  background: rgba(31, 140, 165, 0.06);
+}
+.rel-projecao h3,
+.rel-projecao h4 {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1rem;
+  font-weight: 900;
+}
+.rel-projecao-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 0.86rem;
+}
+.rel-projecao-rotulo {
+  flex: 1 1 160px;
+  min-width: 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+.rel-projecao-trilho {
+  flex: 1 1 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(17, 33, 31, 0.1);
+  overflow: hidden;
+}
+.rel-projecao-preenchida {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--river);
+  transition: width 220ms ease;
+}
+/* O número em texto: a barra nunca é o único indicador de estado (§6.1.10). */
+.rel-projecao-valor {
+  flex: 0 0 auto;
+  color: var(--forest);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.rel-projecao-nota {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------ saída de dignidade ("nada") */
+/* Quem não teve produção não pode sair humilhado nem ser empurrado a um campo
+   obrigatório (spec §3.1). Discreta, mas sem esconder-se. */
+.rel-saida {
+  display: grid;
+  gap: 9px;
+  padding: 14px 16px;
+  border: 1px dashed rgba(17, 33, 31, 0.24);
+  border-radius: var(--radius);
+  background: rgba(244, 246, 239, 0.75);
+}
+.rel-saida p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.rel-saida button {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.rel-saida button:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  background: rgba(31, 140, 165, 0.06);
+}
+
+/* --------------------------------------------------- revisão e pendências */
+.rel-revisao {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+.rel-revisao > section {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.rel-revisao > section:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.rel-revisao h3 {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1.02rem;
+  font-weight: 900;
+}
+.rel-revisao dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+.rel-revisao dt {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rel-revisao dd {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+/* "Voltar a esta tela" (WCAG 3.3.4). É um alvo, não uma nota de rodapé.
+   ATENÇÃO AO SELETOR: era `.rel-revisao button` e vestia de link TODO botão
+   da revisão — o "Enviar meu relato" primário, as notas 1..5, o botão do
+   anexo — sublinhados e sem fundo (defeito apontado pelo dono em 10/08).
+   Só os links de correção (.plat-linkbtn) devem receber este traje. */
+.rel-revisao .plat-linkbtn {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 12px;
+  margin-left: -12px;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--river-ink);
+  font: inherit;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.rel-revisao .plat-linkbtn:hover {
+  background: rgba(31, 140, 165, 0.08);
+}
+
+/* Pendências NÃO bloqueiam o envio ("você pode enviar assim mesmo"), então
+   são ouro e não vermelho. Vermelho aqui ensinaria a apagar o item. */
+.rel-pendencias {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid rgba(216, 154, 43, 0.45);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  background: rgba(216, 154, 43, 0.1);
+  color: #6b4400;
+}
+.rel-pendencias strong {
+  color: #5a3900;
+  font-weight: 900;
+}
+.rel-pendencias p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.rel-pendencias ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.9rem;
+}
+/* Link do resumo de erros que MOVE o foco para o campo (§6.1.4). Seletor
+   estreitado junto com o da .rel-revisao acima — mesmo motivo, mesma data. */
+.rel-pendencias .plat-linkbtn {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 12px;
+  margin-left: -12px;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: #6b4400;
+  font: inherit;
+  font-weight: 900;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.rel-pendencias .plat-linkbtn:hover {
+  background: rgba(216, 154, 43, 0.18);
+}
+
+/* ------------------------------------------------------- recibo (após envio) */
+.rel-recibo {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+  padding: 26px 28px;
+  border: 1px solid rgba(95, 143, 69, 0.4);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 18px 58px rgba(13, 48, 43, 0.07);
+}
+.rel-recibo > svg {
+  color: #3c6428;
+}
+.rel-recibo h2 {
+  margin: 0;
+  color: var(--forest);
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  line-height: 1.15;
+}
+.rel-recibo p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.rel-recibo code {
+  padding: 4px 12px;
+  border-radius: var(--radius);
+  background: rgba(13, 48, 43, 0.08);
+  color: var(--forest);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* ----------------------------------------- salvamento automático (rodapé) */
+/* Recebe aria-live="polite" no componente. Não move foco, não pisca. */
+.rel-salvo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px 10px;
+  min-height: 44px;
+  padding: 9px 16px;
+  padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--line);
+  background: rgba(246, 248, 243, 0.94);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  backdrop-filter: blur(14px) saturate(1.1);
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: center;
+}
+.rel-salvo strong {
+  color: var(--forest);
+  font-weight: 900;
+}
+.rel-salvo svg {
+  flex: none;
+}
+.rel-salvo.is-erro {
+  border-top-color: rgba(192, 57, 43, 0.4);
+  background: rgba(253, 240, 238, 0.96);
+  color: #7c2418;
+}
+.rel-salvo.is-erro strong {
+  color: #7c2418;
+}
+
+/* ------------------------------------------------------------- navegação */
+.rel-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+.rel-nav .button {
+  min-height: 48px;
+}
+/* "Salvar e continuar depois" é tecnicamente redundante com o autosave, e é
+   obrigatório mesmo assim (spec §3): a expectativa mental exige o botão. */
+.rel-nav button {
+  min-height: 44px;
+}
+
+/* ============================================================ responsivo */
+@media (max-width: 680px) {
+  .rel-band {
+    /* o cabeçalho móvel pode quebrar em 2 linhas (~111px) */
+    padding-top: 132px;
+    padding-bottom: 120px;
+  }
+  .rel-inner,
+  .rel-inner--largo {
+    width: min(720px, calc(100% - 28px));
+  }
+  .rel-tela,
+  .rel-porta,
+  .rel-recibo {
+    padding: 18px 16px;
+  }
+  .rel-nav {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .rel-nav .button,
+  .rel-nav button {
+    width: 100%;
+  }
+  .rel-saida button {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  /* tabela -> cartões empilhados, mesma convenção da .edital-table */
+  .rel-tabela-rolo {
+    border: none;
+    background: none;
+  }
+  .rel-tabela thead {
+    display: none;
+  }
+  .rel-tabela,
+  .rel-tabela tbody,
+  .rel-tabela tr,
+  .rel-tabela th,
+  .rel-tabela td {
+    display: block;
+    width: 100%;
+  }
+  .rel-tabela tr {
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .rel-tabela th,
+  .rel-tabela td {
+    padding: 4px 0;
+    border: none;
+  }
+  .rel-tabela td[data-rotulo]::before {
+    content: attr(data-rotulo) ": ";
+    color: var(--forest);
+    font-weight: 900;
+  }
+  .rel-tabela td[data-label]::before {
+    content: attr(data-label) ": ";
+    color: var(--forest);
+    font-weight: 900;
+  }
+  .rel-tabela .num {
+    text-align: left;
+  }
+}
+
+/* ==================================================== movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .rel-progresso-preenchida,
+  .rel-projecao-preenchida,
+  .rel-escolha,
+  .rel-ficha,
+  .rel-item,
+  .rel-salvo {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================================= impressão */
+/* Este bloco NUNCA esconde o <body>. A lição está documentada na regra de
+   impressão do comprovante de inscrição, acima: `visibility: hidden` sem
+   `:has()` de página apagava o site inteiro em toda impressão. Aqui só some
+   o que é controle de tela. */
+@media print {
+  .rel-band {
+    padding: 0;
+    min-height: 0;
+    background: #fff;
+  }
+  .rel-inner,
+  .rel-inner--largo {
+    width: 100%;
+  }
+  .rel-progresso,
+  .rel-nav,
+  .rel-salvo,
+  .rel-escolhas,
+  .rel-saida,
+  .rel-fichas {
+    display: none !important;
+  }
+  .rel-tela,
+  .rel-porta,
+  .rel-recibo,
+  .rel-item,
+  .rel-projecao,
+  .rel-pendencias,
+  .rel-fila > li {
+    border-color: #999;
+    background: #fff;
+    box-shadow: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* Em papel não há "as 2 primeiras linhas": o título sai inteiro. */
+  .rel-item-titulo {
+    display: block;
+    overflow: visible;
+  }
+  .rel-tabela-rolo {
+    overflow: visible;
+  }
+  .rel-chip {
+    border: 1px solid #666;
+    color: #000;
+  }
+  .rel-revisao button,
+  .rel-pendencias button {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   RELATO ANUAL — IDENTIFICAÇÃO PELO CATÁLOGO (combobox da Tela 1)
+
+   O padrão é o combobox da ARIA 1.2: o foco do DOM NUNCA sai do <input>
+   [role="combobox"]; a opção "focada" da lista é apontada por
+   aria-activedescendant e marcada com aria-selected="true" (ou .is-ativa).
+   Por isso o estado ativo abaixo NÃO depende de :hover nem de :focus — quem
+   navega por teclado precisa VER onde está sem que o foco real se mova.
+
+   DOM esperado:
+     <div class="rel-busca">                      ← a única âncora posicionada
+       <input class="rel-busca-campo" role="combobox" aria-expanded="…" />
+       <ul class="rel-busca-lista" role="listbox">
+         <li class="rel-busca-opcao" role="option" id="…" aria-selected="…">
+           <span class="rel-busca-nome">Nome da Pessoa</span>
+           <span class="rel-busca-meta">Instituição · UF</span>
+         </li>
+         …ou, sem resultado, <li class="rel-busca-vazio">…</li>
+       </ul>
+     </div>
+     <p class="rel-busca-contagem" aria-live="polite">N resultados</p>
+   Rótulo e contagem ficam FORA de .rel-busca de propósito: a lista se ancora
+   no `top: 100%` do invólucro, e qualquer irmão abaixo do campo empurraria a
+   lista para longe do input.
+
+   Alvo de toque de 44px por opção; contrastes conferidos sobre --surface e
+   sobre o fundo tingido do estado ativo (--muted ≥ 4,5:1 nos dois).
+   ========================================================================== */
+
+.rel-busca {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+/* O próprio <input>. `font-size: 1rem` a propósito: fonte menor que 16px faz
+   o iOS dar zoom no campo ao focar, e a lista abre deslocada. */
+.rel-busca-campo {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.rel-busca-campo::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.rel-busca-campo:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 1px;
+  border-color: var(--river);
+}
+/* Lista aberta: a borda avisa que o campo "continua" para baixo. */
+.rel-busca-campo[aria-expanded="true"] {
+  border-color: var(--river);
+}
+
+.rel-busca-lista {
+  position: absolute;
+  /* sobre o formulário; sob a .rel-salvo (40) e o cabeçalho fixo (50) */
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 18px 46px rgba(13, 48, 43, 0.16);
+  /* A lista rola POR DENTRO e nunca passa da tela: 209 pessoas não cabem num
+     celular. `dvh` onde houver — o teclado virtual come o `vh` do iOS, e é
+     exatamente com o teclado aberto que esta lista existe. */
+  max-height: min(320px, 45vh);
+  max-height: min(320px, 45dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: rel-busca-abrir 120ms ease;
+}
+@keyframes rel-busca-abrir {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rel-busca-opcao {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  /* alvo de toque real, não só a linha de texto */
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  /* o scrollIntoView da opção ativa não pode escondê-la sob o padding */
+  scroll-margin: 6px;
+}
+.rel-busca-opcao:hover {
+  background: rgba(31, 140, 165, 0.08);
+}
+/* O estado que o TECLADO vê. aria-selected é o caminho ARIA; .is-ativa é o
+   cinto de segurança caso o componente marque por classe. Fundo E anel: o
+   fundo sozinho some em tela ruim ao sol; o anel sozinho é fraco demais. */
+.rel-busca-opcao.is-ativa,
+.rel-busca-opcao[aria-selected="true"] {
+  background: rgba(31, 140, 165, 0.14);
+  box-shadow: inset 0 0 0 2px var(--river);
+}
+
+.rel-busca-nome {
+  color: var(--ink);
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+/* Instituição · UF: é meta, não protagonista. */
+.rel-busca-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+/* Trecho que casou com a busca, se o componente destacar com <mark>. O ouro
+   tingido tem contraste de sobra com --ink; o amarelo padrão do navegador
+   destoaria de tudo. */
+.rel-busca-nome mark,
+.rel-busca-meta mark {
+  border-radius: 2px;
+  background: rgba(216, 154, 43, 0.28);
+  color: inherit;
+}
+
+/* Sem resultado: mensagem DENTRO da lista, sem cara de opção clicável. */
+.rel-busca-vazio {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  cursor: default;
+}
+.rel-busca-vazio strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+/* Contagem de resultados: além de anunciada (aria-live="polite"), é visível —
+   o benefício não é só de quem usa leitor de tela. */
+.rel-busca-contagem {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------- o cartão de quem se encontrou (.rel-identificado) */
+/* Verde de confirmação, mesma família do .rel-item.is-feito: aqui a pessoa
+   CONFERE os dados vindos do catálogo, não os digita. */
+.rel-identificado {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(95, 143, 69, 0.45);
+  border-left: 4px solid var(--leaf);
+  border-radius: var(--radius);
+  background: rgba(95, 143, 69, 0.05);
+}
+.rel-identificado > * {
+  min-width: 0;
+}
+.rel-identificado h3 {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+.rel-identificado > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+/* Os dados pré-preenchidos, na convenção da .rel-revisao (dt/dd). */
+.rel-identificado dl {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px 18px;
+  margin: 0;
+}
+/* Se cada par dt/dd vier embrulhado num <div>, o cartão aguenta 2 colunas na
+   tela larga. Regra separada e com :has() de propósito: navegador sem :has()
+   a ignora e fica na coluna única, sem quebrar o resto. */
+@media (min-width: 620px) {
+  .rel-identificado dl:has(> div) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.rel-identificado dl > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.rel-identificado dt {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rel-identificado dd {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+/* O botão de trocar ("não sou eu"): alvo real de 44px, nunca link de 12px. */
+.rel-identificado button {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.rel-identificado button:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  background: rgba(31, 140, 165, 0.06);
+}
+
+/* ------------------------------------------- responsivo (identificação) */
+@media (max-width: 680px) {
+  .rel-busca-lista {
+    max-height: min(280px, 42vh);
+    max-height: min(280px, 42dvh);
+  }
+  .rel-identificado {
+    padding: 14px 16px;
+  }
+  .rel-identificado button {
+    justify-self: stretch;
+    width: 100%;
+  }
+}
+
+/* ----------------------------------- movimento reduzido (identificação) */
+@media (prefers-reduced-motion: reduce) {
+  .rel-busca-lista,
+  .rel-busca-opcao,
+  .rel-busca-campo {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Alto contraste do sistema (Windows): fundos tingidos somem; a opção ativa
+   ganha contorno de verdade em cor de sistema. */
+@media (forced-colors: active) {
+  .rel-busca-opcao.is-ativa,
+  .rel-busca-opcao[aria-selected="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* --------------------------------------------- impressão (identificação) */
+/* A busca é controle de tela; o cartão de identificação sai no papel. */
+@media print {
+  .rel-busca,
+  .rel-busca-contagem {
+    display: none !important;
+  }
+  .rel-identificado {
+    border-color: #999;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .rel-identificado button {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   GESTÃO — SELETOR DE ÁREAS + PAINEL DO RELATÓRIO ANUAL
+
+   A Gestão passa a ter duas áreas ("Processo Seletivo" e "Relatório Anual"),
+   escolhidas por um segmented control ACIMA da .plat-toolbar existente. O
+   bloco inteiro fala a língua .plat- e .rel- que já existe: mesmos tokens,
+   mesmos raios, mesma paleta do estado ativo de .plat-tabs button.active
+   (borda --river, fundo tingido, texto --river-ink ≈ 6,6:1 sobre o tinto).
+
+   Contratos deste bloco (o TSX é escrito em paralelo, então cada estado
+   aceita mais de uma grafia, como .rel-escolha já faz):
+     .plat-areas                  o seletor (nav ou div com botões dentro)
+     .plat-area-btn               ativo = .active | [aria-pressed="true"] |
+                                  [aria-selected="true"]
+     .rel-gestao-cartoes/-cartao  os 2 cartões-porta para os formulários
+     .rel-gestao-cobertura        a <table> de cobertura por laboratório;
+                                  no celular vira cartões empilhados pela
+                                  MESMA convenção data-rotulo/data-label da
+                                  .rel-tabela acima. Para rolagem horizontal
+                                  no desktop há o invólucro
+                                  .rel-gestao-cobertura-rolo (idêntico ao
+                                  .rel-tabela-rolo, que também serve).
+     .rel-gestao-vazio            estado vazio HONESTO: explica por que não
+                                  há dados (RLS, ciclo fechado), não só some.
+   ========================================================================== */
+
+/* ------------------------------------------------------ seletor de áreas */
+.plat-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: fit-content;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(13, 48, 43, 0.04);
+}
+.plat-area-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px; /* alvo de toque real, como os botões do módulo relato */
+  padding: 0 20px;
+  border: 1px solid transparent; /* reserva a borda: o ativo não "pula" */
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+.plat-area-btn svg {
+  flex: none;
+}
+.plat-area-btn:hover {
+  color: var(--ink);
+  background: rgba(31, 140, 165, 0.06);
+}
+/* Estado ativo: PREENCHIDO, não contornado. A versão anterior era um contorno
+   tingido — e, com o inativo herdando fundo branco da regra genérica
+   `.plat-tabs button` (o nav levava as duas classes), o INATIVO parecia o
+   protagonista. Não podia se distinguir "qual área estou vendo" de relance.
+   O preenchido escuro segue o precedente de .map-ov-btn.is-on: no trilho claro,
+   um segmento cheio é inconfundível. */
+.plat-area-btn.active,
+.plat-area-btn[aria-pressed="true"],
+.plat-area-btn[aria-selected="true"] {
+  border-color: var(--forest);
+  background: var(--forest);
+  color: #fff;
+}
+.plat-area-btn.active svg,
+.plat-area-btn[aria-pressed="true"] svg,
+.plat-area-btn[aria-selected="true"] svg {
+  color: var(--acid);
+}
+.plat-area-btn:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------- cartões-porta para os formulários */
+.rel-gestao-cartoes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px; /* o mesmo passo do .rel-gestao: uma régua só na seção inteira */
+}
+/* 620px, o mesmo corte em que .rel-escolhas e .rel-identificado abrem colunas */
+@media (min-width: 620px) {
+  .rel-gestao-cartoes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* O RITMO da seção inteira (aviso → cartões → nota): um grid com gap único.
+   Sem isto cada bloco dependia de margem default de <p> e o espaçamento saía
+   ao acaso — "alinhamento, espaçamento e posicionamento ruim" (dono, 10/08). */
+.rel-gestao {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.rel-gestao-nota {
+  margin: 0; /* o gap do .rel-gestao é quem espaça */
+}
+
+/* Coluna flex com o botão ancorado na BASE (margin-top:auto no .rel-gestao-
+   abrir): os dois cartões dividem a mesma linha do grid e esticam à mesma
+   altura, então textos de comprimentos diferentes NÃO desalinham os botões —
+   era o defeito visível quando o cartão era grid com align-content:start. */
+.rel-gestao-cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--river);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
+}
+.rel-gestao-cartao:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  border-left-color: var(--river);
+  background: rgba(31, 140, 165, 0.05);
+  text-decoration: none;
+}
+.rel-gestao-cartao:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+.rel-gestao-cartao h3,
+.rel-gestao-cartao h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--forest);
+  font-size: 1.02rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+.rel-gestao-cartao svg {
+  flex: none;
+  color: var(--river);
+}
+/* A linha "quem usa este formulário" — conteúdo, não enfeite. */
+.rel-gestao-cartao p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.rel-gestao-cartao small {
+  color: var(--river-ink);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+/* O botão ancora na BASE do cartão (o par do flex-direction:column acima):
+   com os cartões esticados à mesma altura, os dois "Abrir o formulário"
+   ficam na mesma linha visual, qualquer que seja o tamanho dos textos. O
+   margin: 0 anula o margin-top fixo herdado de .plat-nav — era ele, somado ao
+   auto, que abria o vão exagerado entre texto e botão. */
+.rel-gestao-cartao .rel-gestao-abrir {
+  margin: 0;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+/* --------------------------------------- cobertura por laboratório (view) */
+.rel-gestao-cobertura-rolo {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.rel-gestao-cobertura {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.rel-gestao-cobertura caption {
+  padding: 12px 15px 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: left;
+}
+.rel-gestao-cobertura th,
+.rel-gestao-cobertura td {
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.rel-gestao-cobertura thead th {
+  background: rgba(13, 48, 43, 0.05);
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rel-gestao-cobertura tbody th {
+  color: var(--ink);
+  font-weight: 850;
+}
+.rel-gestao-cobertura tbody tr:last-child td,
+.rel-gestao-cobertura tbody tr:last-child th {
+  border-bottom: none;
+}
+/* Convidados/entraram/enviaram são contagens: alinhadas à direita, dígitos
+   tabulares, como toda coluna .num do módulo relato. */
+.rel-gestao-cobertura .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rel-gestao-cobertura td.num {
+  color: var(--forest);
+  font-weight: 850;
+}
+
+/* ------------------------------------------------- estado vazio honesto */
+/* Não é erro nem enfeite: é um parágrafo que explica POR QUE a lista está
+   vazia (avaliador sem acesso por RLS, ciclo fechado) e o que fazer. Borda
+   tracejada para não competir com os cartões de dados reais. */
+.rel-gestao-vazio {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 20px 22px;
+  border: 1px dashed rgba(17, 33, 31, 0.3);
+  border-radius: var(--radius);
+  background: rgba(13, 48, 43, 0.03);
+}
+.rel-gestao-vazio svg {
+  color: var(--river);
+}
+.rel-gestao-vazio h3,
+.rel-gestao-vazio h4,
+.rel-gestao-vazio strong {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1rem;
+  font-weight: 900;
+}
+.rel-gestao-vazio p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.rel-gestao-vazio a {
+  color: var(--river-ink);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.rel-gestao-vazio .button,
+.rel-gestao-vazio button {
+  min-height: 44px;
+}
+
+/* ------------------------------------------------- responsivo (gestão) */
+@media (max-width: 680px) {
+  /* O seletor ocupa a largura e divide o espaço entre as duas áreas. */
+  .plat-areas {
+    width: 100%;
+  }
+  .plat-area-btn {
+    flex: 1 1 auto;
+    padding: 0 12px;
+  }
+
+  /* Cobertura -> cartões empilhados, a MESMA convenção da .rel-tabela. */
+  .rel-gestao-cobertura-rolo {
+    border: none;
+    background: none;
+  }
+  .rel-gestao-cobertura thead {
+    display: none;
+  }
+  .rel-gestao-cobertura,
+  .rel-gestao-cobertura tbody,
+  .rel-gestao-cobertura tr,
+  .rel-gestao-cobertura th,
+  .rel-gestao-cobertura td {
+    display: block;
+    width: 100%;
+  }
+  .rel-gestao-cobertura tr {
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .rel-gestao-cobertura th,
+  .rel-gestao-cobertura td {
+    padding: 4px 0;
+    border: none;
+  }
+  .rel-gestao-cobertura td[data-rotulo]::before {
+    content: attr(data-rotulo) ": ";
+    color: var(--forest);
+    font-weight: 900;
+  }
+  .rel-gestao-cobertura td[data-label]::before {
+    content: attr(data-label) ": ";
+    color: var(--forest);
+    font-weight: 900;
+  }
+  .rel-gestao-cobertura .num {
+    text-align: left;
+  }
+}
+
+/* ------------------------------------------ movimento reduzido (gestão) */
+@media (prefers-reduced-motion: reduce) {
+  .plat-area-btn,
+  .rel-gestao-cartao {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Alto contraste do sistema: os fundos tingidos somem; a área ativa ganha
+   contorno em cor de sistema, como a opção ativa da .rel-busca. */
+@media (forced-colors: active) {
+  .plat-area-btn.active,
+  .plat-area-btn[aria-pressed="true"],
+  .plat-area-btn[aria-selected="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* --------------------------------------------------- impressão (gestão) */
+/* Seletor e cartões-porta são navegação de tela; no papel ficam a cobertura
+   e a explicação do estado vazio (que é informação, não controle). */
+@media print {
+  .plat-areas,
+  .rel-gestao-cartoes {
+    display: none !important;
+  }
+  .rel-gestao-cobertura-rolo {
+    overflow: visible;
+    border-color: #999;
+    background: #fff;
+  }
+  .rel-gestao-cobertura thead th {
+    background: #fff;
+    border-bottom: 1px solid #666;
+  }
+  .rel-gestao-cobertura tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .rel-gestao-vazio {
+    border-color: #999;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* ------------------------------------- indicadores da Q14 (Tela 1 do relato)
+   Índice H e citações passaram a se preencher sozinhos (OpenAlex por ORCID;
+   Google Acadêmico pela Edge Function, quando a pessoa colou o link do
+   perfil). Três regras entram por causa disso — o resto do bloco é
+   .rel-campo, .rel-dica, .rel-erro, .rel-opcional, .plat-card, .plat-notice e
+   .plat-linkbtn, que já existiam.
+
+   .rel-ind-proc é a mais importante do trio: é a linha que DIZ DE ONDE VEIO O
+   NÚMERO. As duas bases não dão o mesmo valor (o corpus do OpenAlex é menor),
+   e número sem fonte num relatório de agência é passivo — por isso ela tem
+   cor de texto de verdade (--river-ink), não o cinza de nota de rodapé. */
+.rel-ind-proc {
+  margin: 0;
+  color: var(--river-ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+/* O ícone acompanha a linha de base do texto em vez de sentar nela. */
+.rel-ind-proc svg {
+  vertical-align: -2px;
+  margin-right: 2px;
+}
+/* A linha existe no DOM mesmo sem nada a dizer (região `aria-live` criada
+   junto com o texto não é anunciada). Vazia, ela some — senão sobra o `gap`
+   da grade do .rel-campo no meio do formulário. */
+.rel-ind-proc:empty {
+  display: none;
+}
+
+/* A procedência e o "Buscar de novo" na mesma linha enquanto couberem. */
+.rel-ind-estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 14px;
+}
+
+/* A oferta: o número achado quando o que está no campo foi digitado pela
+   pessoa. É pergunta, não aviso, então herda .plat-card/.plat-notice (grade
+   de ícone + texto) e perde o relevo — cartão branco com sombra dentro de
+   outro cartão branco viraria uma caixa flutuando no meio do formulário. */
+.rel-ind-oferta {
+  padding: 12px 14px;
+  gap: 10px;
+  border-color: rgba(31, 140, 165, 0.3);
+  background: rgba(31, 140, 165, 0.07);
+  box-shadow: none;
+}
+.rel-ind-oferta strong {
+  color: var(--river-ink);
+}
+
+/* Os dois botões da oferta são decisão de verdade — alvo de 44px, a regra da
+   casa para tudo que se toca. */
+.rel-ind-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: center;
+  margin-top: 6px;
+}
+.rel-ind-acoes button {
+  min-height: 44px;
+}
+
+/* ==========================================================================
+   I WORKSHOP CONEXÃO FITOFARMAS — formulário pré-evento (família .ff-*)
+   ==========================================================================
+   Tela de #/fitofarmas (src/fitofarmas/FormularioPreEvento.tsx).
+
+   O QUE ESTE BLOCO NÃO FAZ: não redefine NADA acima dele. A tela inteira é
+   feita das famílias que já existiam — .rel-band, .rel-inner, .rel-tela,
+   .rel-cabeca, .rel-campo, .rel-escolhas, .rel-escolha, .rel-fichas,
+   .rel-ficha, .rel-chip, .rel-progresso, .rel-pendencias, .rel-revisao,
+   .rel-recibo, .rel-saida, .rel-nav, .plat-card, .plat-notice, .plat-fields,
+   .plat-steps, .plat-consent, .plat-error, .plat-ok, .plat-protocolo,
+   .button, .button.primary, .button.plat-ghost.
+
+   Entrou aqui SÓ o que não existia:
+     .ff-escala           a escala de 5 pontos (o .rel-escolhas é de 3 colunas)
+     .ff-uma-coluna       escolha com frase inteira, que não cabe em terço
+     .ff-largura-total    dica/erro atravessando a grade do fieldset
+     .ff-bloqueada        opção que o teto de 3 eixos desabilitou
+     .ff-consentimento    o alvo do LGPD, que tem texto de 3 linhas
+     .ff-isca             o campo-armadilha do robô
+
+   REGRAS HERDADAS QUE NÃO PODEM SER QUEBRADAS AQUI: 44px de alvo em tudo
+   clicável; nunca `outline: none`; texto pequeno em --river-ink / #3c6428 /
+   #7c2418 (nunca --river nem --leaf crus sobre claro); `min-width: 0` em filho
+   de grade.
+   ========================================================================== */
+
+/* ----------------------------------------------- escolha em coluna única */
+/* Opções como "Não decido, mas levo e defendo internamente" não cabem em um
+   terço de linha: em 3 colunas o texto quebra em 4 linhas e o cartão vira uma
+   parede. Aqui a grade de .rel-escolhas volta a 1 coluna em qualquer largura,
+   e o rótulo alinha à esquerda porque frase centralizada não se lê. */
+.rel-escolhas.ff-uma-coluna {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 620px) {
+  .rel-escolhas.ff-uma-coluna {
+    grid-template-columns: 1fr;
+  }
+}
+.ff-uma-coluna .rel-escolha {
+  justify-content: flex-start;
+  text-align: left;
+  padding: 11px 14px;
+}
+
+/* Dica e erro dentro de um <fieldset> que é grade: sem isto eles viram uma
+   célula de um terço, ao lado de dois cartões, e a mensagem de erro fica
+   espremida justamente quando mais precisa ser lida. */
+.ff-largura-total {
+  grid-column: 1 / -1;
+}
+
+/* Opção desabilitada pelo teto de 3 eixos. DESABILITADA, NUNCA ESCONDIDA:
+   sumir com as outras cinco opções faria a pessoa achar que a lista mudou. O
+   contraste fica em 4,6:1 — apagado o suficiente para ler como indisponível,
+   legível o suficiente para continuar sendo texto (WCAG 1.4.3). */
+.rel-escolha.ff-bloqueada {
+  border-style: dashed;
+  background: rgba(17, 33, 31, 0.03);
+  color: #6b7876;
+  cursor: not-allowed;
+}
+.rel-escolha.ff-bloqueada:hover {
+  border-color: var(--line);
+  background: rgba(17, 33, 31, 0.03);
+}
+
+/* ------------------------------------------------- escala de 5 pontos */
+/* Rádio, nunca <input type="range">: o range não tem estado "não respondi" e
+   devolve o meio por padrão — o dado nasceria com uma resposta que ninguém deu.
+   Em celular a escala empilha: cinco alvos de 56px em 375px de largura dariam
+   70px cada, e ponto de escala com 70px é onde o dedo erra. */
+.ff-escala {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  scroll-margin-top: 132px;
+}
+.ff-escala > legend {
+  grid-column: 1 / -1;
+  padding: 0 0 6px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+@media (min-width: 620px) {
+  .ff-escala {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+/* O ponto é um .rel-escolha mais alto: em coluna única o rótulo tem frase e
+   duas linhas em 44px cortam o descendente do "g" de "Quase nula". */
+.ff-escala .rel-escolha {
+  min-height: 56px;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.ff-escala .rel-escolha b {
+  font-size: 1.05rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.ff-escala .rel-escolha span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+/* Âncoras nas pontas. aria-hidden no JSX: quem ouve a tela já recebe o rótulo
+   de cada ponto, e repetir "quase nula / certa" no fim vira ruído. */
+.ff-escala-ancoras {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------- consentimento LGPD */
+/* O texto tem três linhas e é contrato: alinha ao topo (não ao centro, que é o
+   padrão de .rel-escolha) e não centraliza. Herda o alvo de 44px. */
+.rel-escolha.ff-consentimento {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  line-height: 1.5;
+}
+/* A caixa do consentimento é a ÚNICA que continua visível: .rel-escolha esconde
+   o controle, e esconder a caixa de uma autorização legal seria esconder o
+   próprio ato de consentir. */
+.rel-escolha.ff-consentimento input[type="checkbox"] {
+  position: static;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  clip-path: none;
+  overflow: visible;
+  flex: none;
+  accent-color: var(--river);
+}
+
+/* ------------------------------------------------------------ a isca */
+/* `display: none` é lido por parte dos robôs de formulário como isca. Sair do
+   fluxo e do foco engana melhor, e não afeta leitor de tela porque o contêiner
+   é aria-hidden e o campo tem tabindex="-1". */
+.ff-isca {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ff-escala .rel-escolha {
+    transition: none;
+  }
+}
+/* Modo de alto contraste do Windows: o sistema descarta `color`,
+   `background-color` e `border-color` — que são as TRÊS únicas declarações de
+   `.rel-escolha:has(input:checked)`. E o rádio de verdade está recortado da tela
+   por `clip-path: inset(50%)`, que o alto contraste não desfaz. Resultado sem
+   esta regra: dá para escolher, e não sobra nenhum indicador de QUAL foi
+   escolhida — em todos os dez grupos deste formulário e nos do relato anual.
+   O seletor não tem prefixo `.ff-` de propósito: o defeito é da família
+   `.rel-escolha` inteira, e consertá-lo só aqui deixaria o resto do site quebrado. */
+@media (forced-colors: active) {
+  .rel-escolha:has(input:checked),
+  .rel-escolha[aria-pressed="true"],
+  .rel-ficha[aria-pressed="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+@media print {
+  .ff-escala {
+    display: block;
+  }
+  .ff-isca {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   Painel do Relatório Anual (Gestão · área Relatório) — prefixo .pn-*
+   Tela: src/relato/PainelRelatorio.tsx. Reusa plat-* e edital-table; aqui só
+   o que é próprio do painel: moldura do recorte, abas, barras de div,
+   esqueleto de carregamento, grade de objetivos e a minuta.
+   ========================================================================= */
+
+/* A moldura de honestidade: o recorte de parcialidade acima de toda aba. */
+.pn-moldura {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  margin: 0.9rem 0 0.6rem;
+}
+.pn-moldura-frase {
+  margin: 0;
+  font-weight: 600;
+  color: var(--forest);
+  font-size: 0.95rem;
+}
+.pn-moldura-meta {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.pn-atualizar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.pn-atualizar:hover:not(:disabled) {
+  border-color: var(--forest);
+}
+.pn-atualizar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* As abas do painel: herdam o visual de .plat-tabs; aqui só o respiro e a
+   quebra em telas estreitas. */
+.pn-abas {
+  margin: 0.4rem 0 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* Esqueleto discreto do carregamento — blocos, sem espetáculo. */
+.pn-skeleton {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.pn-skeleton-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.pn-skeleton-linha,
+.pn-skeleton-bloco {
+  background: rgba(17, 33, 31, 0.07);
+  border-radius: var(--radius);
+  animation: pn-pulsar 1.4s ease-in-out infinite;
+}
+.pn-skeleton-linha {
+  height: 3.4rem;
+}
+.pn-skeleton-larga {
+  height: 2.2rem;
+}
+.pn-skeleton-bloco {
+  height: 11rem;
+}
+@keyframes pn-pulsar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pn-skeleton-linha,
+  .pn-skeleton-bloco {
+    animation: none;
+  }
+}
+
+/* Barras de div com rótulo numérico — sem biblioteca de gráfico. */
+.pn-barras {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.pn-barra {
+  display: grid;
+  grid-template-columns: minmax(130px, 240px) 1fr auto;
+  align-items: center;
+  column-gap: 0.6rem;
+}
+.pn-barra-rotulo {
+  font-size: 0.85rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.pn-barra-trilho {
+  display: block;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(17, 33, 31, 0.08);
+  overflow: hidden;
+}
+.pn-barra-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--river);
+  min-width: 0;
+}
+.pn-barra-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--forest);
+  font-size: 0.88rem;
+}
+.pn-barra-detalhe {
+  grid-column: 2 / -1;
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+@media (max-width: 560px) {
+  .pn-barra {
+    grid-template-columns: 1fr auto;
+  }
+  .pn-barra-rotulo {
+    grid-column: 1 / -1;
+  }
+  .pn-barra-detalhe {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Fora do período: o cartão inteiro sinaliza "à parte". */
+.pn-fora {
+  border-left: 4px solid var(--clay);
+}
+
+/* Nota curta dentro de célula (ex.: por que TCC não é contável). */
+.pn-nota {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Grade dos 43 objetivos: número em cima, contagem embaixo; zero em destaque. */
+.pn-objetivos {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 0.4rem;
+}
+.pn-obj {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.2rem;
+  background: var(--surface);
+}
+.pn-obj strong {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.pn-obj span {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--forest);
+  font-variant-numeric: tabular-nums;
+}
+.pn-obj-zero {
+  border-color: var(--clay);
+  background: rgba(180, 93, 66, 0.08);
+}
+.pn-obj-zero span {
+  color: var(--clay);
+}
+
+/* Exportar: botões lado a lado, quebrando quando falta largura. */
+.pn-export-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Minuta: seção com cabeçalho + botão copiar; texto pré-quebrado. */
+.pn-minuta-secao {
+  border-top: 1px solid var(--line);
+  padding: 0.8rem 0 0.2rem;
+  margin-top: 0.8rem;
+}
+.pn-minuta-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.pn-minuta-cabecalho h4 {
+  margin: 0;
+  color: var(--forest);
+}
+.pn-copiar {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+}
+.pn-minuta-texto {
+  white-space: pre-wrap;
+  margin: 0.5rem 0 0.3rem;
+  font-size: 0.92rem;
+}
+.pn-minuta-fonte {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Documentos anexados (aba Exportar): nome com tamanho/uso embaixo e botão
+   de baixar compacto — a tabela já é responsiva pelo .edital-table. */
+.pn-doc-nome small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.pn-doc-baixar {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  white-space: nowrap;
+}
+@media (forced-colors: active) {
+  .pn-barra-fill {
+    background: Highlight;
+  }
+  .pn-obj-zero {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* ==========================================================================
+   CURSO "Do átomo à ação biológica" (#/curso)
+   Página de apresentação + inscrição. Reusa tokens, .button, .eyebrow e as
+   classes rel- e plat- do formulário. Tudo aqui é `curso-` prefixado.
+   Animações moleculares LEVES, todas atrás de prefers-reduced-motion no fim.
+   ========================================================================== */
+.curso-page {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------- hero ---- */
+.curso-hero {
+  position: relative;
+  overflow: hidden;
+  /* topo: limpa o cabeçalho fixo (~111px) + respiro */
+  padding: clamp(132px, 16vw, 168px) 0 clamp(48px, 8vw, 88px);
+  background:
+    radial-gradient(120% 90% at 88% 8%, rgba(85, 184, 208, 0.16), transparent 60%),
+    radial-gradient(90% 80% at 6% 100%, rgba(95, 143, 69, 0.14), transparent 62%),
+    linear-gradient(168deg, #eef3ea 0%, var(--paper) 52%, #e9f1f3 100%);
+  border-bottom: 1px solid var(--line);
+}
+.curso-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(24px, 5vw, 56px);
+  align-items: center;
+}
+.curso-hero-copy h1 {
+  margin: 10px 0 6px;
+  font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--forest);
+}
+/* Título do evento em duas linhas: marca em destaque + descritivo (conceito). */
+.curso-hero-marca {
+  display: block;
+  color: var(--forest);
+}
+.curso-hero-desc {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(1.15rem, 2.6vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--river-ink);
+}
+.curso-hero-sub {
+  margin: 0 0 14px;
+  font-size: clamp(1.02rem, 1.7vw, 1.24rem);
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 46ch;
+}
+.curso-hero-metafora {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(31, 140, 165, 0.1);
+  color: var(--river-ink);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.curso-hero-metafora svg {
+  flex: none;
+  color: var(--gold);
+}
+.curso-hero-fatos {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.curso-hero-fatos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  color: var(--forest-2);
+  font-size: 0.96rem;
+}
+.curso-hero-fatos svg {
+  color: var(--leaf);
+  flex: none;
+}
+.curso-hero-selo {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 52ch;
+}
+.curso-hero-selo svg {
+  color: var(--leaf);
+  flex: none;
+  margin-top: 2px;
+}
+.curso-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.curso-hero-arte {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------------------------------------------------------- molécula ------ */
+.curso-mol {
+  width: min(340px, 78vw);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 18px 40px rgba(13, 48, 43, 0.16));
+}
+/* O CICLO DE DOCAGEM (14 s), decisão do dono em 2026-08-13: a molécula anima
+   para todo mundo, inclusive sob prefers-reduced-motion. Os !important abaixo
+   vencem, por especificidade de classe, a regra global que zera animações sob
+   movimento reduzido (seletor universal, ~linha 5320). Linha do tempo:
+     de 0 a 40%: o ligante entra vindo de cima e da direita, com pequenas
+       rotações alternadas (a busca de pose do algoritmo de docagem);
+     de 40 a 70%: complexo ligado; respiração térmica mínima; as três pontes
+       de hidrogênio nascem em sequência (40 a 47%) e flutuam de ocupação;
+     de 70 a 100%: as pontes se rompem e o ligante se dissocia, voltando ao
+       ponto de partida para o laço fechar sem emenda.
+   Para voltar a respeitar a preferência de movimento reduzido: remover os
+   !important e reintroduzir animation: none no media query do fim da seção. */
+.curso-mol-ligante {
+  animation: cursoDocking 14s ease-in-out infinite !important;
+}
+.curso-mol-ponte-a {
+  animation: cursoPonteA 14s ease-in-out infinite !important;
+}
+.curso-mol-ponte-b {
+  animation: cursoPonteB 14s ease-in-out infinite !important;
+}
+.curso-mol-ponte-c {
+  animation: cursoPonteC 14s ease-in-out infinite !important;
+}
+/* Deriva quase imperceptível da superfície da proteína */
+.curso-mol-bolso {
+  animation: cursoDeriva 36s ease-in-out infinite !important;
+}
+.curso-mol-mini {
+  width: 34px;
+  height: auto;
+  vertical-align: -6px;
+  margin-right: 2px;
+}
+@keyframes cursoDocking {
+  0% {
+    transform: translate(24px, -20px) rotate(5deg);
+  }
+  8% {
+    transform: translate(19px, -16px) rotate(2deg);
+  }
+  18% {
+    transform: translate(12px, -10px) rotate(-2.5deg);
+  }
+  28% {
+    transform: translate(5px, -4px) rotate(1.2deg);
+  }
+  40% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  48% {
+    transform: translate(0.9px, -0.8px) rotate(0.3deg);
+  }
+  56% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  63% {
+    transform: translate(0.8px, -0.7px) rotate(-0.2deg);
+  }
+  70% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  78% {
+    transform: translate(4px, -3.5px) rotate(-1.5deg);
+  }
+  90% {
+    transform: translate(16px, -13px) rotate(3.5deg);
+  }
+  100% {
+    transform: translate(24px, -20px) rotate(5deg);
+  }
+}
+@keyframes cursoPonteA {
+  0%,
+  36% {
+    opacity: 0;
+  }
+  41% {
+    opacity: 0.95;
+  }
+  55% {
+    opacity: 0.7;
+  }
+  68% {
+    opacity: 0.9;
+  }
+  74%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cursoPonteB {
+  0%,
+  39% {
+    opacity: 0;
+  }
+  44% {
+    opacity: 0.95;
+  }
+  57% {
+    opacity: 0.7;
+  }
+  69% {
+    opacity: 0.9;
+  }
+  73%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cursoPonteC {
+  0%,
+  42% {
+    opacity: 0;
+  }
+  47% {
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  72%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cursoDeriva {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-0.8px, 0.7px) scale(1.004);
+  }
+}
+
+/* ---------------------------------------------------------- seções -------- */
+.curso-secao {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: clamp(44px, 7vw, 82px) 0;
+}
+.curso-secao-cabeca {
+  max-width: 62ch;
+  margin: 0 0 clamp(22px, 4vw, 40px);
+}
+.curso-secao-cabeca h2 {
+  margin: 8px 0 10px;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1.08;
+  color: var(--forest);
+  letter-spacing: -0.01em;
+}
+.curso-secao-cabeca h2:focus-visible {
+  outline: 3px solid var(--river);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.curso-secao-intro {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.55;
+}
+.curso-secao .eyebrow,
+.curso-inscricao-cabeca .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ---------------------------------------------------- os dois conteúdos --- */
+.curso-modulos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2.6vw, 26px);
+}
+.curso-modulo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 30px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+.curso-modulo:hover {
+  transform: translateY(-4px);
+  border-color: rgba(95, 143, 69, 0.5);
+}
+.curso-modulo-topo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.curso-modulo-num {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(150deg, var(--forest), var(--river));
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.curso-modulo-eyebrow {
+  margin: 0 0 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--river-ink);
+}
+.curso-modulo-eyebrow svg {
+  color: var(--leaf);
+}
+.curso-modulo-topo h3 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  line-height: 1.15;
+  color: var(--forest);
+}
+.curso-modulo-resumo {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.curso-modulo-aprende {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.curso-modulo-aprende li {
+  position: relative;
+  padding-left: 26px;
+  color: var(--ink);
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+.curso-modulo-aprende li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.42em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--leaf);
+  box-shadow: 0 0 0 4px rgba(95, 143, 69, 0.16);
+}
+.curso-modulo-turmas {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+.curso-modulo-turmas-titulo {
+  margin: 0 0 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.curso-modulo-turmas ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.curso-modulo-turmas li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--forest-2);
+  font-size: 0.92rem;
+}
+.curso-modulo-turmas svg {
+  color: var(--river);
+  flex: none;
+}
+
+/* --------------------------------------------------------------- casos ---- */
+.curso-casos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2vw, 20px);
+}
+.curso-caso {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+.curso-caso:hover,
+.curso-caso:focus-within,
+.curso-caso:focus-visible {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+  border-color: rgba(31, 140, 165, 0.5);
+  outline: none;
+}
+.curso-caso-badge {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(31, 140, 165, 0.12);
+  color: var(--river-ink);
+  transition: transform 300ms ease, background 220ms ease;
+}
+.curso-caso:hover .curso-caso-badge {
+  transform: rotate(-8deg) scale(1.05);
+  background: rgba(31, 140, 165, 0.2);
+}
+.curso-caso h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--forest);
+}
+.curso-caso-sistema {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.curso-caso-conexao {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  /* Texto pequeno: verde escuro (#3c6428), nunca --leaf cru sobre claro — regra
+     de contraste do próprio projeto (styles.css §movimento reduzido/contraste). */
+  color: #3c6428;
+}
+.curso-caso-ideia {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.curso-caso-pdb {
+  margin: 4px 0 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--muted);
+  opacity: 0.7;
+  transition: opacity 220ms ease, color 220ms ease;
+}
+.curso-caso:hover .curso-caso-pdb,
+.curso-caso:focus-within .curso-caso-pdb {
+  opacity: 1;
+  color: var(--river-ink);
+}
+.curso-caso-pdb span {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: rgba(216, 154, 43, 0.18);
+  color: var(--clay);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  margin-right: 4px;
+}
+.curso-caso-demo {
+  margin: clamp(16px, 2.6vw, 24px) 0 0;
+  padding: 16px 18px;
+  background: rgba(95, 143, 69, 0.08);
+  border: 1px solid rgba(95, 143, 69, 0.24);
+  border-radius: 12px;
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+.curso-caso-demo svg {
+  color: var(--leaf);
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+
+/* --------------------------------------------------------- ferramentas ---- */
+/* Cada ferramenta é um CARTÃO CLICÁVEL que abre o site oficial em nova aba. */
+.curso-ferramentas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(214px, 1fr));
+  gap: 12px;
+}
+.curso-ferramenta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 13px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+.curso-ferramenta:hover,
+.curso-ferramenta:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(31, 140, 165, 0.5);
+  box-shadow: var(--shadow);
+  outline: none;
+}
+.curso-ferramenta-icone {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(31, 140, 165, 0.12);
+  color: var(--river-ink);
+  transition: transform 260ms ease, background 200ms ease;
+}
+.curso-ferramenta:hover .curso-ferramenta-icone {
+  transform: rotate(-6deg) scale(1.05);
+  background: rgba(31, 140, 165, 0.2);
+}
+.curso-ferramenta-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.curso-ferramenta-txt strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--forest);
+  font-size: 0.94rem;
+  line-height: 1.15;
+}
+.curso-ferramenta-txt strong svg {
+  flex: none;
+  color: var(--muted);
+  transition: color 200ms ease;
+}
+.curso-ferramenta:hover .curso-ferramenta-txt strong svg,
+.curso-ferramenta:focus-visible .curso-ferramenta-txt strong svg {
+  color: var(--river);
+}
+.curso-ferramenta-txt span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+@media (prefers-reduced-motion: reduce) {
+  .curso-ferramenta,
+  .curso-ferramenta-icone {
+    transition: none;
+  }
+  .curso-ferramenta:hover {
+    transform: none;
+  }
+  .curso-ferramenta:hover .curso-ferramenta-icone {
+    transform: none;
+  }
+}
+.curso-salvaguarda {
+  margin: clamp(18px, 3vw, 26px) 0 0;
+  padding: 16px 18px;
+  background: rgba(180, 93, 66, 0.08);
+  border: 1px solid rgba(180, 93, 66, 0.22);
+  border-radius: 12px;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.curso-salvaguarda svg {
+  color: var(--clay);
+  vertical-align: -2px;
+  margin-right: 4px;
+}
+
+/* -------------------------------------------------------- a inscrição ----- */
+.curso-inscricao-band {
+  padding: clamp(48px, 8vw, 88px) 0;
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(31, 140, 165, 0.08), transparent 70%),
+    var(--forest);
+  color: #fff;
+  scroll-margin-top: 96px;
+}
+.curso-inscricao-inner {
+  width: min(760px, calc(100% - 40px));
+}
+.curso-inscricao-cabeca {
+  margin-bottom: clamp(20px, 3vw, 30px);
+}
+.curso-inscricao-cabeca .eyebrow {
+  color: var(--acid);
+}
+.curso-inscricao-cabeca h2 {
+  color: #fff;
+}
+.curso-inscricao-cabeca .curso-secao-intro {
+  color: rgba(255, 255, 255, 0.82);
+}
+/* O formulário em si é um cartão claro sobre a faixa escura. */
+.curso-inscricao-band .rel-tela {
+  background: var(--surface);
+}
+
+/* --------------------------------------------------------- o percurso ----- */
+.curso-percurso {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+}
+.curso-percurso.is-completo {
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 3px rgba(95, 143, 69, 0.18);
+}
+.curso-percurso-topo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: var(--forest);
+}
+.curso-percurso-topo svg {
+  color: var(--gold);
+  flex: none;
+}
+.curso-percurso-topo b {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--river-ink);
+}
+.curso-percurso.is-completo .curso-percurso-topo b {
+  color: #3c6428; /* texto pequeno: contraste AA sobre o cartão claro */
+}
+.curso-percurso-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.curso-percurso-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.curso-percurso-chip.is-on {
+  border-style: solid;
+  border-color: rgba(95, 143, 69, 0.55);
+  background: rgba(95, 143, 69, 0.08);
+}
+.curso-percurso-num {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--forest);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+.curso-percurso-chip.is-on .curso-percurso-num {
+  background: var(--leaf);
+}
+.curso-percurso-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.curso-percurso-txt strong {
+  font-size: 0.9rem;
+  color: var(--forest);
+}
+.curso-percurso-txt small {
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.25;
+}
+.curso-percurso-quando {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--river-ink);
+}
+.curso-percurso-quando svg {
+  flex: none;
+}
+.curso-percurso-ok {
+  margin-left: auto;
+  flex: none;
+  color: var(--leaf);
+}
+
+/* ------------------------------------------------- seletor de turma ------- */
+.curso-turmas legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.curso-turmas-num {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--forest);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+.curso-turma-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 6px;
+}
+.curso-turma {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 15px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+.curso-turma:hover {
+  border-color: rgba(31, 140, 165, 0.5);
+  transform: translateY(-2px);
+}
+/* rádio real, escondido mas focável (navegação por setas de graça) */
+.curso-turma input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+.curso-turma:focus-within {
+  outline: 3px solid var(--river);
+  outline-offset: 2px;
+}
+.curso-turma.is-on {
+  border-color: var(--leaf);
+  background: rgba(95, 143, 69, 0.07);
+  box-shadow: 0 0 0 3px rgba(95, 143, 69, 0.16);
+}
+.curso-turma-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.curso-turma-dia {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  color: var(--forest);
+  font-size: 0.96rem;
+}
+.curso-turma-dia svg {
+  color: var(--river);
+  flex: none;
+}
+/* Marca de seleção no canto — some por padrão, aparece quando a turma é a escolhida. */
+.curso-turma-check {
+  flex: none;
+  color: var(--leaf);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.curso-turma.is-on .curso-turma-check {
+  opacity: 1;
+  transform: scale(1);
+}
+.curso-turma-hora {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.curso-turma-hora svg {
+  color: var(--leaf);
+  flex: none;
+}
+/* A vaga: rótulo curto + barra "de vida" (cheia = muitas vagas; esvazia e muda
+   de cor conforme lota). */
+.curso-turma-vaga {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+}
+.curso-turma-vaga-num {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #3c6428; /* verde escuro: contraste AA (nível ok) */
+}
+.curso-turma-vaga[data-nivel="baixo"] .curso-turma-vaga-num {
+  color: #8a5512; /* âmbar escuro */
+}
+.curso-turma-vaga[data-nivel="critico"] .curso-turma-vaga-num,
+.curso-turma-vaga[data-nivel="esgotada"] .curso-turma-vaga-num {
+  color: #7c2418; /* clay escuro */
+}
+.curso-turma-vaga--indef {
+  margin-top: 2px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.curso-turma-barra {
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(17, 33, 31, 0.09);
+  overflow: hidden;
+}
+.curso-turma-barra-fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 999px;
+  background: var(--leaf);
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1), background 220ms ease;
+}
+.curso-turma-vaga[data-nivel="baixo"] .curso-turma-barra-fill {
+  background: var(--gold);
+}
+.curso-turma-vaga[data-nivel="critico"] .curso-turma-barra-fill {
+  background: var(--clay);
+}
+.curso-turma-vaga[data-nivel="esgotada"] .curso-turma-barra-fill {
+  min-width: 0;
+}
+.curso-turma.is-esgotada {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+.curso-turma.is-esgotada:hover {
+  transform: none;
+  border-color: var(--line);
+}
+@media (prefers-reduced-motion: reduce) {
+  .curso-turma,
+  .curso-turma-check,
+  .curso-turma-barra-fill {
+    transition: none;
+  }
+  .curso-turma:hover {
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------- equipe --- */
+.curso-equipe-secao {
+  border-top: 1px solid var(--line);
+}
+.curso-equipe {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.curso-equipe li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.curso-equipe strong {
+  color: var(--forest);
+}
+.curso-equipe span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.curso-lattes {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  color: var(--river-ink);
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.curso-lattes:hover,
+.curso-lattes:focus-visible {
+  text-decoration: underline;
+}
+.curso-lattes svg {
+  flex: none;
+}
+.curso-realizacao {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* ---------------------------------------------------------- responsivo ---- */
+@media (max-width: 900px) {
+  .curso-hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .curso-hero-arte {
+    order: -1;
+  }
+  .curso-mol {
+    width: min(240px, 60vw);
+  }
+  .curso-modulos {
+    grid-template-columns: 1fr;
+  }
+  .curso-casos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .curso-casos {
+    grid-template-columns: 1fr;
+  }
+  .curso-turma-grid {
+    grid-template-columns: 1fr;
+  }
+  .curso-percurso-chips {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------- movimento reduzido: congela sem quebrar ------------ */
+@media (prefers-reduced-motion: reduce) {
+  /* A molécula do herói NÃO entra aqui: por decisão do dono (2026-08-13) o
+     ciclo de docagem anima para todo mundo (ver o bloco da molécula acima). */
+  .curso-modulo,
+  .curso-caso,
+  .curso-caso-badge,
+  .curso-turma {
+    transition: none !important;
+  }
+  .curso-modulo:hover,
+  .curso-caso:hover,
+  .curso-turma:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   CURSO · Cartão de divulgação do painel (#/gestao?area=curso)
+   Só contagens/proporções — pensado para print e redes. Barras reusam o
+   @keyframes vizGrow já existente; guarda de movimento reduzido no fim.
+   ========================================================================== */
+.curso-painel {
+  margin: 4px 0 18px;
+  padding: clamp(20px, 3.2vw, 32px);
+  border-radius: 18px;
+  color: #fff;
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgba(85, 184, 208, 0.35), transparent 55%),
+    radial-gradient(80% 120% at 0% 100%, rgba(95, 143, 69, 0.32), transparent 55%),
+    linear-gradient(150deg, var(--forest) 0%, var(--forest-2) 55%, var(--river-ink) 100%);
+  box-shadow: 0 24px 70px rgba(13, 48, 43, 0.28);
+  overflow: hidden;
+}
+.curso-painel-marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.curso-painel-marca .curso-mol-mini {
+  width: 40px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+}
+.curso-painel-eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acid);
+}
+.curso-painel-marca strong {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  color: #fff;
+}
+.curso-painel-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 0 14px;
+}
+.curso-painel-num {
+  font-size: clamp(3.6rem, 12vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #ffffff, var(--acid));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--acid); /* fallback quando background-clip:text não pinta */
+}
+.curso-painel-cap {
+  margin-top: 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+}
+.curso-painel-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 6px 0 20px;
+}
+.curso-painel-mini > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.curso-painel-mini b {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+.curso-painel-mini span {
+  font-size: 0.76rem;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.82);
+}
+.curso-painel-charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 2.2vw, 22px);
+}
+.curso-painel-grafico h4 {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sky);
+}
+.curso-painel-grafico ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+.curso-painel-grafico li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "rot num" "track num";
+  align-items: center;
+  gap: 2px 8px;
+}
+.curso-painel-rot {
+  grid-area: rot;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.curso-painel-grafico b {
+  grid-area: num;
+  align-self: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  padding-left: 6px;
+}
+.curso-painel-track {
+  grid-area: track;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.curso-painel-fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 999px;
+  transform-origin: left;
+  animation: vizGrow 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.curso-painel-fill--river {
+  background: linear-gradient(90deg, var(--river), var(--sky));
+}
+.curso-painel-fill--leaf {
+  background: linear-gradient(90deg, var(--leaf), var(--acid));
+}
+.curso-painel-fill--gold {
+  background: linear-gradient(90deg, var(--gold), #f0c05a);
+}
+.curso-painel-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 14px;
+  margin: 20px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+.curso-painel-dica {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--acid);
+  font-weight: 700;
+}
+.curso-op-linha {
+  margin-top: 2px;
+}
+@media (max-width: 720px) {
+  .curso-painel-charts {
+    grid-template-columns: 1fr;
+  }
+  .curso-painel-mini b {
+    font-size: 1.25rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .curso-painel-fill {
+    animation: none;
+  }
 }

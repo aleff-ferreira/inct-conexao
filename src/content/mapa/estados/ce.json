@@ -16,7 +16,7 @@
       "identificacao": "Possui o guizo (chocalho) na ponta da cauda, que produz som característico ao se sentir ameaçada. Acidentes podem ser graves e exigem soro específico.",
       "prevencao": [
         "Usar botas e perneiras no trabalho rural e ao caminhar na Caatinga.",
-        "Atenção ao som do guizo; afastar-se sem tentar manejar o animal."
+        "Ficar atento ao som do guizo e afastar-se sem tentar manejar o animal."
       ],
       "primeirosSocorros": [
         "Repouso, imobilização do membro e transporte imediato ao serviço de saúde para soro anticrotálico.",
@@ -63,7 +63,7 @@
       "identificacao": "Escorpião amarelado com faixa/mancha escura no dorso; principal causador de acidentes escorpiônicos no Nordeste, favorecido por ambientes urbanos.",
       "prevencao": [
         "Sacudir roupas, calçados e roupa de cama antes de usar.",
-        "Vedar frestas e ralos; afastar entulho das paredes; controlar baratas.",
+        "Vedar frestas e ralos, afastar entulho das paredes e controlar baratas.",
         "Manter quintais limpos e usar telas."
       ],
       "primeirosSocorros": [
@@ -86,12 +86,12 @@
       "transmissao": "Picada de fêmeas do flebotomíneo (mosquito-palha); o cão é o principal reservatório no ciclo urbano.",
       "vetoresReservatorios": "Vetor: Lutzomyia longipalpis. Reservatório urbano: cães domésticos.",
       "prevencao": [
-        "Uso de coleiras repelentes em cães e telas; manejo ambiental para reduzir o vetor.",
+        "Usar coleiras repelentes nos cães, instalar telas e fazer manejo ambiental para reduzir o vetor.",
         "Evitar acúmulo de matéria orgânica (favorece o mosquito-palha)."
       ],
       "sinaisAlerta": [
         "Febre prolongada, emagrecimento, palidez e aumento do abdome (baço/fígado).",
-        "Quadro arrastado que exige avaliação, pode ser grave se não tratado."
+        "Quadro arrastado, que exige avaliação e pode ser grave se não tratado."
       ],
       "manejoServicos": "Diagnóstico e tratamento são feitos na rede pública; a procura precoce diante de febre prolongada melhora o prognóstico.",
       "fontes": [
@@ -109,7 +109,7 @@
       ],
       "sinaisAlerta": [
         "Febre com dor no corpo e nas articulações, manchas na pele.",
-        "Sinais de alarme (dengue): dor abdominal intensa, vômitos, sangramentos, atendimento imediato."
+        "Sinais de alarme (dengue): dor abdominal intensa, vômitos e sangramentos exigem atendimento imediato."
       ],
       "manejoServicos": "O cuidado é de suporte (hidratação e acompanhamento); não há antiviral específico de uso rotineiro. A avaliação precoce reduz complicações.",
       "fontes": [

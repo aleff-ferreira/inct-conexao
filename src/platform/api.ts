@@ -255,7 +255,14 @@ export function toCsv(rows: Array<Record<string, string | number | null>>): stri
   const headers = Object.keys(rows[0]);
   const esc = (v: string | number | null) => {
     const s = v === null ? "" : String(v);
-    return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    // Neutraliza injeção de fórmula em planilha (CSV injection): uma célula que
+    // COMEÇA com = + - @ (ou TAB/CR) é EXECUTADA pelo Excel/LibreOffice. Vários
+    // desses campos vêm de formulário público (nome, instituição, comentários),
+    // então um `=HYPERLINK(...)` viajaria para a máquina de quem abre a planilha.
+    // O apóstrofo força a célula a virar texto. Só em STRING: um `number` é dado
+    // numérico legítimo (inclusive negativo) e nunca é vetor de fórmula.
+    const g = typeof v === "string" && /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+    return /[",;\n]/.test(g) ? `"${g.replace(/"/g, '""')}"` : g;
   };
   return [headers.join(";"), ...rows.map((r) => headers.map((h) => esc(r[h])).join(";"))].join("\n");
 }

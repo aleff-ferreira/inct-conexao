@@ -1,0 +1,1005 @@
+{
+  "_meta": {
+    "schema": "inct-relato-taxonomia/1",
+    "titulo": "Taxonomia de tipos de produção do INCT-CONEXAO — conferida na fonte",
+    "apuradoEm": "2026-08-04",
+    "apuradoPor": "Tarefa C (verificação de fontes) — encomendada por Aleff Ferreira",
+    "escopo": "Enum fechado de `producoes.tipo` do formulário de relato (docs/relato-anual.md §2.3). NÃO cobre `fatos` coletivos (§2.4), que são outro enum.",
+    "nivelDeConfiancaGeral": "alto para o vocabulário (Lattes + CAPES, ambos lidos em fonte primária/oficial); MÉDIO para o mapeamento CNPq, porque o formulário de acompanhamento da safra 2024 dos INCTs não é público — o que foi lido são dois relatórios reais preenchidos no formulário do CNPq (safra 2008) e a Chamada 46/2024, que não traz anexo de tabelas.",
+
+    "oQueAEspecificacaoAfirmavaEOQueSeApurou": {
+      "afirmacao": "docs/relato-anual.md §2.3: o enum de ~26 tipos seria 'união da taxonomia CAPES (bibliográfica/técnica/artística) com as linhas literais da tabela A do formulário oficial do CNPq'.",
+      "veredito": "PARCIALMENTE FALSA, e a parte falsa é a que mais importa.",
+      "detalhe": [
+        "A metade CAPES está CORRETA e é mais precisa do que a especificação sugere: 20 dos 26 tipos propostos correspondem quase um a um aos 21 Produtos Técnicos e Tecnológicos (PTT) homologados pelo CTC-ES da CAPES em maio/2019 (relatório do GT Produção Técnica). Os rótulos batem quase literalmente.",
+        "A metade CNPq está ERRADA. A tabela A do formulário do CNPq tem 11 linhas, não 26, e nenhuma delas é `traducao`, `base_dados`, `manual_protocolo`, `carta_mapa`, `norma_marco_regulatorio`, `acervo`, `material_didatico`, `curso_formacao`, `evento_organizado`, `tecnologia_social`, `desenho_industrial`, `marca` ou `cultivar`. Tudo isso, no formulário do CNPq, cai em 'OUTROS (ESPECIFICAR)' ou nas tabelas C e D, que são de linha livre.",
+        "A tabela A NÃO distingue trabalho completo de resumo de resumo expandido. Essa distinção é do Lattes/CAPES (enum NATUREZA), não do CNPq. Os três tipos separados da especificação foram colapsados em um tipo com subtipos oficiais.",
+        "A tabela A NÃO tem linha de 'trabalhos convidados'. No relatório real, 'INVITED TALKS' foi declarado em 'OUTROS (ESPECIFICAR)'. O campo `convidado` do §2.3 não tem lastro em linha de formulário.",
+        "A tabela A TEM uma linha que a especificação não previu: 'ARTIGOS PUBLICADOS COM AUTORES DE MAIS DE UM GRUPO DO INCT'. É uma contagem derivada, não um tipo — e é exatamente o que `producao_autores`/`coautores_na_rede` produz. Ou seja: a tabela de coautores deixa de ser refinamento e vira requisito de formulário oficial. Ver `mapeamentoTabelaA.derivadas`.",
+        "Faltavam no enum de 26 cinco tipos que existem literalmente no Lattes e/ou na CAPES e que são plausíveis nesta rede: `produto_tecnologico`, `texto_jornal_revista`, `indicacao_geografica`, `prefacio_posfacio` e `topografia_circuito_integrado`."
+      ]
+    },
+
+    "vocabularioQueOPesquisadorBrasileiroJaConhece": {
+      "conclusao": "O vocabulário do Lattes vence, sem disputa. É o que a pessoa preenche todo ano, é de onde o CNPq recupera a produção, e é o que os próprios INCTs usam para organizar seus relatórios.",
+      "evidencia": [
+        "O Currículo Lattes organiza produção em PRODUCAO-BIBLIOGRAFICA / PRODUCAO-TECNICA / OUTRA-PRODUCAO (artística-cultural + orientações), com elementos nomeados — é a ontologia LMPL, publicada pelo próprio CNPq (DTD 1.4.1).",
+        "O Diretório dos Grupos de Pesquisa (DGP/CNPq) usa os mesmos três grupos com rótulos em português corrente ('Artigos completos publicados em periódicos', 'Livros ou capítulos de livros publicados', 'Softwares — com registro ou patente / sem registro ou patente').",
+        "O relatório parcial 2019-2021 do INCT-ODISSEIA ao CNPq organiza a seção 4 exatamente com rótulos do Lattes: 'Trabalhos completos publicados em anais de eventos', 'Artigos completos publicados em periódicos', 'Livros publicados', 'Capítulos de livros publicados', 'Organização de eventos', 'Outra produção bibliográfica', 'Outra produção técnica', 'Curso de curta duração (extensão)'. Ninguém inventou vocabulário novo.",
+        "A CAPES/Sucupira é o segundo vocabulário mais conhecido, mas só por quem está em PPG — e o dos 21 PTT é de 2019, ainda pouco internalizado. Serve para nomear o que o Lattes não tem elemento próprio (tecnologia social, manual/protocolo, norma, acervo, base de dados)."
+      ],
+      "regraDeRotulo": "Onde o Lattes tem elemento próprio, o rótulo do formulário é o do Lattes. Onde não tem, é o da CAPES. Onde nenhum dos dois tem, o tipo não existe."
+    },
+
+    "fontes": [
+      {
+        "id": "cnpq-inct-form-ano7",
+        "descricao": "INCT de Fluidos Complexos (INCT-FCx) — RELATÓRIO FINAL preenchido no formulário oficial do CNPq para INCTs (processo 573560/2008-0, vigência 02/04/2009 a 31/01/2017). Contém a seção 'RESULTADOS EM NÚMEROS' com as tabelas A/B/C/D literais.",
+        "url": "http://portal.if.usp.br/inctfcx/sites/portal.if.usp.br.ifusp/files/RelatorioINCT-Old-Ano7-pt-br.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "as 11 linhas da tabela A, as 10 linhas da tabela B, e o formato livre das tabelas C e D; as quatro vertentes A/B/C/D; a exigência '(anexar referências)'",
+        "tipo": "documento oficial preenchido (fonte secundária do formulário, primária do preenchimento)"
+      },
+      {
+        "id": "cnpq-inct-form-ano6",
+        "descricao": "INCT-FCx — relatório do Ano 6 no MESMO formulário. Usado como confirmação independente de que as linhas são do formulário e não do instituto.",
+        "url": "http://portal.if.usp.br/inctfcx/sites/portal.if.usp.br.ifusp/files/RelatorioINCT-Old-Ano6-pt-br.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "linhas idênticas às do Ano 7, com números diferentes — logo, gabarito de formulário"
+      },
+      {
+        "id": "chamada-46-2024",
+        "descricao": "Chamada MCTI/CNPq/SECTICS/MS/CAPES/FAPs nº 46/2024 — a chamada do INCT-CONEXAO.",
+        "url": "https://www.gov.br/cnpq/pt-br/assuntos/noticias/cnpq-em-acao/cnpq-lanca-nova-chamada-para-o-programa-institutos-nacionais-de-ciencia-e-tecnologia-inct/chamada-cnpq-inct-2024_14-10-2024_final_pub.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "item 11.5 — 'formulário de avaliação e relatório parcial de execução do projeto aos 24 e 48 meses'; item 11.5.1 — o CNPq acompanha 'os objetivos, o cronograma, as metas e os indicadores estabelecidos na proposta aprovada'; item 12.1 — REO em até 60 dias do fim da vigência; item 10.6.2 — enumera as formas de propriedade intelectual: 'patente de invenção, modelo de utilidade, desenho industrial, programa de computador ou qualquer outra forma de registro de propriedade intelectual'; item 14.4 — Lei nº 9.279/1996.",
+        "naoContem": "NENHUM anexo com tabelas de produção. A chamada não publica o formulário de acompanhamento."
+      },
+      {
+        "id": "lattes-lmpl-dtd",
+        "descricao": "Ontologia XML da Unidade de Informação de Currículos (LMPL), versão 1.4.1 de 03/03/2004 — o DTD oficial do Currículo Lattes, publicado pelo CNPq.",
+        "url": "http://memoria.cnpq.br/documents/313759/b5a413ef-3910-4692-a7f5-1fafda6f1621",
+        "acessadoEm": "2026-08-04",
+        "confirma": "nomes literais dos elementos e os enums NATUREZA/TIPO/TIPO-PATENTE; e, decisivo para patente, os campos DATA-PEDIDO-DE-DEPOSITO, DATA-DE-PEDIDO-DE-EXAME, DATA-DE-CONCESSAO e HISTORICO-SITUACOES-PATENTE",
+        "ressalva": "o DTD é de 2004 e o Lattes ganhou seções depois (Educação e Popularização de C&T, Inovação). Os elementos citados aqui continuam existindo na interface atual, mas a lista NÃO é exaustiva do Lattes de 2026."
+      },
+      {
+        "id": "cnpq-dgp-cta",
+        "descricao": "CNPq — Plataforma Lattes / Diretório dos Grupos de Pesquisa: 'Produção C,T&A'.",
+        "url": "https://lattes.cnpq.br/web/dgp/producao-c-t-a3",
+        "acessadoEm": "2026-08-04",
+        "confirma": "os três grupos (bibliográfica / técnica / artística-cultural) com rótulos em português corrente, e a distinção 'com registro ou patente' vs 'sem registro ou patente' para software, produtos tecnológicos e processos"
+      },
+      {
+        "id": "capes-gt-ptt",
+        "descricao": "CAPES — Relatório Final do GT Produção Técnica (2019): os 21 tipos de Produção Técnica e Tecnológica homologados pelo CTC-ES em maio/2019, com definições, subtipos, exemplos e 'não se aplica'. Consultado em duas cópias institucionais independentes.",
+        "url": "https://famed.ufal.br/pt-br/pos-graduacao/mestrado-profissional-em-saude-da-familia/documentos/producao-tecnica/producao-tecnica-grupo-de-trabalho-capes/3-producao-tecnica.pdf/view",
+        "urlSecundaria": "https://www.posgraduacao.unimontes.br/ppgdee/wp-content/uploads/sites/29/2024/01/Produtost%C3%A9cnicostecnol%C3%B3gicos%C3%81readeEconomia.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "os 21 rótulos literais e os subtipos de 'Ativos de Propriedade Intelectual' (patente depositada, concedida ou licenciada; desenho industrial; indicação geográfica; marca; topografia de circuito integrado)",
+        "ressalva": "as duas cópias divergem num rótulo: 'Curso de Formação Profissional' (UFAL) x 'Curso para Formação Profissional' (Unimontes). O original da CAPES não foi aberto direto — ver naoConfirmado."
+      },
+      {
+        "id": "capes-gt-ptt-critica",
+        "descricao": "Análise crítica publicada do relatório do GT-PTT (revista Avaliação, SciELO).",
+        "url": "https://www.scielo.br/j/aval/a/BC8nPGMLVDjRSPBZtHNRVDF/",
+        "acessadoEm": "2026-08-04",
+        "confirma": "que os 21 tipos existem e são a referência normativa; e alerta que 'não há um esclarecimento pormenorizado de como tais tipologias dialogam entre si' — ou seja, a própria CAPES deixou fronteiras ambíguas entre tipos"
+      },
+      {
+        "id": "inct-odisseia",
+        "descricao": "INCT-ODISSEIA — Relatório Parcial de Atividades 2019-2021 ao CNPq (Chamada INCT 16/2014).",
+        "url": "https://odisseia.unb.br/wp-content/uploads/2021/12/Relat%C3%B3rio-Parcial-INCT-ODISSEIA-out2021-CNPq.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "que um INCT recente organiza a produção com rótulos do Lattes, e que 'Base de dados e mapas', 'Vídeos', 'Sites', 'Programas de TV' e 'Cartilhas' aparecem como 'Outra produção técnica'",
+        "nota": "o certificado TLS do servidor estava expirado em 2026-08-04; baixado com verificação desabilitada"
+      },
+      {
+        "id": "inct-ciencia-animal",
+        "descricao": "INCT Ciência Animal — Relatório parcial CNPq 2019-2021.",
+        "url": "https://www.inctca.ufv.br/wp-content/uploads/2022/06/Relatorio-parcial-CNPq-INCT-CA-2019-2021.pdf",
+        "acessadoEm": "2026-08-04",
+        "confirma": "que INCTs também usam rubricas próprias quando o relatório é narrativo ('Artigos / Teses e dissertações / Trabalhos de conclusão de curso / Livros / Capítulos de livro / Resumos'), e que 'Patente: Em processo de registro' é como as pessoas escrevem quando o formulário não pede estágio",
+        "nota": "contraexemplo útil: sem enum, o dado de patente vira texto livre e some da contagem"
+      },
+      {
+        "id": "inpi-guia-basico",
+        "descricao": "INPI — Guia Básico de Patentes.",
+        "url": "https://www.gov.br/inpi/pt-br/servicos/patentes/guia-basico",
+        "acessadoEm": "2026-08-04",
+        "confirma": "as etapas (depósito → exame formal → publicação → exame técnico → decisão) e as sete formas de proteção do INPI: patente de invenção, modelo de utilidade, desenho industrial, marca, programa de computador, indicação geográfica, topografia de circuito integrado",
+        "naoConfirma": "a correspondência prefixo→tipo (BR 10 / BR 20 / BR 30 / BR 51) não foi lida em fonte oficial — ver naoConfirmado"
+      },
+      {
+        "id": "openalex-precos-2026",
+        "descricao": "OpenAlex — 'New Features and Usage-Based Pricing'.",
+        "url": "https://blog.openalex.org/openalex-api-new-features-and-usage-based-pricing/",
+        "acessadoEm": "2026-08-04",
+        "confirma": "a partir de fevereiro/2026 a API exige chave e é cobrada por uso, com franquia diária gratuita de US$ 1 por chave; o snapshot completo (CC0) continua gratuito por download em bucket público. Confirma a advertência de docs/relato-anual.md §4.3: OpenAlex só como enriquecimento que degrada em silêncio, nunca como âncora."
+      }
+    ],
+
+    "avisoDeUso": "Os campos `mapeamentoCnpq.linha` reproduzem rubricas de formulário administrativo do CNPq lidas em relatórios públicos, para fins de interoperabilidade do roll-up. Não substituem o formulário oficial vigente, que deve ser conferido com a coordenação antes do relatório de 24 meses."
+  },
+
+  "mapeamentoTabelaA": {
+    "titulo": "A – INDICADORES DE PESQUISA · NÚMEROS DA PRODUÇÃO TÉCNICO-CIENTÍFICA E ARTÍSTICA NO PERÍODO (anexar referências)",
+    "colunas": ["TIPO", "QUANTIDADE"],
+    "contagem": "11 rubricas impressas, 12 células de quantidade — porque PATENTE é uma rubrica com duas sublinhas indentadas (PRODUTOS e PROCESSOS). O array abaixo tem 12 entradas por isso.",
+    "fonte": "cnpq-inct-form-ano7 + cnpq-inct-form-ano6 (linhas idênticas nos dois)",
+    "confianca": "alta para a safra 2008 dos INCTs; média para a safra 2024 (formulário não público)",
+    "linhas": [
+      { "linha": "LIVROS", "alimentadaPor": ["livro"] },
+      { "linha": "CAPÍTULOS DE LIVROS", "alimentadaPor": ["capitulo"] },
+      { "linha": "ARTIGOS PUBLICADOS EM PERIÓDICOS NACIONAIS", "alimentadaPor": ["artigo_periodico"], "filtro": "ambito = nacional (inferido pelo sistema, §2.3.1)" },
+      { "linha": "ARTIGOS PUBLICADOS EM PERIÓDICOS INTERNACIONAIS", "alimentadaPor": ["artigo_periodico"], "filtro": "ambito = internacional (inferido pelo sistema, §2.3.1)" },
+      { "linha": "ARTIGOS PUBLICADOS COM AUTORES DE MAIS DE UM GRUPO DO INCT", "alimentadaPor": ["artigo_periodico"], "filtro": "derivada: producao_autores casados por ORCID contra ciclo_membros de ≥2 laboratorios distintos", "nota": "linha que a especificação não previa; é o Indicador nº 3 já pedido pelo formulário do CNPq" },
+      { "linha": "TRABALHOS APRESENTADOS EM CONGRESSOS NACIONAIS", "alimentadaPor": ["trabalho_evento"], "filtro": "pais_do_evento = BR" },
+      { "linha": "TRABALHOS APRESENTADOS EM CONGRESSOS INTERNACIONAIS", "alimentadaPor": ["trabalho_evento"], "filtro": "pais_do_evento ≠ BR" },
+      { "linha": "SOFTWARE", "alimentadaPor": ["software"] },
+      { "linha": "PATENTE — PRODUTOS", "alimentadaPor": ["patente"], "filtro": "objeto = produto", "nota": "no formulário, PATENTE é uma linha com duas sublinhas indentadas, PRODUTOS e PROCESSOS" },
+      { "linha": "PATENTE — PROCESSOS", "alimentadaPor": ["patente"], "filtro": "objeto = processo" },
+      { "linha": "PRODUÇÃO ARTÍSTICA (ESPECIFICAR)", "alimentadaPor": ["producao_artistica", "prefacio_posfacio"], "nota": "linha de texto livre + quantidade" },
+      { "linha": "OUTROS (ESPECIFICAR)", "alimentadaPor": ["traducao", "base_dados", "carta_mapa", "relatorio_tecnico", "manual_protocolo", "material_didatico", "curso_curta_duracao", "evento_organizado", "produto_comunicacao", "tecnologia_social", "processo_ou_tecnica", "produto_tecnologico", "norma_marco_regulatorio", "acervo", "texto_jornal_revista", "desenho_industrial", "marca", "cultivar", "indicacao_geografica", "topografia_circuito_integrado", "outro"], "nota": "linha de texto livre + quantidade. É AQUI que cai a maior parte da taxonomia CAPES. Consequência de produto: o exportador de CSV precisa gerar N sublinhas 'OUTROS' nomeadas, não uma só." }
+    ],
+    "derivadas": {
+      "artigos_multigrupo": "contagem de `artigo_periodico` cujo `producao_autores` casa ORCID de membros de ≥2 laboratórios distintos do ciclo. Sai da tabela `producao_autores`, sem pergunta ao membro."
+    },
+    "anexoObrigatorio": "'(anexar referências)' está no cabeçalho literal da tabela. É o mesmo requisito do item 6.1 citado em docs/relato-anual.md §1.5(c). O anexo sai do `metadados` CSL-JSON cacheado."
+  },
+
+  "mapeamentoTabelaB": {
+    "titulo": "B – INDICADORES DA FORMAÇÃO DE RECURSOS HUMANOS · NÚMEROS DA FORMAÇÃO DE RECURSOS HUMANOS NO PERÍODO",
+    "fonte": "cnpq-inct-form-ano7 + cnpq-inct-form-ano6",
+    "estrutura": "duas seções com as MESMAS cinco linhas",
+    "secoes": ["ENCERRADOS", "EM ANDAMENTO"],
+    "linhas": ["INICIAÇÃO CIENTÍFICA", "MESTRE", "DOUTOR", "PÓS-DOUTOR", "OUTROS (ESPECIFICAR)"],
+    "nota": "Não é alimentada por `producoes` e sim pelo fato coletivo `formacao` (§2.4). Registrado aqui porque o enum `nivel` do §2.4 tem 7 valores (ic_junior, ic, mestrado, doutorado, pos_doc, tecnica, comunitaria) e apenas 4 têm linha própria no formulário: `ic_junior`, `tecnica` e `comunitaria` caem em 'OUTROS (ESPECIFICAR)'. Isso é correto e deve continuar — só precisa estar no exportador."
+  },
+
+  "mapeamentoTabelasCD": {
+    "C": {
+      "titulo": "C – INDICADORES DE TRANSFERÊNCIA DE CONHECIMENTO E TECNOLOGIA · NÚMEROS DA PRODUÇÃO NO PERÍODO (especificar e anexar referências)",
+      "estrutura": "TIPO | QUANTIDADE, linhas livres — o formulário NÃO pré-define rubricas",
+      "alimentadaPor": ["patente", "desenho_industrial", "marca", "cultivar", "indicacao_geografica", "topografia_circuito_integrado", "produto_tecnologico", "processo_ou_tecnica", "tecnologia_social", "software"],
+      "nota": "Como as linhas são livres, quem define a nomenclatura é o INCT. Recomendação: usar o rótulo desta taxonomia, para que 2027 não precise reclassificar."
+    },
+    "D": {
+      "titulo": "D – INDICADORES DE EDUCAÇÃO E DIVULGAÇÃO DA CIÊNCIA · NÚMEROS DA PRODUÇÃO NO PERÍODO (especificar e anexar referências)",
+      "estrutura": "TIPO | QUANTIDADE, linhas livres",
+      "alimentadaPor": ["material_didatico", "curso_curta_duracao", "evento_organizado", "produto_comunicacao", "texto_jornal_revista", "manual_protocolo"],
+      "maisOsFatos": ["acao_sociedade"],
+      "nota": "Indicador nº 5 do INCT-CONEXAO sai daqui somado aos fatos `acao_sociedade`."
+    }
+  },
+
+  "patente": {
+    "porQueEOCasoMaisDelicado": "'1 patente' pode significar quatro coisas com anos de distância entre elas e probabilidades de existência muito diferentes. Depositar custa taxa e leva dias; conceder leva, na média brasileira, muitos anos. Contar depósito como se fosse concessão infla o número; contar só concessão zera o indicador de um INCT de 5 anos. E o objetivo específico nº 35 da proposta fala em 'potenciais SOLICITAÇÕES de registros de patentes' — ou seja, o que a rede pactuou é o DEPÓSITO, não a concessão.",
+    "achadoNaProposta": {
+      "ondeAparece": "objetivosEspecificos[34] (o 35º): 'Estimular a divulgação técnica-científica e a conexão entre empresas, sociedade e academia com discussões práticas sobre as potenciais solicitações de registros de patentes envolvendo toxinas e/ou metabólitos...'",
+      "ressalva": "Conferido em src/content/relato/proposta-inct-2024.json: NENHUMA das 26 metas e NENHUM dos 92 números pactuados quantifica patente. O indicador 24 cita 'patentes e inovação' apenas em texto genérico. Logo, não existe número pactuado de patentes a bater — o campo é descritivo, não é meta.",
+      "consequenciaDeProduto": "Não construir nenhuma barra de progresso de patente. Não perguntar 'quantas patentes você depositou'. Registrar o item com o estágio, e deixar a contagem para a coordenação."
+    },
+    "estagios": [
+      {
+        "id": "deposito",
+        "rotulo": "Pedido depositado",
+        "descricao": "Ato pelo qual o INPI, após exame formal, protocola o pedido com número próprio. A partir daí existe 'pedido de patente' — não existe patente.",
+        "campoLattes": "REGISTRO-OU-PATENTE/@DATA-PEDIDO-DE-DEPOSITO",
+        "campoCapes": "Ativos de Propriedade Intelectual → 'Patente depositada'",
+        "comoOMembroFala": "\"entramos com a patente\", \"depositamos\"",
+        "eOQueOINCTPactuou": true
+      },
+      {
+        "id": "publicacao",
+        "rotulo": "Pedido publicado na RPI",
+        "descricao": "Após 18 meses de sigilo, o pedido é publicado na Revista da Propriedade Industrial. É o primeiro momento em que o pedido é verificável por terceiros.",
+        "campoLattes": "não tem campo próprio; entra em HISTORICO-SITUACOES-PATENTE/@DESCRICAO-SITUACAO-PATENTE",
+        "campoCapes": "não é subtipo próprio",
+        "comoOMembroFala": "\"saiu na revista\"",
+        "notaDeProduto": "É o estágio que torna a âncora conferível. Antes dele, o número existe mas o conteúdo é sigiloso — e o item 10.6.2 da Chamada 46/2024 permite pedir restrição de acesso justamente por isso."
+      },
+      {
+        "id": "pedido_exame",
+        "rotulo": "Exame técnico requerido",
+        "descricao": "O depositante tem até 36 meses do depósito para requerer o exame técnico; se não requerer, o pedido é arquivado. É um estágio administrativo com data própria.",
+        "campoLattes": "REGISTRO-OU-PATENTE/@DATA-DE-PEDIDO-DE-EXAME",
+        "campoCapes": "não é subtipo próprio",
+        "notaDeProduto": "O Lattes tem campo para isso, então o dado é coletável sem inventar nada. Mas quase ninguém preenche. Deixar opcional."
+      },
+      {
+        "id": "concessao",
+        "rotulo": "Patente concedida (carta-patente)",
+        "descricao": "Aprovado o exame técnico e paga a retribuição, é expedida a carta-patente. Só aqui existe 'patente concedida'.",
+        "campoLattes": "REGISTRO-OU-PATENTE/@DATA-DE-CONCESSAO",
+        "campoCapes": "Ativos de Propriedade Intelectual → 'Patente concedida'",
+        "comoOMembroFala": "\"saiu a patente\", \"foi concedida\""
+      },
+      {
+        "id": "licenciamento",
+        "rotulo": "Patente licenciada",
+        "descricao": "Contrato de transferência de tecnologia averbado no INPI. Não é etapa do exame; é evento posterior e independente.",
+        "campoLattes": "sem campo próprio (informações adicionais)",
+        "campoCapes": "Ativos de Propriedade Intelectual → 'Patente licenciada'",
+        "notaDeProduto": "É o que a tabela C do CNPq realmente quer dizer com 'transferência'. Vale um booleano opcional, não um estágio no meio da fila."
+      }
+    ],
+    "decisaoRecomendada": {
+      "modelo": "UM tipo `patente`, com dois campos obrigatórios além da âncora: `estagio` (enum acima, default `deposito`) e `objeto` (enum `produto` | `processo`, porque a tabela A do CNPq separa as duas sublinhas).",
+      "porQueNaoTiposSeparados": "'Patente depositada' e 'patente concedida' são o MESMO objeto em dois momentos. Tipos separados obrigariam a criar um registro novo quando a patente for concedida, e o número do pedido apareceria duas vezes na contagem.",
+      "campoDeData": "`ocorrido_em` = data do estágio declarado. Quando o estágio mudar, muda o estágio e a data, e o log (relato_eventos) preserva a versão anterior. Não criar item novo.",
+      "textoDeTela": "A pergunta não é 'quantas patentes'. É 'em que pé está?' com quatro botões grandes e a data. A pessoa reconhece o próprio processo em um toque."
+    },
+    "outrasFormasDeProtecao": {
+      "fonte": "inpi-guia-basico + chamada-46-2024 item 10.6.2",
+      "concedidasPeloINPI": ["patente de invenção (PI)", "modelo de utilidade (MU)", "certificado de adição (CA)", "desenho industrial (DI)", "marca", "programa de computador (RPC)", "indicação geográfica (IG)", "topografia de circuito integrado (TCI)"],
+      "NAOconcedidaPeloINPI": {
+        "cultivar": "Proteção de cultivar é do SNPC/MAPA (Serviço Nacional de Proteção de Cultivares, Ministério da Agricultura), pela Lei nº 9.456/1997 — NÃO do INPI. O Lattes distingue CULTIVAR-PROTEGIDA de CULTIVAR-REGISTRADA e usa 'número do processo', não 'número do registro'. Quem colocar cultivar num campo rotulado 'número INPI' coleta lixo."
+      }
+    }
+  },
+
+  "tipos": [
+    {
+      "id": "artigo_periodico",
+      "rotulo": "Artigo completo publicado em periódico",
+      "rotuloCurto": "Artigo em periódico",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "doi", "obrigatoria": true, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["issn_pagina", "url_com_captura"],
+        "api": "api.crossref.org/works/{doi}; fallback api.datacite.org/dois/{doi}; rede de segurança doi.org com Accept: application/vnd.citationstyles.csl+json",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Resolve título, veículo, ISSN, ano, licença e a lista de autores com ORCID — que é o que alimenta a linha 'ARTIGOS PUBLICADOS COM AUTORES DE MAIS DE UM GRUPO DO INCT'. Artigo brasileiro sem DOI ainda existe (SciELO cobre boa parte, mas não tudo): manter a saída ISSN+páginas."
+      },
+      "exemplos": ["artigo em Toxicon com DOI 10.1016/j.toxicon.2025.108123", "artigo em revista SciELO brasileira", "preprint com DOI (marcar como artigo só quando publicado)"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "ARTIGOS PUBLICADOS EM PERIÓDICOS NACIONAIS / INTERNACIONAIS", "confirmado": true, "observacao": "duas linhas distintas; o âmbito é inferido pelo sistema, nunca perguntado (§2.3.1)" },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "ARTIGO-PUBLICADO", "enumOficial": "NATUREZA (COMPLETO | RESUMO | NAO_INFORMADO)", "rotuloDgp": "Artigos completos publicados em periódicos especializados (circulação nacional / internacional)", "confirmado": true },
+      "mapeamentoCapesPtt": null,
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "livro",
+      "rotulo": "Livro publicado ou organizado",
+      "rotuloCurto": "Livro",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "isbn", "obrigatoria": true, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "url_com_captura"],
+        "api": "openlibrary.org/api/books?bibkeys=ISBN:{isbn}; Crossref quando a editora registra DOI de livro",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Cobertura irregular para livro brasileiro. A agência brasileira do ISBN é a Câmara Brasileira do Livro desde 2020 e NÃO expõe API pública de consulta — logo, esperar taxa alta de resolução falha e degradar para os 4 campos manuais preservando o ISBN digitado. Validar o dígito verificador localmente (ISBN-10 e ISBN-13) já pega a maior parte dos erros de digitação."
+      },
+      "exemplos": ["livro autoral publicado por editora universitária", "coletânea organizada pela rede", "e-book com ISBN próprio"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "LIVROS", "confirmado": true },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "LIVRO-PUBLICADO-OU-ORGANIZADO", "enumOficial": "TIPO (LIVRO_PUBLICADO | LIVRO_ORGANIZADO_OU_EDICAO) · NATUREZA (COLETANEA | TEXTO_INTEGRAL | VERBETE | ANAIS | CATALOGO | ENCICLOPEDIA | LIVRO | OUTRA | PERIODICO)", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 5, "rotulo": "Produto de Editoração", "observacao": "só quando é organização/edição, não autoria" },
+      "subtipos": [
+        { "id": "publicado", "rotulo": "Livro publicado (autoria)" },
+        { "id": "organizado", "rotulo": "Livro organizado ou edição" }
+      ],
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "capitulo",
+      "rotulo": "Capítulo de livro publicado",
+      "rotuloCurto": "Capítulo de livro",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "doi", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["isbn", "arquivo_sha256"],
+        "api": "api.crossref.org (quando a editora registra DOI de capítulo); senão ISBN do livro + intervalo de páginas",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Capítulo em livro brasileiro raramente tem DOI. Âncora composta ISBN+páginas é o realista, e o `arquivo_sha256` (PDF do capítulo) é a saída final. NÃO tornar obrigatória, sob pena de perder a linha inteira da tabela A."
+      },
+      "exemplos": ["capítulo em coletânea sobre plantas medicinais amazônicas", "verbete em enciclopédia"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "CAPÍTULOS DE LIVROS", "confirmado": true },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "CAPITULO-DE-LIVRO-PUBLICADO", "confirmado": true },
+      "mapeamentoCapesPtt": null,
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "trabalho_evento",
+      "rotulo": "Trabalho publicado em anais de evento",
+      "rotuloCurto": "Trabalho em anais",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "issn_pagina", "arquivo_sha256"],
+        "api": "Crossref quando os anais têm DOI (raro em evento brasileiro)",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Anais brasileiros têm ISSN com mais frequência do que DOI. Aceitar ISSN dos anais + página, ou URL do PDF dos anais com data de captura. Este é o tipo com maior volume e menor ancoragem — planejar para isso."
+      },
+      "exemplos": ["resumo em anais de congresso brasileiro de toxinologia", "trabalho completo em anais de simpósio internacional", "pôster com resumo expandido publicado"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "TRABALHOS APRESENTADOS EM CONGRESSOS NACIONAIS / INTERNACIONAIS", "confirmado": true, "observacao": "IMPORTANTE: a tabela A NÃO distingue completo de resumo de resumo expandido. Os três somam na mesma linha. O subtipo existe para o Lattes e para a CAPES, não para o CNPq." },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "TRABALHO-EM-EVENTOS", "enumOficial": "NATUREZA (COMPLETO | RESUMO | RESUMO_EXPANDIDO)", "confirmado": true },
+      "mapeamentoCapesPtt": null,
+      "subtipos": [
+        { "id": "completo", "rotulo": "Trabalho completo", "fonte": "Lattes NATUREZA=COMPLETO" },
+        { "id": "resumo", "rotulo": "Resumo", "fonte": "Lattes NATUREZA=RESUMO" },
+        { "id": "resumo_expandido", "rotulo": "Resumo expandido", "fonte": "Lattes NATUREZA=RESUMO_EXPANDIDO" }
+      ],
+      "substitui": ["trabalho_anais_completo", "trabalho_anais_resumo", "trabalho_anais_resumo_expandido"],
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "texto_jornal_revista",
+      "rotulo": "Texto em jornal de notícias ou revista de divulgação",
+      "rotuloCurto": "Texto em jornal/revista",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Não há API. A âncora é a URL com data de captura e, quando o link morre (frequente em jornal regional), o PDF/print com SHA-256. É o mesmo mecanismo do `produto_comunicacao`."
+      },
+      "exemplos": ["artigo de divulgação em jornal de Porto Velho sobre acidentes ofídicos", "texto em revista de divulgação científica", "coluna em veículo institucional"],
+      "mapeamentoCnpq": { "tabela": "D", "linha": "livre — sugerido 'Textos de divulgação em jornais e revistas'", "confirmado": false, "observacao": "tabela D tem linhas livres; a rubrica é escolha do INCT" },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "TEXTO-EM-JORNAL-OU-REVISTA", "enumOficial": "NATUREZA (JORNAL_DE_NOTICIAS | REVISTA_MAGAZINE)", "confirmado": true, "observacao": "no Lattes atual pode ser marcado também como Educação e Popularização de C&T" },
+      "mapeamentoCapesPtt": { "numero": 1, "rotulo": "Produto Bibliográfico", "subtipo": "Artigo em jornal ou revista de divulgação" },
+      "faltavaNaEspecificacao": true,
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "É a produção que o Indicador nº 5 (divulgação junto a comunidades e sociedade) mais provavelmente gera, e a que o `produto_comunicacao` sozinho não captura. Sem este tipo, o texto de jornal vira `outro` e some da tabela D."
+    },
+    {
+      "id": "traducao",
+      "rotulo": "Tradução",
+      "rotuloCurto": "Tradução",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "isbn", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "url_com_captura", "arquivo_sha256"],
+        "api": "OpenLibrary / Crossref conforme o suporte da obra traduzida",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "A âncora é a da obra publicada em tradução, não do original."
+      },
+      "exemplos": ["tradução de manual técnico para língua indígena", "edição bilíngue de material da rede", "tradução de artigo para o português"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "observacao": "não tem linha própria" },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "TRADUCAO", "enumOficial": "NATUREZA (ARTIGO | LIVRO | OUTRO)", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 12, "rotulo": "Tradução" },
+      "confianca": "alta",
+      "relevanciaConexao": "media"
+    },
+    {
+      "id": "prefacio_posfacio",
+      "rotulo": "Prefácio, posfácio, apresentação ou introdução",
+      "rotuloCurto": "Prefácio/posfácio",
+      "grupo": "bibliografica",
+      "ancora": { "tipo": "isbn", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "arquivo_sha256"],
+        "api": "OpenLibrary / Crossref pela obra hospedeira",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Âncora é a da obra que hospeda o texto."
+      },
+      "exemplos": ["prefácio de livro da rede", "apresentação de dossiê temático de periódico", "texto em catálogo de exposição"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "PRODUÇÃO ARTÍSTICA (ESPECIFICAR) ou OUTROS (ESPECIFICAR)", "confirmado": true, "observacao": "no relatório real do INCT-FCx, 'PREFÁCIO EM CATÁLOGO DE FOTOS' foi declarado literalmente na linha de PRODUÇÃO ARTÍSTICA" },
+      "mapeamentoLattes": { "modulo": "Produção bibliográfica", "elemento": "PREFACIO-POSFACIO", "enumOficial": "TIPO (PREFACIO | POSFACIO | APRESENTACAO | INTRODUCAO) · NATUREZA (LIVRO | REVISTAS_OU_PERIODICOS | OUTRA)", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 1, "rotulo": "Produto Bibliográfico", "subtipo": "Texto em catálogo de exposição ou programa de espetáculo" },
+      "faltavaNaEspecificacao": true,
+      "confianca": "alta",
+      "relevanciaConexao": "baixa",
+      "notaDeProduto": "Volume esperado baixíssimo. Recomendo deixá-lo atrás de 'ver todos os tipos', não na lista curta."
+    },
+    {
+      "id": "software",
+      "rotulo": "Software ou aplicativo (programa de computador)",
+      "rotuloCurto": "Software/aplicativo",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "doi", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["inpi", "url_com_captura"],
+        "api": "api.datacite.org/dois/{doi} para DOI de software (Zenodo, figshare); registro no INPI não tem API de resolução",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Ordem recomendada de âncora: (1) DOI de release arquivado (Zenodo dá DOI a release do GitHub, resolve no DataCite, gratuito e com CORS); (2) número do Registro de Programa de Computador no INPI, quando houver; (3) URL do repositório com data de captura. O registro no INPI é atributo do software, não um tipo separado — é assim que o Lattes modela (SOFTWARE com REGISTRO-OU-PATENTE/@TIPO-PATENTE=PROGRAMA_DE_COMPUTADOR_PC)."
+      },
+      "exemplos": ["a PINN do SIMBAM", "aplicativo de registro de acidente ofídico", "pacote R/Python de análise publicado com DOI Zenodo"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "SOFTWARE", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "SOFTWARE", "enumOficial": "NATUREZA (COMPUTACIONAL | MULTIMIDIA | OUTRO)", "rotuloDgp": "Softwares — com registro ou patente / sem registro ou patente", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 7, "rotulo": "Software/Aplicativo (Programa de computador)" },
+      "campoExtraRecomendado": { "id": "registrado_inpi", "tipo": "boolean", "porque": "o DGP/CNPq separa 'com registro' de 'sem registro'; é um booleano, não um tipo" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "base_dados",
+      "rotulo": "Base de dados técnico-científica",
+      "rotuloCurto": "Base de dados",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "doi", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["url_com_captura"],
+        "api": "api.datacite.org/dois/{doi} — cobre Zenodo, Dryad, repositórios institucionais e a maioria dos DOIs de dataset",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "É o tipo com melhor razão custo/benefício de ancoragem: depositar num repositório com DOI é gratuito e resolve a citabilidade, a preservação e a contagem de uma vez."
+      },
+      "exemplos": ["série biometeorológica de 10 anos que treina a PINN do SIMBAM (Indicador nº 1)", "base de ocorrências de animais peçonhentos", "dataset de composição fitoquímica"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "OUTRA-PRODUCAO-TECNICA", "confirmado": true, "observacao": "o Lattes NÃO tem elemento próprio para base de dados; vai em 'Demais tipos de produção técnica'. O INCT-ODISSEIA declarou como 'Base de dados e mapas' dentro de 'Outra produção técnica'." },
+      "mapeamentoCapesPtt": { "numero": 14, "rotulo": "Base de Dados Técnico-Científica" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "Indicador nº 1 do INCT-CONEXAO — o único indicador do 1º ano — depende deste tipo e de `carta_mapa`."
+    },
+    {
+      "id": "carta_mapa",
+      "rotulo": "Carta, mapa ou similar",
+      "rotuloCurto": "Carta/mapa",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "doi", "obrigatoria": false, "apiPublica": true },
+      "ancoraDetalhe": {
+        "alternativas": ["url_com_captura", "arquivo_sha256"],
+        "api": "DataCite quando depositado com DOI; senão URL com captura",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Mapa publicado em serviço web (WMS/tiles) precisa de captura datada; a URL sozinha muda de conteúdo sem avisar."
+      },
+      "exemplos": ["carta de risco de eventos extremos por município", "mapa de distribuição de espécies medicinais", "mapa participativo de território tradicional (sem dado identificável de pessoa)"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "CARTA-MAPA-OU-SIMILAR", "confirmado": true, "observacao": "elemento com nome literal no DTD do Lattes — o rótulo do formulário pode ser copiado sem tradução" },
+      "mapeamentoCapesPtt": { "numero": 17, "rotulo": "Carta, Mapa ou Similar" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "relatorio_tecnico",
+      "rotulo": "Relatório técnico conclusivo, parecer, assessoria ou consultoria",
+      "rotuloCurto": "Relatório técnico",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "arquivo_sha256", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "url_com_captura"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Sem API. Relatório com valor de prova deve subir como arquivo com SHA-256 calculado no navegador (§3.3). Quando o relatório é público e institucional, a URL basta."
+      },
+      "exemplos": ["nota técnica a secretaria estadual de saúde", "parecer sobre manejo de espécie", "relatório de expedição entregue à comunidade"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "TRABALHO-TECNICO", "enumOficial": "NATUREZA (ASSESSORIA | CONSULTORIA | PARECER | ELABORACAO_DE_PROJETO | RELATORIO_TECNICO | SERVICOS_NA_AREA_DA_SAUDE | OUTRA)", "confirmado": true, "observacao": "existe também RELATORIO-DE-PESQUISA em 'Demais tipos de produção técnica'" },
+      "mapeamentoCapesPtt": { "numero": 10, "rotulo": "Relatório Técnico Conclusivo" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "manual_protocolo",
+      "rotulo": "Manual ou protocolo",
+      "rotuloCurto": "Manual/protocolo",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "arquivo_sha256", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["isbn", "doi", "url_com_captura"],
+        "api": "protocols.io emite DOI para protocolo (resolve no Crossref/DataCite); OpenLibrary quando o manual tem ISBN",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "Manual com ISBN e protocolo com DOI são as duas formas ancoráveis; o resto é arquivo."
+      },
+      "exemplos": ["protocolo de coleta e herborização usado nas expedições", "manual de boas práticas de fabricação para AEPLs", "protocolo padronizado de extração"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "D" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "OUTRA-PRODUCAO-TECNICA ou DESENVOLVIMENTO-DE-MATERIAL-DIDATICO-OU-INSTRUCIONAL", "confirmado": false, "observacao": "o Lattes NÃO tem elemento 'manual/protocolo'. Quem preenche escolhe entre dois lugares — divergência conhecida e irremediável." },
+      "mapeamentoCapesPtt": { "numero": 11, "rotulo": "Manual/Protocolo" },
+      "confianca": "media",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "material_didatico",
+      "rotulo": "Material didático ou instrucional",
+      "rotuloCurto": "Material didático",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["isbn", "arquivo_sha256"],
+        "api": "OpenLibrary quando houver ISBN (cartilha e gibi frequentemente têm)",
+        "gratuita": true,
+        "cors": true,
+        "chave": false,
+        "observacao": "A CAPES exclui explicitamente apostilas e slides de aula regular. Vale colocar essa exclusão no texto de ajuda do campo, senão o tipo enche de material de aula."
+      },
+      "exemplos": ["a cartilha, o gibi de educação e popularização de C&T e os jogos da Meta 25", "folder de educação em saúde", "vídeo instrucional"],
+      "mapeamentoCnpq": { "tabela": "D", "linha": "livre — sugerido 'Materiais didáticos e de educação em saúde/ambiental'", "confirmado": false, "tambemEm": "A/OUTROS" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "DESENVOLVIMENTO-DE-MATERIAL-DIDATICO-OU-INSTRUCIONAL", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 6, "rotulo": "Material Didático", "subtipos": ["impresso", "audiovisual", "novas mídias"] },
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "A Meta 25 pactua 15 a 30 materiais de educação em saúde, ambiental e científico (folders, livro, cartilha, jogos, Gibi) mais 1 compêndio. É a meta com maior número de itens deste tipo."
+    },
+    {
+      "id": "curso_curta_duracao",
+      "rotulo": "Curso de curta duração ministrado / curso para formação profissional",
+      "rotuloCurto": "Curso ou oficina",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Sem API. Âncora prática: URL da chamada/programação, ou lista de presença/certificado como arquivo. Não pedir número de participantes aqui — isso é métrica sem âncora e pertence ao fato coletivo (§2.4)."
+      },
+      "exemplos": ["oficina de Boas Práticas de Fabricação para AEPLs", "curso de capacitação para agricultores e produtores", "minicurso de bioeconomia e empreendedorismo"],
+      "mapeamentoCnpq": { "tabela": "D", "linha": "livre — sugerido 'Cursos e oficinas ministrados'", "confirmado": false, "tambemEm": "A/OUTROS" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "CURSO-DE-CURTA-DURACAO-MINISTRADO", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 4, "rotulo": "Curso para Formação Profissional", "observacao": "uma cópia institucional grafa 'Curso de Formação Profissional' — ver naoConfirmado" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "atencao": "COLIDE com o fato coletivo `formacao` (§2.4) e com a Meta 15 (10 a 18 cursos + 9 a 18 oficinas + 5 a 10 minicursos). Ver `colisoesComOsFatos`."
+    },
+    {
+      "id": "evento_organizado",
+      "rotulo": "Evento organizado",
+      "rotuloCurto": "Evento organizado",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["issn_pagina", "arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Quando o evento gerou anais com ISSN, o ISSN é âncora melhor que a URL."
+      },
+      "exemplos": ["o 1º Encontro Estratégico Inovador do INCT-CONEXAO (Indicador nº 9)", "simpósio da rede", "feira ou mostra científica organizada pelo laboratório"],
+      "mapeamentoCnpq": { "tabela": "D", "linha": "livre — sugerido 'Eventos organizados'", "confirmado": false, "tambemEm": "A/OUTROS" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "ORGANIZACAO-DE-EVENTO", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 8, "rotulo": "Evento Organizado" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta"
+    },
+    {
+      "id": "produto_comunicacao",
+      "rotulo": "Produto de comunicação (rádio, TV, vídeo, site, mídia social, podcast)",
+      "rotuloCurto": "Produto de comunicação",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Sem API e com alta taxa de link morto. A URL precisa vir com data de captura, e o item deveria aceitar um print/PDF como reforço. Este é o tipo em que 'a URL basta' é a suposição mais falsa da taxonomia."
+      },
+      "exemplos": ["programa de rádio comunitária sobre acidentes ofídicos", "série de vídeos no canal da rede", "perfil/site do INCT com conteúdo próprio", "podcast", "matéria em TV"],
+      "mapeamentoCnpq": { "tabela": "D", "linha": "livre — sugerido 'Produtos de comunicação e divulgação'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "PROGRAMA-DE-RADIO-OU-TV e MIDIA-SOCIAL-WEBSITE-BLOG", "confirmado": true, "observacao": "dois elementos literais do DTD, colapsados aqui num tipo só porque a distinção rádio/TV × web não muda nada no relatório" },
+      "mapeamentoCapesPtt": { "numero": 16, "rotulo": "Produto de Comunicação" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "Indicador nº 5 (divulgação junto a comunidades tradicionais e sociedade)."
+    },
+    {
+      "id": "tecnologia_social",
+      "rotulo": "Tecnologia social",
+      "rotuloCurto": "Tecnologia social",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "arquivo_sha256", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["url_com_captura", "doi"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Não existe identificador padronizado para tecnologia social. Sem âncora obrigatória: exigir uma expulsaria justamente o item que a proposta mais valoriza. Aceitar descrição + comprovante."
+      },
+      "exemplos": ["técnica de secagem de plantas medicinais apropriada pela comunidade", "arranjo ecoprodutivo local replicável", "método de educação em saúde bucal em comunidade ribeirinha"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Tecnologias sociais'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "PROCESSOS-OU-TECNICAS ou OUTRA-PRODUCAO-TECNICA", "confirmado": false, "observacao": "o Lattes NÃO tem 'tecnologia social'. É um rótulo CAPES, e é o rótulo que a rede vai reconhecer melhor que qualquer alternativa." },
+      "mapeamentoCapesPtt": { "numero": 3, "rotulo": "Tecnologia Social" },
+      "confianca": "media",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "É o vocabulário da EET-4 (bioeconomia, empreendedorismo, AEPLs) e o que melhor descreve o que a rede promete entregar às comunidades. A definição CAPES ('simplicidade, baixo custo, fácil aplicabilidade e replicabilidade', apropriada pela população) deve aparecer como texto de ajuda."
+    },
+    {
+      "id": "processo_ou_tecnica",
+      "rotulo": "Processo ou técnica",
+      "rotuloCurto": "Processo/técnica",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "arquivo_sha256", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["inpi", "doi", "url_com_captura"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Se o processo foi objeto de pedido de patente, o item vira `patente` (objeto=processo) e não duplica aqui."
+      },
+      "exemplos": ["processo de extração sólido-líquido otimizado", "técnica analítica padronizada entre laboratórios da rede", "método terapêutico não patenteável"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "PATENTE — PROCESSOS (quando protegido) ou OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "PROCESSOS-OU-TECNICAS", "enumOficial": "NATUREZA (ANALITICA | INSTRUMENTAL | PEDAGOGICA | PROCESSUAL | TERAPEUTICA | OUTRA)", "rotuloDgp": "Processos ou técnicas — com catálogo ou registro / sem catálogo ou registro", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 21, "rotulo": "Processo/Tecnologia e Produto/Material Não Patenteável" },
+      "substitui": ["processo_nao_patenteavel"],
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "notaDeNomenclatura": "A especificação chamava de `processo_nao_patenteavel`. O Lattes e o DGP chamam de 'Processos ou técnicas' e admitem os dois casos (com e sem registro). Renomear evita que alguém deixe de declarar um processo por achar que ele 'talvez seja patenteável'."
+    },
+    {
+      "id": "produto_tecnologico",
+      "rotulo": "Produto tecnológico (aparelho, equipamento, fármaco e similares, instrumento)",
+      "rotuloCurto": "Produto tecnológico",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "arquivo_sha256", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["inpi", "doi", "url_com_captura"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Se protegido, o item vira `patente` (objeto=produto). Este tipo cobre o produto existente e não protegido, que é o caso comum."
+      },
+      "exemplos": ["antiveneno recombinante em desenvolvimento", "(nano)formulação com metabólito amazônico", "protótipo de estação de monitoramento de baixo custo", "kit diagnóstico"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "PATENTE — PRODUTOS (quando protegido) ou OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "PRODUTO-TECNOLOGICO", "enumOficial": "NATUREZA (APARELHO | EQUIPAMENTO | FARMACOS_E_SIMILARES | INSTRUMENTO | OUTRA)", "rotuloDgp": "Produtos tecnológicos — com registro ou patente / sem registro ou patente", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 21, "rotulo": "Processo/Tecnologia e Produto/Material Não Patenteável" },
+      "faltavaNaEspecificacao": true,
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "porQueImporta": "O objetivo geral da proposta é bioprospecção, biotecnologia e produção de antivenenos recombinantes. O enum de 26 tipos não tinha nenhum lugar para 'produto' que não fosse patente — e a NATUREZA 'FARMACOS_E_SIMILARES' do Lattes descreve literalmente o que esta rede faz."
+    },
+    {
+      "id": "norma_marco_regulatorio",
+      "rotulo": "Norma ou marco regulatório",
+      "rotuloCurto": "Norma/marco regulatório",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "A âncora natural é o número e a data do ato (lei, decreto, portaria, resolução, RDC) mais a URL do DOU/diário oficial. Não há API pública única; o número do ato já é identificador estável."
+      },
+      "exemplos": ["contribuição a RDC da ANVISA sobre produtos tradicionais fitoterápicos", "portaria estadual sobre atendimento a acidentes por animais peçonhentos", "plano municipal derivado de recomendação da rede"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Normas e marcos regulatórios'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "OUTRA-PRODUCAO-TECNICA", "confirmado": false, "observacao": "sem elemento próprio no Lattes" },
+      "mapeamentoCapesPtt": { "numero": 9, "rotulo": "Norma ou Marco Regulatório" },
+      "confianca": "media",
+      "relevanciaConexao": "media",
+      "atencao": "COLIDE com o fato coletivo `politica_publica` (§2.4). Ver `colisoesComOsFatos`."
+    },
+    {
+      "id": "acervo",
+      "rotulo": "Acervo ou coleção",
+      "rotuloCurto": "Acervo",
+      "grupo": "tecnica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256", "doi"],
+        "api": "GBIF e speciesLink publicam registros de coleções brasileiras e têm API aberta; NÃO foram testados nesta apuração — ver naoConfirmado",
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "A identificação prática é sigla da coleção (acrônimo de herbário/coleção zoológica) + faixa de números de tombo, mais o número SISGEN quando houver acesso a patrimônio genético."
+      },
+      "exemplos": ["incorporação ao acervo etnobotânico", "lote de exsicatas tombadas no herbário", "coleção etnoecológica"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "tambemEm": "C" },
+      "mapeamentoLattes": { "modulo": "Produção técnica", "elemento": "OUTRA-PRODUCAO-TECNICA", "confirmado": false, "observacao": "sem elemento próprio no Lattes" },
+      "mapeamentoCapesPtt": { "numero": 13, "rotulo": "Acervo" },
+      "substitui": ["acervo_curadoria_colecao"],
+      "confianca": "media",
+      "relevanciaConexao": "alta",
+      "atencao": "COLIDE com o fato coletivo `acervo` (§2.4), que é o que alimenta o Indicador nº 4. Ver `colisoesComOsFatos` — a recomendação é NÃO ter os dois."
+    },
+    {
+      "id": "patente",
+      "rotulo": "Patente de invenção, modelo de utilidade ou certificado de adição",
+      "rotuloCurto": "Patente",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "inpi", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": "NÃO existe API REST pública do INPI para resolver um número de pedido. O INPI publica dados abertos em lote (Marcas, Patentes, Desenhos Industriais, Programas de Computador e Contratos de Transferência de Tecnologia) e a RPI em XML/TXT; a busca web (servicos.busca.inpi.gov.br) não tem CORS. Espacenet/OPS e PATENTSCOPE indexam documentos BR mas exigem cadastro e não foram testados aqui.",
+        "gratuita": false,
+        "cors": false,
+        "chave": null,
+        "observacao": "Consequência de produto, já antecipada em docs/relato-anual.md §4.3: patente é DIGITAÇÃO MANUAL ASSUMIDA. O que o formulário pode fazer é (a) validar o formato do número, (b) exigir o estágio e a data, (c) pedir comprovante em arquivo. Nada de 'resolver o número'."
+      },
+      "exemplos": ["pedido de patente de (nano)formulação com metabólito de toxina", "modelo de utilidade de dispositivo de campo", "certificado de adição a pedido anterior"],
+      "camposObrigatorios": ["numero_inpi", "estagio", "objeto", "ocorrido_em"],
+      "camposRecomendados": ["data_deposito", "data_pedido_exame", "data_concessao", "titular", "depositante", "numero_deposito_pct"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "PATENTE (com sublinhas PRODUTOS e PROCESSOS)", "confirmado": true, "tambemEm": "C", "observacao": "por isso o campo `objeto` é obrigatório: sem ele a tabela A não fecha" },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "PATENTE", "enumOficial": "REGISTRO-OU-PATENTE/@TIPO-PATENTE (PRIVILEGIO_DE_INOVACAO_PI | MODELO_DE_UTILIDADE_MU | CERTIFICADO_DE_ADICAO_CA | PATENTE_NO_EXTERIOR_PE | ...)", "camposDeEstagio": "DATA-PEDIDO-DE-DEPOSITO, DATA-DE-PEDIDO-DE-EXAME, DATA-DE-CONCESSAO, HISTORICO-SITUACOES-PATENTE", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 2, "rotulo": "Ativos de Propriedade Intelectual", "subtipo": "Patente depositada, concedida ou licenciada" },
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "verTambem": "seção `patente` no topo deste arquivo"
+    },
+    {
+      "id": "desenho_industrial",
+      "rotulo": "Desenho industrial registrado",
+      "rotuloCurto": "Desenho industrial",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "inpi", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": "mesma situação da patente: dados abertos em lote, sem API de resolução, sem CORS",
+        "gratuita": false,
+        "cors": false,
+        "chave": null,
+        "observacao": "Digitação manual com validação de formato e comprovante."
+      },
+      "exemplos": ["forma ornamental de embalagem de produto de AEPL", "configuração de dispositivo de coleta"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Desenhos industriais registrados'", "confirmado": false, "tambemEm": "A/OUTROS" },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "DESENHO-INDUSTRIAL", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 2, "rotulo": "Ativos de Propriedade Intelectual", "subtipo": "Desenho Industrial" },
+      "confianca": "alta",
+      "relevanciaConexao": "media"
+    },
+    {
+      "id": "marca",
+      "rotulo": "Marca registrada",
+      "rotuloCurto": "Marca",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "inpi", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": "dados abertos em lote do INPI; existem APIs comerciais de terceiros (não recomendadas: custo e dependência)",
+        "gratuita": false,
+        "cors": false,
+        "chave": null,
+        "observacao": "Digitação manual."
+      },
+      "exemplos": ["marca coletiva de arranjo ecoprodutivo local", "marca de linha de produtos da rede"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Marcas registradas'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "MARCA", "enumOficial": "TIPO-PATENTE (MARCA_REGISTRADA_DE_PRODUTO_MPD | MARCA_REGISTRADA_DE_SERVICO_MSV | MARCA_REGISTRADA_COLETIVA_MCL | MARCA_REGISTRADA_DE_CERTIFICACAO_MCT | MARCA_REGISTRADA_FIGURATIVA_MRF | MARCA_REGISTRADA_NOMINATIVA_MRN | MARCA_REGISTRADA_MISTA_MRM | MARCA_REGISTRADA_TRIDIMENSIONAL_MRT)", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 2, "rotulo": "Ativos de Propriedade Intelectual", "subtipo": "Marca" },
+      "confianca": "alta",
+      "relevanciaConexao": "media",
+      "notaDeProduto": "Marca COLETIVA é a modalidade relevante para AEPL. Vale pré-selecioná-la."
+    },
+    {
+      "id": "cultivar",
+      "rotulo": "Cultivar protegida ou registrada",
+      "rotuloCurto": "Cultivar",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "processo_snpc", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256"],
+        "api": "Serviço Nacional de Proteção de Cultivares (SNPC/MAPA) — sistema Cultivarweb tem consulta web; API pública de resolução não confirmada",
+        "gratuita": null,
+        "cors": false,
+        "chave": null,
+        "observacao": "ATENÇÃO: cultivar NÃO é INPI. É SNPC/MAPA, Lei nº 9.456/1997. O campo é 'número do processo', não 'número do registro' — é assim que o Lattes distingue (CULTIVAR usa ANO-SOLICITACAO e número de processo)."
+      },
+      "exemplos": ["cultivar de planta medicinal amazônica registrada", "cultivar de oleaginosa protegida"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Cultivares protegidas/registradas'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "CULTIVAR-PROTEGIDA e CULTIVAR-REGISTRADA", "confirmado": true, "observacao": "dois elementos distintos no DTD — proteção e registro são procedimentos diferentes" },
+      "mapeamentoCapesPtt": { "numero": 15, "rotulo": "Cultivar" },
+      "subtipos": [
+        { "id": "protegida", "rotulo": "Cultivar protegida", "fonte": "Lattes CULTIVAR-PROTEGIDA" },
+        { "id": "registrada", "rotulo": "Cultivar registrada", "fonte": "Lattes CULTIVAR-REGISTRADA" }
+      ],
+      "confianca": "alta",
+      "relevanciaConexao": "media"
+    },
+    {
+      "id": "indicacao_geografica",
+      "rotulo": "Indicação geográfica",
+      "rotuloCurto": "Indicação geográfica",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "inpi", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256", "url_com_captura"],
+        "api": "INPI concede IG; dados abertos em lote, sem API de resolução",
+        "gratuita": false,
+        "cors": false,
+        "chave": null,
+        "observacao": "Duas espécies: Indicação de Procedência e Denominação de Origem. O pedido é sempre de uma entidade representativa da coletividade, não de uma pessoa — o que o torna, na prática, um fato do laboratório e não uma produção individual."
+      },
+      "exemplos": ["IG para produto de arranjo ecoprodutivo local amazônico", "denominação de origem de óleo vegetal regional"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre — sugerido 'Indicações geográficas'", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "sem elemento próprio (cai em TIPO-PATENTE=OUTRO_OU)", "confirmado": false },
+      "mapeamentoCapesPtt": { "numero": 2, "rotulo": "Ativos de Propriedade Intelectual", "subtipo": "Indicação geográfica" },
+      "faltavaNaEspecificacao": true,
+      "confianca": "media",
+      "relevanciaConexao": "media",
+      "porQueImporta": "A EET-4 é sobre bioeconomia e AEPLs de plantas medicinais amazônicas. IG é o instrumento de propriedade intelectual desenhado exatamente para isso, e é o único que beneficia a coletividade em vez de um titular. Deixá-lo fora do enum é uma escolha, e deveria ser uma escolha consciente."
+    },
+    {
+      "id": "topografia_circuito_integrado",
+      "rotulo": "Topografia de circuito integrado registrada",
+      "rotuloCurto": "Topografia de circuito",
+      "grupo": "propriedade_intelectual",
+      "ancora": { "tipo": "inpi", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": { "alternativas": ["arquivo_sha256"], "api": null, "gratuita": false, "cors": false, "chave": null, "observacao": "Digitação manual." },
+      "exemplos": ["topografia de circuito de sensor embarcado em estação de monitoramento"],
+      "mapeamentoCnpq": { "tabela": "C", "linha": "livre", "confirmado": false },
+      "mapeamentoLattes": { "modulo": "Patentes e registros", "elemento": "TOPOGRAFIA-DE-CIRCUITO-INTEGRADO", "confirmado": true },
+      "mapeamentoCapesPtt": { "numero": 2, "rotulo": "Ativos de Propriedade Intelectual", "subtipo": "Topografia de circuito integrado" },
+      "faltavaNaEspecificacao": true,
+      "confianca": "alta",
+      "relevanciaConexao": "baixa",
+      "notaDeProduto": "Confirmado na fonte, mas probabilidade de uso nesta rede beira zero. Incluir apenas atrás de 'ver todos os tipos'. Está aqui para completar o módulo 'Patentes e registros' do Lattes, não porque alguém vá usar."
+    },
+    {
+      "id": "producao_artistica",
+      "rotulo": "Produção artística ou cultural",
+      "rotuloCurto": "Produção artística",
+      "grupo": "artistica",
+      "ancora": { "tipo": "url_com_captura", "obrigatoria": false, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["arquivo_sha256", "isbn"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "Sem identificador padronizado. Registro, catálogo ou fotografia da obra/apresentação."
+      },
+      "exemplos": ["exposição fotográfica sobre a Amazônia e a rede", "obra visual em coautoria com artista de comunidade tradicional", "peça sonora ou musical", "catálogo de exposição"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "PRODUÇÃO ARTÍSTICA (ESPECIFICAR)", "confirmado": true },
+      "mapeamentoLattes": { "modulo": "Outra produção — artística/cultural", "elemento": "PRODUCAO-ARTISTICA-CULTURAL", "subelementos": ["APRESENTACAO-DE-OBRA-ARTISTICA", "APRESENTACAO-EM-RADIO-OU-TV", "ARRANJO-MUSICAL", "COMPOSICAO-MUSICAL", "CURSO-DE-CURTA-DURACAO", "OBRA-DE-ARTES-VISUAIS", "SONOPLASTIA", "ARTES-CENICAS", "ARTES-VISUAIS", "MUSICA", "OUTRA-PRODUCAO-ARTISTICA-CULTURAL"], "confirmado": true },
+      "mapeamentoCapesPtt": null,
+      "confianca": "alta",
+      "relevanciaConexao": "baixa",
+      "notaDeLgpd": "É o tipo com maior risco de imagem identificável de pessoa de comunidade tradicional. O aviso de §6.2 precisa aparecer neste tipo especificamente, e a cessão de imagem torna-se obrigatória."
+    },
+    {
+      "id": "outro",
+      "rotulo": "Outro tipo de produção",
+      "rotuloCurto": "Outro",
+      "grupo": "outro",
+      "ancora": { "tipo": "qualquer", "obrigatoria": true, "apiPublica": false },
+      "ancoraDetalhe": {
+        "alternativas": ["doi", "isbn", "url_com_captura", "arquivo_sha256"],
+        "api": null,
+        "gratuita": null,
+        "cors": null,
+        "chave": false,
+        "observacao": "A âncora é obrigatória aqui justamente porque o tipo não é. Item sem tipo E sem âncora não é verificável e não deve contar."
+      },
+      "camposObrigatorios": ["outro_descricao", "ancora_valor"],
+      "exemplos": ["palestra convidada em congresso (foi assim que o INCT-FCx declarou 'INVITED TALKS')", "prêmio ou distinção", "produto que não coube em nenhum tipo"],
+      "mapeamentoCnpq": { "tabela": "A", "linha": "OUTROS (ESPECIFICAR)", "confirmado": true, "observacao": "linha literal do formulário — este tipo não é uma gambiarra, é a linha que o CNPq imprime" },
+      "mapeamentoLattes": { "modulo": "variável", "elemento": "DEMAIS-TRABALHOS / OUTRA-PRODUCAO-TECNICA / OUTRA-PRODUCAO-BIBLIOGRAFICA", "confirmado": true },
+      "mapeamentoCapesPtt": null,
+      "confianca": "alta",
+      "relevanciaConexao": "alta",
+      "notaDeMonitoramento": "A taxa de uso de `outro` é a métrica de saúde da taxonomia. Se passar de ~10% dos itens, falta um tipo — e o painel de pendências da coordenação (§1.5) deveria mostrar isso."
+    }
+  ],
+
+  "colisoesComOsFatos": {
+    "porQueImporta": "docs/relato-anual.md §0.2 estabelece que fato coletivo é declarado UMA VEZ, pelo laboratório. Se o mesmo evento do mundo cabe num `tipo` de produção individual E num `tipo` de fato coletivo, a dupla contagem volta pela porta dos fundos — e desta vez sem dedupe por DOI, porque nenhum dos dois tem DOI.",
+    "casos": [
+      {
+        "tipoProducao": "acervo",
+        "tipoFato": "acervo",
+        "gravidade": "alta",
+        "recomendacao": "REMOVER `acervo` do enum de produções. O Indicador nº 4 conta registros incorporados por coleção, com faixa de tombo e SISGEN — isso é do laboratório curador, nunca do indivíduo. Deixar só o fato."
+      },
+      {
+        "tipoProducao": "curso_curta_duracao",
+        "tipoFato": "formacao",
+        "gravidade": "media",
+        "recomendacao": "MANTER os dois, com fronteira explícita em tela: `formacao` (fato) é a pessoa formada (IC, mestrado, doutorado, pós-doc), declarada pelo orientador; `curso_curta_duracao` (produção) é o curso/oficina ministrado, que não forma titulado. A Meta 15 conta cursos, a Meta 23 conta pessoas. São números diferentes e devem continuar em tabelas diferentes (D e B)."
+      },
+      {
+        "tipoProducao": "norma_marco_regulatorio",
+        "tipoFato": "politica_publica",
+        "gravidade": "media",
+        "recomendacao": "MANTER os dois, com fronteira: `politica_publica` (fato) é a articulação e o instrumento junto ao órgão — processo institucional, do laboratório; `norma_marco_regulatorio` (produção) é o texto normativo publicado, com número de ato. Se o laboratório declarar o fato e o membro a norma, o vínculo é natural e a contagem sai da produção (que tem âncora)."
+      },
+      {
+        "tipoProducao": "base_dados / software",
+        "tipoFato": "dado_software",
+        "gravidade": "alta",
+        "recomendacao": "REMOVER o fato `dado_software` do enum de fatos, OU torná-lo apenas um ponteiro para uma `producao` já declarada. Dataset e software TÊM âncora (DOI) e dedupe funciona: pertencem à tabela canônica `producoes`, não a `fatos`. Manter os dois cria duas contagens do Indicador nº 1 — o único indicador que vence no 1º ano."
+      },
+      {
+        "tipoProducao": "produto_comunicacao / texto_jornal_revista / material_didatico",
+        "tipoFato": "acao_sociedade",
+        "gravidade": "baixa",
+        "recomendacao": "MANTER os dois. São coisas diferentes e complementares: a `acao_sociedade` é o evento (a oficina na comunidade, com público alcançado); o material e o vídeo são os artefatos que ela produziu, e cada um tem URL própria. A tabela D quer os dois."
+      }
+    ]
+  },
+
+  "resolucaoDeAncoras": {
+    "resumo": "Só duas famílias de identificador desta taxonomia têm API pública, gratuita, com CORS aberto e sem chave: DOI (Crossref, DataCite e doi.org/CSL-JSON) e ISBN (OpenLibrary, com cobertura irregular no Brasil). Elas cobrem 8 dos 29 tipos. Os outros 21 são digitação com validação de formato mais comprovante — e é por isso que `arquivo_sha256` e `url_com_captura` não são gambiarra, são a âncora principal da maior parte da taxonomia.",
+    "apisConfirmadasComoUteis": [
+      { "api": "api.crossref.org/works/{doi}", "resolve": ["artigo_periodico", "capitulo", "livro", "trabalho_evento", "traducao"], "gratuita": true, "cors": true, "chave": false, "fonte": "docs/relato-anual.md §4.3 (testado ao vivo por apuração anterior)" },
+      { "api": "api.datacite.org/dois/{doi}", "resolve": ["base_dados", "software", "carta_mapa", "manual_protocolo"], "gratuita": true, "cors": true, "chave": false },
+      { "api": "doi.org com Accept: application/vnd.citationstyles.csl+json", "resolve": ["qualquer DOI"], "gratuita": true, "cors": true, "chave": false, "observacao": "dispara preflight; usar por último" },
+      { "api": "openlibrary.org/api/books?bibkeys=ISBN:", "resolve": ["livro", "material_didatico", "manual_protocolo", "traducao"], "gratuita": true, "cors": true, "chave": false, "observacao": "cobertura irregular para livro brasileiro" },
+      { "api": "pub.orcid.org/v3.0/{orcid}/works", "resolve": ["a lista da pessoa, não um tipo"], "gratuita": true, "cors": true, "chave": false }
+    ],
+    "semApiUtilizavel": [
+      { "identificador": "número INPI (patente, DI, marca, IG, TCI, RPC)", "situacao": "dados abertos em lote (XML/CSV) e RPI; busca web sem CORS. Sem API REST de resolução por número.", "decisao": "digitação manual com validação de formato + comprovante em arquivo" },
+      { "identificador": "número de processo SNPC/MAPA (cultivar)", "situacao": "Cultivarweb tem consulta web; API não confirmada", "decisao": "digitação manual" },
+      { "identificador": "ID Lattes", "situacao": "Busca Textual sem CORS; WSCurriculo é SOAP com convênio", "decisao": "só validação de formato (16 dígitos), sem checksum público" },
+      { "identificador": "ISSN", "situacao": "Portal ISSN tem API paga", "decisao": "ISSN vem do Crossref junto do DOI; não pedir digitado" },
+      { "identificador": "código de PPG na CAPES", "situacao": "Sucupira não expõe API pública; há microdados em lote em metadados.capes.gov.br", "decisao": "campo opcional de texto no fato `formacao`, nunca validado em tempo real" },
+      { "identificador": "URL de veículo de comunicação", "situacao": "não é identificador; morre", "decisao": "URL + data de captura + arquivo de reforço" }
+    ],
+    "openAlex": {
+      "situacaoEm2026": "API exige chave desde fevereiro/2026 e é cobrada por uso, com franquia diária de US$ 1 por chave; o snapshot completo CC0 continua gratuito por download.",
+      "fonte": "openalex-precos-2026",
+      "decisao": "confirma a orientação de docs/relato-anual.md §4.3: usar apenas como enriquecimento que degrada em silêncio. Nunca como resolvedor de âncora, nunca no caminho crítico do usuário."
+    }
+  },
+
+  "naoConfirmado": [
+    {
+      "item": "O formulário de acompanhamento da safra 2024 dos INCTs",
+      "oQueFaltou": "A Chamada 46/2024 (item 11.5) fala em 'formulário de avaliação e relatório parcial de execução do projeto aos 24 e 48 meses', mas NÃO publica o formulário nem nenhum anexo com tabelas. Não foi encontrado nenhum relatório público de INCT da safra 2022 ou 2024 preenchido no formulário oficial.",
+      "oQueFoiUsadoNoLugar": "Dois relatórios reais do INCT-FCx (Ano 6 parcial e Ano 7 final, safra 2008) preenchidos no formulário do CNPq, com linhas idênticas entre si.",
+      "risco": "MÉDIO. As rubricas da tabela A são estáveis há mais de uma década e o modelo de dados sobrevive a mudanças de rótulo (o enum é mais fino que a tabela). Mas se o CNPq tiver refeito a tela no PICC, o exportador de CSV precisa ser ajustado.",
+      "comoResolver": "Pedir à coordenação, no primeiro contato com o gestor do CNPq, uma cópia do formulário de acompanhamento vigente. É um pedido de uma linha e elimina a única incerteza estrutural desta taxonomia. Corresponde à incerteza 9.2 de docs/relato-anual.md."
+    },
+    {
+      "item": "Rótulo exato do PTT nº 4 da CAPES",
+      "oQueFaltou": "Duas cópias institucionais do Relatório Final do GT Produção Técnica divergem: 'Curso de Formação Profissional' (UFAL) x 'Curso para Formação Profissional' (Unimontes). O PDF original no portal da CAPES não abriu (a página serve apenas metadados).",
+      "risco": "BAIXO. Preposição.",
+      "comoResolver": "Baixar https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/relatorios-tecnicos-e-grupos-de-trabalho e conferir. Não bloqueia nada."
+    },
+    {
+      "item": "Correspondência prefixo → tipo nos números do INPI (BR 10 / BR 20 / BR 30 / BR 51)",
+      "oQueFaltou": "O Guia Básico de Patentes do INPI menciona os prefixos mas não explica a correspondência, e nenhuma fonte oficial foi lida confirmando 'BR 10 = patente de invenção', 'BR 20 = modelo de utilidade', 'BR 30 = desenho industrial', 'BR 51 = programa de computador'.",
+      "risco": "MÉDIO se alguém escrever uma regex que REJEITE número fora do padrão presumido. Um pesquisador com pedido antigo (formato anterior a 2012) ou com pedido no exterior seria barrado.",
+      "comoResolver": "Validar formato apenas de forma PERMISSIVA (aviso, nunca erro bloqueante) até que a tabela oficial seja conferida no Manual do Depositante do INPI."
+    },
+    {
+      "item": "APIs de coleções biológicas (GBIF, speciesLink) para ancorar `acervo`",
+      "oQueFaltou": "Ambas existem e são abertas, mas não foram testadas nesta apuração — nem quanto a CORS, nem quanto a resolver 'sigla da coleção + faixa de tombo'.",
+      "risco": "BAIXO — a recomendação é remover `acervo` do enum de produções de qualquer forma (ver colisoesComOsFatos).",
+      "comoResolver": "Se a coordenação quiser ancoragem de acervo, testar api.gbif.org/v1/occurrence/search com Origin do site antes de prometer."
+    },
+    {
+      "item": "Bases de patente com API livre que cubram documentos BR (Espacenet/OPS, PATENTSCOPE, Lens)",
+      "oQueFaltou": "Sabe-se que indexam BR, mas todas exigem cadastro e/ou têm limites, e nenhuma foi testada com Origin do site.",
+      "risco": "NENHUM para a v1, porque a decisão é digitação manual.",
+      "comoResolver": "Só investigar se a rede depositar volume relevante de patentes, o que a proposta não pactua."
+    },
+    {
+      "item": "Se a Câmara Brasileira do Livro (agência ISBN no Brasil) expõe alguma consulta pública",
+      "oQueFaltou": "Não verificado nesta apuração.",
+      "risco": "BAIXO — OpenLibrary já é o fallback e a validação de dígito verificador é local.",
+      "comoResolver": "Testar antes de prometer autopreenchimento de livro brasileiro na tela."
+    },
+    {
+      "item": "Se a linha 'ARTIGOS PUBLICADOS COM AUTORES DE MAIS DE UM GRUPO DO INCT' significa grupo=laboratório associado",
+      "oQueFaltou": "O formulário não define 'grupo'. No INCT-FCx, os relatórios usam 'Grupo' como sinônimo do grupo de pesquisa/laboratório participante.",
+      "risco": "MÉDIO — muda o número do Indicador nº 3.",
+      "comoResolver": "É uma decisão da coordenação, análoga à 8.1. Sugestão: grupo = `laboratorio_id`, registrada no `config` do ciclo, e o número publicado com a definição ao lado. É o precedente de src/content/rede.ts: publica-se o número com a diferença explicada."
+    }
+  ],
+
+  "recomendacoesDeImplementacao": [
+    "O array `tipos` tem 29 entradas. O enum final de `producoes.tipo` fica com 28 valores se a colisão de `acervo` for resolvida como recomendado (remover do enum de produções, manter só como fato), ou 29 se não. Todos têm lastro em elemento literal do Lattes, em tipo numerado da CAPES, ou em linha literal do formulário do CNPq — nenhum é invenção. Dos 29, 24 estão marcados `confianca: alta` e 5 `media` (os 5 médios são os que existem na CAPES mas não têm elemento próprio no Lattes: manual_protocolo, tecnologia_social, norma_marco_regulatorio, acervo, indicacao_geografica).",
+    "Lista curta na tela (8 tipos, ~90% do volume esperado): artigo_periodico · trabalho_evento · capitulo · livro · material_didatico · curso_curta_duracao · produto_comunicacao · software. O resto atrás de 'ver todos os tipos'.",
+    "Nunca exibir `topografia_circuito_integrado` e `prefacio_posfacio` na lista curta.",
+    "O campo `objeto` (produto|processo) só existe para `patente` e é obrigatório lá, porque a tabela A do CNPq tem as duas sublinhas.",
+    "O campo `estagio` só existe para `patente`. Default `deposito`, porque é o que a proposta pactua.",
+    "Guardar `tipo` e `subtipo` separados. O subtipo é sempre um enum oficial (Lattes ou CAPES), nunca texto livre, e é o que permite gerar o anexo de referências agrupado por tipo exigido no cabeçalho da tabela A.",
+    "Monitorar a taxa de `outro`. Acima de 10%, falta tipo.",
+    "O exportador de CSV para a tabela A precisa emitir MÚLTIPLAS sublinhas nomeadas dentro de 'OUTROS (ESPECIFICAR)', uma por tipo com quantidade > 0. Uma linha só somando tudo perde a informação e é o erro mais fácil de cometer."
+  ]
+}

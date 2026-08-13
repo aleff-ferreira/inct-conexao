@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "oQueE": "Identificação oficial do INCT. É a fonte única destes valores no projeto — nenhum deles deve ser digitado de novo em outro lugar.",
+    "porQueImporta": "O número do processo é o único dado deste sistema cujo erro sai de casa: ele vai para a seção de agradecimentos de artigos publicados, onde é permanente e onde o CNPq vai procurar. Errar aqui é errar em papel impresso.",
+    "informadoPor": "Coordenação do INCT, em 2026-08-04",
+    "conferidoContra": "CNPq Proposta submetida INCT 2024.pdf — título nas linhas 22 e 24, processo na linha 6, chamada nas linhas 1730-1734",
+    "atualizadoEm": "2026-08-04"
+  },
+
+  "sigla": "INCT-CONEXAO BIO3TOX",
+  "siglaCurta": "INCT-CONEXAO",
+  "tituloPt": "Instituto Nacional de Ciência e Tecnologia de Pesquisa e Conhecimento de Excelência da Amazônia Ocidental/Oriental em Biodiversidade, Biotecnologia, Biometeorologia e Toxicologia Aplicadas à Saúde Única",
+  "tituloEn": "National Institute of Science and Technology for Research and Knowledge Excellence of the Western/Eastern Amazon in Biodiversity, Biotechnology, Biometeorology and Toxicology Applied to One Health",
+
+  "processo": "408474/2024-6",
+  "processoConferido": true,
+  "processoNotaDeConferencia": "Presente na linha 6 da proposta submetida. O rascunho da especificação citava 408549/2024-6, número que NÃO existe na proposta (zero ocorrências) e que era fabricado — ver docs/relato-anual.md §8.3.",
+
+  "chamada": {
+    "numero": "46/2024",
+    "programa": "Programa Institutos Nacionais de Ciência e Tecnologia — INCT",
+    "orgaosComoNaProposta": "MCTI/CNPq/SECTICS/MS/CAPES/FAPs",
+    "orgaosComoInformado": "CNPq/SECTICS/CAPES/FAPs",
+    "divergencia": "A proposta submetida grafa a chamada com MCTI e MS na lista de órgãos (4 ocorrências, linhas 1730-1734); a coordenação informou a forma sem MCTI e sem MS. As duas podem estar corretas em contextos diferentes (a chamada publicada e o termo de outorga podem listar órgãos distintos). PENDENTE de confirmação contra o Termo de Outorga antes de ir para a capa do relatório.",
+    "pendente": true
+  },
+
+  "vigencia": {
+    "inicio": "2025-05-01",
+    "duracaoMeses": 60,
+    "fonte": "linha 21 da proposta: INÍCIO: 01/05/2025 DURAÇÃO: 60 meses",
+    "assinaturaTermoOutorga": null,
+    "notaAssinatura": "A data de assinatura do Termo de Outorga pode não coincidir com o início do projeto. Dela derivam os marcos de 24 e 48 meses e o prazo do Relatório de Execução do Objeto. Enquanto for nula, o painel de prazos mostra placeholder."
+  },
+
+  "temaEstrategico": "Biotecnologia e Uso Sustentável da Biodiversidade",
+  "temasAderentes": [
+    "Mudanças Climáticas",
+    "Doenças Negligenciadas e Doenças Crônicas de Alta Relevância para a Saúde no Brasil"
+  ],
+
+  "instituicaoExecutora": "FIOCRUZ RO",
+  "sedeFisica": "LABOGEOPA/UNIR",
+  "coordenador": "Andreimar Martins Soares",
+
+  "agradecimento": {
+    "pt": "Este trabalho foi apoiado pelo INCT-CONEXAO BIO3TOX (CNPq, processo nº 408474/2024-6), Chamada nº 46/2024, Programa Institutos Nacionais de Ciência e Tecnologia.",
+    "en": "This work was supported by INCT-CONEXAO BIO3TOX (CNPq, grant no. 408474/2024-6), Call no. 46/2024, National Institutes of Science and Technology Program.",
+    "nota": "Frase deliberadamente curta: cita o número do processo, que é o que o CNPq indexa, e não a lista completa de órgãos, que está pendente de conferência. Revisar quando a chamada for confirmada contra o Termo de Outorga."
+  }
+}

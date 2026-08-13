@@ -29,6 +29,9 @@ inct_upload/
 dist-test/
 tmp/
 *:Zone.Identifier
+# O WSL troca o ":" proibido do NTFS por U+F03A, entao o padrao acima nao pega
+# o arquivo visto de dentro do Linux; este pega qualquer variante.
+*Zone.Identifier
 
 # ---------------------------------------------------------------------------
 # DADOS PESSOAIS DO PROCESSO SELETIVO — NUNCA VERSIONAR
