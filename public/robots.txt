@@ -1,0 +1,5 @@
+# INCT-CONEXAO (https://inct-conexao.com.br/)
+# Site estatico; o conteudo publico vive na raiz, em /figuras/ e nas rotas #/.
+User-agent: *
+Allow: /
+Disallow: /admin/

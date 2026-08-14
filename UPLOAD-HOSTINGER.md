@@ -33,6 +33,12 @@ do dia:
   **Depende da migração `015_apagar_inscricoes.sql`** (sanidade 8× true);
   sem ela o botão explica que falta a migração. Passou por revisão
   adversarial (3 lentes) e por teste de comportamento em Postgres limpo.
+- **`robots.txt` e `llms.txt` agora VÊM DO BUILD** (public/): o upload de
+  13/08 destruiu o `robots.txt` do servidor (a sonda flagrou o 404), e o
+  `llms.txt` que sobrevivia era lixo do WordPress antigo (posts de spam sobre
+  trading e URLs mortas). Os dois foram reescritos com o conteúdo real do
+  site e entram em todo deploy daqui em diante; sumiço virou impossível.
+  `.htaccess` e `.private` continuam sendo só do servidor.
 
 ⚠️ A ordem de SQL canônica agora é **`supabase/SEQUENCIA-COMPLETA.md`**
 (13/08, provada num Postgres limpo). Antes deste upload, aplique o que lá
@@ -269,10 +275,11 @@ public_html/
 ## Como subir
 
 **Pelo hPanel (mais simples).** Gerenciador de Arquivos → entrar em
-`public_html` → enviar **`inct-site-2026-08-07.zip`** → "Extrair" **ali
+`public_html` → enviar **`inct-site-2026-08-13.zip`** → "Extrair" **ali
 dentro** → apagar o zip do servidor. O conteúdo já está na raiz do arquivo:
-extrai direto no lugar certo, sem criar subpasta. Não toque em `.htaccess`,
-`llms.txt` nem `.private` — o zip não os contém e a extração não os remove.
+extrai direto no lugar certo, sem criar subpasta. Não toque em `.htaccess`
+nem `.private` (o zip não os contém e a extração não os remove);
+`robots.txt` e `llms.txt` desde 13/08 vêm no zip e são sobrescritos.
 
 **Por SSH/rsync (mais rápido e seguro).** `deploy.sh` na raiz do projeto já
 faz isso; falta preencher `SSH_HOST` e `SSH_USER` com os dados de
@@ -297,8 +304,10 @@ public_html/admin/      (inteira)
 public_html/figuras/    (inteira)
 ```
 
-**NÃO apague** `.htaccess`, `llms.txt`, `.private` nem qualquer outro arquivo
-na raiz — eles não vêm do build e o site precisa deles.
+**NÃO apague** `.htaccess`, `.private` nem qualquer outro arquivo
+na raiz que você não reconheça — esses não vêm do build e o site precisa
+deles. (`robots.txt` e `llms.txt` desde 13/08 vêm do build: apagar ou manter
+dá no mesmo, o zip os repõe.)
 
 ## Conferir depois do upload
 

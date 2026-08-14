@@ -1,0 +1,18 @@
+# INCT-CONEXAO
+
+> Instituto Nacional de Ciência e Tecnologia CONEXAO: rede de pesquisa em Saúde Única, biodiversidade e bioeconomia da Amazônia (processo CNPq 408474/2024-6), conectando laboratórios da Amazônia Legal e parceiros. Este site é estático e as rotas internas usam fragmento (#/).
+
+## Principais páginas
+
+- [Início](https://inct-conexao.com.br/): apresentação da rede, pesquisa, governança, grupos e contato
+- [Webinários](https://inct-conexao.com.br/#/webinars): transmissões ao vivo e gravações da rede
+- [Mapa interativo](https://inct-conexao.com.br/#/mapa): a Amazônia Legal em camadas (rede, focos de calor, doenças, formação)
+- [Notícias](https://inct-conexao.com.br/#/noticias): matérias e expedições da rede
+- [Figuras](https://inct-conexao.com.br/figuras/): gráficos citáveis com fonte, tabela e CSV
+- [Curso CONEXAO-BIOINFORMÁTICA](https://inct-conexao.com.br/#/curso): curso presencial de bioinformática estrutural, IA, docking e ADMET no IFRO Campus Jaru
+- [Workshop Fitofarmas](https://inct-conexao.com.br/#/fitofarmas): formulário pré-evento do I Workshop Conexão Fitofarmas
+
+## Contato
+
+- E-mail: inctconexao@gmail.com
+- Instagram: @inct_conexao
