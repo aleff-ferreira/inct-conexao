@@ -31,12 +31,14 @@ import {
   listEvaluationEvents,
   listFiles,
   listProfiles,
+  purgeApplication,
   setApplicationStatus,
   setEditalStatus,
   signedUrl,
   toCsv,
   upsertEvaluation,
 } from "./api";
+import { ApagarDefinitivo } from "../ui/ApagarDefinitivo";
 import {
   aggregateFinal,
   bonusApplies,
@@ -356,7 +358,7 @@ export default function Gestao() {
               que devolve zero linhas (não erro) a quem não é admin — e uma
               tabela vazia sem explicação diria "ninguém respondeu" a quem não
               podia ver. */}
-          <PainelFitofarmas isAdmin={isAdmin} />
+          <PainelFitofarmas isAdmin={isAdmin} isSuper={isSuper} />
         </Suspense>
       ) : area === "curso" ? (
         <Suspense
@@ -368,7 +370,7 @@ export default function Gestao() {
         >
           {/* `isAdmin` decide só a MENSAGEM: a permissão real é a RLS da 013,
               que devolve zero linhas (não erro) a quem não é admin. */}
-          <PainelCurso isAdmin={isAdmin} />
+          <PainelCurso isAdmin={isAdmin} isSuper={isSuper} />
         </Suspense>
       ) : area === "contas" ? (
         isSuper ? (
@@ -435,6 +437,7 @@ export default function Gestao() {
           app={openApp}
           edital={edital}
           myId={auth.session.user.id}
+          isSuper={isSuper}
           existing={evals.find((e) => e.application_id === openApp.id && e.evaluator_id === auth.session!.user.id)}
           onClose={() => {
             setOpenApp(null);
@@ -635,12 +638,14 @@ function AvaliacaoView({
   app,
   edital,
   myId,
+  isSuper,
   existing,
   onClose,
 }: {
   app: Application;
   edital: Edital;
   myId: string;
+  isSuper: boolean;
   existing: Evaluation | undefined;
   onClose: () => void;
 }) {
@@ -742,6 +747,18 @@ function AvaliacaoView({
               </li>
             ) : null}
           </ul>
+
+          {/* Só superadmin VÊ a zona; a permissão real é a trava da RPC (015).
+              Cai TUDO: avaliações da comissão, log de auditoria e os PDFs. */}
+          {isSuper ? (
+            <ApagarDefinitivo
+              alvo={`a inscrição ${app.protocolo} (${app.nome})`}
+              confirmacao={app.protocolo || app.email}
+              detalhes="Somem também as avaliações da comissão, o log de auditoria e os PDFs enviados."
+              aoApagar={() => purgeApplication(app.id)}
+              aoApagada={onClose}
+            />
+          ) : null}
         </div>
 
         <div className="plat-card">

@@ -11,11 +11,12 @@
  *   • É a leitura da coordenação sobre as respostas do formulário pré-evento:
  *     métricas de campanha, a lista priorizada por escore, a ficha de cada
  *     pessoa e o CSV para levar ao Excel.
- *   • NÃO é superfície de escrita: tudo aqui é `select` na view
- *     `workshop_prioridade`. Corrigir ou apagar resposta continua sendo pelo
- *     SQL Editor (docs/fitofarmas-pre-evento.md §6) — de propósito: apagar
- *     dado de pessoa a um clique de distância num painel é como acidente
- *     acontece.
+ *   • Quase não é superfície de escrita: tudo aqui é `select` na view
+ *     `workshop_prioridade`, com UMA exceção deliberada (decisão do dono,
+ *     13/08/2026): a exclusão DEFINITIVA (LGPD) na ficha, exclusiva de
+ *     SuperAdministrador, guardada pela RPC da migração 015 e por confirmação
+ *     digitada (nunca a um clique de distância). Corrigir resposta continua
+ *     sendo pelo SQL Editor (docs/fitofarmas-pre-evento.md §6).
  *   • NÃO decide permissão. Quem decide é a RLS da 008 (`is_admin()`); esta
  *     tela só EXPLICA a recusa em vez de mostrar tabela vazia sem motivo —
  *     para não-admin a RLS devolve zero linhas, não erro, e a tela que confia
@@ -44,7 +45,8 @@ import {
 } from "lucide-react";
 import { toCsv } from "../platform/api";
 import { FITOFARMAS_HREF } from "../webinars/router";
-import { fitofarmasDisponivel, listarRespostasDoPainel } from "./api";
+import { ApagarDefinitivo } from "../ui/ApagarDefinitivo";
+import { apagarResposta, fitofarmasDisponivel, listarRespostasDoPainel } from "./api";
 import {
   calcularMetricas,
   filtrarLinhas,
@@ -87,7 +89,7 @@ function ChipFaixa({ faixa }: { faixa: Faixa }) {
   return <span className={variante}>{curto}</span>;
 }
 
-export default function PainelFitofarmas({ isAdmin }: { isAdmin: boolean }) {
+export default function PainelFitofarmas({ isAdmin, isSuper = false }: { isAdmin: boolean; isSuper?: boolean }) {
   const [linhas, setLinhas] = useState<RespostaPainel[] | null>(null);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -156,7 +158,17 @@ export default function PainelFitofarmas({ isAdmin }: { isAdmin: boolean }) {
 
   // ------------------------------------------------------- ficha individual
   if (aberta) {
-    return <Ficha linha={aberta} aoVoltar={() => setAberta(null)} />;
+    return (
+      <Ficha
+        linha={aberta}
+        aoVoltar={() => setAberta(null)}
+        isSuper={isSuper}
+        aoApagada={() => {
+          setAberta(null);
+          carregar();
+        }}
+      />
+    );
   }
 
   // ---------------------------------------------------------------- o painel
@@ -348,7 +360,17 @@ function TabelaContagem({
 
 // ======================================================= ficha da pessoa ===
 
-function Ficha({ linha, aoVoltar }: { linha: RespostaPainel; aoVoltar: () => void }) {
+function Ficha({
+  linha,
+  aoVoltar,
+  isSuper,
+  aoApagada,
+}: {
+  linha: RespostaPainel;
+  aoVoltar: () => void;
+  isSuper: boolean;
+  aoApagada: () => void;
+}) {
   const l = linha;
   const aportesComDetalhe = l.aportes.map((a) => {
     const detalhe = (l.aportes_detalhe[a] ?? "").trim();
@@ -488,6 +510,16 @@ function Ficha({ linha, aoVoltar }: { linha: RespostaPainel; aoVoltar: () => voi
             </div>
           ) : null}
         </div>
+
+        {/* Só superadmin VÊ a zona; a permissão real é a trava da RPC (015). */}
+        {isSuper ? (
+          <ApagarDefinitivo
+            alvo={`a resposta ${l.protocolo ?? "sem protocolo"} (${l.nome})`}
+            confirmacao={l.protocolo ?? l.email}
+            aoApagar={() => apagarResposta(l.id)}
+            aoApagada={aoApagada}
+          />
+        ) : null}
       </div>
     </div>
   );

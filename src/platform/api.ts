@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseClient";
+import { platformEnabled, supabase } from "./supabaseClient";
 import { DOC_MAX_BYTES, docMaxLabel } from "./validation";
 import type {
   Application,
@@ -168,6 +168,69 @@ export async function upsertEvaluation(
 export async function setApplicationStatus(id: string, status: ApplicationStatus): Promise<void> {
   const { error } = await supabase().from("applications").update({ status }).eq("id", id);
   if (error) throw new Error(error.message);
+}
+
+/**
+ * Exclusão DEFINITIVA (LGPD) de uma inscrição do processo seletivo, em dois
+ * tempos: (1) a RPC `apagar_inscricao_selecao` (migração 015, exclusiva de
+ * SuperAdministradores) apaga do BANCO a inscrição, as avaliações, o log de
+ * auditoria e os registros de arquivo, e devolve os caminhos dos PDFs
+ * (restritos à pasta do dono); (2) esta função remove os PDFs pela STORAGE
+ * API, que apaga o arquivo de verdade (deletar storage.objects por SQL
+ * deixaria os bytes órfãos no backend). Se a etapa 2 falhar ou remover menos
+ * do que devia, `aviso` volta preenchido e a tela o mantém à vista até o
+ * "Entendi". Não lança: devolve o desfecho.
+ */
+export async function purgeApplication(
+  id: string,
+): Promise<{ ok: boolean; mensagem: string; aviso?: string }> {
+  if (!platformEnabled) {
+    return { ok: false, mensagem: "A plataforma não está configurada neste ambiente." };
+  }
+  try {
+    const { data, error } = await supabase().rpc("apagar_inscricao_selecao", { p_id: id });
+    if (error) {
+      // PGRST202 = a função não existe no banco: a 015 ainda não foi aplicada.
+      const cru = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
+      if (cru.includes("pgrst202") || cru.includes("schema cache") || cru.includes("could not find the function")) {
+        return { ok: false, mensagem: "A exclusão ainda não está habilitada no banco: rode a migração 015 no SQL Editor." };
+      }
+      return { ok: false, mensagem: "Não foi possível apagar agora. Tente de novo em instantes." };
+    }
+    const r = (data ?? {}) as { ok?: unknown; mensagem?: unknown; arquivos?: unknown };
+    if (r.ok !== true) {
+      return {
+        ok: false,
+        mensagem:
+          typeof r.mensagem === "string" && r.mensagem ? r.mensagem : "Não foi possível apagar.",
+      };
+    }
+
+    const paths = Array.isArray(r.arquivos)
+      ? r.arquivos.filter((p): p is string => typeof p === "string" && p.length > 0)
+      : [];
+    let aviso: string | undefined;
+    if (paths.length) {
+      try {
+        const { data: removidos, error: stErr } = await supabase()
+          .storage.from("inscricoes")
+          .remove(paths);
+        const n = Array.isArray(removidos) ? removidos.length : 0;
+        if (stErr || n < paths.length) {
+          aviso =
+            `${paths.length - n} de ${paths.length} PDF(s) continuam no bucket "inscricoes". ` +
+            "Apague-os no Dashboard (Storage), na pasta do candidato.";
+        }
+      } catch {
+        aviso =
+          `Os ${paths.length} PDF(s) continuam no bucket "inscricoes". ` +
+          "Apague-os no Dashboard (Storage), na pasta do candidato.";
+      }
+    }
+    return { ok: true, mensagem: "Inscrição apagada por completo.", aviso };
+  } catch {
+    return { ok: false, mensagem: "Não conseguimos falar com o servidor. Confira a conexão e tente de novo." };
+  }
 }
 
 export async function setEditalStatus(id: string, status: Edital["status"]): Promise<void> {

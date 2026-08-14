@@ -294,3 +294,40 @@ export async function enviarRespostas(
     return falhaDeRede(e);
   }
 }
+
+// =============================================== EXCLUSÃO DEFINITIVA (LGPD)
+
+/**
+ * Apaga uma resposta POR COMPLETO: a linha e as versões arquivadas, de uma vez
+ * (RPC `apagar_resposta_workshop`, migração 015). A RPC só obedece a
+ * SuperAdministradores; para qualquer outro papel devolve recusa por extenso.
+ * Nunca lança.
+ */
+export async function apagarResposta(id: string): Promise<{ ok: boolean; mensagem: string }> {
+  if (!platformEnabled) {
+    return { ok: false, mensagem: "A plataforma não está configurada neste ambiente." };
+  }
+  try {
+    const { data, error } = await supabase().rpc("apagar_resposta_workshop", { p_id: id });
+    if (error) {
+      // PGRST202 = a função não existe no banco: a 015 ainda não foi aplicada.
+      const cru = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
+      if (cru.includes("pgrst202") || cru.includes("schema cache") || cru.includes("could not find the function")) {
+        return { ok: false, mensagem: "A exclusão ainda não está habilitada no banco: rode a migração 015 no SQL Editor." };
+      }
+      return { ok: false, mensagem: "Não foi possível apagar agora. Tente de novo em instantes." };
+    }
+    const r = (data ?? {}) as { ok?: unknown; mensagem?: unknown };
+    return {
+      ok: r.ok === true,
+      mensagem:
+        typeof r.mensagem === "string" && r.mensagem
+          ? r.mensagem
+          : r.ok === true
+            ? "Resposta apagada por completo."
+            : "Não foi possível apagar.",
+    };
+  } catch {
+    return { ok: false, mensagem: "Não conseguimos falar com o servidor. Confira a conexão e tente de novo." };
+  }
+}

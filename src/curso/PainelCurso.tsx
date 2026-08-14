@@ -14,10 +14,14 @@
  *   2. OPERAÇÃO: filtros, a lista priorizada e a ficha de cada pessoa (com
  *      contato) + o CSV. Essa camada tem dado pessoal e nunca vai para print.
  *
- *  NÃO é superfície de escrita: tudo é `select` na view `curso_inscritos`.
- *  Corrigir/apagar inscrição é pelo SQL Editor (migração 013). NÃO decide
- *  permissão: quem decide é a RLS da 013 (`is_admin()`); para não-admin a RLS
- *  devolve ZERO LINHAS (não erro), por isso a tela checa o papel ANTES.
+ *  Quase não é superfície de escrita: tudo é `select` na view `curso_inscritos`,
+ *  com UMA exceção deliberada: a exclusão DEFINITIVA (LGPD) na ficha, que só
+ *  SuperAdministrador vê e que chama a RPC da migração 015 (a linha e as
+ *  versões somem juntas; a vaga volta a contar como livre). Corrigir inscrição
+ *  segue sendo pelo SQL Editor (migração 013). Esta tela NÃO decide permissão:
+ *  quem decide é a RLS da 013 (`is_admin()`) e a trava de superadmin da 015;
+ *  para não-admin a RLS devolve ZERO LINHAS (não erro), por isso a tela checa
+ *  o papel ANTES.
  * ============================================================================
  */
 import { useEffect, useMemo, useState } from "react";
@@ -37,9 +41,10 @@ import {
 } from "lucide-react";
 import { toCsv } from "../platform/api";
 import { CURSO_HREF } from "../webinars/router";
+import { ApagarDefinitivo } from "../ui/ApagarDefinitivo";
 import { NumeroQueConta } from "../ui/NumeroQueConta";
 import { MoleculaMini } from "./Molecula";
-import { cursoDisponivel, listarInscritosDoPainel } from "./api";
+import { apagarInscricao, cursoDisponivel, listarInscritosDoPainel } from "./api";
 import { EXPERIENCIAS, MAX_VAGAS, SEMESTRES, TEXTO, TODAS_TURMAS, turmaResumo, VINCULOS } from "./conteudo";
 import type { InscritoPainel } from "./types";
 
@@ -74,7 +79,7 @@ function filtrar(linhas: readonly InscritoPainel[], f: Filtros): InscritoPainel[
   });
 }
 
-export default function PainelCurso({ isAdmin }: { isAdmin: boolean }) {
+export default function PainelCurso({ isAdmin, isSuper = false }: { isAdmin: boolean; isSuper?: boolean }) {
   const [linhas, setLinhas] = useState<InscritoPainel[] | null>(null);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -149,7 +154,17 @@ export default function PainelCurso({ isAdmin }: { isAdmin: boolean }) {
   }
 
   if (aberta) {
-    return <Ficha linha={aberta} aoVoltar={() => setAberta(null)} />;
+    return (
+      <Ficha
+        linha={aberta}
+        aoVoltar={() => setAberta(null)}
+        isSuper={isSuper}
+        aoApagada={() => {
+          setAberta(null);
+          carregar();
+        }}
+      />
+    );
   }
 
   return (
@@ -363,7 +378,17 @@ function Grafico({
 
 // ======================================================= ficha da pessoa ===
 
-function Ficha({ linha, aoVoltar }: { linha: InscritoPainel; aoVoltar: () => void }) {
+function Ficha({
+  linha,
+  aoVoltar,
+  isSuper,
+  aoApagada,
+}: {
+  linha: InscritoPainel;
+  aoVoltar: () => void;
+  isSuper: boolean;
+  aoApagada: () => void;
+}) {
   const l = linha;
   return (
     <div className="plat-eval">
@@ -428,6 +453,17 @@ function Ficha({ linha, aoVoltar }: { linha: InscritoPainel; aoVoltar: () => voi
             </div>
           ) : null}
         </div>
+
+        {/* Só superadmin VÊ a zona; a permissão real é a trava da RPC (015). */}
+        {isSuper ? (
+          <ApagarDefinitivo
+            alvo={`a inscrição ${l.protocolo ?? "sem protocolo"} (${l.nome})`}
+            confirmacao={l.protocolo ?? l.email}
+            detalhes="A vaga volta a contar como livre na hora."
+            aoApagar={() => apagarInscricao(l.id)}
+            aoApagada={aoApagada}
+          />
+        ) : null}
       </div>
     </div>
   );

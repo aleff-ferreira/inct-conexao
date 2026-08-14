@@ -26,6 +26,13 @@ do dia:
   (24 substituições, na régua de `docs/remocao-travessoes-2026-08-11.md`);
   rótulos de seção (`eyebrow`) do curso na variante escura, legíveis no fundo
   claro (contraste ~10,9:1).
+- **Exclusão definitiva (LGPD) nas fichas dos painéis** (Curso, Fitofarmas e
+  Processo Seletivo), exclusiva de SuperAdministradores: dois passos com
+  confirmação digitada; apaga a linha, as versões arquivadas e, na seleção,
+  avaliações, auditoria, registros de arquivo e os PDFs (pela Storage API).
+  **Depende da migração `015_apagar_inscricoes.sql`** (sanidade 8× true);
+  sem ela o botão explica que falta a migração. Passou por revisão
+  adversarial (3 lentes) e por teste de comportamento em Postgres limpo.
 
 ⚠️ A ordem de SQL canônica agora é **`supabase/SEQUENCIA-COMPLETA.md`**
 (13/08, provada num Postgres limpo). Antes deste upload, aplique o que lá

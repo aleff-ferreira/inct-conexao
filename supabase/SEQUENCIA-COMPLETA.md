@@ -34,6 +34,7 @@ um erro, roda de novo sem duplicar nada (idempotente), e as sanidades batem.
 | 16 | `seeds/004_curso_atomo.sql` | **NÃO** (idem) | abre a edição do curso |
 | 17 | `migrations/013_identidade.sql` | **NÃO** | sanidade **6× true** + 2 linhas de coordenação |
 | 18 | `migrations/014_documento_obrigatorio.sql` | **NÃO** | sanidade **2× true**. Torna verdade DO BANCO a decisão de 13/08: relato não vira "enviado" sem o documento da pesquisa anexado (a tela já barra; o trigger fecha o caminho por fora dela) |
+| 19 | `migrations/015_apagar_inscricoes.sql` | **NÃO** | sanidade **8× true**. Exclusão DEFINITIVA (LGPD) de inscrições nos painéis (Curso, Fitofarmas, Processo Seletivo), exclusiva de SuperAdministradores: apaga a linha, as versões arquivadas e, na seleção, avaliações, auditoria e registros de arquivo; os PDFs saem pela Storage API do cliente (policy de superadmin criada aqui). Sem ela o botão "Apagar definitivamente" da Gestão explica que falta a migração |
 
 ### As dependências que fixam a ordem (por que é assim)
 
