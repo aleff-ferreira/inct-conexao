@@ -1,5 +1,77 @@
 # Upload para a Hostinger — pasta `inct_deploy/`
 
+A regeneração de **15/08 (09h20 — a única válida; `inct-site-2026-08-15.zip`,
+274 arquivos, ~85 MB)** substitui a das 08h10 e traz o **rodapé redesenhado**:
+o selo branco do INCT passa de 86x62 para ~213x225 px no desktop (com halo e
+sombra, e vira link para o início); o nome completo do instituto, que quebrava
+em oito linhas de ~100 px ao lado dos chips, agora compõe em três linhas de
+468 px sob o selo, com a frase-tema abaixo; à direita, mapa do site em três
+colunas (Instituto, Eventos e comunidade, Contato) e, embaixo dele, a ficha de
+identificação lida de `identificacao.json` (fomento com links para MCTI, CNPq,
+SECTICS/MS, CAPES e FAPERO; processo CNPq; chamada; executora; sede; vigência);
+linha legal com © e "Voltar ao topo". As duas colunas terminam à mesma altura
+(medido: 503 px a 1180 px de conteúdo); de 375 a 1800 px nada quebra em coluna
+estreita e não há travessões no texto. `tsc` limpo, 837 testes verdes, embargo
+do Barco reconferido. O rodapé usa a sigla curta (INCT-CONEXAO), não a forma
+"BIO3TOX", que ainda não aparece em nenhuma tela pública.
+
+A regeneração das 08h10 somara três frentes ao pacote do Perfil (abaixo). O modelo docx
+é a **versão revisada pelo dono** (21,3 kB, hash conferido contra o arquivo
+entregue), que substituiu a v4 gerada; o nome do arquivo não mudou, então o
+link do formulário continua o mesmo. Este pacote também **encurta o aviso da
+coordenação** "Resultados registrados aqui são a porta para novos recursos"
+(`PainelRelatorio.tsx`): saíram as três últimas frases ("Relatou, pode
+solicitar. Sem resultados registrados... Os cerca de 10 minutos...");
+o aviso termina agora em "justificar cada aporte ao CNPq". 837 testes verdes.
+
+- **Descrição das atividades com até 10.000 caracteres**: na Tela 3 do
+  formulário individual, o campo da atividade virou área de texto; a primeira
+  linha vira o título do cartão e o texto completo vai junto na proposta. No
+  painel da coordenação (aba Exportar), a nova seção **"Descrições das
+  atividades"** mostra o texto integral de cada uma, **incluindo as ainda não
+  confirmadas pelo líder** (com o status visível), e baixa tudo em .md.
+  **Nenhum SQL novo**: o texto viaja no `payload` (jsonb sem teto; o título
+  continua respeitando o limite de 140 do banco).
+- **Limpeza visual pedida nos prints**: removidos TODOS os selos
+  "(opcional…)" (9), o selo "(marque o que houver)" e o ícone de brilhos (2);
+  nada além deles mudou e nenhuma regra do formulário foi alterada. As três
+  notas informativas com a mesma classe (título cortado pelo Google
+  Acadêmico, exemplos de veículo, "deixe vazio se estiver em andamento")
+  ficaram, porque não estavam nos prints.
+- **Modelo oficial do relatório dentro do campo obrigatório**: o campo
+  "Documento com dados da sua pesquisa" agora abre com o cartão **"Baixe o
+  modelo oficial 2025/2026"**
+  (`assets/docs/MODELO_Relatorio_Pesquisador_INCT-CONEXAO_2025-2026.docx`,
+  12,8 kB, entra no build). É o modelo da coordenação **otimizado e enxuto**
+  (v4, após três rodadas de feedback do dono na mesma tarde: a v1 pedia
+  texto longo dentro de células; a v2 resolveu com tabelas-índice mas ficou
+  comprida; a v3 encolheu; a v4 devolveu os limites e afinou a sinergia).
+  Estrutura: **Parte 1, o essencial em três respostas** (o período em um
+  parágrafo, com frase de perspectiva; resultados por objetivo em blocos
+  copiáveis com a fórmula feito + resultado + evidência + EET; um destaque
+  para divulgação) e **Parte 2, cardápio "só se houver"** (expedições,
+  formações, sociedade, governo, empresa, parcerias, eventos, outras
+  produções, dificuldades), cada item com formato de uma linha, exemplo
+  curto nas seções em que o dado costuma vir fraco e a instrução de APAGAR
+  o que ficar vazio. **Limites de caracteres do modelo institucional de
+  volta em cada item** (discretos, "teto, não meta"): 8.000 resumo, 20.000
+  objetivos, 10.000 expedições, 8.000 sociedade/governo/empresa/parcerias,
+  4.000 dificuldades, 1.000 destaque. Abre com a tabela **"divisão de
+  trabalho"** (o que o formulário online já coleta × o que o documento
+  acrescenta), para ninguém escrever nada duas vezes; identificação de 4
+  campos; só texto e tabelas.
+
+A regeneração de 14/08 às 12h14 acrescentou o **Perfil do
+Pesquisador**: menu de conta no cabeçalho (avatar de iniciais; só aparece com
+sessão — o site público e o bundle da home não mudam, +4 kB de gate) e a
+página `#/perfil` (dados da pessoa, papel/laboratório/EETs, status do relato,
+identidade acadêmica editável com salvamento automático, completude do
+perfil), mais a aba **"Pessoas"** no painel da coordenação (composição da
+rede em barras, coberturas com recorte, identificados × pendentes por papel,
+lista de perfis com busca e detalhe) — alimentada pelos mesmos dados que o
+pesquisador atualiza. 837 asserções em 30 arquivos. **Nenhum SQL novo** — a
+sequência de `supabase/SEQUENCIA-COMPLETA.md` segue exata.
+
 Regenerado em **13/08/2026** com typecheck e as **785 asserções** verdes
 (28 arquivos de teste). **265 arquivos, ~85 MB** (zip de 80,8 MB).
 `dist/` MENOS a matéria embargada (ver o bloco a seguir): é a única diferença.
@@ -327,7 +399,7 @@ Depois, no navegador:
    mostra **"16:00 RO · 17:00 Brasília"**.
 2. **`/#/webinars`** — destaque "Em breve" (Clima, 27/08) com contagem
    regressiva viva + cartão "Gravação" (Bioprospecção).
-3. **`/#/webinars/mesa-redonda-clima-eventos-extremos-saude-unica-amazonia`**
+3. **`/#/webinars/webinario-ofidio-venom-saude-1`**
    — contagem, horários traduzidos no topo e no painel lateral, botão
    "Adicionar à agenda" baixa um .ics válido.
 4. **A página do evento encerrado** diz "A gravação será publicada em breve"

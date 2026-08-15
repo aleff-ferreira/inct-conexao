@@ -25,7 +25,7 @@ done
 echo
 echo "=== plataforma de webinários assada no bundle publicado ==="
 JS=$(curl -s --max-time 60 "$S/$BUNDLE")
-for marca in mesa-redonda-clima-eventos-extremos-saude-unica-amazonia \
+for marca in webinario-ofidio-venom-saude-1 \
              mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia \
              youtube-nocookie "em Brasília" live_stream; do
   printf '%s' "$JS" | grep -q "$marca" && echo "ok    $marca" || echo "FALTA $marca"

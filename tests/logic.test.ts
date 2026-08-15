@@ -294,19 +294,30 @@ describe("content files load through the glob loader", () => {
     expect(webinarGroups.length).toBeGreaterThanOrEqual(2);
     expect(groupBySlug(webinarGroups, "conexao-clima-saude-unica")?.acronym).toBe("Clima & Saúde Única");
   });
-  it("os dois webinários estão publicados (decisão editorial de 2026-08-04)", () => {
-    /* Até aqui eram sementes em standby; o coordenador liberou a publicação.
-       A REGRA de ocultação (published:false some do site) continua coberta no
-       teste de normalizeWebinar acima — aqui trava-se o ESTADO editorial, e o
-       invariante de que a lista pública nunca contém item em standby. */
-    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeDefined();
-    expect(bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")).toBeDefined();
+  it("o webinário REAL (OFÍDIO-VENOM-SAÚDE, 18/08) está publicado; a semente de clima voltou ao standby", () => {
+    /* A REGRA de ocultação (published:false some do site) segue coberta no
+       teste de normalizeWebinar acima — aqui trava-se o ESTADO editorial. O
+       evento de clima era semente com palestrantes-fixture (os mesmos de
+       `initials` acima); o real vem do docx da coordenação (2026-08-15). */
+    const ofidio = bySlug(webinars, "webinario-ofidio-venom-saude-1");
+    expect(ofidio).toBeDefined();
+    expect(bySlug(webinars, "mesa-redonda-clima-eventos-extremos-saude-unica-amazonia")).toBeUndefined();
     expect(webinars.every((e) => e.published !== false)).toBe(true);
-    // O evento passado não pode apresentar vídeo alheio como gravação oficial:
-    // o replayVideo placeholder (clipe de Instagram) foi removido junto com a
-    // publicação — sem gravação real, a página diz "em breve", que é a verdade.
-    const bio = bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")!;
-    expect(bio.replay).toBeUndefined();
+    // Nenhum nome-fixture dos testes pode estar num evento publicado.
+    for (const e of webinars) {
+      const nomes = [...e.speakers.map((s) => s.name), e.moderator?.name ?? ""];
+      expect(nomes.join("|"), e.slug).not.toMatch(/Helena Marques|Rafael Tavares|Beatriz Nogueira|Caio Pereira|Luana Figueiredo|André Bezerra|Patrícia Lemos|Mateus Vasconcelos/);
+    }
+    // Dados do docx que não podem escorregar: data, horário e os três palestrantes com foto.
+    expect(ofidio!.startsAt).toBe("2026-08-18T19:00:00-04:00");
+    expect(ofidio!.endsAt).toBe("2026-08-18T21:00:00-04:00");
+    expect(ofidio!.speakers.map((s) => s.affiliation)).toEqual(["UFAC", "Afya", "Butantan"]);
+    for (const s of ofidio!.speakers) expect(s.photo, s.name).toContain("webinars/ofidio-venom-saude/");
+    // A agenda começa e termina dentro da janela do evento.
+    expect(ofidio!.agenda[0].time).toBe("19:00");
+    expect(ofidio!.agenda[ofidio!.agenda.length - 1].time).toBe("20:50");
+    // A semente de bioprospecção (nomes-fixture, data passada sem evento) também está em standby.
+    expect(bySlug(webinars, "mesa-redonda-biodiversidade-bioprospeccao-bioeconomia-amazonia")).toBeUndefined();
   });
 });
 

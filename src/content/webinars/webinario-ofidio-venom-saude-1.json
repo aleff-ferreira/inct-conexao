@@ -1,0 +1,130 @@
+{
+  "slug": "webinario-ofidio-venom-saude-1",
+  "title": "Acidentes ofídicos na Amazônia: aspectos biológicos, clínicos e toxicológicos das serpentes de importância médica",
+  "subtitle": "1º Webinário OFÍDIO-VENOM-SAÚDE. Especialistas em biologia, clínica e toxinologia abordam os acidentes causados por Bothrops, Lachesis, Crotalus e Micrurus na região amazônica.",
+  "theme": "OFÍDIO-VENOM-SAÚDE",
+  "summary": "Biologia, clínica e toxinas das serpentes de importância médica na Amazônia, com Paulo Bernarde (UFAC), Saymon de Albuquerque (Afya) e José Rafael de Almeida (Butantan).",
+  "description": "O 1º Webinário OFÍDIO-VENOM-SAÚDE integra uma proposta de ciclo de palestras e discussões técnico-científicas voltadas aos acidentes ofídicos na região amazônica. Nesta primeira edição, especialistas abordam os acidentes causados por serpentes de importância médica na Amazônia, articulando conhecimentos sobre biologia, ecologia, epidemiologia, manifestações clínicas, toxicologia e aplicações biotecnológicas das toxinas de serpentes.\n\nA programação contempla os principais gêneros de importância médica na região: Bothrops, Lachesis, Crotalus e Micrurus, numa abordagem integrada entre biodiversidade, toxinologia e saúde. O evento é destinado a estudantes, pesquisadores e profissionais interessados em acidentes ofídicos, saúde, ciências biológicas, toxicologia, biodiversidade e áreas relacionadas.\n\nAtividade síncrona, on-line e gratuita, com carga horária de 2 horas e certificação. São 100 vagas, com inscrição pelo Campus Virtual Fiocruz.",
+  "startsAt": "2026-08-18T19:00:00-04:00",
+  "endsAt": "2026-08-18T21:00:00-04:00",
+  "timezoneLabel": "Horário de Rondônia (UTC-4)",
+  "heroImage": "hero-forest.jpg",
+  "groupSlug": "conexao-bioprospeccao-bioeconomia",
+  "published": true,
+  "speakers": [
+    {
+      "name": "Prof. Dr. Paulo Sérgio Bernarde",
+      "role": "Biologia, ecologia e diversidade de serpentes amazônicas",
+      "affiliation": "UFAC",
+      "affiliationFull": "Universidade Federal do Acre",
+      "photo": "webinars/ofidio-venom-saude/paulo-sergio-bernarde.jpg",
+      "bio": "Palestra 1: Características biológicas e ecológicas dos gêneros Bothrops, Lachesis, Crotalus e Micrurus na Amazônia. Diversidade de serpentes de importância médica na região, características biológicas e ecológicas, distribuição e ocorrência dos principais gêneros, aspectos da identificação das serpentes, relação entre ambiente, comportamento e ocorrência dos acidentes, e panorama dos acidentes ofídicos na Amazônia."
+    },
+    {
+      "name": "Prof. Dr. Saymon de Albuquerque",
+      "role": "Aspectos clínicos e manifestações dos acidentes ofídicos",
+      "affiliation": "Afya",
+      "affiliationFull": "Centro Universitário São Lucas (Afya)",
+      "photo": "webinars/ofidio-venom-saude/saymon-de-albuquerque.jpg",
+      "bio": "Palestra 2: Acidentes botrópico, laquético, crotálico e elapídico: diferenças e manifestações clínicas locais e sistêmicas. Características de cada tipo de acidente, fisiopatologia dos principais envenenamentos, manifestações clínicas locais e sistêmicas, diferenças entre os tipos, diagnóstico diferencial, possíveis complicações e desfechos clínicos."
+    },
+    {
+      "name": "Dr. José Rafael de Almeida",
+      "role": "Toxinas de serpentes, mecanismos de ação e aplicações biotecnológicas",
+      "affiliation": "Butantan",
+      "affiliationFull": "Instituto Butantan",
+      "photo": "webinars/ofidio-venom-saude/jose-rafael-de-almeida.jpg",
+      "bio": "Palestra 3: Toxinas de serpentes e sua relação com os quadros clínicos do envenenamento e aplicações biotecnológicas. Composição bioquímica dos venenos, principais classes de toxinas, mecanismos de ação, relação entre toxinas e manifestações clínicas, potencial farmacológico e aplicações biomédicas e biotecnológicas de componentes dos venenos."
+    }
+  ],
+  "moderator": {
+    "name": "Prof. Dr. Andreimar Martins Soares",
+    "role": "Coordenação do webinário",
+    "affiliation": "FIOCRUZ RO",
+    "affiliationFull": "Fundação Oswaldo Cruz Rondônia",
+    "bio": "Coordenação científica do 1º Webinário OFÍDIO-VENOM-SAÚDE, com a Dra. Rafaela Diniz Sousa. Organização: Brenda Makslayne."
+  },
+  "agenda": [
+    {
+      "time": "19:00",
+      "title": "Abertura e apresentação do 1º Webinário OFÍDIO-VENOM-SAÚDE",
+      "speaker": "Coordenação"
+    },
+    {
+      "time": "19:10",
+      "title": "Características biológicas e ecológicas dos gêneros Bothrops, Lachesis, Crotalus e Micrurus na Amazônia",
+      "speaker": "Prof. Dr. Paulo Sérgio Bernarde"
+    },
+    {
+      "time": "19:30",
+      "title": "Acidentes botrópico, laquético, crotálico e elapídico: diferenças e manifestações clínicas locais e sistêmicas",
+      "speaker": "Prof. Dr. Saymon de Albuquerque"
+    },
+    {
+      "time": "19:50",
+      "title": "Toxinas de serpentes e sua relação com os quadros clínicos do envenenamento e aplicações biotecnológicas",
+      "speaker": "Dr. José Rafael de Almeida"
+    },
+    {
+      "time": "20:10",
+      "title": "Debate e perguntas do público",
+      "speaker": ""
+    },
+    {
+      "time": "20:50",
+      "title": "Síntese e encerramento",
+      "speaker": "Coordenação"
+    }
+  ],
+  "materials": [
+    {
+      "title": "Programação completa do webinário",
+      "kind": "PDF",
+      "note": "Ementa, temas de cada palestra, público-alvo e informações gerais."
+    },
+    {
+      "title": "Apresentações dos palestrantes",
+      "kind": "Slides",
+      "note": "Material de apoio das palestras, disponibilizado após o evento, mediante autorização dos autores."
+    }
+  ],
+  "partners": [
+    {
+      "acronym": "FIOCRUZ RO",
+      "name": "Fundação Oswaldo Cruz Rondônia",
+      "logo": "partner-logos/fiocruz-ro.png"
+    },
+    {
+      "acronym": "Butantan",
+      "name": "Instituto Butantan",
+      "logo": "partner-logos/butantan.png"
+    },
+    {
+      "acronym": "UFAC",
+      "name": "Universidade Federal do Acre"
+    },
+    {
+      "acronym": "Afya",
+      "name": "Centro Universitário São Lucas (Afya)",
+      "logo": "partner-logos/unisl.jpg"
+    }
+  ],
+  "seo": {
+    "ogTitle": "1º Webinário OFÍDIO-VENOM-SAÚDE: acidentes ofídicos na Amazônia",
+    "ogDescription": "18 de agosto, 19h (Rondônia) · 20h (Brasília). Biologia, clínica e toxinas das serpentes de importância médica na Amazônia. Transmissão on-line e gratuita, com certificação.",
+    "ogImage": "hero-forest.jpg",
+    "keywords": [
+      "acidentes ofídicos",
+      "serpentes",
+      "Bothrops",
+      "Lachesis",
+      "Crotalus",
+      "Micrurus",
+      "toxinologia",
+      "Amazônia",
+      "INCT-CONEXAO",
+      "Fiocruz Rondônia",
+      "Instituto Butantan"
+    ]
+  }
+}

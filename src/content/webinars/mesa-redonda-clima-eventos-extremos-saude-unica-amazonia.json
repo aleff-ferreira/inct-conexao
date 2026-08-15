@@ -10,7 +10,7 @@
   "timezoneLabel": "Horário de Rondônia (UTC-4)",
   "heroImage": "clima-amazonia.jpg",
   "groupSlug": "conexao-clima-saude-unica",
-  "published": true,
+  "published": false,
   "speakers": [
     {
       "name": "Dr. Rafael Tavares",

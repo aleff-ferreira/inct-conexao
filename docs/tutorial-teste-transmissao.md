@@ -61,7 +61,7 @@ SEU SITE (local) — o campo liveStream do evento aponta para a URL acima
 
 ## Parte 2 — Apontar o site local para o evento
 
-1. Abra `src/content/webinars/mesa-redonda-clima-eventos-extremos-saude-unica-amazonia.json`
+1. Abra `src/content/webinars/webinario-ofidio-venom-saude-1.json`
    e faça DUAS mudanças temporárias (não commite!):
 
    ```json
@@ -83,7 +83,7 @@ SEU SITE (local) — o campo liveStream do evento aponta para a URL acima
    npm run preview   # serve em http://localhost:4173
    ```
 
-3. Abra `http://localhost:4173/#/webinars/mesa-redonda-clima-eventos-extremos-saude-unica-amazonia`.
+3. Abra `http://localhost:4173/#/webinars/webinario-ofidio-venom-saude-1`.
    Você deve ver o selo **AO VIVO** e a fachada "Assistir agora". Clique nela:
    o player carrega com a **tela de espera** do evento agendado ("A transmissão
    começará em breve"). Isso já prova metade do contrato.
