@@ -9,7 +9,6 @@
   "endsAt": "2026-08-18T21:00:00-04:00",
   "timezoneLabel": "Horário de Rondônia (UTC-4)",
   "heroImage": "hero-forest.jpg",
-  "groupSlug": "conexao-bioprospeccao-bioeconomia",
   "published": true,
   "speakers": [
     {
@@ -29,7 +28,7 @@
       "bio": "Palestra 2: Acidentes botrópico, laquético, crotálico e elapídico: diferenças e manifestações clínicas locais e sistêmicas. Características de cada tipo de acidente, fisiopatologia dos principais envenenamentos, manifestações clínicas locais e sistêmicas, diferenças entre os tipos, diagnóstico diferencial, possíveis complicações e desfechos clínicos."
     },
     {
-      "name": "Dr. José Rafael de Almeida",
+      "name": "Prof. Dr. José Rafael de Almeida",
       "role": "Toxinas de serpentes, mecanismos de ação e aplicações biotecnológicas",
       "affiliation": "Butantan",
       "affiliationFull": "Instituto Butantan",
@@ -63,7 +62,7 @@
     {
       "time": "19:50",
       "title": "Toxinas de serpentes e sua relação com os quadros clínicos do envenenamento e aplicações biotecnológicas",
-      "speaker": "Dr. José Rafael de Almeida"
+      "speaker": "Prof. Dr. José Rafael de Almeida"
     },
     {
       "time": "20:10",

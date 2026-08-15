@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# ============================================================================
+#  Regenera inct_deploy/ — A ÚNICA forma correta de fazê-lo.
+#
+#  Fonte: a ÁRVORE DE TRABALHO (comitada ou não). O GitHub é portfólio; o que
+#  vai ao ar é o que está nesta pasta. Nunca construir de um worktree limpo do
+#  HEAD (perde .env, rodapé, relato e o que mais estiver só local).
+#
+#  EMBARGO (UPLOAD-HOSTINGER.md, seção ⛔): a matéria do Barco da Ciência não
+#  vai ao ar. `"publicado": false` só esconde a ROTA — o glob das notícias é
+#  eager, então o texto entraria no JavaScript, e o Vite copia public/ inteiro,
+#  então os 35 MB de mídia iriam junto. Por isso o JSON e a pasta de assets
+#  saem da árvore SÓ durante o build (e voltam mesmo se o build falhar: trap).
+#  A guarda final é a conferência que o doc exige: grep de "barco-da-ciencia"
+#  em inct_deploy/ tem de voltar vazio, senão o script ABORTA e a pasta antiga
+#  é preservada.
+#
+#  Uso (da raiz do repo, no WSL):  bash scripts/build-deploy.sh
+#  Para publicar a matéria quando for a hora: EMBARGO=0 bash scripts/build-deploy.sh
+#  (e troque "publicado" para true no JSON — senão sobe sem página).
+# ============================================================================
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+NODE=./.tools/node-v22.22.3-linux-x64/bin/node
+[ -x "$NODE" ] || { echo "ERRO: node do projeto não encontrado em $NODE (o Node 18 do WSL falha em silêncio)"; exit 1; }
+
+EMBARGO="${EMBARGO:-1}"
+SLUG=expedicao-barco-da-ciencia-nazare
+JSON=src/content/noticias/$SLUG.json
+MIDIA=public/assets/noticias/$SLUG
+GUARDA=$(mktemp -d)
+
+restaura() {
+  [ -f "$GUARDA/$SLUG.json" ] && mv "$GUARDA/$SLUG.json" "$JSON"
+  [ -d "$GUARDA/$SLUG" ] && mv "$GUARDA/$SLUG" "$MIDIA"
+  rmdir "$GUARDA" 2>/dev/null || true
+}
+trap restaura EXIT
+
+if [ "$EMBARGO" = "1" ]; then
+  echo "== embargo ATIVO: retirando a matéria da árvore só durante o build"
+  [ -f "$JSON" ] && mv "$JSON" "$GUARDA/"
+  [ -d "$MIDIA" ] && mv "$MIDIA" "$GUARDA/"
+else
+  echo "== EMBARGO=0: a matéria ENTRA no build (confira 'publicado': true no JSON)"
+fi
+
+echo "== testes"
+"$NODE" node_modules/vitest/vitest.mjs run 2>&1 | tail -3
+echo "== typecheck + build (Node $("$NODE" --version))"
+"$NODE" node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
+"$NODE" node_modules/vite/bin/vite.js build 2>&1 | tail -2
+
+# Guarda anti-build-vazio (o mesmo cinto do CI).
+test -s dist/index.html && grep -q "assets/index-" dist/index.html || { echo "ERRO: dist/ inválido"; exit 1; }
+
+if [ "$EMBARGO" = "1" ]; then
+  if grep -rl "barco-da-ciencia" dist/ >/dev/null; then
+    echo "ERRO: o embargo VAZOU no dist/ — inct_deploy/ NÃO foi tocada:"
+    grep -rl "barco-da-ciencia" dist/
+    exit 1
+  fi
+  echo "== guarda do embargo: ok (zero rastros no dist/)"
+fi
+
+echo "== inct_deploy/ = dist/"
+rsync -a --delete dist/ inct_deploy/
+diff -rq dist inct_deploy >/dev/null && echo "inct_deploy == dist"
+
+echo "== conferências"
+JS=$(ls inct_deploy/assets/index-*.js | head -1)
+CSS=$(ls inct_deploy/assets/index-*.css | head -1)
+grep -q "supabase.co"       "$JS"  && echo "ok  Supabase assado (.env presente)"      || echo "ATENÇÃO: sem Supabase no bundle (faltou .env?)"
+grep -q "footer-watermark"  "$CSS" && echo "ok  rodapé novo"                          || echo "ATENÇÃO: rodapé novo ausente"
+grep -q "meu-ano"           "$JS"  && echo "ok  relato anual"                         || echo "ATENÇÃO: relato ausente"
+grep -q "webinario-ofidio-venom-saude-1" "$JS" && echo "ok  webinário OFÍDIO"          || echo "ATENÇÃO: webinário ausente"
+[ -f inct_deploy/robots.txt ]      && echo "ok  robots.txt"                           || echo "ATENÇÃO: robots.txt ausente"
+echo "arquivos: $(find inct_deploy -type f | wc -l) · $(du -sh inct_deploy | cut -f1) · bundle: $(basename "$JS")"
+echo "== pronto: suba o CONTEÚDO de inct_deploy/ para public_html/ e rode bash scripts/probe-live.sh"
