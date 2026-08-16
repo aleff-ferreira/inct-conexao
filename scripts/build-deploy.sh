@@ -25,18 +25,32 @@ cd "$(dirname "$0")/.."
 NODE=./.tools/node-v22.22.3-linux-x64/bin/node
 [ -x "$NODE" ] || { echo "ERRO: node do projeto não encontrado em $NODE (o Node 18 do WSL falha em silêncio)"; exit 1; }
 
-# Trava do ensaio de transmissão: `scripts/ensaio-transmissao.sh` marca o JSON
-# do webinário com `_ENSAIO` enquanto o teste roda (status forçado para "live"
-# e uma URL de transmissão não listada). Se o script de ensaio morrer sem
-# restaurar — ou se alguém regenerar o pacote com o ensaio aberto noutro
-# terminal —, o site iria ao ar "AO VIVO" apontando para um teste privado.
-# Aqui isso vira erro, não descoberta em produção.
+# Trava do ensaio de transmissão. `scripts/ensaio-transmissao.sh` marca o
+# conteúdo com `_ENSAIO` enquanto um teste roda. Duas situações OPOSTAS:
+#   - ensaio LOCAL (localhost): nunca pode virar pacote -> aborta sempre;
+#   - ensaio de PRODUÇÃO: precisa virar pacote para ser subido -> só passa com
+#     ENSAIO_PRODUCAO=1, que o próprio script de ensaio exporta.
+# Sem essa distinção a guarda protegia o caminho seguro e deixava passar o
+# perigoso (edição manual que vai ao ar sem aviso nenhum).
 if grep -rl '"_ENSAIO"' src/content/ 2>/dev/null | grep -q .; then
-  echo "ERRO: há configuração de ENSAIO ativa em src/content/ — inct_deploy/ NÃO foi tocada:"
-  grep -rl '"_ENSAIO"' src/content/
-  echo "      encerre o ensaio (Ctrl+C no ensaio-transmissao.sh) ou desfaça com:"
-  echo "      git checkout -- src/content/webinars/"
-  exit 1
+  if [ "${ENSAIO_PRODUCAO:-0}" != "1" ]; then
+    echo "ERRO: há configuração de ENSAIO ativa em src/content/ — inct_deploy/ NÃO foi tocada:"
+    grep -rl '"_ENSAIO"' src/content/
+    echo "      encerre o ensaio LOCAL (Ctrl+C no ensaio-transmissao.sh) ou, se for"
+    echo "      ensaio de PRODUÇÃO, use: bash scripts/ensaio-transmissao.sh --producao <url>"
+    exit 1
+  fi
+  cat <<'AVISO'
+
+  ############################################################
+  #  PACOTE DE ENSAIO — NÃO É O SITE NORMAL                  #
+  #  Contém um evento de teste, publicado e AO VIVO.         #
+  #  Depois do teste, rode:                                  #
+  #     bash scripts/ensaio-transmissao.sh --fim             #
+  #  e suba inct_deploy/ de novo.                            #
+  ############################################################
+
+AVISO
 fi
 
 EMBARGO="${EMBARGO:-1}"
@@ -97,6 +111,17 @@ echo "== SQL completo do banco"
   echo "      (o gerador aborta de propósito quando uma trava de semente não casa mais)"
   exit 1
 }
+
+# O estado de ensaio precisa existir FORA do terminal: quem sobe a pasta pode
+# não ser quem a gerou, e o arquivo aparece na listagem do hPanel.
+rm -f inct_deploy/ENSAIO-ATIVO.txt
+if [ "${ENSAIO_PRODUCAO:-0}" = "1" ]; then
+  cat > inct_deploy/ENSAIO-ATIVO.txt <<AVISO
+PACOTE DE ENSAIO — gerado em $(date '+%F %H:%M') — NÃO é o site normal.
+Contém um evento de teste publicado e AO VIVO na home e no hub.
+Para desfazer: bash scripts/ensaio-transmissao.sh --fim  (e subir de novo).
+AVISO
+fi
 
 echo "== conferências"
 JS=$(ls inct_deploy/assets/index-*.js | head -1)
