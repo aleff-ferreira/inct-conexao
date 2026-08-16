@@ -61,6 +61,20 @@ SEU SITE (local) — o campo liveStream do evento aponta para a URL acima
 
 ## Parte 2 — Apontar o site local para o evento
 
+> **Atalho (recomendado):** a Parte 2 inteira virou um comando, com restauração
+> automática e trava contra vazar para o pacote de deploy:
+>
+> ```bash
+> bash scripts/ensaio-transmissao.sh https://youtube.com/live/XXXXXXXXXXX
+> ```
+>
+> Ele força `status: "live"`, injeta a URL, sobe o servidor de desenvolvimento
+> em `http://localhost:5199` e **desfaz tudo no Ctrl+C**. Enquanto está aberto,
+> `scripts/build-deploy.sh` aborta de propósito — o site oficial não tem como
+> sair "AO VIVO" apontando para um teste. Use `--replay` no fim para ensaiar o
+> estado de gravação. O passo a passo manual abaixo continua válido se preferir
+> fazer à mão.
+
 1. Abra `src/content/webinars/webinario-ofidio-venom-saude-1.json`
    e faça DUAS mudanças temporárias (não commite!):
 
