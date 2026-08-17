@@ -41,14 +41,34 @@ import json, re, sys
 p, url = sys.argv[1], sys.argv[2]
 
 # Aceita as duas formas com ID; recusa as que o site não consegue incorporar.
+# Erro mais comum: colar o endereço de INGESTÃO (o que vai no Zoom) em vez do
+# de ASSISTIR. Vale a pena reconhecê-lo e dizer o que fazer.
+if url.startswith("rtmp"):
+    print("ERRO: isso é o endereço de INGESTÃO (RTMP) — ele vai no ZOOM, não aqui.")
+    print()
+    print("  rtmp://a.rtmp.youtube.com/live2   -> Zoom, campo 'Stream URL'")
+    print("  a chave do evento                 -> Zoom, campo 'Stream key'")
+    print("  https://youtube.com/live/<id>     -> AQUI (e no campo 'Live streaming page URL' do Zoom)")
+    print()
+    print("Para achar o ID: abra o evento no YouTube Studio e olhe a barra de endereço:")
+    print("  studio.youtube.com/video/XXXXXXXXXXX/livestreaming")
+    print("                           ^^^^^^^^^^^ é este trecho")
+    raise SystemExit(1)
+
+# Aceita a URL do "Compartilhar" e as variantes com ID; também aceita o
+# endereço do próprio Studio, que é onde o ID está mais à mão.
 m = (re.search(r"youtube\.com/live/([A-Za-z0-9_-]{11})", url)
      or re.search(r"[?&]v=([A-Za-z0-9_-]{11})", url)
-     or re.search(r"youtu\.be/([A-Za-z0-9_-]{11})", url))
+     or re.search(r"youtu\.be/([A-Za-z0-9_-]{11})", url)
+     or re.search(r"studio\.youtube\.com/video/([A-Za-z0-9_-]{11})", url)
+     or re.fullmatch(r"([A-Za-z0-9_-]{11})", url.strip()))   # só o ID, colado sozinho
 if not m or m.group(1) == "live_stream":
     print("ERRO: URL sem ID de vídeo. Use a do botão Compartilhar do evento,")
     print("      no formato https://youtube.com/live/<11 caracteres>.")
+    print("      (ou cole só o ID, ou o endereço do Studio — os dois servem)")
     print(f"      recebida: {url}")
     raise SystemExit(1)
+url = f"https://youtube.com/live/{m.group(1)}"   # normaliza o que for aceito
 
 j = json.load(open(p, encoding="utf-8"))
 j["liveStream"] = url
