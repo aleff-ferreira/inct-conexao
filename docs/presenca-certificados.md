@@ -22,49 +22,76 @@ só conhece se estiver assistindo.** É o método clássico das palavras-chave, 
 
 ---
 
-## O cronograma — e a armadilha que ele evita
+## ⛔ Antes de tudo: DESLIGUE O DVR
 
-Cada palavra-chave prova presença **naquele instante**. O que um conjunto de
-palavras prova é o **intervalo entre a primeira e a última** que a pessoa
-acertou. Por isso o que vale é o **pior caso** de cada combinação aceita.
+No YouTube Studio, em **Configurações da transmissão → Ativar DVR**, o botão
+está **ligado** hoje. Com ele ligado, o espectador pode **rebobinar a live
+enquanto ela acontece** — quem chega às 20:30 volta o vídeo e colhe todas as
+palavras anteriores em três minutos. Isso anula o método inteiro.
 
-O arranjo intuitivo — uma palavra no início de cada palestra — **falha**,
-porque as palestras se concentram na primeira hora:
+É uma troca real, e vale saber o que se perde: o DVR ajuda quem tem conexão
+ruim a recuperar 30 segundos perdidos, e 69 inscritos estão na Amazônia.
+Desligado, quem cair volta ao vivo, no ponto em que a transmissão está — e a
+gravação continua disponível depois, para rever com calma.
 
-| Arranjo | Palavras em | Regra | Permanência garantida |
+**Para o certificado significar alguma coisa, o DVR precisa estar desligado.**
+
+E não escreva as palavras no chat: o chat é reproduzido junto com a gravação.
+
+---
+
+## O cronograma — duas armadilhas, não uma
+
+Cada palavra prova presença **naquele instante**. Um conjunto de palavras
+prova o **intervalo entre a primeira e a última** acertada. Isso cria dois
+erros possíveis, e é preciso medir os dois:
+
+- **falso positivo** — certificar quem ficou menos de 60 min;
+- **falso negativo** — reprovar quem ficou 60 min ou mais.
+
+Rodando força bruta sobre **todos** os intervalos de permanência possíveis:
+
+| Arranjo | Regra | Menor permanência aprovada | Maior permanência reprovada |
 |---|---|---|---|
-| Intuitivo (uma por palestra) | 19:10, 19:30, 19:50, 20:50 | 3 de 4 | **40 min (33%)** ❌ |
-| **Espalhado** | **19:10, 19:45, 20:20, 20:50** | **3 de 4** | **65 min (54%)** ✅ |
-| Espalhado, exigindo todas | 19:10, 19:45, 20:20, 20:50 | 4 de 4 | 100 min (83%) — sem perdão |
-| Só duas pontas | 19:15, 20:45 | 2 de 2 | 90 min (75%) — sem perdão |
+| 4 palavras (19:10, 19:45, 20:20, 20:50) | 3 de 4 | 65 min ✅ | **98 min (82%)** ❌ |
+| 5 palavras de 25 em 25 | 3 de 5 | 50 min ❌ | 73 min ❌ |
+| 5 palavras de 25 em 25 | 4 de 5 | 75 min ✅ | 98 min ❌ |
+| **6 palavras de 20 em 20** | **4 de 6** | **60 min ✅** | **78 min (65%)** |
+| 6 palavras de 20 em 20 | 3 de 6 | 40 min ❌ | 58 min ✅ |
 
-**Adotado: quatro palavras espalhadas, exigindo três.** Garante 54% e ainda
-tolera uma queda de conexão ou uma ida ao banheiro. Conferência combinação a
-combinação:
+O arranjo de quatro palavras **garante** os 60 minutos, mas reprovaria alguém
+que ficou 98 minutos — 82% do evento. Com 154 inscritos, na maioria
+estudantes atrás do certificado, isso vira reclamação justa.
 
-```
-19:10 + 19:45 + 20:20  ->  70 min (58%)   ok
-19:10 + 19:45 + 20:50  -> 100 min (83%)   ok
-19:10 + 20:20 + 20:50  -> 100 min (83%)   ok
-19:45 + 20:20 + 20:50  ->  65 min (54%)   ok   <- pior caso
-```
+**Adotado: seis palavras de 20 em 20 minutos, exigindo quatro.** Ninguém com
+menos de 60 min passa; quem ficar 80 min ou mais passa sempre; entre 60 e 79
+depende da hora em que entrou.
 
-### As quatro palavras (defina hoje e não mude)
+> **A regra geral, para quem quiser ajustar:** com espaçamento `g` e
+> exigência de `k` palavras, a menor permanência aprovada é `(k−1)·g` e a
+> maior reprovada é `k·g − 1`. A folga entre as duas é **sempre** `g` — só
+> encurtando o intervalo (mais interrupções) as duas pontas apertam juntas.
 
-| # | Horário (Rondônia) | Momento do programa | Palavra |
+### As seis palavras (defina hoje e não mude)
+
+| # | Horário (Rondônia) | Momento aproximado | Palavra |
 |---|---|---|---|
-| 1 | **19:10** | início da 1ª palestra (Bernarde) | `__________` |
-| 2 | **19:45** | transição para a 3ª palestra | `__________` |
-| 3 | **20:20** | durante o debate | `__________` |
-| 4 | **20:50** | na síntese, antes de encerrar | `__________` |
+| 1 | **19:05** | após a abertura | `__________` |
+| 2 | **19:25** | durante a 1ª palestra | `__________` |
+| 3 | **19:45** | durante a 2ª palestra | `__________` |
+| 4 | **20:05** | durante a 3ª palestra | `__________` |
+| 5 | **20:25** | no debate | `__________` |
+| 6 | **20:45** | antes da síntese | `__________` |
 
-Escolha palavras do tema, fáceis de escrever e difíceis de adivinhar
-(ex.: `jararaca`, `surucucu`, `cascavel`, `coral` — mas **não use estas**,
-que estão publicadas aqui). Uma palavra só, sem espaço, sem número.
+Escolha palavras **sem acento**, uma só, sem espaço, e **sem relação com o
+tema** — se forem termos de ofidismo, alguém adivinha. Palavras neutras
+funcionam melhor: `GIRASSOL`, `TAMBOR`, `LANTERNA`, `BUSSOLA`, `VITROLA`,
+`PANDEIRO`. *(Não use estas: estão publicadas aqui.)*
 
-**Quem anuncia:** o moderador, em voz alta **e** no chat da transmissão, e
-peça ao operador para escrever também na tela por ~30 segundos. Quem está no
-celular ouvindo enquanto cozinha precisa conseguir anotar.
+**Quem anuncia:** o moderador, **em voz alta**, e o operador escreve na tela
+por ~20 segundos. Quem estiver ouvindo pelo celular precisa conseguir anotar.
+Um cronômetro visível para o moderador evita esquecer — seis lembretes em
+duas horas é fácil de perder no meio do debate.
 
 ---
 
@@ -76,17 +103,30 @@ início e repetido a cada palavra).
 **Campos:**
 1. Endereço de e-mail — **o mesmo da inscrição** (deixe isso em negrito)
 2. Nome completo
-3. `1ª palavra-chave` · 4. `2ª palavra-chave` · 5. `3ª palavra-chave` ·
-   6. `4ª palavra-chave` — texto curto, **nenhuma obrigatória**
-   *(a pessoa que perdeu uma deixa em branco; a regra é 3 de 4)*
+3 a 8. `1ª palavra-chave` … `6ª palavra-chave` — texto curto, **nenhuma
+   obrigatória** *(quem perdeu uma deixa em branco; a regra é 4 de 6)*
 
-**Configuração:** coletar e-mail automaticamente se puder; limitar a 1
-resposta por pessoa; **aceitar respostas até 22h00 de 18/08** (fecha uma hora
-depois do fim, cobre quem teve problema e evita preenchimento no dia seguinte).
+**Configuração:**
 
-> Não use o recurso de "questionário com nota". A apuração é feita pelo
-> script, que aceita acento, espaço, maiúscula e pontuação — o corretor
-> automático do Forms reprovaria quem digitou "Jararacá!".
+- **Coletar e-mails: "entrada do respondente"** (digitado), **não** o
+  "verificado". O verificado exige conta Google e excluiria participantes —
+  e excluir quem assistiu é o erro mais caro aqui. O script cuida da
+  digitação.
+- **Não** limite a 1 resposta: essa opção também exige login Google. A
+  duplicata é tratada na apuração (vale a **primeira** resposta — anuncie
+  isso, senão alguém responde de novo depois de perguntar a um colega).
+- **Fechamento programado para 18/08 às 21h30** (Rondônia). O Google Forms
+  ganhou fechamento nativo por data e hora em janeiro de 2026, disponível
+  também para contas pessoais: *Publicado → Aceitando respostas → Definir
+  data de fechamento*. **Confira o fuso da planilha** (Arquivo →
+  Configurações da planilha): o padrão costuma vir São Paulo (UTC−3), e
+  Rondônia é UTC−4.
+
+> **Não use o modo "questionário com nota".** Duas páginas oficiais do Google
+> se contradizem sobre resposta curta ser autocorrigível, e **nenhuma**
+> documenta se a correção ignora acento e maiúscula. A apuração fica com o
+> script, que aceita "Jararacá! " como acerto e você pode conferir e corrigir
+> em segundos se algo sair errado às 21h05.
 
 ---
 
@@ -96,8 +136,8 @@ Terminado o evento, exporte as respostas em CSV e rode:
 
 ```bash
 python3 scripts/apurar-presenca.py respostas.csv \
-    --codigos palavra1 palavra2 palavra3 palavra4 \
-    --minimo 3 --simular
+    --codigos palavra1 palavra2 palavra3 palavra4 palavra5 palavra6 \
+    --minimo 4 --simular
 ```
 
 O `--simular` mostra o resultado sem gravar nada. Conferido, rode de novo sem
@@ -122,12 +162,11 @@ O script já resolve sozinho, testado:
 
 > **CERTIFICADO**
 > Para receber o certificado (2 horas), você precisa acompanhar pelo menos
-> metade da transmissão. Durante o webinário vamos anunciar **quatro
-> palavras-chave** em momentos diferentes — no início, no meio e perto do
-> fim. Anote-as.
+> metade da transmissão. Durante o webinário vamos anunciar **seis
+> palavras-chave**, espalhadas do começo ao fim. Anote-as.
 > Ao final, preencha o formulário de presença (o link será divulgado durante
 > a transmissão e enviado por e-mail logo depois). Quem informar **pelo menos
-> três das quatro palavras** recebe o certificado.
+> quatro das seis palavras** recebe o certificado.
 > Use o **mesmo e-mail** da inscrição.
 
 ---
@@ -135,14 +174,21 @@ O script já resolve sozinho, testado:
 ## Limites que vale conhecer
 
 **Compartilhamento de palavras entre colegas.** É o vetor óbvio, e nenhum
-método sem login o elimina. Mitiga-se anunciando em quatro momentos
-espalhados (quem só quer a palavra precisa ficar de olho no evento inteiro,
-o que já é quase assistir) e não repetindo as palavras na descrição do vídeo.
-Para um webinário gratuito de divulgação científica, o risco é proporcional.
+método sem login o elimina. Mitiga-se anunciando em seis momentos espalhados
+(quem só quer as palavras precisa ficar de olho no evento inteiro, o que já é
+quase assistir) e não repetindo as palavras na descrição do vídeo. Para um
+webinário gratuito de divulgação científica, o risco é proporcional.
 
 **A gravação fica pública.** Quem assistir depois vai ouvir as palavras. Por
-isso o formulário **fecha às 22h00** do dia 18 — depois disso, saber a
-palavra não vale mais nada.
+isso o formulário **fecha às 21h30** do dia 18 — meia hora depois do fim,
+antes de a gravação estar confortavelmente navegável.
+
+**Entre 60 e 79 minutos, o resultado depende da hora de entrada.** É
+consequência aritmética, não defeito: a folga é sempre igual ao espaçamento
+entre as palavras. Quem reclamar nessa faixa tem um argumento razoável — vale
+ter em mãos a regra escrita e, se a coordenação quiser, aprovar no caso a
+caso pelo arquivo `certificados-revisar.csv`, que traz quantas cada um
+acertou.
 
 **Quem assistir pelo YouTube direto** (não pelo site) participa igual: as
 palavras são anunciadas na transmissão, não na página.

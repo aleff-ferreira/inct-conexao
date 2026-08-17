@@ -8,14 +8,17 @@ espalhados. No fim, o participante preenche um formulário informando as
 palavras que ouviu. Cada palavra prova presença NAQUELE INSTANTE; o conjunto
 delas prova permanência no INTERVALO entre a primeira e a última.
 
-Por isso o cronograma importa mais do que a quantidade: quatro códigos
-amontoados no começo (um por palestra, o arranjo intuitivo) provam só 40
-minutos. Ver `docs/presenca-certificados.md` para a conta.
+Por isso o cronograma importa mais do que a quantidade, e há DOIS erros a
+medir: aprovar quem ficou pouco, e reprovar quem ficou bastante. Com
+espaçamento `g` e exigência de `k` palavras, a menor permanência aprovada é
+`(k-1)*g` e a maior reprovada é `k*g - 1`. Adotado: seis palavras de 20 em 20
+minutos, exigindo quatro — garante 60 min e aprova sempre quem ficou 80+.
+Ver `docs/presenca-certificados.md` para a conta e para a armadilha do DVR.
 
 USO
     python3 scripts/apurar-presenca.py respostas.csv \\
-        --codigos jararaca surucucu cascavel coral \\
-        --minimo 3
+        --codigos girassol tambor lanterna bussola vitrola pandeiro \\
+        --minimo 4
 
     # e, se quiser conferir antes de valer:
     python3 scripts/apurar-presenca.py respostas.csv --codigos ... --simular
@@ -77,7 +80,7 @@ def main():
     ap = argparse.ArgumentParser(description="Apura presença e gera a lista de certificados.")
     ap.add_argument("respostas", help="CSV exportado do Google Forms")
     ap.add_argument("--codigos", nargs="+", required=True, help="as palavras-chave anunciadas, na ordem")
-    ap.add_argument("--minimo", type=int, default=3, help="quantas o participante precisa acertar (padrão: 3)")
+    ap.add_argument("--minimo", type=int, default=4, help="quantas o participante precisa acertar (padrão: 4, de 6)")
     ap.add_argument("--inscritos", default=PADRAO_INSCRITOS, help=f"lista de inscritos (padrão: {PADRAO_INSCRITOS})")
     ap.add_argument("--simular", action="store_true", help="mostra o resultado sem gravar os arquivos")
     args = ap.parse_args()
