@@ -67,10 +67,19 @@ possível.
 2. Abra o **Zoom no computador** (o recurso não existe no celular) → **New
    meeting**.
 3. Dentro da reunião: **More (…)** → **Live on Custom Live Streaming Service**.
-4. Preencha:
+4. Preencha os três campos:
    - **Stream URL:** `rtmp://a.rtmp.youtube.com/live2`
-   - **Stream key:** a chave que você copiou
-   - **Live streaming page URL:** a URL da transmissão
+   - **Stream key:** a chave que você copiou do YouTube
+   - **Live streaming page URL:**
+     `https://inct-conexao.com.br/#/webinars/webinario-ofidio-venom-saude-1`
+
+   > **Sobre o terceiro campo** (é o que mais confunde): ele **não participa da
+   > transmissão**. Quem carrega o vídeo são os dois primeiros. Este aqui é só
+   > "para onde mandar quem quiser assistir" — a Zoom o exibe aos participantes
+   > da reunião como um aviso clicável de que o encontro está sendo transmitido.
+   > Por isso vai a **página do site**, e não a do YouTube: é onde o público
+   > assiste, e assim os próprios palestrantes conseguem conferir o site durante
+   > o ensaio. Não é preciso criar URL nenhuma.
 5. Confirme. Em ~20 segundos o YouTube Studio mostra o sinal chegando.
 6. Quando o Studio disser que o sinal está **OK/Excelente**, clique
    **TRANSMITIR AO VIVO** (é manual porque o início automático está desligado).
