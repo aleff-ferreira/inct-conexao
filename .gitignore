@@ -48,6 +48,15 @@ tmp/
 /index.html.candidatos.bak
 /ICs/
 
+# Inscrições de eventos exportadas do Google Forms: nome completo, e-mail, data
+# de nascimento, sexo, instituição e respostas de autoavaliação de 156 pessoas.
+# Mesmo risco do bloco acima: arquivo não rastreado, fora do .gitignore, é um
+# `git add -A` de distância de virar público — e aqui seriam dados de TERCEIROS,
+# não do projeto. A pasta de trabalho do disparo (listas e relatórios) vai junto.
+/Inscrição*.csv
+/inscricoes-*.csv
+/envio-webinario-ofidio/
+
 # Arquivos avulsos na raiz que não fazem parte do site (mantidos só no disco)
 /CNPq Proposta submetida INCT 2024.pdf
 /5E4C49CD-2E3B-4BE9-B5BD-44222180DED3_L0_001-08_11_2025-15_10_08-1-300x212.png
